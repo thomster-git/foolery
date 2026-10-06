@@ -1,0 +1,435 @@
+{
+  "training": [
+    {
+      "id": "t_meal_1",
+      "name": "Power Basmati Scramble & Berries",
+      "time": "8:30 AM - 9:00 AM",
+      "targetMacros": {
+        "calories": 680,
+        "protein": 50,
+        "fat": 20,
+        "carbs": 75
+      },
+      "ingredients": [
+        {
+          "itemId": "item_3",
+          "amount": 2,
+          "unit": "each",
+          "nameOverride": "Large whole eggs"
+        },
+        {
+          "itemId": "item_4",
+          "amount": 150,
+          "unit": "g",
+          "nameOverride": "Liquid egg whites"
+        },
+        {
+          "itemId": "item_1",
+          "amount": 60,
+          "unit": "g",
+          "nameOverride": "Dry brown basmati rice (yields 180g cooked)"
+        },
+        {
+          "itemId": "item_22",
+          "amount": 7,
+          "unit": "g",
+          "nameOverride": "Olive oil/Butter for cooking"
+        },
+        {
+          "itemId": "item_23",
+          "amount": 25,
+          "unit": "g",
+          "nameOverride": "Shredded cheddar cheese"
+        },
+        {
+          "itemId": "item_12",
+          "amount": 120,
+          "unit": "g",
+          "nameOverride": "Fresh blueberries"
+        }
+      ],
+      "instructions": "Heat butter in a skillet over medium heat. Add eggs and egg whites, scramble until softly set, and stir in shredded cheese. Serve alongside warm basmati rice and fresh blueberries.",
+      "focus": "High protein, moderate carbs, low-to-moderate fat for sustained energy into your 11:00 AM lift.",
+      "idea": "Whole-grain basmati rice or oatmeal bowl with scrambled eggs/egg whites, or Greek yogurt topped with fruit and honey."
+    },
+    {
+      "id": "t_meal_2",
+      "name": "Double Rice & Savory Seared Chicken Bowl",
+      "time": "12:30 PM - 1:00 PM",
+      "targetMacros": {
+        "calories": 815,
+        "protein": 60,
+        "fat": 15,
+        "carbs": 110
+      },
+      "ingredients": [
+        {
+          "itemId": "item_6",
+          "amount": 175,
+          "unit": "g",
+          "nameOverride": "Raw chicken breast (yields 175g cooked)"
+        },
+        {
+          "itemId": "item_1",
+          "amount": 103,
+          "unit": "g",
+          "nameOverride": "Dry brown basmati rice (yields 310g cooked)"
+        },
+        {
+          "itemId": "item_22",
+          "amount": 8,
+          "unit": "g",
+          "nameOverride": "Olive oil"
+        },
+        {
+          "itemId": "item_30",
+          "amount": 150,
+          "unit": "g",
+          "nameOverride": "Steamed frozen broccoli florets"
+        },
+        {
+          "itemId": "item_9",
+          "amount": 1,
+          "unit": "each",
+          "nameOverride": "Medium banana (~118g)"
+        }
+      ],
+      "instructions": "Cube prepped chicken breast and sear in 8g olive oil with garlic powder and dried summer savory. Plate with steamed broccoli over the basmati rice. Finish with the fresh banana for fast glycogen replenishment. SUBSTITUTIONS: If you don't have broccoli, use asparagus or green beans.",
+      "focus": "High protein and your largest carb feeding to replenish glycogen immediately after training.",
+      "idea": "Lean seasoned chicken breast, double serving of whole-grain rice, steamed veggies, and a side of fruit."
+    },
+    {
+      "id": "t_meal_3",
+      "name": "Cinnamon Crunch Bagel & Whey Shake",
+      "time": "3:30 PM - 4:00 PM",
+      "targetMacros": {
+        "calories": 575,
+        "protein": 55,
+        "fat": 15,
+        "carbs": 55
+      },
+      "ingredients": [
+        {
+          "itemId": "item_7",
+          "amount": 50,
+          "unit": "g",
+          "nameOverride": "Whey Protein Isolate powder"
+        },
+        {
+          "itemId": "item_8",
+          "amount": 1,
+          "unit": "each",
+          "nameOverride": "Plain bagel"
+        },
+        {
+          "itemId": "item_17",
+          "amount": 16,
+          "unit": "g",
+          "nameOverride": "Natural peanut butter"
+        },
+        {
+          "itemId": "item_32",
+          "amount": 300,
+          "unit": "g",
+          "nameOverride": "Unsweetened Almond Milk"
+        }
+      ],
+      "instructions": "Shake whey isolate with cold almond milk. Toast the bagel, spread 16g peanut butter across both halves, and dust with cinnamon. SUBSTITUTIONS: Almond milk can be swapped for oat milk or just water (adjust macros).",
+      "focus": "Quick, portable refuel right before afternoon pickups.",
+      "idea": "Whey protein shake paired with a bagel, banana, or rice cakes."
+    },
+    {
+      "id": "t_meal_4",
+      "name": "Lean Beef & Crispy Potato Skillet",
+      "time": "6:30 PM - 7:30 PM",
+      "targetMacros": {
+        "calories": 730,
+        "protein": 62,
+        "fat": 30,
+        "carbs": 53
+      },
+      "ingredients": [
+        {
+          "itemId": "item_10",
+          "amount": 240,
+          "unit": "g",
+          "nameOverride": "Raw extra-lean ground beef (93/7)"
+        },
+        {
+          "itemId": "item_31",
+          "amount": 250,
+          "unit": "g",
+          "nameOverride": "Red potatoes, diced"
+        },
+        {
+          "itemId": "item_22",
+          "amount": 10,
+          "unit": "g",
+          "nameOverride": "Olive oil (split)"
+        },
+        {
+          "itemId": "item_14",
+          "amount": 75,
+          "unit": "g",
+          "nameOverride": "Zucchini"
+        },
+        {
+          "itemId": "item_13",
+          "amount": 75,
+          "unit": "g",
+          "nameOverride": "Bell peppers"
+        }
+      ],
+      "instructions": "Toss diced potatoes in 7g olive oil, season with salt/paprika, and air-fry or roast at 400°F (200°C) for 18–20 minutes. Brown the ground beef in a skillet with the remaining oil, add vegetables, and sauté until tender. Combine on a plate. SUBSTITUTIONS: If you have no zucchini, just double up on the bell peppers or add spinach.",
+      "focus": "High protein, balanced healthy fats, moderate carbs for satiety.",
+      "idea": "Lean beef or chicken stir-fry with mixed vegetables and potatoes."
+    }
+  ],
+  "rest": [
+    {
+      "id": "r_meal_1",
+      "name": "High-Protein Scrap Omelet with Sourdough",
+      "time": "8:30 AM - 9:00 AM",
+      "targetMacros": {
+        "calories": 540,
+        "protein": 55,
+        "fat": 20,
+        "carbs": 35
+      },
+      "ingredients": [
+        {
+          "itemId": "item_3",
+          "amount": 2,
+          "unit": "each",
+          "nameOverride": "Large whole eggs"
+        },
+        {
+          "itemId": "item_4",
+          "amount": 200,
+          "unit": "g",
+          "nameOverride": "Liquid egg whites"
+        },
+        {
+          "itemId": "item_25",
+          "amount": 60,
+          "unit": "g",
+          "nameOverride": "Deli turkey scraps"
+        },
+        {
+          "itemId": "item_23",
+          "amount": 20,
+          "unit": "g",
+          "nameOverride": "Cheddar/Mozzarella scraps"
+        },
+        {
+          "itemId": "item_18",
+          "amount": 45,
+          "unit": "g",
+          "nameOverride": "Artisan sourdough slice"
+        },
+        {
+          "itemId": "item_22",
+          "amount": 5,
+          "unit": "g",
+          "nameOverride": "Butter/Oil spray"
+        },
+        {
+          "itemId": "item_24",
+          "amount": 50,
+          "unit": "g",
+          "nameOverride": "Baby spinach"
+        },
+        {
+          "itemId": "item_12",
+          "amount": 100,
+          "unit": "g",
+          "nameOverride": "Fresh blueberries"
+        }
+      ],
+      "instructions": "Sauté spinach and turkey scraps in a pan with butter. Pour over whisked eggs and egg whites, sprinkle cheese, fold into an omelet, and serve with toasted sourdough. SUBSTITUTIONS: If you don't have blueberries, use strawberries or diced apples.",
+      "idea": "Veggie & egg-white scramble with one slice of toast or a small bowl of oats."
+    },
+    {
+      "id": "r_meal_2",
+      "name": "Mediterranean Chicken Salad & Basmati",
+      "time": "12:30 PM - 1:00 PM",
+      "targetMacros": {
+        "calories": 600,
+        "protein": 60,
+        "fat": 20,
+        "carbs": 45
+      },
+      "ingredients": [
+        {
+          "itemId": "item_6",
+          "amount": 240,
+          "unit": "g",
+          "nameOverride": "Raw chicken breast (yields 180g cooked)"
+        },
+        {
+          "itemId": "item_1",
+          "amount": 43,
+          "unit": "g",
+          "nameOverride": "Dry brown basmati rice (yields 130g cooked)"
+        },
+        {
+          "itemId": "item_22",
+          "amount": 12,
+          "unit": "g",
+          "nameOverride": "Extra virgin olive oil"
+        },
+        {
+          "itemId": "item_27",
+          "amount": 100,
+          "unit": "g",
+          "nameOverride": "Romaine lettuce"
+        },
+        {
+          "itemId": "item_28",
+          "amount": 80,
+          "unit": "g",
+          "nameOverride": "Cucumber/Tomatoes"
+        },
+        {
+          "itemId": "item_26",
+          "amount": 15,
+          "unit": "g",
+          "nameOverride": "Crumbled feta cheese"
+        }
+      ],
+      "instructions": "Whisk olive oil with red wine vinegar, lemon juice, and oregano salt and pepper. Toss with chopped greens, cucumber, and feta. Top with sliced chicken breast and serve with cooked basmati rice on the side.",
+      "idea": "Chicken breast salad bowl with greens, diced vegetables, a measured olive oil dressing, and a small side of rice."
+    },
+    {
+      "id": "r_meal_3",
+      "name": "Chocolate-Almond Whey & Crisp Apple",
+      "time": "3:30 PM - 4:00 PM",
+      "targetMacros": {
+        "calories": 390,
+        "protein": 50,
+        "fat": 10,
+        "carbs": 25
+      },
+      "ingredients": [
+        {
+          "itemId": "item_7",
+          "amount": 52,
+          "unit": "g",
+          "nameOverride": "Whey Protein Isolate"
+        },
+        {
+          "itemId": "item_16",
+          "amount": 14,
+          "unit": "g",
+          "nameOverride": "Raw almonds"
+        },
+        {
+          "itemId": "item_19",
+          "amount": 180,
+          "unit": "g",
+          "nameOverride": "Medium crisp apple"
+        }
+      ],
+      "instructions": "Blend or shake whey powder with chilled water. Eat raw almonds and sliced crisp apple on the side for fiber and healthy fats. SUBSTITUTIONS: If you don't have cucumber, add extra bell peppers or tomatoes.",
+      "idea": "Whey isolate shake with an apple or rice cakes."
+    },
+    {
+      "id": "r_meal_4",
+      "name": "Sirloin with Sweet Potato",
+      "time": "6:30 PM - 7:30 PM",
+      "targetMacros": {
+        "calories": 670,
+        "protein": 62,
+        "fat": 25,
+        "carbs": 49
+      },
+      "ingredients": [
+        {
+          "itemId": "item_20",
+          "amount": 230,
+          "unit": "g",
+          "nameOverride": "Raw lean top sirloin steak"
+        },
+        {
+          "itemId": "item_15",
+          "amount": 200,
+          "unit": "g",
+          "nameOverride": "Sweet potato, cubed"
+        },
+        {
+          "itemId": "item_22",
+          "amount": 8,
+          "unit": "g",
+          "nameOverride": "Olive oil"
+        },
+        {
+          "itemId": "item_29",
+          "amount": 150,
+          "unit": "g",
+          "nameOverride": "Roasted asparagus"
+        }
+      ],
+      "instructions": "Toss cubed sweet potatoes and asparagus with olive oil, salt, and pepper; roast at 400°F (200°C) for 22 minutes. Sear the sirloin steak in a hot cast-iron skillet for 3–4 minutes per side to your preferred doneness. SUBSTITUTIONS: If you have no asparagus, use broccoli or green beans.",
+      "idea": "Lean meat or fish with a large volume of roasted vegetables and a smaller sweet potato portion."
+    }
+  ],
+  "dailyTargets": {
+    "training": {
+      "calories": 2800,
+      "protein": 227,
+      "fat": 80,
+      "carbs": 293
+    },
+    "rest": {
+      "calories": 2200,
+      "protein": 227,
+      "fat": 75,
+      "carbs": 154
+    }
+  },
+  "mealPrep": [
+    {
+      "step": "1. Preheat & Start the Rice Batch (Takes ~45 mins hands-off)",
+      "details": "Preheat your oven to 400°F (200°C). Rinse 800g of dry whole-grain brown basmati rice under cold water until it runs clear. Add it to your rice cooker or large pot with water (typically a 1:2 ratio) and set it to cook."
+    },
+    {
+      "step": "2. Prep & Season the Chicken Breast",
+      "details": "Trim 1.7 kg of boneless, skinless chicken breasts into even cutlets or strips so they cook uniformly. Place them on a large baking sheet lined with foil or parchment, lightly coat with cooking spray, and season thoroughly with garlic powder, dried summer savory, paprika, salt, and black pepper."
+    },
+    {
+      "step": "3. Oven Sprint: Chicken & Roasted Vegetables",
+      "details": "Slide the chicken into the oven for 18–22 minutes (until an internal temp reaches 165°F / 74°C). While the chicken cooks, chop your produce for the week: slice zucchini and bell peppers for the training skillets, dice potatoes and sweet potatoes, and trim broccoli and asparagus. Store all pre-chopped raw veg in sealed produce containers so daily cooking takes under 5 minutes."
+    },
+    {
+      "step": "4. Rest & Portion the Chicken",
+      "details": "Pull the chicken from the oven and let it rest on a cutting board for 8–10 minutes so the juices redistribute. Weigh and slice into clean meal-sized portions: four 175g portions (training days) and three 180g portions (recovery days). Pack into glass fridge containers."
+    },
+    {
+      "step": "5. Fluff, Portion & Freeze the Rice",
+      "details": "Once the rice cooker clicks off, fluff the rice and spread it out on a tray for 5–10 minutes to let excess steam escape. Use a kitchen scale to pack your freezer-safe containers:\nTraining Days (4 Double Portions): 310g cooked rice per container (or split into 180g pre-workout + 310g post-workout single tubs).\nRecovery Days (3 Portions): 130g cooked rice per container.\nSeal and label them, then stack directly into the freezer."
+    },
+    {
+      "step": "6. Pack Weekly Protein & Pantry Bridges",
+      "details": "While wiping down the counter, take 3 minutes to pre-portion your snacks: count out raw almonds into 3 small snack bags (14g each) and store the bagels, bread, and protein powder in an easy-grab cluster on your counter or pantry shelf."
+    },
+    {
+      "step": "Freezer Rice Reheating Pro-Tip",
+      "details": "To prevent frozen brown basmati from drying out, keep the lid loosely resting on the container (or cover with a damp paper towel), splash 1 teaspoon of water over the top, and microwave on high for 90 to 120 seconds. It steams back to freshly cooked texture every time."
+    }
+  ],
+  "hydration": {
+    "baseline": "3.9 to 4.5 Liters (130-150 oz)",
+    "trainingAdd": "+ 500-1000 ml per hour of training",
+    "guidelines": [
+      "Front-load early: Drink 500-750 ml within the first hour of waking.",
+      "Anchor to meals: Have 400-500 ml (~2 glasses) with each main meal.",
+      "Check the gauge: Aim for urine that is pale straw to light yellow."
+    ]
+  },
+  "recurringItems": [
+    {
+      "itemId": "item_33",
+      "amountPerWeek": 72
+    }
+  ]
+}

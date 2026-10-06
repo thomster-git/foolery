@@ -1,0 +1,1419 @@
+[
+  {
+    "id": "atlas-content",
+    "path": "content/atlas-content.md",
+    "title": "Atlas Content",
+    "summary": "The root of the Project Atlas content library. Every article, project, topic, theme, collection, gallery, and media object lives beneath this directory.",
+    "type": "documentation",
+    "currentThemes": [
+      "systems-thinking",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "technology"
+    ],
+    "currentTags": [
+      "atlas",
+      "content",
+      "knowledge-base",
+      "library"
+    ],
+    "currentRelated": [
+      "project-atlas"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "audhd-and-systems-thinking",
+    "path": "content/articles/audhd-and-systems-thinking.md",
+    "title": "AuDHD and Systems Thinking: Why I See Infrastructure Differently",
+    "summary": "How my neurodivergent brain turns the chaos of IT infrastructure into logical, optimized, and honest systems.",
+    "type": "article",
+    "currentThemes": [
+      "systems-thinking",
+      "bottom-up-systems-thinking",
+      "bottom-up-systems-thinking"
+    ],
+    "currentTopics": [
+      "audhd",
+      "technology"
+    ],
+    "currentTags": [
+      "personal",
+      "neurodiversity",
+      "audhd",
+      "technology",
+      "neurodivergence",
+      "audhd",
+      "systems-thinking",
+      "technology"
+    ],
+    "currentRelated": [
+      "keel-systems",
+      "my-story-with-the-msp-trap-and-broken-infrastructure",
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-mechanical-engineering-and-systems-thinking"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "aviation-checklists-for-life",
+    "path": "content/articles/aviation-checklists-for-life.md",
+    "title": "Aviation Checklists for Everyday Life",
+    "summary": "How the rigid, systemized emergency checklists used in aviation can be applied to navigate the friction of everyday life and executive dysfunction.",
+    "type": "article",
+    "currentThemes": [
+      "systems-thinking",
+      "resilience",
+      "resilience"
+    ],
+    "currentTopics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "currentTags": [
+      "checklists",
+      "aviation",
+      "executive-dysfunction",
+      "adhd",
+      "routines",
+      "aviation",
+      "systems-thinking",
+      "executive-dysfunction",
+      "adhd",
+      "routines"
+    ],
+    "currentRelated": [
+      "my-story-with-mechanical-engineering-and-systems-thinking",
+      "my-story-with-autistic-burnout-and-sensory-regulation"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "bottom-up-systems-thinking",
+    "path": "content/articles/bottom-up-systems-thinking.md",
+    "title": "Bottom-Up Systems Thinking",
+    "summary": "A deep dive into why asking 'why' from the ground up—understanding constraints, edge cases, and root causes—is infinitely more effective than top-down assumptions.",
+    "type": "article",
+    "currentThemes": [
+      "systems-thinking"
+    ],
+    "currentTopics": [
+      "technology",
+      "audhd"
+    ],
+    "currentTags": [
+      "bottom-up",
+      "engineering",
+      "kpis",
+      "management",
+      "neurodiversity",
+      "bottom-up",
+      "engineering",
+      "kpis",
+      "management",
+      "neurodiversity"
+    ],
+    "currentRelated": [
+      "my-story-with-keel-systems-and-honest-kpis",
+      "my-story-with-mechanical-engineering-and-systems-thinking"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "building-a-comprehensive-discord-ecosystem",
+    "path": "content/articles/building-a-comprehensive-discord-ecosystem.md",
+    "title": "Case Study: The Thoms Foolery Discord Bot",
+    "summary": "A comprehensive case study on how we transformed a standard Discord server into a self-sustaining ecosystem using a custom Python bot, virtual economies, real-time sports APIs, and Agentic AI.",
+    "type": "article",
+    "currentThemes": [
+      "automation"
+    ],
+    "currentTopics": [
+      "technology"
+    ],
+    "currentTags": [
+      "discord",
+      "python",
+      "automation",
+      "sports-betting",
+      "baseball",
+      "ai"
+    ],
+    "currentRelated": [
+      "keel-systems",
+      "my-story-with-keel-systems-and-honest-kpis",
+      "baseball",
+      "technology"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "collecting",
+    "path": "content/articles/collecting.md",
+    "title": "Collecting",
+    "summary": "A deep dive into my lifelong habit of collecting—from Pokémon and Yu-Gi-Oh cards to fedoras, currency, playing cards, and sports memorabilia.",
+    "type": "article",
+    "currentThemes": [
+      "nostalgia",
+      "identity"
+    ],
+    "currentTopics": [
+      "baseball",
+      "gaming",
+      "audhd"
+    ],
+    "currentTags": [
+      "nostalgia",
+      "hobbies",
+      "sports",
+      "gaming"
+    ],
+    "currentRelated": [
+      "my-story-with-videogames-and-adhd",
+      "the-legend-of-zelda-ocarina-of-time",
+      "habbo-hotel"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "discord-vs-corporate-comms",
+    "path": "content/articles/discord-vs-corporate-comms.md",
+    "title": "Rethinking Corporate Communication: Why Discord Beats Slack & Teams",
+    "summary": "When setting up communication infrastructure for a new startup or agile team under Keel Systems, one of the first questions asked is: *\"What chat platform shoul...",
+    "type": "article",
+    "currentThemes": [
+      "bottom-up-systems-thinking",
+      "systems-thinking"
+    ],
+    "currentTopics": [
+      "technology"
+    ],
+    "currentTags": [
+      "keel-systems",
+      "business",
+      "technology",
+      "communication",
+      "discord",
+      "consulting"
+    ],
+    "currentRelated": [
+      "building-a-comprehensive-discord-ecosystem",
+      "keel-systems",
+      "my-story-with-keel-systems-and-honest-kpis",
+      "my-story-with-the-msp-trap-and-broken-infrastructure"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "from-rocks-to-routers-qa-qc-and-it",
+    "path": "content/articles/from-rocks-to-routers-qa-qc-and-it.md",
+    "title": "From Rocks to Routers How QA/QC Prepared Me for IT",
+    "summary": "How a Mechanical Engineering graduate doing QA/QC on aggregate rocks ended up designing networks and building servers.",
+    "type": "article",
+    "currentThemes": [
+      "curiosity",
+      "pragmatism"
+    ],
+    "currentTopics": [
+      "systems-thinking",
+      "technology"
+    ],
+    "currentTags": [
+      "engineering",
+      "qa-qc",
+      "networking",
+      "problem-solving"
+    ],
+    "currentRelated": [
+      "leaving-cfi",
+      "my-story-with-cfi",
+      "my-story-with-mechanical-engineering-and-systems-thinking",
+      "my-story-with-the-msp-trap-and-broken-infrastructure"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "leaving-cfi",
+    "path": "content/articles/leaving-cfi.md",
+    "title": "Leaving CFI",
+    "summary": "The story of when I was pushed to the edge and finally walked away from Canada Fluorspar Inc.",
+    "type": "article",
+    "currentThemes": [
+      "resilience",
+      "mental-health",
+      "mental-health"
+    ],
+    "currentTopics": [
+      "career",
+      "technology",
+      "audhd"
+    ],
+    "currentTags": [
+      "career",
+      "autistic-burnout",
+      "cfi",
+      "toxic-workplace",
+      "burnout",
+      "mental-health",
+      "cfi",
+      "toxic-workplace"
+    ],
+    "currentRelated": [
+      "my-story-with-cfi",
+      "my-story-with-cfi"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "manifesto",
+    "path": "content/articles/manifesto.md",
+    "title": "The Project Atlas Manifesto",
+    "summary": "Everything is connected. Why I built a graph-based digital garden to map my entire life, work, and interests.",
+    "type": "article",
+    "currentThemes": [
+      "connection",
+      "systems-thinking"
+    ],
+    "currentTopics": [
+      "technology",
+      "audhd"
+    ],
+    "currentTags": [
+      "digital-garden",
+      "knowledge-graph",
+      "manifesto",
+      "systems"
+    ],
+    "currentRelated": [
+      "my-story-with-everything-is-connected",
+      "personal-digital-garden-creator",
+      "project-atlas",
+      "audhd-and-systems-thinking"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-journey-with-neurodiversity",
+    "path": "content/articles/my-journey-with-neurodiversity.md",
+    "title": "My Journey With Neurodiversity",
+    "summary": "Exploring adult AuDHD diagnosis, unmasking after thirty years, and building personal systems for focus and well-being.",
+    "type": "article",
+    "currentThemes": [
+      "identity",
+      "resilience",
+      "growth",
+      "mental-health",
+      "resilience",
+      "growth"
+    ],
+    "currentTopics": [
+      "audhd",
+      "health-and-fitness",
+      "politics",
+      "gaming"
+    ],
+    "currentTags": [
+      "audhd",
+      "neurodiversity",
+      "adhd",
+      "autism",
+      "unmasking",
+      "neurodiversity",
+      "adhd",
+      "autism",
+      "mental-health",
+      "unmasking"
+    ],
+    "currentRelated": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-videogames-and-adhd",
+      "my-story-with-healthcare"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-3d-printing-and-laser-engraving",
+    "path": "content/articles/my-story-with-3d-printing-and-laser-engraving.md",
+    "title": "My Story With 3D Printing & Laser Engraving",
+    "summary": "Combining physical maker tools—3D printers and the xTool S1 40W Diode Laser—to craft custom physical projects.",
+    "type": "article",
+    "currentThemes": [
+      "craftsmanship",
+      "creativity"
+    ],
+    "currentTopics": [
+      "technology"
+    ],
+    "currentTags": [
+      "3d-printing",
+      "laser-cutting",
+      "xtool",
+      "maker"
+    ],
+    "currentRelated": [
+      "my-story-with-etchcentric-and-laser-engraving",
+      "etchcentric-creations",
+      "xtool-s1-40w-diode-laser",
+      "xtool-s1"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-audio-gear-and-podcasting",
+    "path": "content/articles/my-story-with-audio-gear-and-podcasting.md",
+    "title": "My Story With Audio Gear & Home Studio Setup",
+    "summary": "Exploring audio interfaces, dynamic microphones, gain boosters, and acoustic optimization in a personal home studio.",
+    "type": "article",
+    "currentThemes": [
+      "craftsmanship",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "audio-engineering",
+      "technology"
+    ],
+    "currentTags": [
+      "audio",
+      "microphone",
+      "studio",
+      "focusrite",
+      "shure"
+    ],
+    "currentRelated": [
+      "focusrite-scarlett-2i2",
+      "shure-sm57",
+      "shure-sm58",
+      "shure-sm7b-microphone"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-autigender-and-identity",
+    "path": "content/articles/my-story-with-autigender-and-identity.md",
+    "title": "My Story With Autigender & Identity",
+    "summary": "What autigender means and why the concept resonates — not as a rejection of manhood, but as an honest acknowledgment that autism shapes the way I experience and express gender in ways that don't fit neatly into either traditional masculine or contemporary progressive frameworks.",
+    "type": "article",
+    "currentThemes": [
+      "identity",
+      "growth",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "audhd",
+      "gender-studies"
+    ],
+    "currentTags": [
+      "autigender",
+      "identity",
+      "autism",
+      "gender",
+      "unmasking",
+      "emotional-expression",
+      "neurodiversity"
+    ],
+    "currentRelated": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-early-childhood-and-reoccurring-dreams",
+      "my-story-with-autistic-burnout-and-sensory-regulation"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-autistic-burnout-and-sensory-regulation",
+    "path": "content/articles/my-story-with-autistic-burnout-and-sensory-regulation.md",
+    "title": "My Story With Autistic Burnout & Sensory Regulation",
+    "summary": "What Autistic Burnout actually feels like when it finally has a name, and the small but hard-won strategies — noise-canceling headphones, eye pressure resets, social energy caps — that are slowly rebuilding my capacity.",
+    "type": "article",
+    "currentThemes": [
+      "identity",
+      "resilience",
+      "growth"
+    ],
+    "currentTopics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "currentTags": [
+      "autistic-burnout",
+      "sensory-regulation",
+      "audhd",
+      "noise-canceling",
+      "stim",
+      "social-energy",
+      "unmasking",
+      "nervous-system"
+    ],
+    "currentRelated": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-healthcare",
+      "bose-quietcomfort-pro-2",
+      "ark-chewers-sensory-wearable"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-billy-talent",
+    "path": "content/articles/my-story-with-billy-talent.md",
+    "title": "My Story With Billy Talent",
+    "summary": "How Billy Talent shaped my taste in music and became a recurring part of my life.",
+    "type": "article",
+    "currentThemes": [
+      "identity",
+      "nostalgia",
+      "connection",
+      "nostalgia",
+      "connection"
+    ],
+    "currentTopics": [
+      "music"
+    ],
+    "currentTags": [
+      "music",
+      "punk-rock",
+      "canada",
+      "billy-talent",
+      "punk-rock",
+      "canada",
+      "billy-talent"
+    ],
+    "currentRelated": [
+      "my-story-with-bo-burnham",
+      "my-story-with-donald-glover"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-bo-burnham",
+    "path": "content/articles/my-story-with-bo-burnham.md",
+    "title": "My Story With Bo Burnham",
+    "summary": "How Bo Burnham shaped my taste in music, comedy, and became a recurring part of my life.",
+    "type": "article",
+    "currentThemes": [
+      "identity",
+      "nostalgia",
+      "connection",
+      "creativity",
+      "nostalgia",
+      "connection"
+    ],
+    "currentTopics": [
+      "music",
+      "video-editing"
+    ],
+    "currentTags": [
+      "youtube",
+      "entertainment",
+      "funny"
+    ],
+    "currentRelated": [
+      "my-story-with-billy-talent",
+      "my-story-with-donald-glover"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-cfi",
+    "path": "content/articles/my-story-with-cfi.md",
+    "title": "My Story With Canada Fluorspar",
+    "summary": "My journey through multiple careers at Canada Fluorspar, from contractor to IT Coordinator.",
+    "type": "article",
+    "currentThemes": [
+      "resilience",
+      "growth",
+      "identity"
+    ],
+    "currentTopics": [
+      "technology",
+      "home-lab"
+    ],
+    "currentTags": [
+      "mining",
+      "engineering",
+      "information-technology",
+      "newfoundland",
+      "canada-fluorspar"
+    ],
+    "currentRelated": [
+      "project-atlas",
+      "keel-systems"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-coin-collecting",
+    "path": "content/articles/my-story-with-coin-collecting.md",
+    "title": "My Story With Coin Collecting & Numismatics",
+    "summary": "Exploring the history, craftsmanship, and quiet joy of collecting Canadian currency and silver bullion.",
+    "type": "article",
+    "currentThemes": [
+      "nostalgia",
+      "craftsmanship",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "technology"
+    ],
+    "currentTags": [
+      "coins",
+      "numismatics",
+      "silver",
+      "history"
+    ],
+    "currentRelated": [
+      "money-and-coins",
+      "collections",
+      "sports-cards",
+      "tcg-cards"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-donald-glover",
+    "path": "content/articles/my-story-with-donald-glover.md",
+    "title": "My Story With Donald Glover",
+    "summary": "Following Donald Glover's career across comedy, television, music, and film.",
+    "type": "article",
+    "currentThemes": [
+      "creativity",
+      "growth",
+      "identity"
+    ],
+    "currentTopics": [
+      "music",
+      "video-editing"
+    ],
+    "currentTags": [
+      "childish-gambino",
+      "community",
+      "derek-comedy",
+      "stand-up"
+    ],
+    "currentRelated": [
+      "my-story-with-bo-burnham"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-early-childhood-and-reoccurring-dreams",
+    "path": "content/articles/my-story-with-early-childhood-and-reoccurring-dreams.md",
+    "title": "My Story With Early Childhood & Reoccurring Dreams",
+    "summary": "Early preschool memories—from watching my parents play Super Nintendo to reoccurring nightmares, sensory panic, and childhood dreamcatchers.",
+    "type": "article",
+    "currentThemes": [
+      "identity",
+      "nostalgia",
+      "resilience",
+      "childhood",
+      "nostalgia",
+      "resilience"
+    ],
+    "currentTopics": [
+      "audhd",
+      "gaming"
+    ],
+    "currentTags": [
+      "snes",
+      "nightmares",
+      "memories",
+      "sensory",
+      "snes",
+      "nightmares",
+      "memories",
+      "sensory"
+    ],
+    "currentRelated": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-videogames-and-adhd"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-elementary-school-and-unwritten-social-rules",
+    "path": "content/articles/my-story-with-elementary-school-and-unwritten-social-rules.md",
+    "title": "My Story With Elementary School & Unwritten Social Rules",
+    "summary": "Navigating kindergarten in St. John's, moving to Carbonear in Grade 1, sensory meltdowns, and encountering unwritten peer expectations.",
+    "type": "article",
+    "currentThemes": [
+      "identity",
+      "resilience",
+      "connection"
+    ],
+    "currentTopics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "currentTags": [
+      "elementary-school",
+      "audhd",
+      "social-rules",
+      "carbonear"
+    ],
+    "currentRelated": [
+      "my-story-with-neurodiversity-and-adult-diagnosis"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-etchcentric-and-laser-engraving",
+    "path": "content/articles/my-story-with-etchcentric-and-laser-engraving.md",
+    "title": "My Story With EtchCentric Creations & Laser Engraving",
+    "summary": "How EtchCentric Creations came to life through an xTool S1 40W diode laser, natural slate, wood wall art, and a material-testing methodology borrowed from engineering — and the community that makes this craft genuinely collaborative.",
+    "type": "article",
+    "currentThemes": [
+      "craftsmanship",
+      "creativity",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "drawing",
+      "technology"
+    ],
+    "currentTags": [
+      "laser-engraving",
+      "xtool",
+      "slate",
+      "wood",
+      "crafts",
+      "etchcentric",
+      "diode-laser",
+      "making",
+      "small-business"
+    ],
+    "currentRelated": [
+      "xtool-s1-40w-diode-laser",
+      "etchcentric-creations",
+      "my-story-with-mechanical-engineering"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-everything-is-connected",
+    "path": "content/articles/my-story-with-everything-is-connected.md",
+    "title": "Everything Is Connected: The Manifesto Behind Project Atlas",
+    "summary": "The central philosophy of Project Atlas — that the decisions you make today are the product of every circumstance that shaped you, and that things that appear unrelated from the outside are often more deeply connected than you'd ever give credit for.",
+    "type": "article",
+    "currentThemes": [
+      "worldview",
+      "systems-thinking",
+      "identity",
+      "curiosity",
+      "connection",
+      "philosophy",
+      "identity",
+      "curiosity",
+      "connection"
+    ],
+    "currentTopics": [
+      "technology",
+      "audhd"
+    ],
+    "currentTags": [
+      "project-atlas",
+      "manifesto",
+      "connection",
+      "knowledge-graph",
+      "everything-is-connected",
+      "manifesto",
+      "philosophy",
+      "systems-thinking",
+      "connection",
+      "knowledge-graph",
+      "everything-is-connected"
+    ],
+    "currentRelated": [
+      "project-atlas",
+      "keel-systems",
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-cfi"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-family-memories-and-santa-claus",
+    "path": "content/articles/my-story-with-family-memories-and-santa-claus.md",
+    "title": "My Story With Family Memories & Santa Claus",
+    "summary": "Deconstructing childhood illusions, financial empathy, discovering family photos, and navigating emotional honesty.",
+    "type": "article",
+    "currentThemes": [
+      "identity",
+      "resilience",
+      "nostalgia",
+      "childhood",
+      "resilience",
+      "nostalgia"
+    ],
+    "currentTopics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "currentTags": [
+      "family",
+      "financial-empathy",
+      "emotional-honesty",
+      "childhood",
+      "financial-empathy",
+      "emotional-honesty"
+    ],
+    "currentRelated": [
+      "my-story-with-neurodiversity-and-adult-diagnosis"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-healthcare",
+    "path": "content/articles/my-story-with-healthcare.md",
+    "title": "My Story With Healthcare",
+    "summary": "The biggest failure of the healthcare and education systems in my life: missing obvious neurodivergence because I had a high IQ and learned to mask.",
+    "type": "article",
+    "currentThemes": [],
+    "currentTopics": [],
+    "currentTags": [
+      "mental-health",
+      "worldview",
+      "independence"
+    ],
+    "currentRelated": [],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-home-lab-and-proxmox",
+    "path": "content/articles/my-story-with-home-lab-and-proxmox.md",
+    "title": "My Story With Home Labs & Proxmox VE",
+    "summary": "The home lab was built around a Proxmox VE server with 64GB of RAM — LXC containers, self-hosted services, and the beginning of real infrastructure ownership. Currently on pause after upgrading RAM bent several motherboard sockets and I haven't booted it since.",
+    "type": "article",
+    "currentThemes": [
+      "systems-thinking",
+      "craftsmanship",
+      "learning"
+    ],
+    "currentTopics": [
+      "home-lab",
+      "technology"
+    ],
+    "currentTags": [
+      "proxmox",
+      "virtualization",
+      "linux",
+      "self-hosting",
+      "home-lab",
+      "hardware",
+      "proxmox-ve"
+    ],
+    "currentRelated": [
+      "proxmox-ve",
+      "keel-systems",
+      "my-story-with-cfi"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-keel-systems-and-honest-kpis",
+    "path": "content/articles/my-story-with-keel-systems-and-honest-kpis.md",
+    "title": "My Story With Keel Systems & Honest KPIs",
+    "summary": "What watching management paper over broken KPIs at a mining company in receivership taught me about organizational honesty — and the philosophy behind Keel Systems, a future IT consulting practice built on telling clients the truth.",
+    "type": "article",
+    "currentThemes": [
+      "systems-thinking",
+      "craftsmanship",
+      "resilience",
+      "craftsmanship",
+      "resilience"
+    ],
+    "currentTopics": [
+      "technology",
+      "home-lab"
+    ],
+    "currentTags": [
+      "keel-systems",
+      "it-consulting",
+      "kpis",
+      "organizational-honesty",
+      "management",
+      "small-business",
+      "msp",
+      "it-consulting",
+      "kpis",
+      "organizational-honesty",
+      "management",
+      "small-business",
+      "msp",
+      "systems-thinking"
+    ],
+    "currentRelated": [
+      "keel-systems",
+      "my-story-with-cfi",
+      "my-story-with-everything-is-connected"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-lego-robotics-and-atlanta",
+    "path": "content/articles/my-story-with-lego-robotics-and-atlanta.md",
+    "title": "My Story With LEGO Robotics & The Atlanta Competition",
+    "summary": "Competing in the FIRST LEGO League World Festival in Atlanta, literal communication breakdowns, and the importance of empathetic peer support.",
+    "type": "article",
+    "currentThemes": [
+      "systems-thinking",
+      "craftsmanship",
+      "connection"
+    ],
+    "currentTopics": [
+      "technology",
+      "audhd"
+    ],
+    "currentTags": [
+      "robotics",
+      "lego",
+      "atlanta",
+      "competition",
+      "audhd"
+    ],
+    "currentRelated": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "project-atlas"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-lifting-and-sensory-regulation",
+    "path": "content/articles/my-story-with-lifting-and-sensory-regulation.md",
+    "title": "My Story With Heavy Lifting & Sensory Regulation",
+    "summary": "Being teetering on the edge of sensory overload almost helps with heavy compound lifting — on adrenaline, smelling salts, and a big PR at provincials, and what powerlifting has taught me about nervous system regulation as an AuDHD person.",
+    "type": "article",
+    "currentThemes": [
+      "identity",
+      "resilience",
+      "growth"
+    ],
+    "currentTopics": [
+      "health-and-fitness",
+      "audhd"
+    ],
+    "currentTags": [
+      "powerlifting",
+      "gym",
+      "sensory-regulation",
+      "audhd",
+      "compound-lifts",
+      "provincials",
+      "nervous-system",
+      "smelling-salts",
+      "adrenaline"
+    ],
+    "currentRelated": [
+      "gym-power-rack-and-barbell",
+      "ironworks-adjustable-dumbbells",
+      "bose-quietcomfort-pro-2",
+      "my-story-with-autistic-burnout-and-sensory-regulation"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-live-music-and-concerts",
+    "path": "content/articles/my-story-with-live-music-and-concerts.md",
+    "title": "My Story With Live Concerts & Iceberg Alley",
+    "summary": "Memories of live rock shows, the energy of the Iceberg Alley Performance Tent, and watching my favourite bands perform live in St. John's.",
+    "type": "article",
+    "currentThemes": [
+      "connection",
+      "nostalgia",
+      "identity",
+      "nostalgia",
+      "identity"
+    ],
+    "currentTopics": [
+      "music"
+    ],
+    "currentTags": [
+      "music",
+      "iceberg-alley",
+      "st-johns",
+      "billy-talent",
+      "iceberg-alley",
+      "st-johns",
+      "live-music",
+      "billy-talent"
+    ],
+    "currentRelated": [
+      "my-story-with-billy-talent",
+      "my-story-with-music-and-emotional-anchoring",
+      "billy-talent",
+      "my-story-with-autistic-burnout-and-sensory-regulation"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-mechanical-engineering-and-systems-thinking",
+    "path": "content/articles/my-story-with-mechanical-engineering-and-systems-thinking.md",
+    "title": "My Story With Mechanical Engineering & Systems Thinking",
+    "summary": "A Mechanical Engineering degree, a natural aptitude for bottom-up problem design, and the RC airplane project that I carried on computational fluid dynamics alone — and why engineering and software aren't as different as they look.",
+    "type": "article",
+    "currentThemes": [
+      "systems-thinking",
+      "craftsmanship",
+      "learning"
+    ],
+    "currentTopics": [
+      "technology"
+    ],
+    "currentTags": [
+      "mechanical-engineering",
+      "cfd",
+      "cad",
+      "programming",
+      "rc-airplane",
+      "engineering",
+      "cfd",
+      "systems-thinking",
+      "cad",
+      "programming",
+      "rc-airplane",
+      "engineering",
+      "bottom-up-thinking"
+    ],
+    "currentRelated": [
+      "keel-systems",
+      "my-story-with-cfi",
+      "my-story-with-everything-is-connected"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-mechanical-engineering",
+    "path": "content/articles/my-story-with-mechanical-engineering.md",
+    "title": "My Story With Mechanical Engineering",
+    "summary": "How I ended up in Mechanical Engineering—navigating a rocky first year, choosing a discipline that fit my learning style, and finding a path that made sense.",
+    "type": "article",
+    "currentThemes": [],
+    "currentTopics": [],
+    "currentTags": [
+      "career",
+      "engineering",
+      "pragmatism",
+      "learning"
+    ],
+    "currentRelated": [],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-medical-stigma-and-advocacy",
+    "path": "content/articles/my-story-with-medical-stigma-and-advocacy.md",
+    "title": "My Story With Medical Stigma, CPAP, & Advocacy",
+    "summary": "Navigating physical health issues from childhood weight stigma and eye complications to undiagnosed sleep apnea, fatphobia, and the CPAP breakthrough that restored my vision.",
+    "type": "article",
+    "currentThemes": [
+      "worldview",
+      "resilience",
+      "growth"
+    ],
+    "currentTopics": [
+      "health-and-fitness"
+    ],
+    "currentTags": [
+      "healthcare",
+      "newfoundland",
+      "sleep-apnea",
+      "cpap",
+      "advocacy"
+    ],
+    "currentRelated": [
+      "my-story-with-the-7-year-waitlist",
+      "my-story-with-the-nicu-and-corporate-coldness",
+      "my-story-with-lifting-and-sensory-regulation"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-misunderstandings-and-literal-intent",
+    "path": "content/articles/my-story-with-misunderstandings-and-literal-intent.md",
+    "title": "My Story With Misunderstandings & Literal Intent",
+    "summary": "Examining moments where literal statements, speech nuances, and intent were misconstrued as disrespect or sarcasm.",
+    "type": "article",
+    "currentThemes": [
+      "identity",
+      "resilience"
+    ],
+    "currentTopics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "currentTags": [
+      "audhd",
+      "communication",
+      "lisp",
+      "literal-thinking",
+      "intent"
+    ],
+    "currentRelated": [
+      "my-story-with-neurodiversity-and-adult-diagnosis"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-music-and-emotional-anchoring",
+    "path": "content/articles/my-story-with-music-and-emotional-anchoring.md",
+    "title": "My Story With Music & Emotional Anchoring",
+    "summary": "Before kids I listened to 10,000 to 150,000 minutes of music per year. Then that dropped to zero, replaced by children's songs. What Autistic Burnout did to my relationship with music, and what quietly crying at a Billy Talent concert taught me about why it matters.",
+    "type": "article",
+    "currentThemes": [
+      "identity",
+      "nostalgia",
+      "resilience",
+      "creativity",
+      "nostalgia",
+      "resilience",
+      "creativity"
+    ],
+    "currentTopics": [
+      "music",
+      "audhd"
+    ],
+    "currentTags": [
+      "music",
+      "billy-talent",
+      "bo-burnham",
+      "autistic-burnout",
+      "emotional-anchoring",
+      "stim",
+      "punk-rock",
+      "billy-talent",
+      "bo-burnham",
+      "concerts",
+      "autistic-burnout",
+      "emotional-anchoring",
+      "stim",
+      "punk-rock"
+    ],
+    "currentRelated": [
+      "my-story-with-autistic-burnout-and-sensory-regulation",
+      "billy-talent",
+      "bo-burnham"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-neurodiversity-and-adult-diagnosis",
+    "path": "content/articles/my-story-with-neurodiversity-and-adult-diagnosis.md",
+    "title": "My Story With Neurodiversity, Adult Diagnosis, & Autigender",
+    "summary": "A deeply honest exploration of late-in-life AuDHD diagnosis at 31 and 32—brute-forcing a Mechanical Engineering degree, high-IQ masking, autistic burnout, sensory shifts, and navigating autigender identity.",
+    "type": "article",
+    "currentThemes": [
+      "identity",
+      "resilience",
+      "growth",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "audhd",
+      "health-and-fitness",
+      "politics",
+      "gender-studies"
+    ],
+    "currentTags": [
+      "audhd",
+      "neurodiversity",
+      "adhd",
+      "autism",
+      "autigender",
+      "unmasking",
+      "mechanical-engineering",
+      "twice-exceptional"
+    ],
+    "currentRelated": [
+      "my-journey-with-neurodiversity",
+      "my-story-with-healthcare",
+      "my-story-with-videogames-and-adhd"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-politics-and-polarization",
+    "path": "content/articles/my-story-with-politics-and-polarization.md",
+    "title": "My Story With Politics & Nuanced Perspectives",
+    "summary": "Personal reflections on centrist viewpoints, rejecting political polarization, and understanding complex societal discussions through empathy.",
+    "type": "article",
+    "currentThemes": [
+      "worldview",
+      "identity",
+      "curiosity",
+      "resilience"
+    ],
+    "currentTopics": [
+      "politics",
+      "audhd"
+    ],
+    "currentTags": [
+      "politics",
+      "centrist",
+      "autigender",
+      "nuance"
+    ],
+    "currentRelated": [
+      "my-story-with-autigender-and-identity",
+      "my-story-with-misunderstandings-and-literal-intent",
+      "my-story-with-public-voice-and-social-ridicule"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-potty-training-and-parenting",
+    "path": "content/articles/my-story-with-potty-training-and-parenting.md",
+    "title": "Bribes, Bare Bottoms, and the Great Potty Training Divide",
+    "summary": "Exploring intrinsic vs extrinsic motivation in toddlers through the lens of two very different potty training methods.",
+    "type": "article",
+    "currentThemes": [
+      "childhood",
+      "philosophy",
+      "parenting",
+      "philosophy"
+    ],
+    "currentTopics": [
+      "parenting",
+      "systems-thinking"
+    ],
+    "currentTags": [
+      "toddlers",
+      "psychology",
+      "toddlers",
+      "psychology"
+    ],
+    "currentRelated": [
+      "my-story-with-the-nicu-and-corporate-coldness",
+      "my-story-with-family-memories-and-santa-claus",
+      "my-story-with-elementary-school-and-unwritten-social-rules"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-ps2-modding-and-retro-gaming",
+    "path": "content/articles/my-story-with-ps2-modding-and-retro-gaming.md",
+    "title": "My Story With PS2 Modding & Retro Gaming",
+    "summary": "The fat PlayStation 2 SATA Network Adaptor mod and OPL setup is a project I want to do — the PS2 itself is sitting here, and the hardware just hasn't been purchased yet. What I know about the mod, why I want it, and the nostalgia behind the console.",
+    "type": "article",
+    "currentThemes": [
+      "nostalgia",
+      "craftsmanship",
+      "learning"
+    ],
+    "currentTopics": [
+      "gaming",
+      "technology"
+    ],
+    "currentTags": [
+      "ps2",
+      "retro-gaming",
+      "freemcboot",
+      "opl",
+      "hardware-modding",
+      "network-adaptor",
+      "preservation"
+    ],
+    "currentRelated": [
+      "retro-gaming-consoles",
+      "ps2-expansion",
+      "my-story-with-videogames-and-adhd"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  }
+]

@@ -1,0 +1,472 @@
+<div class="page-container" style="max-width: 1400px; margin: 0 auto; padding: 2rem;">
+  <header style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <h1 style="margin: 0; font-size: 2.5rem; background: linear-gradient(90deg, var(--accent-color), var(--accent-amber)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Fitness Lock-In</h1>
+      <p style="margin: 0.5rem 0 0 0; color: var(--text-dim); font-size: 1.1rem;">Body Recomposition & Strength Tracking</p>
+    </div>
+  </header>
+
+  <div class="dashboard-grid" style="display: grid; grid-template-columns: 300px 1fr 350px; gap: 2rem;">
+    
+    <!-- Left Column: Routine & Diet -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <div class="glass-card" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+        <h3 style="margin: 0; color: var(--accent-color); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Current Routine</h3>
+        <p id="stat-routine" style="margin: 0; font-size: 0.95rem; color: var(--text-dim); line-height: 1.5;">Loading...</p>
+      </div>
+
+      <div class="glass-card" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+        <h3 style="margin: 0; color: var(--cyan, #06b6d4); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Diet Plan</h3>
+        <p id="stat-diet" style="margin: 0; font-size: 0.95rem; color: var(--text-dim); line-height: 1.5;">Loading...</p>
+      </div>
+    </div>
+
+    <!-- Center Column: 3D Canvas & Timeline -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <!-- 3D Viewport -->
+      <div id="three-container" style="width: 100%; height: 600px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; position: relative; overflow: hidden; box-shadow: inset 0 0 40px rgba(0,0,0,0.8);">
+        <!-- Loading overlay -->
+        <div id="canvas-loading" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; background: var(--bg-main); z-index: 10;">
+          <span style="color: var(--text-dim);">Initializing Simulation...</span>
+        </div>
+      </div>
+
+      <!-- Timeline Scrubber -->
+      <div class="glass-card" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span id="display-date" style="font-weight: 600; font-size: 1.2rem; color: var(--accent-color);">Loading...</span>
+          <button id="btn-play" class="btn" style="background: var(--bg-alt); border: 1px solid var(--border-color);">▶ Play Progress</button>
+        </div>
+        <input type="range" id="timeline-slider" min="0" max="100" value="100" style="width: 100%; cursor: pointer;" disabled>
+      </div>
+    </div>
+
+    <!-- Right Column: Stats -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      
+      <!-- Body Metrics -->
+      <div class="glass-card" style="padding: 1.5rem;">
+        <h3 style="margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Body Metrics</h3>
+        
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+          <span style="color: var(--text-dim);">Weight</span>
+          <span id="stat-weight" style="font-weight: bold; font-size: 1.1rem;">-- lbs</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+          <span style="color: var(--text-dim);">Body Fat</span>
+          <span id="stat-bf" style="font-weight: bold; font-size: 1.1rem;">-- %</span>
+        </div>
+
+        <h4 style="margin: 1rem 0 0.5rem 0; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase;">Measurements (in)</h4>
+        
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span style="color: var(--text-dim); font-size: 0.9rem;">Head</span>
+          <span id="stat-head" style="font-weight: 600; font-size: 0.95rem;">--</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span style="color: var(--text-dim); font-size: 0.9rem;">Shoulder</span>
+          <span id="stat-shoulder" style="font-weight: 600; font-size: 0.95rem;">--</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span style="color: var(--text-dim); font-size: 0.9rem;">Chest</span>
+          <span id="stat-chest" style="font-weight: 600; font-size: 0.95rem;">--</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span style="color: var(--text-dim); font-size: 0.9rem;">Waist</span>
+          <span id="stat-waist" style="font-weight: 600; font-size: 0.95rem;">--</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span style="color: var(--text-dim); font-size: 0.9rem;">Hips</span>
+          <span id="stat-hips" style="font-weight: 600; font-size: 0.95rem;">--</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+          <span style="color: var(--text-dim); font-size: 0.9rem;">Biceps</span>
+          <span id="stat-biceps" style="font-weight: 600; font-size: 0.95rem;">--</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-dim); font-size: 0.9rem;">Thighs</span>
+          <span id="stat-thighs" style="font-weight: 600; font-size: 0.95rem;">--</span>
+        </div>
+      </div>
+
+      <!-- Main Lifts -->
+      <div class="glass-card" style="padding: 1.5rem;">
+        <h3 style="margin-top: 0; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Main Lifts (1RM)</h3>
+        
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+          <span style="color: var(--text-dim);">Squat</span>
+          <span id="stat-squat" style="font-weight: bold; font-size: 1.2rem;">-- lbs</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+          <span style="color: var(--text-dim);">Bench Press</span>
+          <span id="stat-bench" style="font-weight: bold; font-size: 1.2rem;">-- lbs</span>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <span style="color: var(--text-dim);">Deadlift</span>
+          <span id="stat-deadlift" style="font-weight: bold; font-size: 1.2rem;">-- lbs</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .glass-card {
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+  }
+  
+  /* Modern Range Slider Styling */
+  input[type=range] {
+    -webkit-appearance: none;
+    background: transparent;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    cursor: pointer;
+    margin-top: -8px;
+    box-shadow: 0 0 10px var(--accent-color);
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: var(--border-color);
+    border-radius: 2px;
+  }
+  input[type=range]:focus {
+    outline: none;
+  }
+  
+  @media (max-width: 1100px) {
+    .dashboard-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<!-- Load Three.js from CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  // 1. Fetch Data
+  let fitnessData = [];
+  try {
+    const res = await fetch('/data/fitness-history.json');
+    if (res.ok) {
+      fitnessData = await res.json();
+    }
+  } catch (err) {
+    console.error("Failed to load fitness data", err);
+  }
+
+  if (fitnessData.length === 0) {
+    document.getElementById('canvas-loading').innerHTML = "<span style='color:#ef4444;'>Error: No fitness data found.</span>";
+    return;
+  }
+
+  // 2. Setup Three.js Scene
+  const container = document.getElementById('three-container');
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x0b0f19, 0.05);
+
+  const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 1000);
+  // Adjusted camera to see full body
+  camera.position.set(0, 0, 7);
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  container.appendChild(renderer.domElement);
+  document.getElementById('canvas-loading').style.display = 'none';
+
+  // Lights
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+  scene.add(ambientLight);
+  
+  const directionalLight = new THREE.DirectionalLight(0x06b6d4, 0.8);
+  directionalLight.position.set(5, 5, 5);
+  scene.add(directionalLight);
+
+  const backLight = new THREE.DirectionalLight(0xf59e0b, 0.5);
+  backLight.position.set(-5, 3, -5);
+  scene.add(backLight);
+
+  // Platform
+  const platformGeo = new THREE.CylinderGeometry(1.5, 1.5, 0.1, 32);
+  const platformMat = new THREE.MeshStandardMaterial({ 
+    color: 0x1e293b, 
+    roughness: 0.2, 
+    metalness: 0.8 
+  });
+  const platform = new THREE.Mesh(platformGeo, platformMat);
+  platform.position.y = -2.2;
+  scene.add(platform);
+
+  // Grid Helper
+  const grid = new THREE.GridHelper(10, 20, 0x06b6d4, 0x334155);
+  grid.position.y = -2.15;
+  scene.add(grid);
+
+  // Build Segmented Parametric Humanoid
+  const bodyGroup = new THREE.Group();
+  scene.add(bodyGroup);
+  // move whole body up a bit to center on screen
+  bodyGroup.position.y = 0.2;
+
+  const skinMat = new THREE.MeshStandardMaterial({
+    color: 0x94a3b8,
+    roughness: 0.4,
+    metalness: 0.1,
+    wireframe: true
+  });
+  
+  const solidSkinMat = new THREE.MeshStandardMaterial({
+    color: 0x0f172a,
+    roughness: 0.4,
+    metalness: 0.5
+  });
+
+  function createBodyPart(geo, yPos) {
+    const group = new THREE.Group();
+    const solid = new THREE.Mesh(geo, solidSkinMat);
+    const wire = new THREE.Mesh(geo, skinMat);
+    wire.scale.set(1.02, 1.02, 1.02);
+    group.add(solid);
+    group.add(wire);
+    group.position.y = yPos;
+    return group;
+  }
+
+  // Head
+  const headGeo = new THREE.SphereGeometry(0.35, 16, 16);
+  const head = createBodyPart(headGeo, 1.25);
+  bodyGroup.add(head);
+
+  // Torso Segmented (Upper = Chest/Shoulders, Mid = Waist, Lower = Hips)
+  const upperTorsoGeo = new THREE.CylinderGeometry(0.5, 0.45, 0.5, 16);
+  const upperTorso = createBodyPart(upperTorsoGeo, 0.65);
+  bodyGroup.add(upperTorso);
+
+  const midTorsoGeo = new THREE.CylinderGeometry(0.45, 0.45, 0.3, 16);
+  const midTorso = createBodyPart(midTorsoGeo, 0.25);
+  bodyGroup.add(midTorso);
+
+  const lowerTorsoGeo = new THREE.CylinderGeometry(0.45, 0.48, 0.3, 16);
+  const lowerTorso = createBodyPart(lowerTorsoGeo, -0.05);
+  bodyGroup.add(lowerTorso);
+
+  // Arms
+  const armGeo = new THREE.CylinderGeometry(0.15, 0.1, 1.1, 16);
+  const leftArm = createBodyPart(armGeo, 0.35);
+  leftArm.position.x = -0.75;
+  bodyGroup.add(leftArm);
+  
+  const rightArm = createBodyPart(armGeo, 0.35);
+  rightArm.position.x = 0.75;
+  bodyGroup.add(rightArm);
+
+  // Legs
+  const legGeo = new THREE.CylinderGeometry(0.22, 0.15, 1.3, 16);
+  const leftLeg = createBodyPart(legGeo, -0.9);
+  leftLeg.position.x = -0.25;
+  bodyGroup.add(leftLeg);
+
+  const rightLeg = createBodyPart(legGeo, -0.9);
+  rightLeg.position.x = 0.25;
+  bodyGroup.add(rightLeg);
+
+  // 3. UI and Logic Mapping
+  const slider = document.getElementById('timeline-slider');
+  const btnPlay = document.getElementById('btn-play');
+  
+  const uiDate = document.getElementById('display-date');
+  const uiWeight = document.getElementById('stat-weight');
+  const uiBf = document.getElementById('stat-bf');
+  const uiSquat = document.getElementById('stat-squat');
+  const uiBench = document.getElementById('stat-bench');
+  const uiDeadlift = document.getElementById('stat-deadlift');
+  
+  const uiHead = document.getElementById('stat-head');
+  const uiShoulder = document.getElementById('stat-shoulder');
+  const uiChest = document.getElementById('stat-chest');
+  const uiWaist = document.getElementById('stat-waist');
+  const uiHips = document.getElementById('stat-hips');
+  const uiBiceps = document.getElementById('stat-biceps');
+  const uiThighs = document.getElementById('stat-thighs');
+
+  const uiRoutine = document.getElementById('stat-routine');
+  const uiDiet = document.getElementById('stat-diet');
+
+  slider.max = fitnessData.length - 1;
+  slider.value = slider.max;
+  slider.disabled = false;
+
+  let isPlaying = false;
+  let playTimer = null;
+
+  const mapRange = (val, inMin, inMax, outMin, outMax) => {
+    // protect against division by zero if all values are the same
+    if (inMax - inMin === 0) return outMin + (outMax - outMin) / 2;
+    return ((val - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+  };
+
+  // Extract all specific measurements to find min/max for scaling
+  const getMinMax = (key) => {
+    const vals = fitnessData.map(d => d.measurements[key]);
+    return [Math.min(...vals), Math.max(...vals)];
+  };
+
+  const [minHead, maxHead] = getMinMax('head');
+  const [minShoulder, maxShoulder] = getMinMax('shoulder');
+  const [minChest, maxChest] = getMinMax('chest');
+  const [minWaist, maxWaist] = getMinMax('waist');
+  const [minHips, maxHips] = getMinMax('hips');
+  const [minBiceps, maxBiceps] = getMinMax('biceps');
+  const [minThighs, maxThighs] = getMinMax('thighs');
+
+  function updateDashboard(index) {
+    const data = fitnessData[index];
+    const m = data.measurements;
+    
+    // Update Core Stats
+    const dateObj = new Date(data.date);
+    uiDate.textContent = dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    
+    uiWeight.textContent = data.weight + " lbs";
+    uiBf.textContent = data.bodyFat + " %";
+    uiSquat.textContent = data.lifts.squat + " lbs";
+    uiBench.textContent = data.lifts.bench + " lbs";
+    uiDeadlift.textContent = data.lifts.deadlift + " lbs";
+
+    // Update Measurements UI
+    uiHead.textContent = m.head + "\"";
+    uiShoulder.textContent = m.shoulder + "\"";
+    uiChest.textContent = m.chest + "\"";
+    uiWaist.textContent = m.waist + "\"";
+    uiHips.textContent = m.hips + "\"";
+    uiBiceps.textContent = m.biceps + "\"";
+    uiThighs.textContent = m.thighs + "\"";
+
+    // Update Routine & Diet UI
+    uiRoutine.textContent = data.routine || "No routine specified.";
+    uiDiet.textContent = data.diet || "No diet specified.";
+
+    // --------------------------------------------------
+    // Update 3D Model Scaling (Segmented)
+    // --------------------------------------------------
+    
+    // Head scale
+    const headScale = mapRange(m.head, minHead, maxHead, 0.95, 1.05);
+    head.scale.set(headScale, headScale, headScale);
+
+    // Upper Torso scale (driven by shoulder & chest)
+    const shoulderScale = mapRange(m.shoulder, minShoulder, maxShoulder, 0.9, 1.2);
+    const chestScale = mapRange(m.chest, minChest, maxChest, 0.9, 1.3);
+    upperTorso.scale.set(shoulderScale, 1, chestScale);
+
+    // Mid Torso scale (driven by waist)
+    const waistScale = mapRange(m.waist, minWaist, maxWaist, 0.85, 1.4);
+    midTorso.scale.set(waistScale, 1, waistScale);
+
+    // Lower Torso scale (driven by hips)
+    const hipScale = mapRange(m.hips, minHips, maxHips, 0.9, 1.3);
+    lowerTorso.scale.set(hipScale, 1, hipScale);
+
+    // Arm scale (driven by biceps)
+    const bicepScale = mapRange(m.biceps, minBiceps, maxBiceps, 0.8, 1.3);
+    leftArm.scale.set(bicepScale, 1, bicepScale);
+    rightArm.scale.set(bicepScale, 1, bicepScale);
+    
+    // Adjust arm position dynamically based on shoulder width so they don't clip
+    const armOffsetX = 0.5 * shoulderScale + 0.15 * bicepScale + 0.05;
+    leftArm.position.x = -armOffsetX;
+    rightArm.position.x = armOffsetX;
+
+    // Leg scale (driven by thighs)
+    const thighScale = mapRange(m.thighs, minThighs, maxThighs, 0.85, 1.3);
+    leftLeg.scale.set(thighScale, 1, thighScale);
+    rightLeg.scale.set(thighScale, 1, thighScale);
+
+    // Adjust leg position dynamically based on hip width
+    const legOffsetX = 0.25 * hipScale;
+    leftLeg.position.x = -legOffsetX;
+    rightLeg.position.x = legOffsetX;
+  }
+
+  // Initial load
+  updateDashboard(slider.value);
+
+  // Slider event
+  slider.addEventListener('input', (e) => {
+    if (isPlaying) stopPlayback();
+    updateDashboard(parseInt(e.target.value, 10));
+  });
+
+  // Playback Logic
+  function startPlayback() {
+    isPlaying = true;
+    btnPlay.innerHTML = "⏸ Pause";
+    if (parseInt(slider.value, 10) === parseInt(slider.max, 10)) {
+      slider.value = 0; // reset to beginning
+    }
+    
+    playTimer = setInterval(() => {
+      let val = parseInt(slider.value, 10);
+      if (val < slider.max) {
+        val++;
+        slider.value = val;
+        updateDashboard(val);
+      } else {
+        stopPlayback();
+      }
+    }, 1500); // Slower playback (1.5s per step) to let user read the new routine/diet text
+  }
+
+  function stopPlayback() {
+    isPlaying = false;
+    btnPlay.innerHTML = "▶ Play Progress";
+    clearInterval(playTimer);
+  }
+
+  btnPlay.addEventListener('click', () => {
+    if (isPlaying) stopPlayback();
+    else startPlayback();
+  });
+
+  // Animation Loop
+  const clock = new THREE.Clock();
+  
+  function animate() {
+    requestAnimationFrame(animate);
+    const delta = clock.getDelta();
+    
+    // Slowly rotate the body
+    bodyGroup.rotation.y += 0.5 * delta;
+    
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Handle Resize
+  window.addEventListener('resize', () => {
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  });
+});
+</script>

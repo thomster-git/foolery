@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EtchCentric Creations | Laser Engraving by Jonathan Thoms</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --panel: rgba(20, 25, 39, 0.65);
+      --panel2: #1a2035;
+      --border: #252f45;
+      --text: #e2e8f0;
+      --text-light: #94a3b8;
+
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --green: #10b981;
+      --red: #ef4444;
+      --gold: #f59e0b;
+      --purple: #7c3aed;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px; }
+    body { background: var(--bg); color: var(--text); font-family: 'Outfit', system-ui, sans-serif; min-height: 100vh; }
+
+    /* ── HEADER ───────────────────────────────────────────────────── */
+    .store-header {
+      max-width: 1200px; margin: 0 auto;
+      padding: 2rem 2rem 1.5rem;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem; flex-wrap: wrap;
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(12px);
+    }
+    .store-header h1 { font-size: 1.9rem; font-weight: 800; background: linear-gradient(135deg, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .store-header p { color: var(--text-light); margin-top: 0.3rem; font-size: 0.9rem; max-width: 520px; line-height: 1.5; }
+    .header-back { color: var(--cyan); text-decoration: none; font-size: 0.85rem; margin-top: 0.5rem; display: inline-block; opacity: 0.75; }
+    .header-back:hover { opacity: 1; }
+    .header-actions { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+
+    .cart-btn { background: var(--blue); color: white; border: none; padding: 0.65rem 1.4rem; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: inherit; font-size: 0.9rem; transition: background 0.2s, transform 0.1s; }
+    .cart-btn:hover { background: #2563eb; }
+    .cart-btn:active { transform: scale(0.97); }
+    .cart-count { background: white; color: var(--blue); border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; }
+
+    #gallery-all-btn { background: rgba(6,182,212,0.1); color: var(--cyan); border: 1px solid rgba(6,182,212,0.35); padding: 0.65rem 1.2rem; border-radius: 8px; font-weight: 600; cursor: pointer; font-family: inherit; font-size: 0.85rem; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+    #gallery-all-btn:hover { background: rgba(6,182,212,0.2); }
+
+    /* ── NAV BAR ─────────────────────────────────────────────────── */
+    .store-nav {
+      max-width: 1200px; margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+    }
+    #back-btn {
+      background: none; border: 1px solid var(--border); color: var(--text-light);
+      padding: 0.45rem 1rem; border-radius: 8px; font-size: 0.85rem;
+      cursor: pointer; font-family: inherit; display: none;
+      align-items: center; gap: 0.4rem; transition: all 0.2s;
+    }
+    #back-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+    #page-category-title { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+
+    /* ── MAIN CONTENT ─────────────────────────────────────────────── */
+    .store-main { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem 4rem; }
+    #catalog { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+
+    /* ── CATEGORY LANDING CARDS ──────────────────────────────────── */
+    .category-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; }
+    .category-card:hover { transform: translateY(-4px); border-color: var(--cyan); box-shadow: 0 8px 30px rgba(6,182,212,0.12); }
+    .category-cover { height: 200px; background-size: cover; background-position: center; position: relative; }
+    .category-cover::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(11,15,25,0.85) 0%, transparent 60%); }
+    .category-body { padding: 1.25rem 1.5rem 1.5rem; }
+    .category-emoji { font-size: 1.6rem; margin-bottom: 0.4rem; }
+    .category-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .category-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.5; margin-bottom: 1rem; }
+    .category-btn { background: linear-gradient(135deg, var(--purple), var(--cyan)); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 700; cursor: pointer; font-family: inherit; font-size: 0.9rem; width: 100%; transition: opacity 0.2s; }
+    .category-btn:hover { opacity: 0.88; }
+
+    /* ── PRODUCT ITEM CARDS ───────────────────────────────────────── */
+    .item-card { background: var(--panel); backdrop-filter: blur(16px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.4s; }
+    .item-card:hover { transform: translateY(-3px); border-color: var(--border); }
+    .item-img-wrap { position: relative; cursor: pointer; overflow: hidden; height: 220px; }
+    .item-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease; display: block; }
+    .item-img-wrap:hover .item-img { transform: scale(1.04); }
+    .img-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
+    .img-overlay span { color: white; font-weight: 700; font-size: 0.9rem; background: rgba(124,58,237,0.8); padding: 0.5rem 1rem; border-radius: 8px; }
+    .item-img-wrap:hover .img-overlay { opacity: 1; }
+    .photo-badge { position: absolute; top: 0.6rem; right: 0.6rem; background: rgba(0,0,0,0.7); color: #94a3b8; font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 20px; backdrop-filter: blur(4px); }
+    .item-content { padding: 1.25rem 1.4rem 1.4rem; display: flex; flex-direction: column; flex-grow: 1; }
+    .item-tagline { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); margin-bottom: 0.3rem; }
+    .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; gap: 0.5rem; }
+    .item-title { font-size: 1rem; font-weight: 700; line-height: 1.3; }
+    .item-price { color: var(--green); font-weight: 800; font-size: 1.1rem; white-space: nowrap; }
+    .item-desc { font-size: 0.85rem; color: var(--text-light); line-height: 1.55; margin-bottom: 0.9rem; }
+    .item-qty { font-size: 0.78rem; color: var(--text-light); margin-bottom: 0.75rem; }
+    .add-btn { margin-top: auto; background: rgba(59,130,246,0.1); color: var(--blue); border: 1px solid rgba(59,130,246,0.5); padding: 0.6rem; border-radius: 8px; cursor: pointer; font-weight: 700; font-family: inherit; font-size: 0.9rem; transition: all 0.2s, transform 0.1s; }
+    .add-btn:hover { background: var(--blue); color: white; }
+    .add-btn:active { transform: scale(0.97); }
+    .add-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    /* ── LIGHTBOX ─────────────────────────────────────────────────── */
+    #lightbox-overlay {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.94); backdrop-filter: blur(10px);
+      flex-direction: column; align-items: center; justify-content: center;
+    }
+    #lightbox-top { width: 100%; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    #lightbox-title { font-size: 1rem; font-weight: 700; color: var(--text); }
+    #lightbox-counter { font-size: 0.85rem; color: var(--text-light); background: rgba(255,255,255,0.06); padding: 0.25rem 0.75rem; border-radius: 20px; }
+    #lightbox-close { background: none; border: none; color: var(--text-light); font-size: 1.8rem; cursor: pointer; line-height: 1; padding: 0.2rem 0.5rem; }
+    #lightbox-close:hover { color: white; }
+    #lightbox-body { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; padding: 0 4rem; min-height: 0; }
+    #lightbox-img { max-height: 75vh; max-width: 100%; object-fit: contain; border-radius: 8px; transition: opacity 0.12s ease; user-select: none; -webkit-user-drag: none; }
+    .lb-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: white; width: 48px; height: 48px; border-radius: 50%; font-size: 1.3rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; user-select: none; }
+    .lb-arrow:hover { background: rgba(255,255,255,0.2); }
+    #lightbox-prev { left: 0.75rem; }
+    #lightbox-next { right: 0.75rem; }
+    #lightbox-hint { font-size: 0.75rem; color: var(--text-light); padding: 0.75rem 1rem 1.25rem; text-align: center; flex-shrink: 0; }
+    
+    #lightbox-thumbnails { display: flex; gap: 0.5rem; overflow-x: auto; padding: 1rem 2rem; width: 100%; max-width: 900px; margin: 0 auto; scrollbar-width: none; }
+    #lightbox-thumbnails::-webkit-scrollbar { display: none; }
+    .lb-thumb { height: 64px; width: 64px; flex-shrink: 0; object-fit: cover; border-radius: 6px; cursor: pointer; opacity: 0.4; transition: all 0.2s; border: 2px solid transparent; user-select: none; }
+    .lb-thumb:hover { opacity: 0.8; }
+    .lb-thumb.active { opacity: 1; border-color: var(--cyan); }
+
+    /* ── CART / ORDER MODAL ───────────────────────────────────────── */
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.75); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(4px); padding: 1rem; }
+    .modal { background: var(--panel); backdrop-filter: blur(16px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 14px; padding: 2rem; max-width: 580px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
+    .close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--text-light); font-size: 1.5rem; cursor: pointer; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border); }
+    .remove-btn { background: rgba(239,68,68,0.1); color: var(--red); border: 1px solid rgba(239,68,68,0.3); padding: 0.3rem 0.7rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-family: inherit; }
+    .remove-btn:hover { background: var(--red); color: white; }
+    .cart-total { font-size: 1.1rem; font-weight: 700; text-align: right; margin: 1rem 0; color: var(--green); }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; margin-bottom: 0.4rem; color: var(--text-light); font-size: 0.88rem; }
+    .form-group input, .form-group textarea { width: 100%; padding: 0.7rem; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: white; font-family: inherit; font-size: 0.9rem; }
+    .submit-btn { width: 100%; background: var(--green); color: white; border: none; padding: 1rem; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 1rem; font-family: inherit; transition: background 0.2s; }
+    .submit-btn:hover { background: #059669; }
+
+    @media (max-width: 640px) {
+      body { padding: 0; }
+      .store-header { padding: 1.25rem 1rem; }
+      .store-nav { padding: 0.75rem 1rem; }
+      .store-main { padding: 0.75rem 1rem 3rem; }
+      #lightbox-body { padding: 0 3rem; }
+    }
+    
+    .store-footer {
+      max-width: 1200px; margin: 4rem auto 2rem; padding: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center; color: var(--text-light); font-size: 0.85rem;
+    }
+    .store-footer a { color: var(--cyan); text-decoration: none; margin: 0 0.5rem; }
+    .store-footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="store-header">
+  <div>
+    <h1>EtchCentric Creations</h1>
+    <p>Custom laser-crafted goods by Jonathan Thoms. Request an order, and I'll review your design and send an invoice via E-transfer/PayPal before starting.</p>
+    <a href="/" class="header-back">← Back to Thoms Foolery</a>
+  </div>
+  <div class="header-actions">
+    <button id="gallery-all-btn" onclick="openGeneralGallery()">🖼 Browse All Work</button>
+    <button class="cart-btn" onclick="openCart()">Order Request <span class="cart-count" id="cartCount" aria-live="polite">0</span></button>
+  </div>
+</header>
+
+<!-- Nav / Breadcrumb -->
+<nav class="store-nav">
+  <button id="back-btn" onclick="renderLanding()">← All Categories</button>
+  <div id="page-category-title">What are you looking for?</div>
+</nav>
+
+<!-- Catalog Grid -->
+<main class="store-main">
+  <div id="catalog"><!-- Rendered via JS --></div>
+</main>
+
+<!-- Lightbox -->
+<div id="lightbox-overlay" onclick="if(event.target===this)closeLightbox()">
+  <div id="lightbox-top">
+    <div id="lightbox-title"></div>
+    <div style="display:flex;align-items:center;gap:0.75rem;">
+      <span id="lightbox-counter">1 / 1</span>
+    <button id="lightbox-close" onclick="closeLightbox()" aria-label="Close lightbox">×</button>
+    </div>
+  </div>
+  <div id="lightbox-body">
+    <button class="lb-arrow" id="lightbox-prev" onclick="lightboxPrev()" aria-label="Previous image">‹</button>
+    <img id="lightbox-img" src="" alt="Gallery photo">
+    <button class="lb-arrow" id="lightbox-next" onclick="lightboxNext()" aria-label="Next image">›</button>
+  </div>
+  <div id="lightbox-caption" style="color: var(--text); text-align: center; margin: 0.75rem auto 0; font-size: 0.95rem; max-width: 800px; font-weight: 500;"></div>
+  <div id="lightbox-thumbnails"></div>
+  <div id="lightbox-hint">Use arrow keys or swipe to navigate · Click outside to close</div>
+</div>
+
+<!-- Cart Modal -->
+<div class="modal-overlay" id="cartModal" onclick="if(event.target===this)closeCartModal()">
+  <div class="modal">
+    <button class="close-btn" onclick="closeCartModal()" aria-label="Close modal">×</button>
+    <h2 style="margin-bottom:1.5rem; border-bottom:1px solid var(--border); padding-bottom:0.5rem;">Your Request</h2>
+    <div id="cartItems"></div>
+    <div class="cart-total" id="cartTotal">Estimated Total: $0.00 CAD</div>
+    <p style="color:var(--text-light); font-size:0.83rem; margin-bottom:1.5rem; line-height:1.5;">
+      *Pricing includes basic design setup. Complex vector conversions may incur an additional design fee, discussed before you pay anything.
+    </p>
+    <form id="orderForm">
+      <div class="form-group">
+        <label>Your Name / Discord Handle</label>
+        <input type="text" id="contactName" required placeholder="e.g. Keel#1234 or Jonathan">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="contactEmail" required placeholder="For the invoice/receipt">
+      </div>
+      <div class="form-group">
+        <label>Location / Postal Code</label>
+        <input type="text" id="contactLocation" required placeholder="For shipping estimates">
+      </div>
+      <div class="form-group">
+        <label>Timeline</label>
+        <input type="text" id="contactTimeline" placeholder="When do you need this by?">
+      </div>
+      <div class="form-group">
+        <label>Design Details / Ideas</label>
+        <textarea id="contactNotes" rows="4" required placeholder="Describe what you want engraved on these items..."></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send Order Request</button>
+      <p id="formStatus" style="text-align:center; margin-top:10px; font-size:0.88rem;"></p>
+    </form>
+  </div>
+</div>
+
+<footer class="store-footer">
+  <p style="margin-bottom: 0.5rem; color: var(--text);"><strong>About the Maker:</strong> Hi, I'm Jonathan. Every item is hand-finished and laser-engraved with care in my home workshop.</p>
+  <p>
+    <a href="#">Shipping Policy</a> | 
+    <a href="#">Return Policy</a> | 
+    <a href="#">Contact</a>
+  </p>
+  <p style="margin-top: 1rem; opacity: 0.5;">&copy; 2024 EtchCentric Creations. All rights reserved.</p>
+</footer>
+
+<script src="/store/store.js"></script>
+</body>
+</html>

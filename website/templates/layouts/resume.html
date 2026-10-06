@@ -1,0 +1,1505 @@
+<div class="page-container">
+    <div class="content-wrapper" style="max-width: 900px; margin: 2rem auto;">
+        
+        <div class="breadcrumbs" style="margin-bottom: 2rem;">
+            <a href="/">Home</a> ›
+            <span>Resume & Experience</span>
+        </div>
+
+        <!-- Header Profile -->
+        <div style="display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 3rem; border-bottom: 1px solid var(--border-color); padding-bottom: 2rem;">
+            <h1 style="font-size: 3rem; line-height: 1.1; margin-bottom: 0.5rem; color: var(--accent-color);">Jonathan Thoms</h1>
+            <p style="font-size: 1.25rem; color: var(--text-muted); margin-bottom: 1rem; font-weight: 500;">
+                Mechanical Engineering graduate turned hands-on systems builder. Fast learner, adaptable, pragmatic, candid, and unpretentious.
+            </p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <span class="tag-pill">Project Management</span>
+                <span class="tag-pill">Technical Writing</span>
+                <span class="tag-pill">Engineering Design</span>
+                <span class="tag-pill">Quality Assurance/Quality Control</span>
+                <span class="tag-pill">Communication and Collaboration</span>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div style="margin-bottom: 4rem;">
+            <h2 style="font-size: 1.75rem; color: var(--text-main); margin-bottom: 1rem;">About</h2>
+            <div style="background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); color: var(--text-muted); line-height: 1.7; font-size: 1.05rem;">
+                <p style="margin-bottom: 1rem;">I’m an IT consultant and workflow designer who likes to start where things “kind of work” but nobody can explain how.</p>
+                <p style="margin-bottom: 1rem;">My background is a mix of engineering, mining operations, and IT. I’ve built and run infrastructure at a remote mine site, selected and swapped critical vendors (MSPs, LMS, ERP hosting, firewalls), and designed white-box servers and networks where big-vendor support models simply didn’t make sense.</p>
+                <p style="margin-bottom: 1rem;">These days, I help small teams turn that kind of chaos into clear, documented systems:</p>
+                <ul style="margin-bottom: 1rem; padding-left: 1.5rem;">
+                    <li>Mapping how work actually flows, not how the procedure says it should.</li>
+                    <li>Turning that into decision trees, flowcharts, and “who does what when” diagrams.</li>
+                    <li>Building the IT around it: SharePoint structures, Power Automate flows, scripts, and dashboards.</li>
+                </ul>
+                <p style="margin-bottom: 1rem;">I care a lot about metrics that work for you instead of against you. If your KPIs are so brittle that people feel pressured to fudge numbers instead of explaining them, the system is broken. I’d rather help you design measures that reflect reality and give you a clear story to tell.</p>
+                <p>Outside client work, I keep my hands dirty with a homelab, custom PC and server builds, and a laser engraving studio (EtchCentric) that lets me play with design, production workflows, and small-business process in the real world.</p>
+            </div>
+        </div>
+
+        <!-- Education Section -->
+        <div style="margin-bottom: 4rem;">
+            <h2 style="font-size: 1.75rem; color: var(--text-main); margin-bottom: 1rem;">Education</h2>
+            <div style="background: var(--bg-card); padding: 1.5rem 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); display: flex; align-items: flex-start; gap: 1.5rem;">
+                <div style="font-size: 2rem; flex-shrink: 0; margin-top: 0.25rem;">🎓</div>
+                <div>
+                    <h3 style="font-size: 1.25rem; margin: 0 0 0.5rem 0; color: var(--accent-color);">Memorial University, Newfoundland and Labrador</h3>
+                    <div style="font-weight: 500; color: var(--text-main); margin-bottom: 0.25rem;">Bachelor of Engineering (B.Eng.), Mechanical Engineering</div>
+                    <div style="color: var(--text-muted); font-size: 0.95rem;">2011 – 2016</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Experience Timeline + Resume Builder -->
+        <div style="margin-bottom: 2.5rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+                <h2 style="font-size: 1.75rem; color: var(--text-main); margin: 0;">Experience Timeline</h2>
+            </div>
+            <!-- Resume Builder Callout Card -->
+            <div style="background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(6,182,212,0.08)); border: 1px solid rgba(124,58,237,0.35); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div style="font-size: 1.75rem; flex-shrink: 0;">📄</div>
+                    <div>
+                        <div style="font-weight: 700; font-size: 1rem; color: var(--text-main); margin-bottom: 0.2rem;">Tailored Resume Builder</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;">Pick as many skills as you want from this page and instantly generate a focused resume summary matching those qualifications.</div>
+                    </div>
+                </div>
+                <button id="resume-builder-btn" onclick="openResumeBuilder()" style="background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; border: none; padding: 0.65rem 1.4rem; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: opacity 0.2s; letter-spacing: 0.01em;">Open Builder →</button>
+            </div>
+        </div>
+
+        
+        
+        
+        
+        
+        
+        <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 1rem; gap: 0.75rem;">
+            <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">Professional Only</span>
+            <label class="resume-switch">
+                <input type="checkbox" id="personal-toggle">
+                <span class="resume-slider round">
+                    <span class="resume-slider-knob"></span>
+                </span>
+            </label>
+            <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">Full Autobiography</span>
+        </div>
+        <style>
+            .resume-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+            .resume-switch input { opacity: 0; width: 0; height: 0; }
+            .resume-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--bg-main); border: 2px solid var(--border-color); border-radius: 24px; transition: .4s; }
+            .resume-slider-knob { position: absolute; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: var(--accent-color); border-radius: 50%; transition: .4s; }
+            #personal-toggle:checked + .resume-slider { border-color: var(--accent-color); }
+            #personal-toggle:checked + .resume-slider .resume-slider-knob { transform: translateX(20px); background-color: var(--cyan, #06b6d4); }
+            
+            .timeline-tick[data-type="personal"],
+            .role-entry[data-type="personal"],
+            .timeline-content-panel[data-type="personal"] {
+                display: none !important;
+            }
+            body.show-personal .timeline-tick[data-type="personal"] { display: flex !important; }
+            body.show-personal .role-entry[data-type="personal"] { display: block !important; }
+            body.show-personal .timeline-content-panel.active[data-type="personal"] { display: block !important; }
+            @media (max-width: 768px) {
+                .timeline-tick { width: 90px; }
+                .tick-year { font-size: 1rem; }
+            }
+        </style>
+
+        <div class="timeline-slider-container" id="timeline-slider">
+            <div class="timeline-track" id="timeline-track">
+                <div class="timeline-tick " data-year="1993" data-index="0" data-type="personal">
+                    <span class="tick-year">1993</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="1998" data-index="1" data-type="personal">
+                    <span class="tick-year">1998</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="1999" data-index="2" data-type="personal">
+                    <span class="tick-year">1999</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2002" data-index="3" data-type="personal">
+                    <span class="tick-year">2002</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2004" data-index="4" data-type="personal">
+                    <span class="tick-year">2004</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2005" data-index="5" data-type="personal">
+                    <span class="tick-year">2005</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2006" data-index="6" data-type="personal">
+                    <span class="tick-year">2006</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2007" data-index="7" data-type="personal">
+                    <span class="tick-year">2007</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2009" data-index="8" data-type="personal">
+                    <span class="tick-year">2009</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2010" data-index="9" data-type="personal">
+                    <span class="tick-year">2010</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2011" data-index="10" data-type="personal">
+                    <span class="tick-year">2011</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2012" data-index="11" data-type="personal">
+                    <span class="tick-year">2012</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2013" data-index="12">
+                    <span class="tick-year">2013</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2014" data-index="13">
+                    <span class="tick-year">2014</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2015" data-index="14">
+                    <span class="tick-year">2015</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2016" data-index="15">
+                    <span class="tick-year">2016</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2017" data-index="16">
+                    <span class="tick-year">2017</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2019" data-index="17">
+                    <span class="tick-year">2019</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2020" data-index="18">
+                    <span class="tick-year">2020</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2021" data-index="19">
+                    <span class="tick-year">2021</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2022" data-index="20">
+                    <span class="tick-year">2022</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2024" data-index="21">
+                    <span class="tick-year">2024</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick " data-year="2025" data-index="22">
+                    <span class="tick-year">2025</span>
+                    <div class="tick-dot"></div>
+                </div>
+                <div class="timeline-tick active" data-year="Lifetime" data-index="23">
+                    <span class="tick-year">Lifetime</span>
+                    <div class="tick-dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-display-container">
+            <div class="timeline-content-panel glass-panel " id="panel-0" data-type="personal">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">1993</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Born</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Adaptability">Adaptability</span><span class="skill-badge" title="Click to view history for Resilience">Resilience</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Born in Carbonear, Newfoundland.</li><li><strong>Skills Honed:</strong> Adaptability, Resilience</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-1" data-type="personal">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">1998</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Kindergarten</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Early Learning">Early Learning</span><span class="skill-badge" title="Click to view history for Socialization">Socialization</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Started kindergarten in St. John's.</li><li><strong>Skills Honed:</strong> Early Learning, Socialization</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-2" data-type="personal">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">1999</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Moved to Carbonear</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Adaptability">Adaptability</span><span class="skill-badge" title="Click to view history for Transition Management">Transition Management</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Moved to Carbonear for Grade 1.</li><li><strong>Skills Honed:</strong> Adaptability, Transition Management</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-3" data-type="personal">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2002</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Grade 4</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Academic Excellence">Academic Excellence</span><span class="skill-badge" title="Click to view history for Focus">Focus</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Highest grade achieved in Grade 4 in my school.</li><li><strong>Skills Honed:</strong> Academic Excellence, Focus</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-4" data-type="personal">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2004</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">School Band</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Musical Proficiency">Musical Proficiency</span><span class="skill-badge" title="Click to view history for Discipline">Discipline</span><span class="skill-badge" title="Click to view history for Teamwork">Teamwork</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Started playing clarinet in the school band.</li><li><strong>Skills Honed:</strong> Musical Proficiency, Discipline, Teamwork</li>
+                    </ul>
+                </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
+        
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Math Placement</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Analytical Thinking">Analytical Thinking</span><span class="skill-badge" title="Click to view history for Mathematics">Mathematics</span><span class="skill-badge" title="Click to view history for Problem Solving">Problem Solving</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Placed in the top 85th percentile in provincial math placement testing (highest in the school).</li><li><strong>Skills Honed:</strong> Analytical Thinking, Mathematics, Problem Solving</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-5" data-type="personal">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2005</div>
+                
+                <div class="role-entry" data-type="personal">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Air Cadets</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Leadership">Leadership</span><span class="skill-badge" title="Click to view history for Discipline">Discipline</span><span class="skill-badge" title="Click to view history for Chain of Command">Chain of Command</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Turned 12 and joined air cadets.</li><li><strong>Skills Honed:</strong> Leadership, Discipline, Chain of Command</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-6" data-type="personal">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2006</div>
+                
+                <div class="role-entry" data-type="personal">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Lego Robotics</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Robotics">Robotics</span><span class="skill-badge" title="Click to view history for Teamwork">Teamwork</span><span class="skill-badge" title="Click to view history for Logical Programming">Logical Programming</span><span class="skill-badge" title="Click to view history for Competition">Competition</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Joined lego robotics and went to the world competition in Atlanta, Georgia. Came 2nd in the teams relay category, matching with other teams where each team completed a portion of the track.</li><li><strong>Skills Honed:</strong> Robotics, Teamwork, Logical Programming, Competition</li>
+                    </ul>
+                </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
+        
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Cadets Band</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Musical Proficiency">Musical Proficiency</span><span class="skill-badge" title="Click to view history for Rapid Learning">Rapid Learning</span><span class="skill-badge" title="Click to view history for Performance">Performance</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Joined the Air Cadets band in my second year, naturally excelling at the snare drum and performing rolls on the first day.</li><li><strong>Skills Honed:</strong> Musical Proficiency, Rapid Learning, Performance</li>
+                    </ul>
+                </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
+        
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Drama Club</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Public Speaking">Public Speaking</span><span class="skill-badge" title="Click to view history for Creativity">Creativity</span><span class="skill-badge" title="Click to view history for Confidence">Confidence</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Participated in Grade 8 Drama Club.</li><li><strong>Skills Honed:</strong> Public Speaking, Creativity, Confidence</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-7" data-type="personal">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2007</div>
+                
+                <div class="role-entry" data-type="personal">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Lego Robotics Senior Year</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Mentorship">Mentorship</span><span class="skill-badge" title="Click to view history for Robotics">Robotics</span><span class="skill-badge" title="Click to view history for Project Execution">Project Execution</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Senior year of lego robotics, once again traveled to the world competition in Atlanta, Georgia.</li><li><strong>Skills Honed:</strong> Mentorship, Robotics, Project Execution</li>
+                    </ul>
+                </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
+        
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Social Studies</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for History">History</span><span class="skill-badge" title="Click to view history for Academic Excellence">Academic Excellence</span><span class="skill-badge" title="Click to view history for Research">Research</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Achieved the highest grade in social studies.</li><li><strong>Skills Honed:</strong> History, Academic Excellence, Research</li>
+                    </ul>
+                </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
+        
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Drama Club</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Acting">Acting</span><span class="skill-badge" title="Click to view history for Public Speaking">Public Speaking</span><span class="skill-badge" title="Click to view history for Team Success">Team Success</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Participated in Grade 9 Drama Club; won Best Actor in a Supporting Role, and the club won Best Play.</li><li><strong>Skills Honed:</strong> Acting, Public Speaking, Team Success</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-8" data-type="personal">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2009</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Aircraft Maintenance Engineering Course</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Aviation Mechanics">Aviation Mechanics</span><span class="skill-badge" title="Click to view history for Technical Learning">Technical Learning</span><span class="skill-badge" title="Click to view history for Hands-on Engineering">Hands-on Engineering</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Completed aircraft maintenance engineering course through air cadets (6 week program).</li><li><strong>Skills Honed:</strong> Aviation Mechanics, Technical Learning, Hands-on Engineering</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-9" data-type="personal">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2010</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Glider Pilot</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Aviation">Aviation</span><span class="skill-badge" title="Click to view history for Focus">Focus</span><span class="skill-badge" title="Click to view history for Crisis Management">Crisis Management</span><span class="skill-badge" title="Click to view history for Spatial Awareness">Spatial Awareness</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Obtained a glider pilot license.</li><li><strong>Skills Honed:</strong> Aviation, Focus, Crisis Management, Spatial Awareness</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-10" data-type="personal">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2011</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">High School Graduate</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Academic Excellence">Academic Excellence</span><span class="skill-badge" title="Click to view history for Goal Achievement">Goal Achievement</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Graduated high school with honours.</li><li><strong>Skills Honed:</strong> Academic Excellence, Goal Achievement</li>
+                    </ul>
+                </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
+        
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Private Pilot</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Aviation">Aviation</span><span class="skill-badge" title="Click to view history for Regulatory Compliance">Regulatory Compliance</span><span class="skill-badge" title="Click to view history for Risk Management">Risk Management</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Obtained a private pilot license.</li><li><strong>Skills Honed:</strong> Aviation, Regulatory Compliance, Risk Management</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-11" data-type="personal">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2012</div>
+                
+                <div class="role-entry" data-type="personal">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Air Cadets Band Senior</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Leadership">Leadership</span><span class="skill-badge" title="Click to view history for Mentorship">Mentorship</span><span class="skill-badge" title="Click to view history for Loyalty">Loyalty</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Remained highly involved in the cadets band until age 19.</li><li>Returned to uniform at 19 to march in the November 11th parade in Carbonear to help fill key missing roles.</li><li><strong>Skills Honed:</strong> Leadership, Mentorship, Loyalty</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-12">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2013</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Student Project Engineer</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for CAD Design">CAD Design</span><span class="skill-badge" title="Click to view history for 3D Printing">3D Printing</span><span class="skill-badge" title="Click to view history for Mechanical Engineering">Mechanical Engineering</span><span class="skill-badge" title="Click to view history for Client Coordination">Client Coordination</span><span class="skill-badge" title="Click to view history for Prototyping">Prototyping</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Jan - May 2013: Student Project Engineer for Industrial Outreach Group (a small internal student engineering company run by MUN).</li><li>Using CAD to create 3D models of designs, exported to .stl file format, and 3D printed/laser cut for clients (shampoo helper for severe arthritis, circuit board container).</li><li>Chapman's Bakery: Chocolate coating machine modifications to compensate for chocolate recipe using paraffin wax.</li><li>EverGreen Recycling: Designed a bottle/can crusher to reduce the volume of bottles/cans to a specific percentage to fit more product in bags while maintaining specifications for crushing limits.</li><li><strong>Skills Honed:</strong> CAD Design, 3D Printing, Mechanical Engineering, Client Coordination, Prototyping</li>
+                    </ul>
+                </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
+        
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Network Technician</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Ticketing Systems">Ticketing Systems</span><span class="skill-badge" title="Click to view history for Field Support">Field Support</span><span class="skill-badge" title="Click to view history for Telecommunications (POTS)">Telecommunications (POTS)</span><span class="skill-badge" title="Click to view history for Customer Service">Customer Service</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Sept - Dec 2013: Network Technician for Bell Aliant on a student work term.</li><li>Managed up to 8 daily field service tickets through the internal console, consistently resolving all jobs same-day to maintain 100% SLA compliance.</li><li>Receiving calls and coordinating with the technicians out in the field.</li><li>Worked with POTS punching in corresponding terminals to provide clients with their service.</li><li>Also pulled wires when clients cancelled their service.</li><li><strong>Skills Honed:</strong> Ticketing Systems, Field Support, Telecommunications (POTS), Customer Service</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-13">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2014</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Student Project Engineer (Pennecon)</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Civil Engineering">Civil Engineering</span><span class="skill-badge" title="Click to view history for Project Management">Project Management</span><span class="skill-badge" title="Click to view history for Site Coordination">Site Coordination</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>May - Sept 2014: First work term as a Student Project Engineer for Pennecon M&M Engineering.</li><li>Dec 2014: Began second work term for Pennecon.</li><li><strong>Skills Honed:</strong> Civil Engineering, Project Management, Site Coordination</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-14">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2015</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Student Project Engineer (Pennecon)</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Engineering Execution">Engineering Execution</span><span class="skill-badge" title="Click to view history for Documentation">Documentation</span><span class="skill-badge" title="Click to view history for Safety Compliance">Safety Compliance</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>May 2015: Concluded second work term as a Student Project Engineer for Pennecon M&M Engineering.</li><li><strong>Skills Honed:</strong> Engineering Execution, Documentation, Safety Compliance</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-15">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2016</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">University Graduate</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Mechanical Engineering Degree">Mechanical Engineering Degree</span><span class="skill-badge" title="Click to view history for Perseverance">Perseverance</span><span class="skill-badge" title="Click to view history for Complex Problem Solving">Complex Problem Solving</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Graduated university with a mechanical engineering degree.</li><li><strong>Skills Honed:</strong> Mechanical Engineering Degree, Perseverance, Complex Problem Solving</li>
+                    </ul>
+                </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
+        
+                <div class="role-entry" data-type="personal">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Chill Staff (Dairy Queen)</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Customer Service">Customer Service</span><span class="skill-badge" title="Click to view history for Cash Handling">Cash Handling</span><span class="skill-badge" title="Click to view history for Time Management">Time Management</span><span class="skill-badge" title="Click to view history for High-Pressure Environments">High-Pressure Environments</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Sept 2016 - March 2017: Joined Dairy Queen as Chill Staff.</li><li>Delivered fast, accurate, and friendly service in a busy restaurant environment while handling cash and cleaning duties.</li><li><strong>Skills Honed:</strong> Customer Service, Cash Handling, Time Management, High-Pressure Environments</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-16">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2017</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">QA/QC Civil Inspector</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Quality Control">Quality Control</span><span class="skill-badge" title="Click to view history for Civil Construction">Civil Construction</span><span class="skill-badge" title="Click to view history for Regulatory Compliance">Regulatory Compliance</span><span class="skill-badge" title="Click to view history for Materials Testing">Materials Testing</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Jun - Sep 2017: QA/QC Civil Inspector.</li><li>Inspected civil construction work to ensure compliance with drawings, specifications, and regulatory requirements.</li><li>Prepared inspection reports and punch lists, highlighting non-conformances and opportunities for improvement.</li><li>Coordinated with supervisors and equipment operators to resolve issues while keeping safety and environmental requirements front of mind.</li><li>Performed basic materials testing and quality checks to verify workmanship.</li><li><strong>Skills Honed:</strong> Quality Control, Civil Construction, Regulatory Compliance, Materials Testing</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-17">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2019</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">QA/QC Civil Inspector</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Quality Assurance">Quality Assurance</span><span class="skill-badge" title="Click to view history for Punch Lists">Punch Lists</span><span class="skill-badge" title="Click to view history for Environmental Safety">Environmental Safety</span><span class="skill-badge" title="Click to view history for Cross-functional Communication">Cross-functional Communication</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Apr - Jun 2019: QA/QC Civil Inspector.</li><li>Inspected civil construction work to ensure compliance with drawings, specifications, and regulatory requirements.</li><li>Prepared inspection reports and punch lists, highlighting non-conformances and opportunities for improvement.</li><li>Coordinated with supervisors and equipment operators to resolve issues while keeping safety and environmental requirements front of mind.</li><li>Performed basic materials testing and quality checks to verify workmanship.</li><li><strong>Skills Honed:</strong> Quality Assurance, Punch Lists, Environmental Safety, Cross-functional Communication</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-18">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2020</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Junior Project Engineer</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Project Planning">Project Planning</span><span class="skill-badge" title="Click to view history for Cost Tracking">Cost Tracking</span><span class="skill-badge" title="Click to view history for Risk Mitigation">Risk Mitigation</span><span class="skill-badge" title="Click to view history for Contractor Coordination">Contractor Coordination</span><span class="skill-badge" title="Click to view history for Scheduling">Scheduling</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Jun 2019 - Jan 2021: Junior Project Engineer.</li><li>Supported civil and infrastructure projects from planning through execution, including estimating, scheduling, and cost tracking.</li><li>Coordinated with contractors and vendors, ran site inspections, and kept documentation (reports, drawings, specs) up to date.</li><li>Helped identify project risks and contributed to mitigation plans.</li><li><strong>Skills Honed:</strong> Project Planning, Cost Tracking, Risk Mitigation, Contractor Coordination, Scheduling</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-19">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2021</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Junior Mining Engineer</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Mine Design">Mine Design</span><span class="skill-badge" title="Click to view history for Survey Reconciliations">Survey Reconciliations</span><span class="skill-badge" title="Click to view history for KPI Reporting">KPI Reporting</span><span class="skill-badge" title="Click to view history for Simulator Instruction">Simulator Instruction</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Jan - Oct 2021: Junior Mining Engineer.</li><li>Designed mine roads and layouts and prepared drawings and files for surveyors to stake in the field.</li><li>Produced weekly reconciliations of surface surveys, comparing expected vs actual waste and ore movement.</li><li>Collaborated with operations and geology to provide weekly KPIs on mine productivity and material movement.</li><li>Obtained Level 2 qualification as a simulator instructor.</li><li><strong>Skills Honed:</strong> Mine Design, Survey Reconciliations, KPI Reporting, Simulator Instruction</li>
+                    </ul>
+                </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
+        
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Mobile Maintenance Planner</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Maintenance Planning">Maintenance Planning</span><span class="skill-badge" title="Click to view history for CMMS">CMMS</span><span class="skill-badge" title="Click to view history for Fleet Management">Fleet Management</span><span class="skill-badge" title="Click to view history for SOP Organization">SOP Organization</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Oct 2021 - Feb 2022: Transitioned to Mobile Maintenance Planner.</li><li>Planned weekly maintenance schedules for a mixed Komatsu and CAT fleet (haul trucks, graders, dozers, excavators, skid steers, loaders, screeners, LDVs, pumps, generators) to minimize downtime.</li><li>Staged filters, parts, and documentation for crews based on maintenance type and additional work orders raised across site.</li><li>Printed and organized maintenance SOPs and work orders from the CMMS to support safe, efficient execution.</li><li>Produced weekly KPIs on fleet availability, utilization, and maintenance backlog to support decision making.</li><li><strong>Skills Honed:</strong> Maintenance Planning, CMMS, Fleet Management, SOP Organization</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-20">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2022</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Company Receivership</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Adaptability">Adaptability</span><span class="skill-badge" title="Click to view history for Transition Management">Transition Management</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Feb 2022: Concluded role as Mobile Maintenance Planner when the company went into receivership.</li><li><strong>Skills Honed:</strong> Adaptability, Transition Management</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-21">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2024</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">EtchCentric Creations</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Entrepreneurship">Entrepreneurship</span><span class="skill-badge" title="Click to view history for Laser Engraving">Laser Engraving</span><span class="skill-badge" title="Click to view history for Business Operations">Business Operations</span><span class="skill-badge" title="Click to view history for Product Design">Product Design</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>May - Dec 2024: Started and operated EtchCentric Creations.</li><li><strong>Skills Honed:</strong> Entrepreneurship, Laser Engraving, Business Operations, Product Design</li>
+                    </ul>
+                </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
+        
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">IT Technician</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Network Mapping">Network Mapping</span><span class="skill-badge" title="Click to view history for End User Support">End User Support</span><span class="skill-badge" title="Click to view history for Vendor Coordination">Vendor Coordination</span><span class="skill-badge" title="Click to view history for IT Asset Management">IT Asset Management</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Jul 2024 - Nov 2024: IT Technician at Canada Fluorspar Inc.</li><li>Became the "map the mess" person by physically tracing and documenting network connections to produce the first up-to-date network diagram.</li><li>Handled day-to-day end user support, from printer and scanner problems to line-of-business applications and hardware issues.</li><li>Coordinated with external IT providers to keep the environment stable during a period of change and handover.</li><li>Assisted with onboarding/offboarding, equipment allocation, and inventory across departments.</li><li><strong>Skills Honed:</strong> Network Mapping, End User Support, Vendor Coordination, IT Asset Management</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel " id="panel-22">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">2025</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">IT Coordinator</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for IT Operations Management">IT Operations Management</span><span class="skill-badge" title="Click to view history for Vendor Management">Vendor Management</span><span class="skill-badge" title="Click to view history for White-box Server Design">White-box Server Design</span><span class="skill-badge" title="Click to view history for Cybersecurity & Firewalls">Cybersecurity & Firewalls</span><span class="skill-badge" title="Click to view history for M365 Automation">M365 Automation</span><span class="skill-badge" title="Click to view history for PowerShell / Python">PowerShell / Python</span><span class="skill-badge" title="Click to view history for Ransomware Recovery">Ransomware Recovery</span><span class="skill-badge" title="Click to view history for IT Policy Drafting">IT Policy Drafting</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Nov 2024 - Nov 2025: IT Coordinator at Canada Fluorspar Inc.</li><li>Led site-wide IT operations for ~60 endpoints and 8 servers (AD/Entra ID hybrid, ERP RDSH, management and SQL workloads) across a remote mining site.</li><li>Rebuilt the vendor landscape: exited an underperforming MSP, onboarded a stronger local MSP, selected a new LMS platform, and found an appropriate cloud solution for our ERP.</li><li>Designed a white-box server solution instead of a major OEM stack, tailored to our remote location and service realities, balancing performance, cost, and maintainability, and eliminated extortionate MSP hardware markups (saving ~$500/laptop) and setup fees (~$5,000) by bringing procurement and provisioning in-house.</li><li>Upgraded perimeter security by moving to Palo Alto firewalls and tightening network segmentation and remote access.</li><li>Implemented Motive (GoMotive) AI dashcams end-to-end.</li><li>Built automation on top of Microsoft 365, including SharePoint + Power Automate ticketing and purchasing workflows.</li><li>Developed CSV processing pipelines using Python, pandas, and PowerShell to turn daily swipe logs into usable reports.</li><li>Created Group Policy rules to silently deploy endpoint security and remote support tools.</li><li>Troubleshot and fixed legacy scan-to-email and forwarding issues.</li><li>Drafted a full IT policy suite from scratch using best practices.</li><li>Led ransomware recovery effort following an Akira incident, capturing forensic images and strategically restoring 1 laptop per department to maintain critical operations while 'offline'. Achieved full operational recovery of 60 endpoints and 5 servers within 10 days.</li><li><strong>Skills Honed:</strong> IT Operations Management, Vendor Management, White-box Server Design, Cybersecurity & Firewalls, M365 Automation, PowerShell / Python, Ransomware Recovery, IT Policy Drafting</li>
+                    </ul>
+                </div>
+                <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 2rem 0;" />
+        
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Independent Consultant</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Workflow Mapping">Workflow Mapping</span><span class="skill-badge" title="Click to view history for Process Design">Process Design</span><span class="skill-badge" title="Click to view history for Honest KPI Development">Honest KPI Development</span><span class="skill-badge" title="Click to view history for Lightweight Infrastructure">Lightweight Infrastructure</span><span class="skill-badge" title="Click to view history for Proxmox & Homelabs">Proxmox & Homelabs</span><span class="skill-badge" title="Click to view history for Network Diagnostics">Network Diagnostics</span><span class="skill-badge" title="Click to view history for Web Design">Web Design</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li>Oct 2025 - Present: Independent Consultant.</li><li>My consulting practice focuses on helping small teams untangle messy workflows and build infrastructure they actually understand and can support.</li><li>Work with owners and operators to map how work really gets done, then design decision-gate flowcharts, responsibilities, and documentation that match reality.</li><li>Help leadership choose KPIs and reporting that reflect what is actually happening instead of pushing people to game the numbers.</li><li>Design and implement lightweight stacks using tools like Microsoft 365, SharePoint, Power Automate, Proxmox, Nextcloud, Jellyfin, Tailscale, and Cloudflare Tunnels.</li><li>Provide guidance on homelab and small-business infrastructure, including custom PC and server builds that balance performance, reliability, and supportability.</li><li>Recent work includes diagnosing and documenting wireless network issues at a remote resort (Kilmory) and recommending practical upgrades instead of "rip and replace".</li><li>Registering domains, configuring DNS, and building small business sites with custom HTML/CSS and graphics to match each brand.</li><li><strong>Skills Honed:</strong> Workflow Mapping, Process Design, Honest KPI Development, Lightweight Infrastructure, Proxmox & Homelabs, Network Diagnostics, Web Design</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+            <div class="timeline-content-panel glass-panel active" id="panel-23">
+                <div class="panel-year-header" style="font-size: 1.5rem; font-weight: bold; color: var(--accent-color); margin-bottom: 1.5rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 0.5rem; display: inline-block;">Lifetime</div>
+                
+                <div class="role-entry">
+                    <div class="role-header-wrapper">
+                        <h3 class="role-title">Lifetime Skills & Experience Collection</h3>
+                    </div>
+                    <div class="skills-container">
+                        <div class="skills-label">Skills acquired or honed:</div>
+                        <div class="skills-badges"><span class="skill-badge" title="Click to view history for Adaptability">Adaptability</span><span class="skill-badge" title="Click to view history for Resilience">Resilience</span><span class="skill-badge" title="Click to view history for Early Learning">Early Learning</span><span class="skill-badge" title="Click to view history for Socialization">Socialization</span><span class="skill-badge" title="Click to view history for Transition Management">Transition Management</span><span class="skill-badge" title="Click to view history for Academic Excellence">Academic Excellence</span><span class="skill-badge" title="Click to view history for Focus">Focus</span><span class="skill-badge" title="Click to view history for Musical Proficiency">Musical Proficiency</span><span class="skill-badge" title="Click to view history for Discipline">Discipline</span><span class="skill-badge" title="Click to view history for Teamwork">Teamwork</span><span class="skill-badge" title="Click to view history for Analytical Thinking">Analytical Thinking</span><span class="skill-badge" title="Click to view history for Mathematics">Mathematics</span><span class="skill-badge" title="Click to view history for Problem Solving">Problem Solving</span><span class="skill-badge" title="Click to view history for Leadership">Leadership</span><span class="skill-badge" title="Click to view history for Chain of Command">Chain of Command</span><span class="skill-badge" title="Click to view history for Robotics">Robotics</span><span class="skill-badge" title="Click to view history for Logical Programming">Logical Programming</span><span class="skill-badge" title="Click to view history for Competition">Competition</span><span class="skill-badge" title="Click to view history for Rapid Learning">Rapid Learning</span><span class="skill-badge" title="Click to view history for Performance">Performance</span><span class="skill-badge" title="Click to view history for Public Speaking">Public Speaking</span><span class="skill-badge" title="Click to view history for Creativity">Creativity</span><span class="skill-badge" title="Click to view history for Confidence">Confidence</span><span class="skill-badge" title="Click to view history for Mentorship">Mentorship</span><span class="skill-badge" title="Click to view history for Project Execution">Project Execution</span><span class="skill-badge" title="Click to view history for History">History</span><span class="skill-badge" title="Click to view history for Research">Research</span><span class="skill-badge" title="Click to view history for Acting">Acting</span><span class="skill-badge" title="Click to view history for Team Success">Team Success</span><span class="skill-badge" title="Click to view history for Aviation Mechanics">Aviation Mechanics</span><span class="skill-badge" title="Click to view history for Technical Learning">Technical Learning</span><span class="skill-badge" title="Click to view history for Hands-on Engineering">Hands-on Engineering</span><span class="skill-badge" title="Click to view history for Aviation">Aviation</span><span class="skill-badge" title="Click to view history for Crisis Management">Crisis Management</span><span class="skill-badge" title="Click to view history for Spatial Awareness">Spatial Awareness</span><span class="skill-badge" title="Click to view history for Goal Achievement">Goal Achievement</span><span class="skill-badge" title="Click to view history for Regulatory Compliance">Regulatory Compliance</span><span class="skill-badge" title="Click to view history for Risk Management">Risk Management</span><span class="skill-badge" title="Click to view history for Loyalty">Loyalty</span><span class="skill-badge" title="Click to view history for CAD Design">CAD Design</span><span class="skill-badge" title="Click to view history for 3D Printing">3D Printing</span><span class="skill-badge" title="Click to view history for Mechanical Engineering">Mechanical Engineering</span><span class="skill-badge" title="Click to view history for Client Coordination">Client Coordination</span><span class="skill-badge" title="Click to view history for Prototyping">Prototyping</span><span class="skill-badge" title="Click to view history for Ticketing Systems">Ticketing Systems</span><span class="skill-badge" title="Click to view history for Field Support">Field Support</span><span class="skill-badge" title="Click to view history for Telecommunications (POTS)">Telecommunications (POTS)</span><span class="skill-badge" title="Click to view history for Customer Service">Customer Service</span><span class="skill-badge" title="Click to view history for Civil Engineering">Civil Engineering</span><span class="skill-badge" title="Click to view history for Project Management">Project Management</span><span class="skill-badge" title="Click to view history for Site Coordination">Site Coordination</span><span class="skill-badge" title="Click to view history for Engineering Execution">Engineering Execution</span><span class="skill-badge" title="Click to view history for Documentation">Documentation</span><span class="skill-badge" title="Click to view history for Safety Compliance">Safety Compliance</span><span class="skill-badge" title="Click to view history for Mechanical Engineering Degree">Mechanical Engineering Degree</span><span class="skill-badge" title="Click to view history for Perseverance">Perseverance</span><span class="skill-badge" title="Click to view history for Complex Problem Solving">Complex Problem Solving</span><span class="skill-badge" title="Click to view history for Cash Handling">Cash Handling</span><span class="skill-badge" title="Click to view history for Time Management">Time Management</span><span class="skill-badge" title="Click to view history for High-Pressure Environments">High-Pressure Environments</span><span class="skill-badge" title="Click to view history for Quality Control">Quality Control</span><span class="skill-badge" title="Click to view history for Civil Construction">Civil Construction</span><span class="skill-badge" title="Click to view history for Materials Testing">Materials Testing</span><span class="skill-badge" title="Click to view history for Quality Assurance">Quality Assurance</span><span class="skill-badge" title="Click to view history for Punch Lists">Punch Lists</span><span class="skill-badge" title="Click to view history for Environmental Safety">Environmental Safety</span><span class="skill-badge" title="Click to view history for Cross-functional Communication">Cross-functional Communication</span><span class="skill-badge" title="Click to view history for Project Planning">Project Planning</span><span class="skill-badge" title="Click to view history for Cost Tracking">Cost Tracking</span><span class="skill-badge" title="Click to view history for Risk Mitigation">Risk Mitigation</span><span class="skill-badge" title="Click to view history for Contractor Coordination">Contractor Coordination</span><span class="skill-badge" title="Click to view history for Scheduling">Scheduling</span><span class="skill-badge" title="Click to view history for Mine Design">Mine Design</span><span class="skill-badge" title="Click to view history for Survey Reconciliations">Survey Reconciliations</span><span class="skill-badge" title="Click to view history for KPI Reporting">KPI Reporting</span><span class="skill-badge" title="Click to view history for Simulator Instruction">Simulator Instruction</span><span class="skill-badge" title="Click to view history for Maintenance Planning">Maintenance Planning</span><span class="skill-badge" title="Click to view history for CMMS">CMMS</span><span class="skill-badge" title="Click to view history for Fleet Management">Fleet Management</span><span class="skill-badge" title="Click to view history for SOP Organization">SOP Organization</span><span class="skill-badge" title="Click to view history for Entrepreneurship">Entrepreneurship</span><span class="skill-badge" title="Click to view history for Laser Engraving">Laser Engraving</span><span class="skill-badge" title="Click to view history for Business Operations">Business Operations</span><span class="skill-badge" title="Click to view history for Product Design">Product Design</span><span class="skill-badge" title="Click to view history for Network Mapping">Network Mapping</span><span class="skill-badge" title="Click to view history for End User Support">End User Support</span><span class="skill-badge" title="Click to view history for Vendor Coordination">Vendor Coordination</span><span class="skill-badge" title="Click to view history for IT Asset Management">IT Asset Management</span><span class="skill-badge" title="Click to view history for IT Operations Management">IT Operations Management</span><span class="skill-badge" title="Click to view history for Vendor Management">Vendor Management</span><span class="skill-badge" title="Click to view history for White-box Server Design">White-box Server Design</span><span class="skill-badge" title="Click to view history for Cybersecurity & Firewalls">Cybersecurity & Firewalls</span><span class="skill-badge" title="Click to view history for M365 Automation">M365 Automation</span><span class="skill-badge" title="Click to view history for PowerShell / Python">PowerShell / Python</span><span class="skill-badge" title="Click to view history for Ransomware Recovery">Ransomware Recovery</span><span class="skill-badge" title="Click to view history for IT Policy Drafting">IT Policy Drafting</span><span class="skill-badge" title="Click to view history for Workflow Mapping">Workflow Mapping</span><span class="skill-badge" title="Click to view history for Process Design">Process Design</span><span class="skill-badge" title="Click to view history for Honest KPI Development">Honest KPI Development</span><span class="skill-badge" title="Click to view history for Lightweight Infrastructure">Lightweight Infrastructure</span><span class="skill-badge" title="Click to view history for Proxmox & Homelabs">Proxmox & Homelabs</span><span class="skill-badge" title="Click to view history for Network Diagnostics">Network Diagnostics</span><span class="skill-badge" title="Click to view history for Web Design">Web Design</span></div>
+                    </div>
+                    <ul class="role-bullets">
+                        <li><strong>All-Encompassing Toolkit:</strong> An aggregation of every technical capability, soft skill, and professional trait developed across my entire journey.</li><li><strong>Skills Honed:</strong> Adaptability, Resilience, Early Learning, Socialization, Transition Management, Academic Excellence, Focus, Musical Proficiency, Discipline, Teamwork, Analytical Thinking, Mathematics, Problem Solving, Leadership, Chain of Command, Robotics, Logical Programming, Competition, Rapid Learning, Performance, Public Speaking, Creativity, Confidence, Mentorship, Project Execution, History, Research, Acting, Team Success, Aviation Mechanics, Technical Learning, Hands-on Engineering, Aviation, Crisis Management, Spatial Awareness, Goal Achievement, Regulatory Compliance, Risk Management, Loyalty, CAD Design, 3D Printing, Mechanical Engineering, Client Coordination, Prototyping, Ticketing Systems, Field Support, Telecommunications (POTS), Customer Service, Civil Engineering, Project Management, Site Coordination, Engineering Execution, Documentation, Safety Compliance, Mechanical Engineering Degree, Perseverance, Complex Problem Solving, Cash Handling, Time Management, High-Pressure Environments, Quality Control, Civil Construction, Materials Testing, Quality Assurance, Punch Lists, Environmental Safety, Cross-functional Communication, Project Planning, Cost Tracking, Risk Mitigation, Contractor Coordination, Scheduling, Mine Design, Survey Reconciliations, KPI Reporting, Simulator Instruction, Maintenance Planning, CMMS, Fleet Management, SOP Organization, Entrepreneurship, Laser Engraving, Business Operations, Product Design, Network Mapping, End User Support, Vendor Coordination, IT Asset Management, IT Operations Management, Vendor Management, White-box Server Design, Cybersecurity & Firewalls, M365 Automation, PowerShell / Python, Ransomware Recovery, IT Policy Drafting, Workflow Mapping, Process Design, Honest KPI Development, Lightweight Infrastructure, Proxmox & Homelabs, Network Diagnostics, Web Design</li>
+                    </ul>
+                </div>
+                
+        
+            </div>
+        </div>
+        
+        <!-- Skill Side Panel UI -->
+        <div class="side-panel-overlay" id="skill-overlay"></div>
+        <div class="skills-side-panel glass-panel" id="skill-side-panel">
+            <div class="side-panel-header">
+                <h3 id="side-panel-skill-title">Skill Name</h3>
+                <button id="close-side-panel">&times;</button>
+            </div>
+            <div class="side-panel-content" id="side-panel-content">
+                <!-- Links injected via JS -->
+            </div>
+        </div>
+        
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.skillData = {"Adaptability":[{"year":"1993","title":"Born"},{"year":"1999","title":"Moved to Carbonear"},{"year":"2022","title":"Company Receivership"}],"Resilience":[{"year":"1993","title":"Born"}],"Early Learning":[{"year":"1998","title":"Kindergarten"}],"Socialization":[{"year":"1998","title":"Kindergarten"}],"Transition Management":[{"year":"1999","title":"Moved to Carbonear"},{"year":"2022","title":"Company Receivership"}],"Academic Excellence":[{"year":"2002","title":"Grade 4"},{"year":"2007","title":"Social Studies"},{"year":"2011","title":"High School Graduate"}],"Focus":[{"year":"2002","title":"Grade 4"},{"year":"2010","title":"Glider Pilot"}],"Musical Proficiency":[{"year":"2004","title":"School Band"},{"year":"2006","title":"Cadets Band"}],"Discipline":[{"year":"2004","title":"School Band"},{"year":"2005","title":"Air Cadets"}],"Teamwork":[{"year":"2004","title":"School Band"},{"year":"2006","title":"Lego Robotics"}],"Analytical Thinking":[{"year":"2004","title":"Math Placement"}],"Mathematics":[{"year":"2004","title":"Math Placement"}],"Problem Solving":[{"year":"2004","title":"Math Placement"}],"Leadership":[{"year":"2005","title":"Air Cadets"},{"year":"2012","title":"Air Cadets Band Senior"}],"Chain of Command":[{"year":"2005","title":"Air Cadets"}],"Robotics":[{"year":"2006","title":"Lego Robotics"},{"year":"2007","title":"Lego Robotics Senior Year"}],"Logical Programming":[{"year":"2006","title":"Lego Robotics"}],"Competition":[{"year":"2006","title":"Lego Robotics"}],"Rapid Learning":[{"year":"2006","title":"Cadets Band"}],"Performance":[{"year":"2006","title":"Cadets Band"}],"Public Speaking":[{"year":"2006","title":"Drama Club"},{"year":"2007","title":"Drama Club"}],"Creativity":[{"year":"2006","title":"Drama Club"}],"Confidence":[{"year":"2006","title":"Drama Club"}],"Mentorship":[{"year":"2007","title":"Lego Robotics Senior Year"},{"year":"2012","title":"Air Cadets Band Senior"}],"Project Execution":[{"year":"2007","title":"Lego Robotics Senior Year"}],"History":[{"year":"2007","title":"Social Studies"}],"Research":[{"year":"2007","title":"Social Studies"}],"Acting":[{"year":"2007","title":"Drama Club"}],"Team Success":[{"year":"2007","title":"Drama Club"}],"Aviation Mechanics":[{"year":"2009","title":"Aircraft Maintenance Engineering Course"}],"Technical Learning":[{"year":"2009","title":"Aircraft Maintenance Engineering Course"}],"Hands-on Engineering":[{"year":"2009","title":"Aircraft Maintenance Engineering Course"}],"Aviation":[{"year":"2010","title":"Glider Pilot"},{"year":"2011","title":"Private Pilot"}],"Crisis Management":[{"year":"2010","title":"Glider Pilot"}],"Spatial Awareness":[{"year":"2010","title":"Glider Pilot"}],"Goal Achievement":[{"year":"2011","title":"High School Graduate"}],"Regulatory Compliance":[{"year":"2011","title":"Private Pilot"},{"year":"2017","title":"QA/QC Civil Inspector"}],"Risk Management":[{"year":"2011","title":"Private Pilot"}],"Loyalty":[{"year":"2012","title":"Air Cadets Band Senior"}],"CAD Design":[{"year":"2013","title":"Student Project Engineer"}],"3D Printing":[{"year":"2013","title":"Student Project Engineer"}],"Mechanical Engineering":[{"year":"2013","title":"Student Project Engineer"}],"Client Coordination":[{"year":"2013","title":"Student Project Engineer"}],"Prototyping":[{"year":"2013","title":"Student Project Engineer"}],"Ticketing Systems":[{"year":"2013","title":"Network Technician"}],"Field Support":[{"year":"2013","title":"Network Technician"}],"Telecommunications (POTS)":[{"year":"2013","title":"Network Technician"}],"Customer Service":[{"year":"2013","title":"Network Technician"},{"year":"2016","title":"Chill Staff (Dairy Queen)"}],"Civil Engineering":[{"year":"2014","title":"Student Project Engineer (Pennecon)"}],"Project Management":[{"year":"2014","title":"Student Project Engineer (Pennecon)"}],"Site Coordination":[{"year":"2014","title":"Student Project Engineer (Pennecon)"}],"Engineering Execution":[{"year":"2015","title":"Student Project Engineer (Pennecon)"}],"Documentation":[{"year":"2015","title":"Student Project Engineer (Pennecon)"}],"Safety Compliance":[{"year":"2015","title":"Student Project Engineer (Pennecon)"}],"Mechanical Engineering Degree":[{"year":"2016","title":"University Graduate"}],"Perseverance":[{"year":"2016","title":"University Graduate"}],"Complex Problem Solving":[{"year":"2016","title":"University Graduate"}],"Cash Handling":[{"year":"2016","title":"Chill Staff (Dairy Queen)"}],"Time Management":[{"year":"2016","title":"Chill Staff (Dairy Queen)"}],"High-Pressure Environments":[{"year":"2016","title":"Chill Staff (Dairy Queen)"}],"Quality Control":[{"year":"2017","title":"QA/QC Civil Inspector"}],"Civil Construction":[{"year":"2017","title":"QA/QC Civil Inspector"}],"Materials Testing":[{"year":"2017","title":"QA/QC Civil Inspector"}],"Quality Assurance":[{"year":"2019","title":"QA/QC Civil Inspector"}],"Punch Lists":[{"year":"2019","title":"QA/QC Civil Inspector"}],"Environmental Safety":[{"year":"2019","title":"QA/QC Civil Inspector"}],"Cross-functional Communication":[{"year":"2019","title":"QA/QC Civil Inspector"}],"Project Planning":[{"year":"2020","title":"Junior Project Engineer"}],"Cost Tracking":[{"year":"2020","title":"Junior Project Engineer"}],"Risk Mitigation":[{"year":"2020","title":"Junior Project Engineer"}],"Contractor Coordination":[{"year":"2020","title":"Junior Project Engineer"}],"Scheduling":[{"year":"2020","title":"Junior Project Engineer"}],"Mine Design":[{"year":"2021","title":"Junior Mining Engineer"}],"Survey Reconciliations":[{"year":"2021","title":"Junior Mining Engineer"}],"KPI Reporting":[{"year":"2021","title":"Junior Mining Engineer"}],"Simulator Instruction":[{"year":"2021","title":"Junior Mining Engineer"}],"Maintenance Planning":[{"year":"2021","title":"Mobile Maintenance Planner"}],"CMMS":[{"year":"2021","title":"Mobile Maintenance Planner"}],"Fleet Management":[{"year":"2021","title":"Mobile Maintenance Planner"}],"SOP Organization":[{"year":"2021","title":"Mobile Maintenance Planner"}],"Entrepreneurship":[{"year":"2024","title":"EtchCentric Creations"}],"Laser Engraving":[{"year":"2024","title":"EtchCentric Creations"}],"Business Operations":[{"year":"2024","title":"EtchCentric Creations"}],"Product Design":[{"year":"2024","title":"EtchCentric Creations"}],"Network Mapping":[{"year":"2024","title":"IT Technician"}],"End User Support":[{"year":"2024","title":"IT Technician"}],"Vendor Coordination":[{"year":"2024","title":"IT Technician"}],"IT Asset Management":[{"year":"2024","title":"IT Technician"}],"IT Operations Management":[{"year":"2025","title":"IT Coordinator"}],"Vendor Management":[{"year":"2025","title":"IT Coordinator"}],"White-box Server Design":[{"year":"2025","title":"IT Coordinator"}],"Cybersecurity & Firewalls":[{"year":"2025","title":"IT Coordinator"}],"M365 Automation":[{"year":"2025","title":"IT Coordinator"}],"PowerShell / Python":[{"year":"2025","title":"IT Coordinator"}],"Ransomware Recovery":[{"year":"2025","title":"IT Coordinator"}],"IT Policy Drafting":[{"year":"2025","title":"IT Coordinator"}],"Workflow Mapping":[{"year":"2025","title":"Independent Consultant"}],"Process Design":[{"year":"2025","title":"Independent Consultant"}],"Honest KPI Development":[{"year":"2025","title":"Independent Consultant"}],"Lightweight Infrastructure":[{"year":"2025","title":"Independent Consultant"}],"Proxmox & Homelabs":[{"year":"2025","title":"Independent Consultant"}],"Network Diagnostics":[{"year":"2025","title":"Independent Consultant"}],"Web Design":[{"year":"2025","title":"Independent Consultant"}]};
+            const badges = document.querySelectorAll('.skill-badge');
+            const overlay = document.getElementById('skill-overlay');
+            const panel = document.getElementById('skill-side-panel');
+            const title = document.getElementById('side-panel-skill-title');
+            const content = document.getElementById('side-panel-content');
+            const closeBtn = document.getElementById('close-side-panel');
+
+            const closePanel = () => {
+                panel.classList.remove('open');
+                overlay.classList.remove('open');
+            };
+
+            closeBtn.addEventListener('click', closePanel);
+            overlay.addEventListener('click', closePanel);
+
+            badges.forEach(badge => {
+                badge.addEventListener('click', () => {
+                    const skill = badge.innerText.trim();
+                    if(!skillData[skill]) return;
+                    
+                    title.innerText = skill;
+                    content.innerHTML = '';
+                    
+                    skillData[skill].forEach(entry => {
+                        const item = document.createElement('div');
+                        item.className = 'skill-timeline-link';
+                        item.innerHTML = '<span class="link-year">' + entry.year + '</span><span class="link-title">' + entry.title + '</span>';
+                        
+                        item.addEventListener('click', () => {
+                            closePanel();
+                            const tick = document.querySelector('.timeline-tick[data-year="' + entry.year + '"]');
+                            if(tick) {
+                                tick.click();
+                                setTimeout(() => {
+                                    document.getElementById('timeline-slider').scrollIntoView({behavior: 'smooth', block: 'center'});
+                                }, 100);
+                            }
+                        });
+                        content.appendChild(item);
+                    });
+                    
+                    panel.classList.add('open');
+                    overlay.classList.add('open');
+                });
+            });
+        });
+        </script>
+
+<!-- Resume Builder Modal -->
+<div id="resume-builder-overlay" onclick="if(event.target===this)closeResumeBuilder()" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10000; justify-content:center; align-items:flex-start; padding:1.5rem; overflow-y:auto;">
+    <div style="background:var(--bg-card, #1a1f2e); border:1px solid var(--border-color, #2a3040); border-radius:16px; width:100%; max-width:760px; margin:auto; display:flex; flex-direction:column; box-shadow:0 24px 80px rgba(0,0,0,0.6);">
+        <!-- Header -->
+        <div style="padding:1.5rem 1.75rem 1rem; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+            <div>
+                <h2 style="margin:0; font-size:1.4rem; color:var(--accent-color);">📄 Tailored Resume Builder</h2>
+                <p style="margin:0.25rem 0 0; font-size:0.85rem; color:var(--text-muted);">Select your skills to generate a targeted professional resume.</p>
+            </div>
+            <button onclick="closeResumeBuilder()" style="background:none; border:none; color:var(--text-muted); font-size:1.5rem; cursor:pointer; line-height:1;">×</button>
+        </div>
+        <!-- Step 1: Skill Selector -->
+        <div id="rb-step-select" style="padding:1.25rem 1.75rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                <span id="rb-selected-count" style="font-size:0.85rem; color:var(--text-muted);">0 skills selected</span>
+                <button onclick="rbClearAll()" style="background:none; border:1px solid var(--border-color); color:var(--text-muted); padding:0.25rem 0.6rem; border-radius:6px; font-size:0.8rem; cursor:pointer;">Clear All</button>
+            </div>
+            <div id="rb-skill-grid" style="display:flex; flex-wrap:wrap; gap:0.5rem; max-height:260px; overflow-y:auto;"></div>
+        </div>
+        <!-- Footer Buttons -->
+        <div id="rb-step-1-footer" style="padding:1rem 1.75rem; border-top:1px solid var(--border-color); display:flex; justify-content:flex-end; gap:0.75rem;">
+            <button onclick="closeResumeBuilder()" style="background:none; border:1px solid var(--border-color); color:var(--text-muted); padding:0.6rem 1.25rem; border-radius:8px; cursor:pointer;">Cancel</button>
+            <button onclick="rbGenerate()" style="background:linear-gradient(135deg, #7c3aed, #06b6d4); color:white; border:none; padding:0.6rem 1.4rem; border-radius:8px; font-weight:700; cursor:pointer;">Generate Resume →</button>
+        </div>
+        <!-- Step 2: Styled Resume Output -->
+        <div id="rb-output-section" style="display:none;">
+            <div style="padding:1.25rem 1.75rem 0; border-top:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem;">
+                <button onclick="rbBack()" style="background:none; border:1px solid var(--border-color); color:var(--text-muted); padding:0.45rem 1rem; border-radius:8px; font-size:0.85rem; cursor:pointer;">← Back to Skills</button>
+                <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+                    <button onclick="rbPrint()" style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.4); color:#10b981; padding:0.45rem 1rem; border-radius:8px; font-size:0.85rem; font-weight:600; cursor:pointer;">🖨 Print / Save PDF</button>
+                    <button onclick="rbCopyLink()" style="background:rgba(124,58,237,0.12); border:1px solid rgba(124,58,237,0.4); color:#a78bfa; padding:0.45rem 1rem; border-radius:8px; font-size:0.85rem; font-weight:600; cursor:pointer;">🔗 Copy Resume URL</button>
+                </div>
+            </div>
+            <div id="rb-resume-card" style="margin:1.25rem 1.75rem 1.75rem; border-radius:12px; overflow:hidden; border:1px solid var(--border-color);"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/resume/resume-builder.js"></script>
+
+
+<style>
+
+.skill-badge {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.skill-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
+}
+
+.rb-chip {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+.rb-chip:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+.rb-chip.rb-selected {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #0b0f19;
+    font-weight: 600;
+}
+@keyframes rb-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+.side-panel-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 9998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.side-panel-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.skills-side-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px;
+    max-width: 90vw;
+    height: 100vh;
+    z-index: 9999;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border-radius: 0;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+}
+.skills-side-panel.open {
+    transform: translateX(0);
+}
+
+.side-panel-header {
+    padding: 2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.side-panel-header h3 {
+    margin: 0;
+    color: var(--accent-color);
+}
+.side-panel-header button {
+    background: none;
+    border: none;
+    color: var(--text-main);
+    font-size: 2.5rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+.side-panel-header button:hover {
+    color: var(--accent-color);
+}
+
+.side-panel-content {
+    padding: 2rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.skill-timeline-link {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 1.2rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+.skill-timeline-link:hover {
+    background: rgba(var(--accent-rgb), 0.1);
+    border-color: var(--accent-color);
+    transform: translateX(-4px);
+}
+.skill-timeline-link .link-year {
+    font-weight: bold;
+    color: var(--accent-color);
+    font-size: 0.95rem;
+    margin-bottom: 0.35rem;
+}
+.skill-timeline-link .link-title {
+    color: var(--text-main);
+    font-size: 1.1rem;
+}
+
+
+.role-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+}
+
+.skills-container {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.skills-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.skills-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.skill-badge {
+    background: rgba(var(--accent-rgb), 0.15);
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+    color: var(--accent-color);
+    padding: 0.3rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* New Slider Styles */
+.timeline-slider-container {
+    width: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 2rem 0 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--bg-card);
+}
+.timeline-slider-container::-webkit-scrollbar {
+    height: 6px;
+}
+.timeline-slider-container::-webkit-scrollbar-track {
+    background: var(--bg-card);
+    border-radius: 3px;
+}
+.timeline-slider-container::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 3px;
+}
+.timeline-slider-container::-webkit-scrollbar-thumb:hover {
+    background: var(--cyan, #06b6d4);
+}
+
+.timeline-track {
+    display: flex;
+    align-items: center;
+    position: relative;
+    /* Use 50% of container to allow centering of first/last items. 60px is half of the tick width. */
+    padding: 0 calc(50% - 60px);
+    min-width: max-content;
+}
+
+.timeline-track::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--border-color);
+    z-index: 0;
+}
+
+.timeline-tick {
+    scroll-snap-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    width: 120px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0.5;
+}
+
+.timeline-tick:hover {
+    opacity: 0.8;
+}
+
+.timeline-tick.active {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.tick-year {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+    transition: color 0.3s;
+}
+
+.timeline-tick.active .tick-year {
+    color: var(--accent-color);
+}
+
+.tick-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--bg-main);
+    border: 3px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.timeline-tick.active .tick-dot {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.8);
+    background: var(--accent-color);
+}
+
+/* Display Container */
+.timeline-display-container {
+    position: relative;
+    min-height: 300px;
+}
+
+.timeline-content-panel {
+    display: none;
+    padding: 2.5rem;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.timeline-content-panel.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Base UI styles */
+.role-title {
+    font-size: 1.8rem;
+    color: var(--text-main);
+    margin: 0 0 0.5rem 0;
+}
+.role-meta {
+    font-size: 1.1rem;
+    color: var(--accent-color);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+.role-bullets {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    padding-left: 1.5rem;
+}
+.role-bullets li {
+    margin-bottom: 0.75rem;
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const ticks = document.querySelectorAll('.timeline-tick');
+    const panels = document.querySelectorAll('.timeline-content-panel');
+    const container = document.getElementById('timeline-slider');
+
+    let activeIndex = -1;
+    let isClickScrolling = false;
+    let clickTimeout = null;
+
+    const setActive = (index) => {
+        if(index === activeIndex) return;
+        activeIndex = index;
+
+        ticks.forEach(t => t.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+
+        const tick = document.querySelector(`.timeline-tick[data-index="${index}"]`);
+        if(tick) tick.classList.add('active');
+
+        const panel = document.getElementById('panel-' + index);
+        if(panel) panel.classList.add('active');
+    };
+
+    // Calculate which tick is closest to the center of the container
+    const updateCenterTick = () => {
+        if (isClickScrolling) return;
+
+        const containerRect = container.getBoundingClientRect();
+        const containerCenter = containerRect.left + (containerRect.width / 2);
+        
+        let closestIndex = 0;
+        let minDistance = Infinity;
+
+        ticks.forEach(tick => {
+            const rect = tick.getBoundingClientRect();
+            const tickCenter = rect.left + (rect.width / 2);
+            const distance = Math.abs(containerCenter - tickCenter);
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestIndex = parseInt(tick.getAttribute('data-index'), 10);
+            }
+        });
+
+        setActive(closestIndex);
+    };
+
+    // Scroll event listener for snap detection
+    container.addEventListener('scroll', () => {
+        // Use requestAnimationFrame for smoother performance
+        requestAnimationFrame(updateCenterTick);
+    });
+
+    // Click overrides
+    ticks.forEach(tick => {
+        tick.addEventListener('click', () => {
+            const index = parseInt(tick.getAttribute('data-index'), 10);
+            isClickScrolling = true;
+            setActive(index);
+            
+            const tickRect = tick.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            
+            // Current scroll offset plus difference between center of container and center of tick
+            const scrollLeft = container.scrollLeft + (tickRect.left - containerRect.left) - (containerRect.width / 2) + (tickRect.width / 2);
+            
+            container.scrollTo({
+                left: scrollLeft,
+                behavior: 'smooth'
+            });
+
+            // Re-enable scroll detection after snapping finishes
+            clearTimeout(clickTimeout);
+            clickTimeout = setTimeout(() => {
+                isClickScrolling = false;
+            }, 600); // Wait for smooth scroll to finish
+        });
+    });
+    
+    // Initial centering of the last tick (most recent year)
+    if(ticks.length > 0) {
+        const lastIndex = ticks.length - 1;
+        setActive(lastIndex);
+        setTimeout(() => {
+            const lastTick = ticks[lastIndex];
+            const tickRect = lastTick.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            const scrollLeft = container.scrollLeft + (tickRect.left - containerRect.left) - (containerRect.width / 2) + (tickRect.width / 2);
+            
+            container.scrollTo({ left: scrollLeft, behavior: 'instant' });
+        }, 50);
+    }
+});
+</script>
+
+    </div>
+</div>
+
+
+
+<script>
+    (function() {
+        const toggle = document.getElementById('personal-toggle');
+        const personalTicks = document.querySelectorAll('.timeline-tick[data-type="personal"]');
+        const personalPanels = document.querySelectorAll('.timeline-content-panel[data-type="personal"]');
+        
+        if (!toggle) return;
+
+        // Add Paywall Modal dynamically
+        const modalHtml = `
+            <div id="resume-paywall-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); z-index: 9999; justify-content: center; align-items: center;">
+                <div class="lock-screen" id="paywall-card" style="display: block; position: relative; width: 90%; max-width: 400px; margin: auto;">
+                    <button id="btn-close-paywall" style="position: absolute; top: 10px; right: 10px; background: transparent; border: none; color: var(--text-dim); font-size: 1.2rem; cursor: pointer;">&times;</button>
+                    <div class="paywall-badge">🔒 Members Only</div>
+                    <p style="color: var(--text-dim); font-size: 0.9rem;">Please enter the Master Passcode to unlock.</p>
+                    <div style="margin: 1rem 0;">
+                        <input type="password" id="passcode-input" placeholder="Passcode" />
+                    </div>
+                    <button class="btn" style="width: 100%; justify-content: center;" id="passcode-submit-btn">Unlock</button>
+                    <p id="auth-error" style="color: #ef4444; display: none; font-size: 0.8rem; margin-top: 0.5rem;">Incorrect Passcode</p>
+                    <p style="font-size: 0.8rem; margin-top: 1rem; color: var(--text-dim);">
+                        Don't have a token? <a href="/contact/" style="color: var(--accent); text-decoration: underline;">Contact to request access</a>.
+                    </p>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+        const overlay = document.getElementById('resume-paywall-overlay');
+        const btnClose = document.getElementById('btn-close-paywall');
+        const btnUnlock = document.getElementById('passcode-submit-btn');
+        const inputPass = document.getElementById('passcode-input');
+        const authError = document.getElementById('auth-error');
+
+        btnClose.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            toggle.checked = false; // Revert toggle
+        });
+
+        const validateToken = (token) => {
+            if (!token || !token.startsWith("Atlas-")) return false;
+            try {
+                const b64 = token.replace("Atlas-", "");
+                const obj = JSON.parse(atob(b64));
+                if (!obj.e || !obj.s) return false;
+                
+                const SECRET = "AtlasPass2026";
+                const cyrb53 = (str, seed = 0) => {
+                    let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+                    for (let i = 0, ch; i < str.length; i++) {
+                    ch = str.charCodeAt(i);
+                    h1 = Math.imul(h1 ^ ch, 2654435761);
+                    h2 = Math.imul(h2 ^ ch, 1597334677);
+                    }
+                    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+                    h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+                    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+                    h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+                    return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+                };
+
+                const payload = obj.e.toString() + SECRET;
+                const expectedSig = cyrb53(payload).toString(16);
+                
+                if (obj.s !== expectedSig) return false;
+                if (Date.now() > obj.e) return false; // Expired
+                
+                return true;
+            } catch(e) {
+                return false;
+            }
+        };
+
+        const attemptUnlock = () => {
+            const pass = inputPass.value.trim();
+            if (validateToken(pass)) {
+                localStorage.setItem("atlas_unlocked_token", pass);
+                overlay.style.display = 'none';
+                authError.style.display = 'none';
+                // Success! Re-run update logic
+                updateToggleLogic(true);
+            } else {
+                authError.style.display = 'block';
+                authError.textContent = "Invalid or expired passcode";
+            }
+        };
+
+        btnUnlock.addEventListener('click', attemptUnlock);
+        inputPass.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') attemptUnlock();
+        });
+
+        // Ensure default state on load
+        toggle.checked = false;
+
+        toggle.addEventListener('change', (e) => {
+            if (toggle.checked) {
+                // They want to turn it ON
+                const storedToken = localStorage.getItem("atlas_unlocked_token");
+                if (validateToken(storedToken)) {
+                    updateToggleLogic(true);
+                } else {
+                    // Prevent toggle visually until they unlock
+                    e.preventDefault();
+                    toggle.checked = false; 
+                    overlay.style.display = 'flex';
+                }
+            } else {
+                updateToggleLogic(false);
+            }
+        });
+
+        function updateToggleLogic(isPersonal) {
+            toggle.checked = isPersonal; // Sync state if called manually
+            if (isPersonal) {
+                document.body.classList.add('show-personal');
+                personalTicks.forEach(t => t.style.display = 'flex');
+            } else {
+                document.body.classList.remove('show-personal');
+                personalTicks.forEach(t => t.style.display = 'none');
+                
+                const activeTick = document.querySelector('.timeline-tick.active');
+                if (activeTick && activeTick.getAttribute('data-type') === 'personal') {
+                    const firstProf = document.querySelector('.timeline-tick:not([data-type="personal"])');
+                    if (firstProf) firstProf.click();
+                }
+            }
+
+            // Filter static skills-badges
+            if (window.skillData) {
+                const visibleRoles = Array.from(document.querySelectorAll('.role-entry'))
+                    .filter(el => {
+                        if (el.closest('#panel-23')) return false; // Ignore the Lifetime section itself
+                        return isPersonal || el.getAttribute('data-type') !== 'personal';
+                    })
+                    .map(el => {
+                        const titleEl = el.querySelector('.role-title');
+                        return titleEl ? titleEl.innerText.trim() : '';
+                    });
+
+                const badges = document.querySelectorAll('.skills-badges .skill-badge');
+                let visibleSkills = [];
+                badges.forEach(badge => {
+                    const skill = badge.innerText.trim();
+                    const isVisible = window.skillData[skill] && window.skillData[skill].some(role => visibleRoles.includes(role.title));
+                    badge.style.display = isVisible ? 'inline-block' : 'none';
+                    if (isVisible) {
+                        visibleSkills.push(skill);
+                    }
+                });
+
+                // Update the text bullet point below the badges
+                const skillsBullet = document.querySelector('#panel-23 .role-bullets li:nth-child(2)');
+                if (skillsBullet) {
+                    skillsBullet.innerHTML = '<strong>Skills Honed:</strong> ' + visibleSkills.join(', ');
+                }
+            }
+        }
+
+        // Initial state
+        setTimeout(() => {
+            updateToggleLogic(toggle.checked);
+            // Force select first professional if a personal one was active somehow
+            const activeTick = document.querySelector('.timeline-tick.active');
+            if (activeTick && activeTick.getAttribute('data-type') === 'personal' && !toggle.checked) {
+                const firstProf = document.querySelector('.timeline-tick:not([data-type="personal"])');
+                if (firstProf) firstProf.click();
+            } else if (!activeTick) {
+                const firstProf = document.querySelector('.timeline-tick:not([data-type="personal"])');
+                if (firstProf) firstProf.click();
+            }
+        }, 100);
+    })();
+</script>
+
+

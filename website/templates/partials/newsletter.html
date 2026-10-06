@@ -1,0 +1,39 @@
+<section class="newsletter-signup" aria-label="Newsletter signup">
+  <div class="newsletter-inner">
+    <div class="newsletter-icon" aria-hidden="true">✉️</div>
+    <div class="newsletter-text">
+      <h3 class="newsletter-title">The Monday Dispatch</h3>
+      <p class="newsletter-desc">
+        One email. Every Monday. What I've been thinking about, building, reading, and exploring —
+        not an alert every time I publish. No spam. No daily noise. Just a single weekly signal.
+      </p>
+    </div>
+    <form
+      class="newsletter-form"
+      action="https://buttondown.com/api/emails/embed-subscribe/thomsfoolery"
+      method="post"
+      target="popupwindow"
+      onsubmit="window.open('https://buttondown.com/thomsfoolery', 'popupwindow')"
+      id="newsletter-form"
+    >
+      <div class="newsletter-fields">
+        <label for="newsletter-email" class="sr-only">Email address</label>
+        <input
+          id="newsletter-email"
+          type="email"
+          name="email"
+          placeholder="your@email.com"
+          required
+          autocomplete="email"
+          class="newsletter-input"
+        />
+        <button type="submit" class="newsletter-btn" id="newsletter-submit">
+          Subscribe →
+        </button>
+      </div>
+      <p class="newsletter-fine-print">
+        Sent every Monday. Unsubscribe anytime.
+      </p>
+    </form>
+  </div>
+</section>

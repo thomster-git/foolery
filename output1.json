@@ -1,0 +1,970 @@
+[
+  {
+    "id": "atlas-content",
+    "path": "/home/keel/Project-Atlas-main/content/atlas-content.md",
+    "topics": [
+      "technology"
+    ],
+    "tags": [
+      "atlas",
+      "content",
+      "knowledge-base",
+      "library"
+    ],
+    "themes": [
+      "systems-thinking",
+      "curiosity"
+    ],
+    "related": [
+      "project-atlas",
+      "manifesto",
+      "my-story-with-everything-is-connected"
+    ]
+  },
+  {
+    "id": "audhd-and-systems-thinking",
+    "path": "/home/keel/Project-Atlas-main/content/articles/audhd-and-systems-thinking.md",
+    "topics": [
+      "audhd",
+      "technology"
+    ],
+    "tags": [
+      "neurodiversity",
+      "audhd",
+      "infrastructure",
+      "systems-thinking"
+    ],
+    "themes": [
+      "systems-thinking",
+      "identity"
+    ],
+    "related": [
+      "keel-systems",
+      "my-story-with-the-msp-trap-and-broken-infrastructure",
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-mechanical-engineering-and-systems-thinking"
+    ]
+  },
+  {
+    "id": "aviation-checklists-for-life",
+    "path": "/home/keel/Project-Atlas-main/content/articles/aviation-checklists-for-life.md",
+    "topics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "tags": [
+      "checklists",
+      "aviation",
+      "executive-dysfunction",
+      "routines"
+    ],
+    "themes": [
+      "systems-thinking",
+      "resilience"
+    ],
+    "related": [
+      "my-story-with-mechanical-engineering-and-systems-thinking",
+      "my-story-with-autistic-burnout-and-sensory-regulation",
+      "audhd-and-systems-thinking"
+    ]
+  },
+  {
+    "id": "bottom-up-systems-thinking",
+    "path": "/home/keel/Project-Atlas-main/content/articles/bottom-up-systems-thinking.md",
+    "topics": [
+      "technology",
+      "audhd"
+    ],
+    "tags": [
+      "bottom-up",
+      "engineering",
+      "kpis",
+      "problem-solving"
+    ],
+    "themes": [
+      "systems-thinking",
+      "pragmatism"
+    ],
+    "related": [
+      "my-story-with-keel-systems-and-honest-kpis",
+      "my-story-with-mechanical-engineering-and-systems-thinking",
+      "audhd-and-systems-thinking"
+    ]
+  },
+  {
+    "id": "building-a-comprehensive-discord-ecosystem",
+    "path": "/home/keel/Project-Atlas-main/content/articles/building-a-comprehensive-discord-ecosystem.md",
+    "topics": [
+      "technology",
+      "automation"
+    ],
+    "tags": [
+      "discord-bot",
+      "python",
+      "automation",
+      "baseball",
+      "ai"
+    ],
+    "themes": [
+      "craftsmanship",
+      "systems-thinking"
+    ],
+    "related": [
+      "discord-ai-bot",
+      "keel-systems",
+      "discord-vs-corporate-comms",
+      "my-story-with-keel-systems-and-honest-kpis"
+    ]
+  },
+  {
+    "id": "collecting",
+    "path": "/home/keel/Project-Atlas-main/content/articles/collecting.md",
+    "topics": [
+      "gaming",
+      "audhd"
+    ],
+    "tags": [
+      "nostalgia",
+      "hobbies",
+      "sports",
+      "gaming",
+      "memorabilia"
+    ],
+    "themes": [
+      "nostalgia",
+      "identity"
+    ],
+    "related": [
+      "my-story-with-coin-collecting",
+      "tcg-cards",
+      "collections",
+      "sports-cards"
+    ]
+  },
+  {
+    "id": "discord-vs-corporate-comms",
+    "path": "/home/keel/Project-Atlas-main/content/articles/discord-vs-corporate-comms.md",
+    "topics": [
+      "technology",
+      "infrastructure"
+    ],
+    "tags": [
+      "keel-systems",
+      "business",
+      "technology",
+      "communication",
+      "discord"
+    ],
+    "themes": [
+      "systems-thinking",
+      "pragmatism"
+    ],
+    "related": [
+      "building-a-comprehensive-discord-ecosystem",
+      "keel-systems",
+      "my-story-with-keel-systems-and-honest-kpis",
+      "my-story-with-the-msp-trap-and-broken-infrastructure"
+    ]
+  },
+  {
+    "id": "from-rocks-to-routers-qa-qc-and-it",
+    "path": "/home/keel/Project-Atlas-main/content/articles/from-rocks-to-routers-qa-qc-and-it.md",
+    "topics": [
+      "engineering",
+      "technology"
+    ],
+    "tags": [
+      "engineering",
+      "qa-qc",
+      "networking",
+      "problem-solving"
+    ],
+    "themes": [
+      "curiosity",
+      "pragmatism"
+    ],
+    "related": [
+      "leaving-cfi",
+      "my-story-with-cfi",
+      "my-story-with-mechanical-engineering-and-systems-thinking",
+      "my-story-with-the-msp-trap-and-broken-infrastructure"
+    ]
+  },
+  {
+    "id": "leaving-cfi",
+    "path": "/home/keel/Project-Atlas-main/content/articles/leaving-cfi.md",
+    "topics": [
+      "career",
+      "audhd"
+    ],
+    "tags": [
+      "career",
+      "autistic-burnout",
+      "cfi",
+      "toxic-workplace",
+      "resignation"
+    ],
+    "themes": [
+      "resilience",
+      "mental-health"
+    ],
+    "related": [
+      "my-story-with-cfi",
+      "canada-fluorspar",
+      "my-story-with-autistic-burnout-and-sensory-regulation",
+      "from-rocks-to-routers-qa-qc-and-it"
+    ]
+  },
+  {
+    "id": "manifesto",
+    "path": "/home/keel/Project-Atlas-main/content/articles/manifesto.md",
+    "topics": [
+      "technology",
+      "audhd"
+    ],
+    "tags": [
+      "digital-garden",
+      "knowledge-graph",
+      "manifesto",
+      "systems"
+    ],
+    "themes": [
+      "connection",
+      "systems-thinking"
+    ],
+    "related": [
+      "my-story-with-everything-is-connected",
+      "personal-digital-garden-creator",
+      "project-atlas",
+      "audhd-and-systems-thinking"
+    ]
+  },
+  {
+    "id": "my-journey-with-neurodiversity",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-journey-with-neurodiversity.md",
+    "topics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "tags": [
+      "audhd",
+      "neurodiversity",
+      "adhd",
+      "autism",
+      "unmasking"
+    ],
+    "themes": [
+      "identity",
+      "growth"
+    ],
+    "related": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-videogames-and-adhd",
+      "my-story-with-healthcare"
+    ]
+  },
+  {
+    "id": "my-story-with-3d-printing-and-laser-engraving",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-3d-printing-and-laser-engraving.md",
+    "topics": [
+      "technology",
+      "engineering"
+    ],
+    "tags": [
+      "3d-printing",
+      "laser-cutting",
+      "xtool",
+      "maker"
+    ],
+    "themes": [
+      "craftsmanship",
+      "creativity"
+    ],
+    "related": [
+      "my-story-with-etchcentric-and-laser-engraving",
+      "etchcentric-creations",
+      "xtool-s1-40w-diode-laser",
+      "xtool-s1"
+    ]
+  },
+  {
+    "id": "my-story-with-audio-gear-and-podcasting",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-audio-gear-and-podcasting.md",
+    "topics": [
+      "audio-engineering",
+      "technology"
+    ],
+    "tags": [
+      "audio",
+      "microphone",
+      "studio",
+      "focusrite",
+      "shure"
+    ],
+    "themes": [
+      "craftsmanship",
+      "curiosity"
+    ],
+    "related": [
+      "focusrite-scarlett-2i2",
+      "shure-sm57",
+      "shure-sm58",
+      "shure-sm7b-microphone"
+    ]
+  },
+  {
+    "id": "my-story-with-autigender-and-identity",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-autigender-and-identity.md",
+    "topics": [
+      "audhd",
+      "gender-studies"
+    ],
+    "tags": [
+      "autigender",
+      "identity",
+      "autism",
+      "gender",
+      "unmasking"
+    ],
+    "themes": [
+      "identity",
+      "growth"
+    ],
+    "related": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-early-childhood-and-reoccurring-dreams",
+      "my-story-with-autistic-burnout-and-sensory-regulation"
+    ]
+  },
+  {
+    "id": "my-story-with-autistic-burnout-and-sensory-regulation",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-autistic-burnout-and-sensory-regulation.md",
+    "topics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "tags": [
+      "autistic-burnout",
+      "sensory-regulation",
+      "audhd",
+      "noise-canceling",
+      "unmasking"
+    ],
+    "themes": [
+      "identity",
+      "resilience"
+    ],
+    "related": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-healthcare",
+      "bose-quietcomfort-pro-2",
+      "ark-chewers-sensory-wearable"
+    ]
+  },
+  {
+    "id": "my-story-with-billy-talent",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-billy-talent.md",
+    "topics": [
+      "music"
+    ],
+    "tags": [
+      "music",
+      "punk-rock",
+      "canada",
+      "billy-talent"
+    ],
+    "themes": [
+      "nostalgia",
+      "connection"
+    ],
+    "related": [
+      "my-story-with-bo-burnham",
+      "my-story-with-donald-glover",
+      "billy-talent",
+      "my-story-with-live-music-and-concerts"
+    ]
+  },
+  {
+    "id": "my-story-with-bo-burnham",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-bo-burnham.md",
+    "topics": [
+      "music",
+      "entertainment"
+    ],
+    "tags": [
+      "youtube",
+      "entertainment",
+      "comedy",
+      "bo-burnham"
+    ],
+    "themes": [
+      "creativity",
+      "connection"
+    ],
+    "related": [
+      "my-story-with-billy-talent",
+      "my-story-with-donald-glover",
+      "bo-burnham",
+      "my-story-with-music-and-emotional-anchoring"
+    ]
+  },
+  {
+    "id": "my-story-with-cfi",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-cfi.md",
+    "topics": [
+      "career",
+      "technology"
+    ],
+    "tags": [
+      "mining",
+      "engineering",
+      "information-technology",
+      "newfoundland",
+      "canada-fluorspar"
+    ],
+    "themes": [
+      "resilience",
+      "growth"
+    ],
+    "related": [
+      "leaving-cfi",
+      "canada-fluorspar",
+      "keel-systems",
+      "from-rocks-to-routers-qa-qc-and-it"
+    ]
+  },
+  {
+    "id": "my-story-with-coin-collecting",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-coin-collecting.md",
+    "topics": [
+      "technology"
+    ],
+    "tags": [
+      "coins",
+      "numismatics",
+      "silver",
+      "history"
+    ],
+    "themes": [
+      "craftsmanship",
+      "curiosity"
+    ],
+    "related": [
+      "money-and-coins",
+      "collections",
+      "sports-cards",
+      "tcg-cards"
+    ]
+  },
+  {
+    "id": "my-story-with-donald-glover",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-donald-glover.md",
+    "topics": [
+      "music",
+      "entertainment"
+    ],
+    "tags": [
+      "childish-gambino",
+      "community",
+      "derek-comedy",
+      "stand-up"
+    ],
+    "themes": [
+      "creativity",
+      "growth"
+    ],
+    "related": [
+      "my-story-with-bo-burnham",
+      "bo-burnham",
+      "my-story-with-music-and-emotional-anchoring"
+    ]
+  },
+  {
+    "id": "my-story-with-early-childhood-and-reoccurring-dreams",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-early-childhood-and-reoccurring-dreams.md",
+    "topics": [
+      "audhd",
+      "gaming"
+    ],
+    "tags": [
+      "snes",
+      "nightmares",
+      "memories",
+      "sensory"
+    ],
+    "themes": [
+      "childhood",
+      "nostalgia"
+    ],
+    "related": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-videogames-and-adhd",
+      "my-story-with-family-memories-and-santa-claus"
+    ]
+  },
+  {
+    "id": "my-story-with-elementary-school-and-unwritten-social-rules",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-elementary-school-and-unwritten-social-rules.md",
+    "topics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "tags": [
+      "elementary-school",
+      "audhd",
+      "social-rules",
+      "carbonear"
+    ],
+    "themes": [
+      "childhood",
+      "identity"
+    ],
+    "related": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-early-childhood-and-reoccurring-dreams",
+      "my-story-with-misunderstandings-and-literal-intent"
+    ]
+  },
+  {
+    "id": "my-story-with-etchcentric-and-laser-engraving",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-etchcentric-and-laser-engraving.md",
+    "topics": [
+      "drawing",
+      "technology"
+    ],
+    "tags": [
+      "laser-engraving",
+      "xtool",
+      "slate",
+      "wood",
+      "etchcentric"
+    ],
+    "themes": [
+      "craftsmanship",
+      "creativity"
+    ],
+    "related": [
+      "xtool-s1-40w-diode-laser",
+      "etchcentric-creations",
+      "my-story-with-mechanical-engineering",
+      "my-story-with-3d-printing-and-laser-engraving"
+    ]
+  },
+  {
+    "id": "my-story-with-everything-is-connected",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-everything-is-connected.md",
+    "topics": [
+      "technology",
+      "audhd"
+    ],
+    "tags": [
+      "project-atlas",
+      "manifesto",
+      "connection",
+      "knowledge-graph",
+      "systems-thinking"
+    ],
+    "themes": [
+      "worldview",
+      "connection"
+    ],
+    "related": [
+      "project-atlas",
+      "keel-systems",
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-cfi"
+    ]
+  },
+  {
+    "id": "my-story-with-family-memories-and-santa-claus",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-family-memories-and-santa-claus.md",
+    "topics": [
+      "audhd",
+      "parenting"
+    ],
+    "tags": [
+      "family",
+      "financial-empathy",
+      "emotional-honesty",
+      "childhood"
+    ],
+    "themes": [
+      "childhood",
+      "nostalgia"
+    ],
+    "related": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-early-childhood-and-reoccurring-dreams",
+      "my-story-with-potty-training-and-parenting"
+    ]
+  },
+  {
+    "id": "my-story-with-healthcare",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-healthcare.md",
+    "topics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "tags": [
+      "neurodiversity",
+      "healthcare",
+      "masking",
+      "diagnosis",
+      "advocacy"
+    ],
+    "themes": [
+      "mental-health",
+      "resilience"
+    ],
+    "related": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-medical-stigma-and-advocacy",
+      "my-story-with-the-7-year-waitlist",
+      "my-story-with-autistic-burnout-and-sensory-regulation"
+    ]
+  },
+  {
+    "id": "my-story-with-home-lab-and-proxmox",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-home-lab-and-proxmox.md",
+    "topics": [
+      "home-lab",
+      "technology"
+    ],
+    "tags": [
+      "proxmox",
+      "virtualization",
+      "linux",
+      "self-hosting",
+      "hardware"
+    ],
+    "themes": [
+      "systems-thinking",
+      "craftsmanship"
+    ],
+    "related": [
+      "proxmox-ve",
+      "keel-systems",
+      "my-story-with-cfi",
+      "next-gen-proxmox-home-lab"
+    ]
+  },
+  {
+    "id": "my-story-with-keel-systems-and-honest-kpis",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-keel-systems-and-honest-kpis.md",
+    "topics": [
+      "technology",
+      "career"
+    ],
+    "tags": [
+      "keel-systems",
+      "it-consulting",
+      "kpis",
+      "management",
+      "honesty"
+    ],
+    "themes": [
+      "systems-thinking",
+      "pragmatism"
+    ],
+    "related": [
+      "keel-systems",
+      "my-story-with-cfi",
+      "my-story-with-everything-is-connected",
+      "discord-vs-corporate-comms"
+    ]
+  },
+  {
+    "id": "my-story-with-lego-robotics-and-atlanta",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-lego-robotics-and-atlanta.md",
+    "topics": [
+      "technology",
+      "audhd"
+    ],
+    "tags": [
+      "robotics",
+      "lego",
+      "atlanta",
+      "competition",
+      "fll"
+    ],
+    "themes": [
+      "systems-thinking",
+      "connection"
+    ],
+    "related": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "project-atlas",
+      "my-story-with-mechanical-engineering",
+      "my-story-with-misunderstandings-and-literal-intent"
+    ]
+  },
+  {
+    "id": "my-story-with-lifting-and-sensory-regulation",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-lifting-and-sensory-regulation.md",
+    "topics": [
+      "health-and-fitness",
+      "audhd"
+    ],
+    "tags": [
+      "powerlifting",
+      "sensory-regulation",
+      "audhd",
+      "gym",
+      "nervous-system"
+    ],
+    "themes": [
+      "resilience",
+      "identity"
+    ],
+    "related": [
+      "gym-power-rack-and-barbell",
+      "ironworks-adjustable-dumbbells",
+      "bose-quietcomfort-pro-2",
+      "my-story-with-autistic-burnout-and-sensory-regulation"
+    ]
+  },
+  {
+    "id": "my-story-with-live-music-and-concerts",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-live-music-and-concerts.md",
+    "topics": [
+      "music",
+      "entertainment"
+    ],
+    "tags": [
+      "music",
+      "iceberg-alley",
+      "st-johns",
+      "live-concerts",
+      "rock"
+    ],
+    "themes": [
+      "connection",
+      "nostalgia"
+    ],
+    "related": [
+      "my-story-with-billy-talent",
+      "my-story-with-music-and-emotional-anchoring",
+      "billy-talent",
+      "my-story-with-autistic-burnout-and-sensory-regulation"
+    ]
+  },
+  {
+    "id": "my-story-with-mechanical-engineering-and-systems-thinking",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-mechanical-engineering-and-systems-thinking.md",
+    "topics": [
+      "engineering",
+      "technology"
+    ],
+    "tags": [
+      "mechanical-engineering",
+      "cfd",
+      "cad",
+      "systems-thinking",
+      "rc-airplane"
+    ],
+    "themes": [
+      "systems-thinking",
+      "learning"
+    ],
+    "related": [
+      "keel-systems",
+      "my-story-with-cfi",
+      "my-story-with-everything-is-connected",
+      "bottom-up-systems-thinking"
+    ]
+  },
+  {
+    "id": "my-story-with-mechanical-engineering",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-mechanical-engineering.md",
+    "topics": [
+      "engineering",
+      "career"
+    ],
+    "tags": [
+      "career",
+      "engineering",
+      "pragmatism",
+      "learning"
+    ],
+    "themes": [
+      "pragmatism",
+      "learning"
+    ],
+    "related": [
+      "my-story-with-mechanical-engineering-and-systems-thinking",
+      "from-rocks-to-routers-qa-qc-and-it",
+      "my-story-with-cfi",
+      "bottom-up-systems-thinking"
+    ]
+  },
+  {
+    "id": "my-story-with-medical-stigma-and-advocacy",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-medical-stigma-and-advocacy.md",
+    "topics": [
+      "health-and-fitness",
+      "audhd"
+    ],
+    "tags": [
+      "healthcare",
+      "sleep-apnea",
+      "cpap",
+      "advocacy",
+      "stigma"
+    ],
+    "themes": [
+      "resilience",
+      "worldview"
+    ],
+    "related": [
+      "my-story-with-the-7-year-waitlist",
+      "my-story-with-lifting-and-sensory-regulation",
+      "my-story-with-the-nicu-and-corporate-coldness",
+      "my-story-with-healthcare"
+    ]
+  },
+  {
+    "id": "my-story-with-misunderstandings-and-literal-intent",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-misunderstandings-and-literal-intent.md",
+    "topics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "tags": [
+      "audhd",
+      "communication",
+      "literal-thinking",
+      "intent",
+      "masking"
+    ],
+    "themes": [
+      "identity",
+      "resilience"
+    ],
+    "related": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "tone-policing-and-ableism",
+      "my-story-with-politics-and-polarization",
+      "my-story-with-elementary-school-and-unwritten-social-rules"
+    ]
+  },
+  {
+    "id": "my-story-with-music-and-emotional-anchoring",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-music-and-emotional-anchoring.md",
+    "topics": [
+      "music",
+      "audhd"
+    ],
+    "tags": [
+      "music",
+      "billy-talent",
+      "autistic-burnout",
+      "emotional-anchoring",
+      "stim"
+    ],
+    "themes": [
+      "resilience",
+      "nostalgia"
+    ],
+    "related": [
+      "my-story-with-autistic-burnout-and-sensory-regulation",
+      "billy-talent",
+      "bo-burnham",
+      "my-story-with-live-music-and-concerts"
+    ]
+  },
+  {
+    "id": "my-story-with-neurodiversity-and-adult-diagnosis",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-neurodiversity-and-adult-diagnosis.md",
+    "topics": [
+      "audhd",
+      "gender-studies"
+    ],
+    "tags": [
+      "audhd",
+      "neurodiversity",
+      "autism",
+      "autigender",
+      "unmasking"
+    ],
+    "themes": [
+      "identity",
+      "growth"
+    ],
+    "related": [
+      "my-journey-with-neurodiversity",
+      "my-story-with-healthcare",
+      "my-story-with-videogames-and-adhd",
+      "my-story-with-autigender-and-identity"
+    ]
+  },
+  {
+    "id": "my-story-with-politics-and-polarization",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-politics-and-polarization.md",
+    "topics": [
+      "politics",
+      "audhd"
+    ],
+    "tags": [
+      "politics",
+      "centrist",
+      "polarization",
+      "empathy",
+      "nuance"
+    ],
+    "themes": [
+      "worldview",
+      "philosophy"
+    ],
+    "related": [
+      "my-story-with-autigender-and-identity",
+      "my-story-with-misunderstandings-and-literal-intent",
+      "my-story-with-public-voice-and-social-ridicule"
+    ]
+  },
+  {
+    "id": "my-story-with-potty-training-and-parenting",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-potty-training-and-parenting.md",
+    "topics": [
+      "parenting"
+    ],
+    "tags": [
+      "parenting",
+      "potty-training",
+      "toddlers",
+      "psychology"
+    ],
+    "themes": [
+      "childhood",
+      "philosophy"
+    ],
+    "related": [
+      "my-story-with-the-nicu-and-corporate-coldness",
+      "my-story-with-family-memories-and-santa-claus",
+      "my-story-with-elementary-school-and-unwritten-social-rules"
+    ]
+  },
+  {
+    "id": "my-story-with-ps2-modding-and-retro-gaming",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-ps2-modding-and-retro-gaming.md",
+    "topics": [
+      "gaming",
+      "technology"
+    ],
+    "tags": [
+      "ps2",
+      "retro-gaming",
+      "freemcboot",
+      "hardware-modding",
+      "preservation"
+    ],
+    "themes": [
+      "nostalgia",
+      "craftsmanship"
+    ],
+    "related": [
+      "retro-gaming-consoles",
+      "ps2-expansion",
+      "my-story-with-videogames-and-adhd"
+    ]
+  }
+]

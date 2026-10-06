@@ -1,0 +1,65 @@
+- audhd-and-systems-thinking: AuDHD and Systems Thinking: Why I See Infrastructure Differently | tags: personal, neurodiversity, audhd, technology, neurodivergence, audhd, systems-thinking, technology
+- aviation-checklists-for-life: Aviation Checklists for Everyday Life | tags: checklists, aviation, executive-dysfunction, adhd, routines, aviation, systems-thinking, executive-dysfunction, adhd, routines
+- bottom-up-systems-thinking: Bottom-Up Systems Thinking | tags: bottom-up, engineering, kpis, management, neurodiversity, bottom-up, engineering, kpis, management, neurodiversity
+- building-a-comprehensive-discord-ecosystem: Case Study: The Thoms Foolery Discord Bot | tags: discord, python, automation, sports-betting, baseball, ai
+- collecting: Collecting | tags: nostalgia, hobbies, sports, gaming
+- discord-vs-corporate-comms: Rethinking Corporate Communication: Why Discord Beats Slack & Teams | tags: keel-systems, business, technology, communication, discord, consulting
+- from-rocks-to-routers-qa-qc-and-it: From Rocks to Routers How QA/QC Prepared Me for IT | tags: engineering, qa-qc, networking, problem-solving
+- leaving-cfi: Leaving CFI | tags: career, autistic-burnout, cfi, toxic-workplace, burnout, mental-health, cfi, toxic-workplace
+- manifesto: The Project Atlas Manifesto | tags: digital-garden, knowledge-graph, manifesto, systems
+- my-journey-with-neurodiversity: My Journey With Neurodiversity | tags: audhd, neurodiversity, adhd, autism, unmasking, neurodiversity, adhd, autism, mental-health, unmasking
+- my-story-with-3d-printing-and-laser-engraving: My Story With 3D Printing & Laser Engraving | tags: 3d-printing, laser-cutting, xtool, maker
+- my-story-with-audio-gear-and-podcasting: My Story With Audio Gear & Home Studio Setup | tags: audio, microphone, studio, focusrite, shure
+- my-story-with-autigender-and-identity: My Story With Autigender & Identity | tags: autigender, identity, autism, gender, unmasking, emotional-expression, neurodiversity
+- my-story-with-autistic-burnout-and-sensory-regulation: My Story With Autistic Burnout & Sensory Regulation | tags: autistic-burnout, sensory-regulation, audhd, noise-canceling, stim, social-energy, unmasking, nervous-system
+- my-story-with-billy-talent: My Story With Billy Talent | tags: music, punk-rock, canada, billy-talent, punk-rock, canada, billy-talent
+- my-story-with-bo-burnham: My Story With Bo Burnham | tags: youtube, entertainment, funny
+- my-story-with-cfi: My Story With Canada Fluorspar | tags: mining, engineering, information-technology, newfoundland, canada-fluorspar
+- my-story-with-coin-collecting: My Story With Coin Collecting & Numismatics | tags: coins, numismatics, silver, history
+- my-story-with-donald-glover: My Story With Donald Glover | tags: childish-gambino, community, derek-comedy, stand-up
+- my-story-with-early-childhood-and-reoccurring-dreams: My Story With Early Childhood & Reoccurring Dreams | tags: snes, nightmares, memories, sensory, snes, nightmares, memories, sensory
+- my-story-with-elementary-school-and-unwritten-social-rules: My Story With Elementary School & Unwritten Social Rules | tags: elementary-school, audhd, social-rules, carbonear
+- my-story-with-etchcentric-and-laser-engraving: My Story With EtchCentric Creations & Laser Engraving | tags: laser-engraving, xtool, slate, wood, crafts, etchcentric, diode-laser, making, small-business
+- my-story-with-everything-is-connected: Everything Is Connected: The Manifesto Behind Project Atlas | tags: project-atlas, manifesto, connection, knowledge-graph, everything-is-connected, manifesto, philosophy, systems-thinking, connection, knowledge-graph, everything-is-connected
+- my-story-with-family-memories-and-santa-claus: My Story With Family Memories & Santa Claus | tags: family, financial-empathy, emotional-honesty, childhood, financial-empathy, emotional-honesty
+- my-story-with-healthcare: My Story With Healthcare | tags: mental-health, worldview, independence
+- my-story-with-home-lab-and-proxmox: My Story With Home Labs & Proxmox VE | tags: proxmox, virtualization, linux, self-hosting, home-lab, hardware, proxmox-ve
+- my-story-with-keel-systems-and-honest-kpis: My Story With Keel Systems & Honest KPIs | tags: keel-systems, it-consulting, kpis, organizational-honesty, management, small-business, msp, it-consulting, kpis, organizational-honesty, management, small-business, msp, systems-thinking
+- my-story-with-lego-robotics-and-atlanta: My Story With LEGO Robotics & The Atlanta Competition | tags: robotics, lego, atlanta, competition, audhd
+- my-story-with-lifting-and-sensory-regulation: My Story With Heavy Lifting & Sensory Regulation | tags: powerlifting, gym, sensory-regulation, audhd, compound-lifts, provincials, nervous-system, smelling-salts, adrenaline
+- my-story-with-live-music-and-concerts: My Story With Live Concerts & Iceberg Alley | tags: music, iceberg-alley, st-johns, billy-talent, iceberg-alley, st-johns, live-music, billy-talent
+- my-story-with-mechanical-engineering-and-systems-thinking: My Story With Mechanical Engineering & Systems Thinking | tags: mechanical-engineering, cfd, cad, programming, rc-airplane, engineering, cfd, systems-thinking, cad, programming, rc-airplane, engineering, bottom-up-thinking
+- my-story-with-mechanical-engineering: My Story With Mechanical Engineering | tags: career, engineering, pragmatism, learning
+- my-story-with-medical-stigma-and-advocacy: My Story With Medical Stigma, CPAP, & Advocacy | tags: healthcare, newfoundland, sleep-apnea, cpap, advocacy
+- my-story-with-misunderstandings-and-literal-intent: My Story With Misunderstandings & Literal Intent | tags: audhd, communication, lisp, literal-thinking, intent
+- my-story-with-music-and-emotional-anchoring: My Story With Music & Emotional Anchoring | tags: music, billy-talent, bo-burnham, autistic-burnout, emotional-anchoring, stim, punk-rock, billy-talent, bo-burnham, concerts, autistic-burnout, emotional-anchoring, stim, punk-rock
+- my-story-with-neurodiversity-and-adult-diagnosis: My Story With Neurodiversity, Adult Diagnosis, & Autigender | tags: audhd, neurodiversity, adhd, autism, autigender, unmasking, mechanical-engineering, twice-exceptional
+- my-story-with-politics-and-polarization: My Story With Politics & Nuanced Perspectives | tags: politics, centrist, autigender, nuance
+- my-story-with-potty-training-and-parenting: Bribes, Bare Bottoms, and the Great Potty Training Divide | tags: toddlers, psychology, toddlers, psychology
+- my-story-with-ps2-modding-and-retro-gaming: My Story With PS2 Modding & Retro Gaming | tags: ps2, retro-gaming, freemcboot, opl, hardware-modding, network-adaptor, preservation
+- my-story-with-public-voice-and-social-ridicule: My Story With Public Voice & Social Ridicule | tags: content-creation, public-voice, youtube, social-media, autism-masking, vulnerability, ridicule, project-atlas
+- my-story-with-the-7-year-waitlist: My Story With Mental Health & The 7-Year Waitlist | tags: healthcare, newfoundland, audhd, advocacy, autistic-burnout, newfoundland, audhd, advocacy, burnout
+- my-story-with-the-akira-ransomware-attack: Surviving the Akira Ransomware Attack & Autistic Meltdown | tags: ransomware, akira, cybersecurity, datto, audhd, autistic-burnout, mining, akira, cybersecurity, datto, audhd, burnout, mining
+- my-story-with-the-msp-trap-and-broken-infrastructure: The MSP Trap: Inheriting Broken IT Infrastructure | tags: it-coordination, mining, msp, network-infrastructure, newfoundland, canada-fluorspar
+- my-story-with-the-nicu-and-corporate-coldness: My Story With The NICU & Corporate Coldness | tags: healthcare, newfoundland, nicu, cfi, canada-fluorspar, advocacy
+- my-story-with-typing-trainers-and-early-internet: My Story With Typing Trainers & Early Internet Culture | tags: msn-messenger, typing, retro-tech
+- my-story-with-videogames-and-adhd: My Story With Video Games, ADHD & Focus | tags: gaming, adhd, xbox-360, snes
+- sensible-infrastructure-and-custom-servers: Sensible Infrastructure And Custom Servers | tags: infrastructure, self-hosting, pragmatism
+- sensible-infrastructure-and-white-box-servers: White-Box Servers & Sensible Infrastructure | tags: proxmox, servers, infrastructure, networking, canada-fluorspar
+- the-case-for-self-hosting-over-cloud-datacenters: The Cloud is a Trap: Why I Advocate for Self-Hosting over Datacenters | tags: self-hosting, cloud-computing, datacenters, artificial-intelligence, infrastructure
+- the-high-horse-of-sharenting: The \"High Horse\" of Sharenting: A Pragmatic Look at Social Media Privacy | tags: social-media, privacy, parenting
+- the-wrong-twin: The Wrong Twin: A Childhood Jukebox Memory | tags: personal, childhood, memory
+- tone-policing-and-ableism: Tone Policing and Ableism | tags: social-commentary, ableism, neurodivergence, tone-policing, worldview
+- workflow-design-and-the-human-element: Workflow Design and the Human Element | tags: workflow, software-adoption, process-design
+- hyper-v: Hyper V | tags: virtualization, infrastructure, software
+- vmware-esxi: Vmware Esxi | tags: virtualization, infrastructure, software
+- xcp-ng: Xcp Ng | tags: virtualization, infrastructure, software
+- baseball-trend-analyzer: Baseball Trend Analyzer | tags: 
+- battery-dispenser: Battery Dispenser & Workshop Storage | tags: batteries, laser-cutter, 3d-printing, storage, etsy, workshop
+- discord-ai-bot: Discord AI Assistant Bot | tags: node.js, discord.js, google-ai, api-integration
+- etchcentric-creations: EtchCentric Creations | tags: laser, engraving, woodworking, slate, small-business, etchcentric
+- keel-systems: Keel Systems | tags: keel-systems, it-consulting, msp, small-business, honest-kpis, organizational-honesty, technology
+- next-gen-proxmox-home-lab: Next-Gen Proxmox Home Lab | tags: proxmox, gpu-passthrough, windows-11, nextcloud, jellyfin, virtualization
+- personal-digital-garden-creator: Digital Garden Creator Software | tags: digital-garden, software, paywall, nodejs
+- project-atlas: Project Atlas | tags: markdown, static-site, knowledge-graph, javascript
+- my-story-with: My Story With | tags: 

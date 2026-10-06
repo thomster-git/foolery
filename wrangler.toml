@@ -1,0 +1,5 @@
+name = "project-atlas"
+pages_build_output_dir = "website/dist"
+
+[build]
+command = "npm run build"

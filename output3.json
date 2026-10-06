@@ -1,0 +1,872 @@
+[
+  {
+    "id": "the-settlers-4",
+    "path": "content/library/games/strategy/the-settlers-4.md",
+    "themes": [
+      "nostalgia",
+      "connection"
+    ],
+    "topics": [
+      "gaming"
+    ],
+    "tags": [
+      "strategy",
+      "pc",
+      "retro"
+    ],
+    "related": [
+      "starcraft-2",
+      "runescape",
+      "my-story-with-elementary-school-and-unwritten-social-rules"
+    ]
+  },
+  {
+    "id": "bose-quietcomfort-pro-2",
+    "path": "content/library/hardware/audio/bose-quietcomfort-pro-2.md",
+    "themes": [
+      "identity",
+      "resilience"
+    ],
+    "topics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "tags": [
+      "sensory-tools",
+      "noise-canceling",
+      "audio",
+      "audhd",
+      "sensory-regulation"
+    ],
+    "related": [
+      "my-story-with-autistic-burnout-and-sensory-regulation",
+      "sensory-playlists-spotify",
+      "ark-chewers-sensory-wearable",
+      "sennheiser-hd25"
+    ]
+  },
+  {
+    "id": "focusrite-scarlett-2i2",
+    "path": "content/library/hardware/audio/focusrite-scarlett-2i2.md",
+    "themes": [
+      "craftsmanship",
+      "creativity"
+    ],
+    "topics": [
+      "audio-engineering",
+      "music"
+    ],
+    "tags": [
+      "audio",
+      "interface",
+      "focusrite",
+      "studio"
+    ],
+    "related": [
+      "my-story-with-audio-gear-and-podcasting",
+      "shure-sm7b-microphone",
+      "shure-sm57",
+      "shure-sm58"
+    ]
+  },
+  {
+    "id": "roland-gokeys",
+    "path": "content/library/hardware/audio/roland-gokeys.md",
+    "themes": [
+      "creativity"
+    ],
+    "topics": [
+      "music",
+      "technology"
+    ],
+    "tags": [
+      "keyboard",
+      "roland",
+      "midi",
+      "synthesizer"
+    ],
+    "related": [
+      "focusrite-scarlett-2i2",
+      "squier-stratocaster",
+      "electronic-drum-kit",
+      "my-story-with-music-and-emotional-anchoring"
+    ]
+  },
+  {
+    "id": "shure-sm57",
+    "path": "content/library/hardware/audio/shure-sm57.md",
+    "themes": [
+      "craftsmanship"
+    ],
+    "topics": [
+      "audio-engineering",
+      "music"
+    ],
+    "tags": [
+      "microphone",
+      "shure",
+      "audio",
+      "studio"
+    ],
+    "related": [
+      "shure-sm58",
+      "shure-sm7b-microphone",
+      "focusrite-scarlett-2i2",
+      "my-story-with-audio-gear-and-podcasting"
+    ]
+  },
+  {
+    "id": "shure-sm58",
+    "path": "content/library/hardware/audio/shure-sm58.md",
+    "themes": [
+      "craftsmanship"
+    ],
+    "topics": [
+      "audio-engineering",
+      "music"
+    ],
+    "tags": [
+      "microphone",
+      "shure",
+      "vocal",
+      "studio"
+    ],
+    "related": [
+      "my-story-with-audio-gear-and-podcasting",
+      "focusrite-scarlett-2i2",
+      "shure-sm57",
+      "shure-sm7b-microphone"
+    ]
+  },
+  {
+    "id": "shure-sm7b-microphone",
+    "path": "content/library/hardware/audio/shure-sm7b-microphone.md",
+    "themes": [
+      "craftsmanship"
+    ],
+    "topics": [
+      "audio-engineering",
+      "music"
+    ],
+    "tags": [
+      "audio",
+      "microphone",
+      "shure",
+      "broadcasting"
+    ],
+    "related": [
+      "my-story-with-audio-gear-and-podcasting",
+      "focusrite-scarlett-2i2",
+      "shure-sm58",
+      "shure-sm57"
+    ]
+  },
+  {
+    "id": "shure",
+    "path": "content/library/hardware/audio/shure.md",
+    "themes": [
+      "craftsmanship"
+    ],
+    "topics": [
+      "audio-engineering"
+    ],
+    "tags": [
+      "audio",
+      "microphone",
+      "shure",
+      "studio"
+    ],
+    "related": [
+      "my-story-with-audio-gear-and-podcasting",
+      "shure-sm7b-microphone",
+      "shure-sm58",
+      "focusrite-scarlett-2i2"
+    ]
+  },
+  {
+    "id": "sony-soundbar-subwoofer",
+    "path": "content/library/hardware/audio/sony-soundbar-subwoofer.md",
+    "themes": [
+      "craftsmanship"
+    ],
+    "topics": [
+      "audio-engineering",
+      "technology"
+    ],
+    "tags": [
+      "audio",
+      "sony",
+      "soundbar",
+      "home-theater"
+    ],
+    "related": [
+      "sensory-playlists-spotify",
+      "my-story-with-music-and-emotional-anchoring",
+      "sennheiser-hd25",
+      "my-story-with-videogames-and-adhd"
+    ]
+  },
+  {
+    "id": "squier-stratocaster",
+    "path": "content/library/hardware/audio/squier-stratocaster.md",
+    "themes": [
+      "creativity",
+      "nostalgia"
+    ],
+    "topics": [
+      "music"
+    ],
+    "tags": [
+      "guitar",
+      "squier",
+      "fender",
+      "music"
+    ],
+    "related": [
+      "billy-talent",
+      "my-story-with-billy-talent",
+      "my-story-with-music-and-emotional-anchoring",
+      "my-story-with-live-music-and-concerts"
+    ]
+  },
+  {
+    "id": "xtool-s1",
+    "path": "content/library/hardware/fabrication/xtool-s1.md",
+    "themes": [
+      "craftsmanship"
+    ],
+    "topics": [
+      "design",
+      "engineering"
+    ],
+    "tags": [
+      "laser-engraving",
+      "xtool",
+      "hardware",
+      "fabrication"
+    ],
+    "related": [
+      "xtool-s1-40w-diode-laser",
+      "etchcentric-creations"
+    ]
+  },
+  {
+    "id": "gym-power-rack-and-barbell",
+    "path": "content/library/hardware/fitness/gym-power-rack-and-barbell.md",
+    "themes": [
+      "resilience",
+      "growth"
+    ],
+    "topics": [
+      "health-and-fitness"
+    ],
+    "tags": [
+      "gym",
+      "fitness",
+      "strength",
+      "power-rack",
+      "barbell"
+    ],
+    "related": [
+      "ironworks-adjustable-dumbbells",
+      "my-story-with-lifting-and-sensory-regulation",
+      "bose-quietcomfort-pro-2"
+    ]
+  },
+  {
+    "id": "ironworks-adjustable-dumbbells",
+    "path": "content/library/hardware/fitness/ironworks-adjustable-dumbbells.md",
+    "themes": [
+      "resilience",
+      "growth"
+    ],
+    "topics": [
+      "health-and-fitness"
+    ],
+    "tags": [
+      "gym",
+      "fitness",
+      "dumbbells",
+      "ironworks"
+    ],
+    "related": [
+      "gym-power-rack-and-barbell",
+      "my-story-with-lifting-and-sensory-regulation",
+      "bose-quietcomfort-pro-2"
+    ]
+  },
+  {
+    "id": "sony-alpha-6000",
+    "path": "content/library/hardware/video-and-photo/sony-alpha-6000.md",
+    "themes": [
+      "craftsmanship"
+    ],
+    "topics": [
+      "photography",
+      "video-editing"
+    ],
+    "tags": [
+      "camera",
+      "sony",
+      "photography",
+      "mirrorless"
+    ],
+    "related": [
+      "etchcentric-creations",
+      "my-story-with-etchcentric-and-laser-engraving",
+      "xtool-s1",
+      "ai-clipping-tools"
+    ]
+  },
+  {
+    "id": "billy-talent",
+    "path": "content/library/music/bands/billy-talent.md",
+    "themes": [
+      "nostalgia",
+      "creativity"
+    ],
+    "topics": [
+      "music"
+    ],
+    "tags": [
+      "punk-rock",
+      "canada",
+      "music",
+      "band"
+    ],
+    "related": [
+      "my-story-with-billy-talent",
+      "my-story-with-live-music-and-concerts",
+      "my-story-with-music-and-emotional-anchoring",
+      "green-day"
+    ]
+  },
+  {
+    "id": "cage-the-elephant",
+    "path": "content/library/music/bands/cage-the-elephant.md",
+    "themes": [
+      "nostalgia"
+    ],
+    "topics": [
+      "music"
+    ],
+    "tags": [
+      "music",
+      "cage-the-elephant",
+      "indie-rock"
+    ],
+    "related": [
+      "my-story-with-music-and-emotional-anchoring"
+    ]
+  },
+  {
+    "id": "great-big-sea",
+    "path": "content/library/music/bands/great-big-sea.md",
+    "themes": [
+      "nostalgia",
+      "childhood"
+    ],
+    "topics": [
+      "music"
+    ],
+    "tags": [
+      "music",
+      "newfoundland",
+      "great-big-sea",
+      "newfoundland",
+      "great-big-sea",
+      "childhood"
+    ],
+    "related": [
+      "my-story-with-music-and-emotional-anchoring"
+    ]
+  },
+  {
+    "id": "green-day",
+    "path": "content/library/music/bands/green-day.md",
+    "themes": [
+      "nostalgia"
+    ],
+    "topics": [
+      "music"
+    ],
+    "tags": [
+      "music",
+      "green-day",
+      "punk-rock"
+    ],
+    "related": [
+      "my-story-with-music-and-emotional-anchoring"
+    ]
+  },
+  {
+    "id": "simple-plan",
+    "path": "content/library/music/bands/simple-plan.md",
+    "themes": [
+      "nostalgia",
+      "identity"
+    ],
+    "topics": [
+      "music"
+    ],
+    "tags": [
+      "childhood",
+      "band",
+      "rock"
+    ],
+    "related": [
+      "green-day",
+      "billy-talent",
+      "my-story-with-public-voice-and-social-ridicule"
+    ]
+  },
+  {
+    "id": "tokyo-police-club",
+    "path": "content/library/music/bands/tokyo-police-club.md",
+    "themes": [
+      "nostalgia"
+    ],
+    "topics": [
+      "music"
+    ],
+    "tags": [
+      "music",
+      "tokyo-police-club",
+      "indie-rock"
+    ],
+    "related": [
+      "my-story-with-music-and-emotional-anchoring"
+    ]
+  },
+  {
+    "id": "skrillex",
+    "path": "content/library/music/electronic/skrillex.md",
+    "themes": [
+      "nostalgia"
+    ],
+    "topics": [
+      "music"
+    ],
+    "tags": [
+      "music",
+      "skrillex",
+      "dubstep",
+      "jack-u",
+      "electronic"
+    ],
+    "related": [
+      "my-story-with-music-and-emotional-anchoring",
+      "my-story-with-live-music-and-concerts"
+    ]
+  },
+  {
+    "id": "barbie-girl-aqua",
+    "path": "content/library/music/songs/barbie-girl-aqua.md",
+    "themes": [
+      "nostalgia",
+      "creativity"
+    ],
+    "topics": [
+      "music"
+    ],
+    "tags": [
+      "childhood",
+      "pop",
+      "nostalgia"
+    ],
+    "related": [
+      "macarena",
+      "fat-boy-max-a-million",
+      "my-story-with-music-and-emotional-anchoring"
+    ]
+  },
+  {
+    "id": "fat-boy-max-a-million",
+    "path": "content/library/music/songs/fat-boy-max-a-million.md",
+    "themes": [
+      "nostalgia",
+      "connection"
+    ],
+    "topics": [
+      "music"
+    ],
+    "tags": [
+      "childhood",
+      "nostalgia",
+      "retro"
+    ],
+    "related": [
+      "barbie-girl-aqua",
+      "macarena",
+      "my-story-with-elementary-school-and-unwritten-social-rules"
+    ]
+  },
+  {
+    "id": "macarena",
+    "path": "content/library/music/songs/macarena.md",
+    "themes": [
+      "nostalgia",
+      "connection"
+    ],
+    "topics": [
+      "music"
+    ],
+    "tags": [
+      "childhood",
+      "dance",
+      "nostalgia"
+    ],
+    "related": [
+      "barbie-girl-aqua",
+      "fat-boy-max-a-million",
+      "my-story-with-family-memories-and-santa-claus"
+    ]
+  },
+  {
+    "id": "ai-clipping-tools",
+    "path": "content/library/services/ai-clipping-tools.md",
+    "themes": [
+      "systems-thinking"
+    ],
+    "topics": [
+      "video-editing"
+    ],
+    "tags": [
+      "ai",
+      "video",
+      "editing",
+      "automation"
+    ],
+    "related": [
+      "my-story-with-audio-gear-and-podcasting",
+      "sony-alpha-6000",
+      "shure-sm7b-microphone",
+      "personal-digital-garden-creator"
+    ]
+  },
+  {
+    "id": "sensory-playlists-spotify",
+    "path": "content/library/services/sensory-playlists-spotify.md",
+    "themes": [
+      "curiosity",
+      "creativity"
+    ],
+    "topics": [
+      "music",
+      "audhd"
+    ],
+    "tags": [
+      "sensory-tools",
+      "spotify",
+      "playlists",
+      "brown-noise"
+    ],
+    "related": [
+      "my-story-with-autistic-burnout-and-sensory-regulation",
+      "my-story-with-music-and-emotional-anchoring",
+      "bose-quietcomfort-pro-2",
+      "ark-chewers-sensory-wearable"
+    ]
+  },
+  {
+    "id": "discord",
+    "path": "content/library/software/apps/discord.md",
+    "themes": [
+      "connection",
+      "systems-thinking"
+    ],
+    "topics": [
+      "technology"
+    ],
+    "tags": [
+      "communication",
+      "social",
+      "voip"
+    ],
+    "related": [
+      "discord-vs-corporate-comms",
+      "building-a-comprehensive-discord-ecosystem"
+    ]
+  },
+  {
+    "id": "lightburn",
+    "path": "content/library/software/apps/lightburn.md",
+    "themes": [
+      "craftsmanship",
+      "creativity"
+    ],
+    "topics": [
+      "technology"
+    ],
+    "tags": [
+      "laser",
+      "manufacturing",
+      "tool",
+      "linux"
+    ],
+    "related": [
+      "xtool-s1-40w-diode-laser",
+      "etchcentric-creations"
+    ]
+  },
+  {
+    "id": "spotify",
+    "path": "content/library/software/apps/spotify.md",
+    "themes": [
+      "connection",
+      "nostalgia"
+    ],
+    "topics": [
+      "music"
+    ],
+    "tags": [
+      "streaming",
+      "audio",
+      "service"
+    ],
+    "related": [
+      "sensory-playlists-spotify",
+      "my-story-with-music-and-emotional-anchoring",
+      "the-case-for-self-hosting-over-cloud-datacenters"
+    ]
+  },
+  {
+    "id": "fedora",
+    "path": "content/library/software/os/fedora.md",
+    "themes": [
+      "learning",
+      "craftsmanship"
+    ],
+    "topics": [
+      "technology"
+    ],
+    "tags": [
+      "linux",
+      "os",
+      "daily-driver",
+      "redhat"
+    ],
+    "related": [
+      "ubuntu",
+      "proxmox-ve",
+      "sensible-infrastructure-and-white-box-servers"
+    ]
+  },
+  {
+    "id": "ubuntu",
+    "path": "content/library/software/os/ubuntu.md",
+    "themes": [
+      "systems-thinking",
+      "craftsmanship"
+    ],
+    "topics": [
+      "technology"
+    ],
+    "tags": [
+      "linux",
+      "os",
+      "server",
+      "desktop"
+    ],
+    "related": [
+      "fedora",
+      "proxmox-ve",
+      "the-case-for-self-hosting-over-cloud-datacenters"
+    ]
+  },
+  {
+    "id": "proxmox-ve",
+    "path": "content/proxmox-ve.md",
+    "themes": [
+      "curiosity",
+      "systems-thinking"
+    ],
+    "topics": [
+      "home-lab",
+      "technology"
+    ],
+    "tags": [
+      "virtualization",
+      "linux",
+      "self-hosting",
+      "homelab"
+    ],
+    "related": [
+      "my-story-with-home-lab-and-proxmox",
+      "next-gen-proxmox-home-lab",
+      "thread-proxmox-homelab",
+      "project-atlas"
+    ]
+  },
+  {
+    "id": "hyper-v",
+    "path": "content/library/softwares/hyper-v.md",
+    "themes": [
+      "systems-thinking",
+      "learning"
+    ],
+    "topics": [
+      "virtualization",
+      "infrastructure"
+    ],
+    "tags": [
+      "virtualization",
+      "infrastructure",
+      "software"
+    ],
+    "related": [
+      "proxmox-ve"
+    ]
+  },
+  {
+    "id": "vmware-esxi",
+    "path": "content/library/softwares/vmware-esxi.md",
+    "themes": [
+      "systems-thinking",
+      "learning"
+    ],
+    "topics": [
+      "virtualization",
+      "infrastructure"
+    ],
+    "tags": [
+      "virtualization",
+      "infrastructure",
+      "software"
+    ],
+    "related": [
+      "proxmox-ve"
+    ]
+  },
+  {
+    "id": "xcp-ng",
+    "path": "content/library/softwares/xcp-ng.md",
+    "themes": [
+      "systems-thinking",
+      "learning"
+    ],
+    "topics": [
+      "virtualization",
+      "infrastructure"
+    ],
+    "tags": [
+      "virtualization",
+      "infrastructure",
+      "software"
+    ],
+    "related": [
+      "proxmox-ve"
+    ]
+  },
+  {
+    "id": "product-recommendation-template",
+    "path": "content/library/templates/product-recommendation-template.md",
+    "themes": [
+      "craftsmanship"
+    ],
+    "topics": [
+      "technology"
+    ],
+    "tags": [
+      "template",
+      "gear",
+      "recommendation"
+    ],
+    "related": [
+      "project-atlas",
+      "personal-digital-garden-creator",
+      "library",
+      "let-me-google-that-for-you"
+    ]
+  },
+  {
+    "id": "ark-chewers-sensory-wearable",
+    "path": "content/library/tools/ark-chewers-sensory-wearable.md",
+    "themes": [
+      "identity",
+      "resilience"
+    ],
+    "topics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "tags": [
+      "sensory-tools",
+      "oral-stimming",
+      "ark-therapeutic",
+      "audhd"
+    ],
+    "related": [
+      "scented-therapy-putty",
+      "my-story-with-autistic-burnout-and-sensory-regulation",
+      "autism-burnout-recovery-workbook"
+    ]
+  },
+  {
+    "id": "bluedriver-obd2-scanner",
+    "path": "content/library/tools/bluedriver-obd2-scanner.md",
+    "themes": [
+      "craftsmanship",
+      "systems-thinking"
+    ],
+    "topics": [
+      "technology"
+    ],
+    "tags": [
+      "automotive",
+      "obd2",
+      "diagnostics",
+      "tools"
+    ],
+    "related": [
+      "my-story-with-mechanical-engineering-and-systems-thinking",
+      "my-story-with-everything-is-connected"
+    ]
+  },
+  {
+    "id": "scented-therapy-putty",
+    "path": "content/library/tools/scented-therapy-putty.md",
+    "themes": [
+      "identity",
+      "resilience"
+    ],
+    "topics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "tags": [
+      "sensory-tools",
+      "tactile-stimming",
+      "putty",
+      "stress-relief"
+    ],
+    "related": [
+      "ark-chewers-sensory-wearable",
+      "my-story-with-autistic-burnout-and-sensory-regulation",
+      "autism-burnout-recovery-workbook"
+    ]
+  },
+  {
+    "id": "xtool-s1-40w-diode-laser",
+    "path": "content/library/tools/xtool-s1-40w-diode-laser.md",
+    "themes": [
+      "craftsmanship",
+      "creativity"
+    ],
+    "topics": [
+      "technology",
+      "drawing"
+    ],
+    "tags": [
+      "laser",
+      "xtool",
+      "engraving",
+      "manufacturing"
+    ],
+    "related": [
+      "etchcentric-creations",
+      "my-story-with-etchcentric-and-laser-engraving",
+      "thread-xtool-laser-engraving"
+    ]
+  }
+]

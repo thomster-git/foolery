@@ -1,0 +1,1136 @@
+<div class="page-container">
+  <div class="content-wrapper article-layout" style="margin: 2rem auto;">
+    <div class="article-content">
+
+    <div class="breadcrumbs" style="margin-bottom: 2rem;">
+      <a href="/">Home</a> ›
+      <a href="/tools/">Developer Tools</a> ›
+      <span>Ocarina Practice</span>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 2.5rem;">
+      <h1 style="font-size: 2.5rem; color: var(--accent-cyan); margin-bottom: 0.5rem;">🎵 Ocarina Practice</h1>
+      <p style="color: var(--text-muted); font-size: 1.1rem;">12-hole tenor/alto C ocarina — fingering chart, live tuner, and Zelda songbook.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div style="display: flex; gap: 0; margin-bottom: 0; border-bottom: 2px solid var(--border-color);">
+      <button class="oc-tab active" data-tab="chart" onclick="switchTab('chart')">📊 Finger Chart</button>
+      <button class="oc-tab" data-tab="tuner" onclick="switchTab('tuner')">🎙️ Live Tuner</button>
+      <button class="oc-tab" data-tab="songs" onclick="switchTab('songs')">📖 Songbook</button>
+      <button class="oc-tab" data-tab="oot" onclick="switchTab('oot')">🎮 OoT Melodies</button>
+    </div>
+
+    <!-- ==================== FINGER CHART TAB ==================== -->
+    <div id="tab-chart" class="oc-panel" style="padding-top: 2rem;">
+
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem; text-align: center;">
+        Full fingering chart for a <strong style="color: var(--text-main);">12-hole tenor/alto C ocarina</strong>.
+        Filled circles = covered holes. Empty circles = open holes.
+      </p>
+
+      <!-- Legend -->
+      <div style="display: flex; gap: 2rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <div style="width: 16px; height: 16px; border-radius: 50%; background: #111827; border: 2px solid #1a3d24; flex-shrink:0;"></div>
+          <span style="color: var(--text-muted); font-size: 0.9rem;">Covered (blocked)</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <div style="width: 16px; height: 16px; border-radius: 50%; background: #ffffff; border: 2px solid #1a3d24; flex-shrink:0;"></div>
+          <span style="color: var(--text-muted); font-size: 0.9rem;">Open</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <div style="width: 16px; height: 16px; border-radius: 50%; background: #7c3aed; border: 2px solid #5b21b6; flex-shrink:0;"></div>
+          <span style="color: var(--text-muted); font-size: 0.9rem;">Sub-hole (partial)</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.6rem; font-size:0.8rem; color:var(--text-muted); border-left: 1px solid var(--border-color); padding-left: 1rem; margin-left: 0.5rem;">
+          LS/RS = the 2 small top holes &nbsp;|&nbsp; cross = cross-fingering
+        </div>
+      </div>
+
+      <!-- Chart Grid -->
+      <div id="finger-chart-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 245px), 1fr)); gap: 1.25rem;"></div>
+
+    </div>
+
+    <!-- ==================== TUNER TAB ==================== -->
+    <div id="tab-tuner" class="oc-panel" style="display: none; padding-top: 2rem;">
+
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <p style="color: var(--text-muted); max-width: 560px; margin: 0 auto 1.5rem;">
+          Play a note into your microphone. The tuner will detect the pitch and show you how in-tune you are.
+          Grant microphone access when prompted.
+        </p>
+        <button id="tuner-start-btn" onclick="startTuner()" style="background: linear-gradient(135deg,#7c3aed,#06b6d4); color: white; border: none; padding: 0.75rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: opacity 0.2s;">🎙️ Start Listening</button>
+        <button id="tuner-stop-btn" onclick="stopTuner()" style="display: none; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.75rem 2rem; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; margin-left: 0.75rem;">Stop</button>
+      </div>
+
+      <!-- Tuner Display -->
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; max-width: 520px; margin: 0 auto;">
+
+        <!-- Note name -->
+        <div id="tuner-note" style="font-size: 5rem; font-weight: 700; color: var(--accent-cyan); line-height: 1; margin-bottom: 0.5rem; font-family: 'JetBrains Mono', monospace;">--</div>
+        <div id="tuner-freq" style="font-size: 1rem; color: var(--text-muted); margin-bottom: 2rem;">Frequency: — Hz</div>
+
+        <!-- Semicircular Dial Gauge -->
+        <div style="position: relative; width: 260px; height: 140px; margin: 0 auto 1.5rem;">
+          <svg viewBox="0 0 260 140" style="width: 100%; height: 100%;">
+            <g transform="translate(130, 130) rotate(-180)">
+              <circle r="110" cx="0" cy="0" fill="none" stroke="#ef4444" stroke-width="12" stroke-dasharray="345.575 691.15" />
+              <circle r="110" cx="0" cy="0" fill="none" stroke="#eab308" stroke-width="12" stroke-dasharray="224.624 691.15" stroke-dashoffset="-120.951" />
+              <circle r="110" cx="0" cy="0" fill="none" stroke="#22c55e" stroke-width="12" stroke-dasharray="34.557 691.15" stroke-dashoffset="-155.508" />
+              <circle r="110" cx="0" cy="0" fill="none" stroke="#eab308" stroke-width="12" stroke-dasharray="34.557 691.15" stroke-dashoffset="-190.065" />
+              <circle r="110" cx="0" cy="0" fill="none" stroke="#ef4444" stroke-width="12" stroke-dasharray="120.951 691.15" stroke-dashoffset="-224.622" />
+            </g>
+            <!-- Tick marks -->
+            <text x="20" y="138" font-size="12" fill="var(--text-muted)" text-anchor="middle">-50¢</text>
+            <text x="130" y="110" font-size="12" fill="var(--text-muted)" text-anchor="middle">0</text>
+            <text x="240" y="138" font-size="12" fill="var(--text-muted)" text-anchor="middle">+50¢</text>
+            
+            <!-- Needle -->
+            <g id="tuner-needle" transform="translate(130, 130) rotate(0)" style="transition: transform 0.1s ease-out;">
+              <path d="M -3 0 L 0 -115 L 3 0 Z" fill="var(--text-main)" />
+              <circle cx="0" cy="0" r="6" fill="var(--text-main)" />
+            </g>
+          </svg>
+        </div>
+
+        <!-- Cents readout -->
+        <div id="tuner-cents" style="font-size: 1.5rem; font-weight: 600; color: var(--text-muted);">± 0 cents</div>
+        <div id="tuner-status" style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Press Start Listening to begin.</div>
+
+      </div>
+
+      <!-- Note reference table -->
+      <div style="margin-top: 2.5rem;">
+        <h3 style="color: var(--text-main); margin-bottom: 1rem; text-align: center;">C Major Reference Notes</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 100px), 1fr)); gap: 0.5rem; max-width: 600px; margin: 0 auto;">
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; text-align: center; font-size: 0.85rem;">
+            <div style="font-weight: 700; color: var(--accent-cyan);">C4</div><div style="color: var(--text-muted);">261.6 Hz</div>
+          </div>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; text-align: center; font-size: 0.85rem;">
+            <div style="font-weight: 700; color: var(--accent-cyan);">D4</div><div style="color: var(--text-muted);">293.7 Hz</div>
+          </div>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; text-align: center; font-size: 0.85rem;">
+            <div style="font-weight: 700; color: var(--accent-cyan);">E4</div><div style="color: var(--text-muted);">329.6 Hz</div>
+          </div>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; text-align: center; font-size: 0.85rem;">
+            <div style="font-weight: 700; color: var(--accent-cyan);">F4</div><div style="color: var(--text-muted);">349.2 Hz</div>
+          </div>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; text-align: center; font-size: 0.85rem;">
+            <div style="font-weight: 700; color: var(--accent-cyan);">G4</div><div style="color: var(--text-muted);">392.0 Hz</div>
+          </div>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; text-align: center; font-size: 0.85rem;">
+            <div style="font-weight: 700; color: var(--accent-cyan);">A4</div><div style="color: var(--text-muted);">440.0 Hz</div>
+          </div>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; text-align: center; font-size: 0.85rem;">
+            <div style="font-weight: 700; color: var(--accent-cyan);">B4</div><div style="color: var(--text-muted);">493.9 Hz</div>
+          </div>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; text-align: center; font-size: 0.85rem;">
+            <div style="font-weight: 700; color: var(--accent-cyan);">C5</div><div style="color: var(--text-muted);">523.3 Hz</div>
+          </div>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; text-align: center; font-size: 0.85rem;">
+            <div style="font-weight: 700; color: var(--accent-cyan);">D5</div><div style="color: var(--text-muted);">587.3 Hz</div>
+          </div>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; text-align: center; font-size: 0.85rem;">
+            <div style="font-weight: 700; color: var(--accent-cyan);">E5</div><div style="color: var(--text-muted);">659.3 Hz</div>
+          </div>
+          <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; text-align: center; font-size: 0.85rem;">
+            <div style="font-weight: 700; color: var(--accent-cyan);">F5</div><div style="color: var(--text-muted);">698.5 Hz</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ==================== SONGBOOK TAB ==================== -->
+    <div id="tab-songs" class="oc-panel" style="display: none; padding-top: 2rem;">
+
+      <p style="color: var(--text-muted); text-align: center; margin-bottom: 2rem;">
+        Each note shows the tab name and the fingering diagram below it. Play through at your own pace.
+      </p>
+
+      <!-- Song selector -->
+      <div id="song-buttons-container" style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem;"></div>
+
+      <div id="song-display" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem;"></div>
+
+    </div>
+
+    <!-- ==================== OOT MELODIES TAB ==================== -->
+    <div id="tab-oot" class="oc-panel" style="display: none; padding-top: 2rem;">
+      <p style="color: var(--text-muted); text-align: center; margin-bottom: 2rem;">
+        The short activation melodies used in Ocarina of Time. These are transposed specifically for a 12-hole Alto C Ocarina.
+      </p>
+      <div id="oot-buttons-container" style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem;"></div>
+      <div id="oot-display" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; text-align: center; min-height: 250px;">
+        <div style="display: flex; justify-content: center; gap: 2rem; align-items: center; margin-bottom: 1.5rem; opacity: 0.4;">
+          <img src="/images/website-assets/royal-crest.svg" alt="Royal Crest" style="width: 110px;">
+        </div>
+        <p style="text-align:center; color:var(--text-muted);">Select a melody above to view its tabs.</p>
+      </div>
+    </div>
+
+    </div> <!-- end article-content -->
+    {{ad_sidebar}}
+  </div>
+</div>
+
+<!-- ==================== STYLES ==================== -->
+<style>
+  .oc-tab {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+    font-family: inherit;
+  }
+  .oc-tab.active {
+    color: var(--accent-cyan);
+    border-bottom-color: var(--accent-cyan);
+  }
+  .oc-tab:hover { color: var(--text-main); }
+
+  /* Finger chart card */
+  .fc-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1rem 0.75rem;
+    text-align: center;
+    cursor: default;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .fc-card:hover { border-color: var(--accent-cyan); transform: translateY(-2px); }
+  .fc-note { font-size: 1.1rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 0.75rem; font-family: 'JetBrains Mono', monospace; }
+  .fc-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; }
+
+  /* Song tab buttons */
+  .song-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .song-btn.active, .song-btn:hover {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+  }
+
+  /* Song notes */
+  .song-notes { display: flex; flex-direction: column; width: 100%; }
+
+  .song-phrase {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 0.5rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px dashed rgba(255,255,255,0.1);
+    width: 100%;
+    /* Custom scrollbar for phrase blocks */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+  }
+  .song-phrase::-webkit-scrollbar { height: 6px; }
+  .song-phrase::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+  .song-phrase:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .note-beat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    flex: 0 0 auto;
+    width: 100px;
+  }
+  
+  .note-fingering {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .note-fingering svg {
+    width: 100%;
+    max-width: 100px;
+    height: auto;
+  }
+  .note-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-main);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.15rem 0.4rem;
+  }
+  .note-beat-sep {
+    width: 2px;
+    height: 40px;
+    background: var(--border-color);
+    border-radius: 1px;
+    align-self: center;
+    margin: 0 0.1rem;
+    margin-top: 1.4rem;
+  }
+  
+  /* Practice Mode Styles */
+  .practice-active {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px var(--accent-cyan);
+    border-radius: 8px;
+    background: rgba(234, 88, 12, 0.1);
+    transition: all 0.2s ease-out;
+  }
+  .practice-done {
+    opacity: 0.4;
+    transform: scale(0.95);
+    transition: all 0.3s ease-in;
+  }
+  .practice-done .note-name {
+    background: rgba(16, 185, 129, 0.2); /* green tint */
+    border-color: var(--accent-emerald);
+    color: var(--accent-emerald);
+  }
+</style>
+
+<!-- ==================== JAVASCRIPT ==================== -->
+<script>
+// ============================================================
+// DATA: 12-hole Tenor/Alto C Ocarina Fingering Chart
+// Holes: Left hand top = L1,L2,L3,L4 (from index to pinky)
+//        Right hand top = R1,R2,R3,R4
+//        Sub-holes: LS (left sub), RS (right sub)
+// Value: 1 = covered, 0 = open, 0.5 = sub-hole partial
+// Hole layout SVG order (as viewed from front, playing position):
+//   Top row left hand:  L1 L2 L3 L4
+//   Top row right hand: R1 R2 R3 R4
+//   Sub holes:          LS RS
+// ============================================================
+
+const FINGERINGS = [
+  { note: 'A4',  holes: [1,1,1,1, 1,1,1,1, 1,1], thumbs: [1,1], label: 'A (Lowest)' },
+  { note: 'Bb4', holes: [1,1,1,1, 1,1,1,1, 1,0], thumbs: [1,1], label: 'A# or Bb' },
+  { note: 'B4',  holes: [1,1,1,1, 1,1,1,0, 0,1], thumbs: [1,1], label: 'B' },
+  { note: 'C5',  holes: [1,1,1,1, 1,1,1,1, 0,0], thumbs: [1,1], label: 'C' },
+  { note: 'C#5', holes: [1,1,1,1, 1,1,1,0, 0,1], thumbs: [1,1], label: 'C# or Db' },
+  { note: 'D5',  holes: [1,1,1,1, 1,1,1,0, 0,0], thumbs: [1,1], label: 'D' },
+  { note: 'Eb5', holes: [1,1,1,1, 1,1,0,0, 0,1], thumbs: [1,1], label: 'D# or Eb' },
+  { note: 'E5',  holes: [1,1,1,1, 1,1,0,0, 0,0], thumbs: [1,1], label: 'E' },
+  { note: 'F5',  holes: [1,1,1,1, 1,0,0,0, 0,0], thumbs: [1,1], label: 'F' },
+  { note: 'F#5', holes: [1,1,1,1, 0,0,1,0, 0,0], thumbs: [1,1], label: 'F# or Gb' },
+  { note: 'G5',  holes: [1,1,1,1, 0,0,0,0, 0,0], thumbs: [1,1], label: 'G' },
+  { note: 'Ab5', holes: [1,1,0,1, 0,0,1,0, 0,0], thumbs: [1,1], label: 'G# or Ab' },
+  { note: 'A5',  holes: [1,1,0,1, 0,0,0,0, 0,0], thumbs: [1,1], label: 'A' },
+  { note: 'Bb5', holes: [1,0,0,1, 0,0,1,0, 0,0], thumbs: [1,1], label: 'A# or Bb' },
+  { note: 'B5',  holes: [1,0,0,1, 0,0,0,0, 0,0], thumbs: [1,1], label: 'B' },
+  { note: 'C6',  holes: [0,0,0,1, 0,0,0,0, 0,0], thumbs: [1,1], label: 'C' },
+  { note: 'C#6', holes: [0,0,0,1, 0,0,1,0, 0,0], thumbs: [0,1], label: 'C#' },
+  { note: 'D6',  holes: [0,0,0,1, 0,0,0,0, 0,0], thumbs: [0,1], label: 'D' },
+  { note: 'Eb6', holes: [0,0,0,1, 0,0,1,0, 0,0], thumbs: [0,0], label: 'D#' },
+  { note: 'E6',  holes: [0,0,0,1, 0,0,0,0, 0,0], thumbs: [0,0], label: 'E' },
+  { note: 'F6',  holes: [0,0,0,0, 0,0,0,0, 0,0], thumbs: [0,0], label: 'F' }
+];
+
+// ============================================================
+// RENDER FINGER CHART
+// ============================================================
+
+function renderHoleSVG(holes, thumbs) {
+  thumbs = thumbs || [1, 1];
+  
+  function getFill(val) {
+    if (val === 1) return '#111827'; // COVERED
+    if (val === 0.5) return '#7c3aed'; // SUBPART
+    return '#ffffff'; // OPEN
+  }
+
+  return `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg style="display:block;margin:0 auto; max-width: 100%; height: auto;"
+   width="220"
+   viewBox="0 0 721.97906 590.71326"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><g
+     id="layer1"
+     transform="translate(-68.716454,-276.56598)"><path
+       style="display:inline;fill:#539d94;fill-opacity:1;stroke:#ffffff;stroke-opacity:1"
+       d="M 609.27481,336.18321 C 482.26653,389.49115 355.43835,443.59491 231.42402,503.56575 179.05054,530.28377 128.69478,562.783 89.084534,606.64364 c -24.705141,28.49013 -28.926182,76.21002 2.01469,102.14087 43.327646,36.38104 103.815226,34.33229 157.243286,37.80569 45.18942,2.28761 96.51563,5.13558 130.07318,39.52206 24.41208,24.20798 11.48184,92.96801 63.97314,78.75805 40.74842,-9.01775 24.45963,-57.88634 28.42259,-87.80876 -2.72684,-86.90137 39.92124,-168.16863 96.81949,-231.27324 65.08001,-74.02062 137.25432,-141.55563 201.3996,-216.3979 21.81122,-14.43986 36.09769,-61.3174 -5.33404,-50.80052 -53.32451,13.12858 -103.28142,37.94944 -154.42166,57.59332 z"
+       id="path1" /><ellipse
+       style="fill:${getFill(holes[3])};fill-opacity:1;stroke:#ffffff;stroke-width:1.18486;stroke-opacity:1" id="path2"
+       ry="21.45693"
+       rx="22.807539"
+       cy="517.85767"
+       cx="354.85593" /><ellipse
+       style="fill:${getFill(holes[6])};fill-opacity:1;stroke:#ffffff;stroke-width:1.08615;stroke-opacity:1" id="path2-6"
+       ry="20.332275"
+       rx="20.225489"
+       cy="422.30069"
+       cx="593.07025" /><ellipse
+       style="fill:${getFill(holes[7])};fill-opacity:1;stroke:#ffffff;stroke-width:0.832814;stroke-opacity:1" id="path2-6-4"
+       ry="16.329651"
+       rx="14.805949"
+       cy="380.75058"
+       cx="668.79596" /><ellipse
+       style="fill:${getFill(holes[5])};fill-opacity:1;stroke:#ffffff;stroke-width:0.817567;stroke-opacity:1" id="path2-6-4-2"
+       ry="15.649061"
+       rx="14.889111"
+       cy="487.03961"
+       cx="527.62762" /><ellipse
+       style="fill:${getFill(holes[9])};fill-opacity:1;stroke:#ffffff;stroke-width:0.514545;stroke-opacity:1" id="path2-6-4-2-1"
+       ry="9.2422924"
+       rx="9.9856539"
+       cy="460.28378"
+       cx="498.06265" /><ellipse
+       style="fill:${getFill(holes[4])};fill-opacity:1;stroke:#ffffff;stroke-width:1.05798;stroke-opacity:1" id="path2-6-6"
+       ry="20.375334"
+       rx="19.149607"
+       cy="570.85095"
+       cx="481.73962" /><ellipse
+       style="fill:${getFill(holes[2])};fill-opacity:1;stroke:#ffffff;stroke-width:1.05024;stroke-opacity:1" id="path2-4"
+       ry="19.66201"
+       rx="19.555225"
+       cy="591.55676"
+       cx="286.32452" /><ellipse
+       style="fill:${getFill(holes[0])};fill-opacity:1;stroke:#ffffff;stroke-width:0.91063;stroke-opacity:1" id="path2-4-6"
+       ry="18.5578"
+       rx="15.576707"
+       cy="659.90674"
+       cx="111.58829" /><ellipse
+       style="fill:${getFill(holes[8])};fill-opacity:1;stroke:#ffffff;stroke-width:0.652083;stroke-opacity:1" id="path2-4-6-1"
+       ry="11.966861"
+       rx="12.386356"
+       cy="682.07599"
+       cx="222.06181" /><ellipse
+       style="fill:${getFill(holes[1])};fill-opacity:1;stroke:#ffffff;stroke-width:1.31599;stroke-opacity:1" id="path2-2"
+       ry="24.217228"
+       rx="24.928068"
+       cy="639.742"
+       cx="200.58791" /><ellipse
+       style="fill:${getFill(thumbs[0])};fill-opacity:1;stroke:#ffffff;stroke-width:1.81287;stroke-opacity:1" id="path2-2-4"
+       ry="33.360893"
+       rx="34.340126"
+       cy="782.31897"
+       cx="146.88524" /><ellipse
+       style="fill:${getFill(thumbs[1])};fill-opacity:1;stroke:#ffffff;stroke-width:1.81287;stroke-opacity:1" id="path2-2-4-7"
+       ry="33.360893"
+       rx="34.340126"
+       cy="590.45905"
+       cx="590.59869" /></g></svg>`;
+}
+
+function buildFingerChart() {
+  const grid = document.getElementById('finger-chart-grid');
+  if (!grid) return;
+  grid.innerHTML = FINGERINGS.map(f => `
+    <div class="fc-card">
+      <div class="fc-note">${f.note}</div>
+      ${renderHoleSVG(f.holes, f.thumbs)}
+      <div class="fc-label">${f.label}</div>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// TUNER: Web Audio API + YIN-ish autocorrelation pitch detection
+// ============================================================
+
+let audioCtx = null, analyser = null, tunerBuf = null, tunerRAF = null, micStream = null;
+const FREQ_BUFFER_SIZE = 15;
+let freqBuffer = [];
+let currentNoteNum = null;
+let silenceFrames = 0;
+
+// Practice Mode Globals
+let practiceMode = false;
+let practiceType = null;
+let practiceNotes = [];
+let practiceIndex = 0;
+let practiceSustainFrames = 0;
+
+function noteFromFreq(freq, targetNoteNum = null) {
+  if (freq < 50) return null;
+  const noteNames = ['C','C#','D','Eb','E','F','F#','G','G#','A','Bb','B'];
+  const A4 = 440;
+  const semitones = 12 * Math.log2(freq / A4);
+  const noteNum = targetNoteNum !== null ? targetNoteNum : Math.round(semitones) + 69; // MIDI note number
+  const octave = Math.floor(noteNum / 12) - 1;
+  const name = noteNames[((noteNum % 12) + 12) % 12];
+  const exactFreq = A4 * Math.pow(2, (noteNum - 69) / 12);
+  const cents = Math.round(1200 * Math.log2(freq / exactFreq));
+  return { name, octave, cents, freq, noteNum };
+}
+
+function autoCorrelate(buf, sampleRate) {
+  const SIZE = buf.length;
+  let rms = 0;
+  for (let i = 0; i < SIZE; i++) rms += buf[i] * buf[i];
+  rms = Math.sqrt(rms / SIZE);
+  if (rms < 0.015) return -1; // silence
+
+  let r1 = 0, r2 = SIZE - 1;
+  const thres = 0.2;
+  for (let i = 0; i < SIZE / 2; i++) { if (Math.abs(buf[i]) < thres) { r1 = i; break; } }
+  for (let i = 1; i < SIZE / 2; i++) { if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; } }
+
+  const slicedBuf = buf.slice(r1, r2);
+  const len = slicedBuf.length;
+  const c = new Float32Array(len).fill(0);
+  for (let i = 0; i < len; i++) {
+    for (let j = 0; j < len - i; j++) c[i] += slicedBuf[j] * slicedBuf[j + i];
+  }
+
+  let d = 0;
+  while (d < len && c[d] > c[d + 1]) d++;
+  let maxVal = -1, maxPos = -1;
+  for (let i = d; i < len; i++) { if (c[i] > maxVal) { maxVal = c[i]; maxPos = i; } }
+  if (maxPos < 0) return -1;
+
+  // Parabolic interpolation
+  let T0 = maxPos;
+  if (maxPos > 0 && maxPos < len - 1) {
+    const x1 = c[maxPos - 1], x2 = c[maxPos], x3 = c[maxPos + 1];
+    T0 = maxPos + (x3 - x1) / (2 * (2 * x2 - x1 - x3));
+  }
+  return sampleRate / T0;
+}
+
+function tunerLoop() {
+  if (!analyser) return;
+  analyser.getFloatTimeDomainData(tunerBuf);
+  const freq = autoCorrelate(tunerBuf, audioCtx.sampleRate);
+
+  const noteEl   = document.getElementById('tuner-note');
+  const freqEl   = document.getElementById('tuner-freq');
+  const centsEl  = document.getElementById('tuner-cents');
+  const needleEl = document.getElementById('tuner-needle');
+  const statusEl = document.getElementById('tuner-status');
+
+  if (freq > 0) {
+    freqBuffer.push(freq);
+    if (freqBuffer.length > FREQ_BUFFER_SIZE) freqBuffer.shift();
+    silenceFrames = 0;
+  } else {
+    silenceFrames++;
+    if (silenceFrames > 30) {
+      freqBuffer = [];
+      currentNoteNum = null;
+      noteEl.textContent = '--';
+      freqEl.textContent = 'Frequency: — Hz';
+      centsEl.textContent = '± 0 cents';
+      needleEl.style.transform = 'translate(130px, 130px) rotate(0deg)';
+      statusEl.textContent = 'Listening... play a note.';
+      noteEl.style.color = 'var(--accent-cyan)';
+    }
+  }
+
+  if (freqBuffer.length >= 3) {
+    let sum = 0, weightSum = 0;
+    for (let i = 0; i < freqBuffer.length; i++) {
+      const w = i + 1;
+      sum += freqBuffer[i] * w;
+      weightSum += w;
+    }
+    const smoothedFreq = sum / weightSum;
+
+    let info = noteFromFreq(smoothedFreq);
+    if (info) {
+      if (currentNoteNum !== null && info.noteNum !== currentNoteNum) {
+        if (Math.abs(info.cents) > 42) {
+          info = noteFromFreq(smoothedFreq, currentNoteNum);
+        }
+      }
+      currentNoteNum = info.noteNum;
+
+      noteEl.textContent = info.name + info.octave;
+      freqEl.textContent = `Frequency: ${info.freq.toFixed(1)} Hz`;
+      const absCents = Math.abs(info.cents);
+      centsEl.textContent = `${info.cents >= 0 ? '+' : ''}${info.cents} cents`;
+
+      // Needle position: -90 to +90 degrees (-50 to +50 cents)
+      const clampedCents = Math.max(-50, Math.min(50, info.cents));
+      const angle = (clampedCents / 50) * 90;
+      needleEl.style.transform = `translate(130px, 130px) rotate(${angle}deg)`;
+
+      // Color feedback
+      if (absCents <= 5) {
+        statusEl.textContent = '✅ In tune!';
+        noteEl.style.color = '#22c55e';
+      } else if (absCents <= 15) {
+        statusEl.textContent = info.cents > 0 ? '⬆ Slightly sharp' : '⬇ Slightly flat';
+        noteEl.style.color = '#eab308';
+      } else {
+        statusEl.textContent = info.cents > 0 ? '⬆ Sharp — loosen embouchure' : '⬇ Flat — tighten embouchure';
+        noteEl.style.color = '#ef4444';
+      }
+
+      // Practice Mode Logic
+      if (practiceMode && practiceIndex < practiceNotes.length) {
+        const targetNote = practiceNotes[practiceIndex];
+        
+        // Calculate exact cents difference from the target note (not the nearest note)
+        const exactTargetFreq = 440 * Math.pow(2, (targetNote.noteNum - 69) / 12);
+        const centsDiff = 1200 * Math.log2(smoothedFreq / exactTargetFreq);
+        const absCentsDiff = Math.abs(centsDiff);
+        
+        // UI Feedback Element
+        let fb = targetNote.el.querySelector('.practice-feedback');
+        if (!fb) {
+          fb = document.createElement('div');
+          fb.className = 'practice-feedback';
+          fb.style.fontSize = '0.75rem';
+          fb.style.fontWeight = 'bold';
+          fb.style.marginTop = '2px';
+          fb.style.marginBottom = '-10px';
+          fb.style.padding = '2px 6px';
+          fb.style.borderRadius = '4px';
+          fb.style.position = 'relative';
+          fb.style.zIndex = '10';
+          const nameEl = targetNote.el.querySelector('.note-name');
+          nameEl.parentNode.insertBefore(fb, nameEl.nextSibling);
+        }
+
+        if (absCentsDiff <= 20) {
+          fb.textContent = 'Perfect!';
+          fb.style.color = '#000';
+          fb.style.background = '#22c55e';
+          practiceSustainFrames++;
+          if (practiceSustainFrames > 10) {
+            targetNote.el.classList.remove('practice-active');
+            targetNote.el.classList.add('practice-done');
+            fb.textContent = 'Done';
+            fb.style.background = 'transparent';
+            fb.style.color = 'var(--accent-emerald)';
+            practiceIndex++;
+            practiceSustainFrames = 0;
+            if (practiceIndex < practiceNotes.length) {
+              practiceNotes[practiceIndex].el.classList.add('practice-active');
+              practiceNotes[practiceIndex].el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+              stopPracticeMode();
+              alert("🎉 Song Complete! Great job!");
+            }
+          }
+        } else {
+          practiceSustainFrames = 0;
+          if (absCentsDiff > 300) {
+             // If they are wildly off (more than 3 semitones), don't clutter UI with Sharp/Flat, just say 'Listening...'
+             fb.textContent = '---';
+             fb.style.color = 'var(--text-muted)';
+             fb.style.background = 'transparent';
+          } else if (centsDiff > 0) {
+            fb.textContent = '⬆ Sharp';
+            fb.style.color = '#ef4444';
+            fb.style.background = 'transparent';
+          } else {
+            fb.textContent = '⬇ Flat';
+            fb.style.color = '#ef4444';
+            fb.style.background = 'transparent';
+          }
+        }
+      }
+    }
+  }
+
+  tunerRAF = requestAnimationFrame(tunerLoop);
+}
+
+async function startTuner() {
+  try {
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 2048;
+    tunerBuf = new Float32Array(analyser.fftSize);
+    const source = audioCtx.createMediaStreamSource(micStream);
+    source.connect(analyser);
+
+    document.getElementById('tuner-start-btn').style.display = 'none';
+    document.getElementById('tuner-stop-btn').style.display = 'inline-block';
+    document.getElementById('tuner-status').textContent = 'Listening... play a note.';
+    tunerLoop();
+  } catch (e) {
+    document.getElementById('tuner-status').textContent = 'Microphone access denied or unavailable.';
+    console.error(e);
+  }
+}
+
+function stopTuner() {
+  if (tunerRAF) cancelAnimationFrame(tunerRAF);
+  if (micStream) micStream.getTracks().forEach(t => t.stop());
+  if (audioCtx) audioCtx.close();
+  analyser = null; audioCtx = null; tunerBuf = null; micStream = null;
+  freqBuffer = []; currentNoteNum = null; silenceFrames = 0;
+  document.getElementById('tuner-start-btn').style.display = 'inline-block';
+  document.getElementById('tuner-stop-btn').style.display = 'none';
+  document.getElementById('tuner-note').textContent = '--';
+  document.getElementById('tuner-note').style.color = 'var(--accent-cyan)';
+  document.getElementById('tuner-freq').textContent = 'Frequency: — Hz';
+  document.getElementById('tuner-cents').textContent = '± 0 cents';
+  document.getElementById('tuner-status').textContent = 'Press Start Listening to begin.';
+  document.getElementById('tuner-needle').style.transform = 'translate(130px, 130px) rotate(0deg)';
+}
+
+function nameToNoteNum(noteStr) {
+  const noteNames = ['C','C#','D','Eb','E','F','F#','G','G#','A','Bb','B'];
+  let baseName = noteStr.slice(0, -1);
+  let octave = parseInt(noteStr.slice(-1));
+  const enharmonics = { 'Db':'C#', 'D#':'Eb', 'Gb':'F#', 'Ab':'G#', 'A#':'Bb' };
+  if (enharmonics[baseName]) baseName = enharmonics[baseName];
+  let index = noteNames.indexOf(baseName);
+  if (index === -1) return null;
+  return (octave + 1) * 12 + index;
+}
+
+function startPracticeMode(type) {
+  if (!audioCtx) startTuner(); // Initialize mic if not already running
+  practiceType = type;
+  practiceMode = true;
+  practiceIndex = 0;
+  practiceSustainFrames = 0;
+  practiceNotes = [];
+  
+  const container = type === 'custom' ? document.getElementById('custom-tab-output') : (type === 'oot' ? document.getElementById('oot-display') : document.getElementById('song-display'));
+  if (!container) return;
+  const noteDivs = Array.from(container.querySelectorAll('.note-beat'));
+  
+  noteDivs.forEach((div) => {
+    div.classList.remove('practice-active', 'practice-done');
+    const fb = div.querySelector('.practice-feedback');
+    if (fb) fb.remove();
+    
+    const noteNameEl = div.querySelector('.note-name');
+    if (!noteNameEl) return;
+    const nameStr = noteNameEl.textContent.trim();
+    const noteNum = nameToNoteNum(nameStr);
+    if (noteNum !== null) {
+      practiceNotes.push({ el: div, nameStr: nameStr, noteNum: noteNum });
+    }
+  });
+
+  if (practiceNotes.length > 0) {
+    practiceNotes[0].el.classList.add('practice-active');
+    practiceNotes[0].el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  const startBtn = container.querySelector('.practice-btn');
+  if (startBtn) {
+    startBtn.textContent = '⏹️ Stop Practice';
+    startBtn.onclick = () => stopPracticeMode();
+    startBtn.style.background = 'var(--accent-cyan)';
+  }
+}
+
+function stopPracticeMode() {
+  practiceMode = false;
+  const container = practiceType === 'custom' ? document.getElementById('custom-tab-output') : document.getElementById('song-display');
+  if (!container) return;
+  
+  const noteDivs = Array.from(container.querySelectorAll('.note-beat'));
+  noteDivs.forEach(div => {
+    div.classList.remove('practice-active', 'practice-done');
+    const fb = div.querySelector('.practice-feedback');
+    if (fb) fb.remove();
+  });
+  
+  const stopBtn = container.querySelector('.practice-btn');
+  if (stopBtn) {
+    stopBtn.innerHTML = '🎙️ Practice Mode';
+    stopBtn.onclick = () => startPracticeMode(practiceType);
+    stopBtn.style.background = 'var(--accent-emerald)';
+  }
+}
+
+// ============================================================
+// SONGS: note sequences with fingering references
+// ============================================================
+
+let SONGS = {
+  'zeldas-lullaby': {
+    title: "Zelda's Lullaby (Full Version)",
+    info: "The complete version of the classic theme, transposed to perfectly fit the Alto C ocarina.",
+    notes: [
+      { n: 'E5', dur: 'q' }, { n: 'G5', dur: 'q' }, { n: 'D5', dur: 'h' }, { break: true },
+      { n: 'E5', dur: 'q' }, { n: 'G5', dur: 'q' }, { n: 'D5', dur: 'h' }, { break: true },
+      { n: 'E5', dur: 'q' }, { n: 'G5', dur: 'q' }, { n: 'D6', dur: 'q' }, { n: 'C6', dur: 'q' }, { n: 'G5', dur: 'q' }, { break: true },
+      { n: 'F5', dur: 'q' }, { n: 'E5', dur: 'q' }, { n: 'D5', dur: 'h' }, { break: true },
+      
+      { n: 'E5', dur: 'q' }, { n: 'G5', dur: 'q' }, { n: 'D5', dur: 'h' }, { break: true },
+      { n: 'E5', dur: 'q' }, { n: 'G5', dur: 'q' }, { n: 'D5', dur: 'h' }, { break: true },
+      { n: 'E5', dur: 'q' }, { n: 'G5', dur: 'q' }, { n: 'D6', dur: 'q' }, { n: 'C6', dur: 'q' }, { n: 'G5', dur: 'q' }, { break: true },
+      { n: 'F5', dur: 'q' }, { n: 'E5', dur: 'q' }, { n: 'F5', dur: 'q' }, { n: 'E5', dur: 'q' }, { n: 'C5', dur: 'h' }
+    ],
+  },
+  'eponas-song': {
+    title: "Epona's Song (Full Version)",
+    info: "The complete equestrian melody, including the bridge section.",
+    notes: [
+      { n: 'D6', dur: 'q' }, { n: 'B5', dur: 'q' }, { n: 'A5', dur: 'h' }, { break: true },
+      { n: 'D6', dur: 'q' }, { n: 'B5', dur: 'q' }, { n: 'A5', dur: 'h' }, { break: true },
+      { n: 'D6', dur: 'q' }, { n: 'B5', dur: 'q' }, { n: 'A5', dur: 'q' }, { n: 'B5', dur: 'q' }, { n: 'A5', dur: 'h' }, { break: true },
+      
+      { n: 'D5', dur: 'q' }, { n: 'F5', dur: 'q' }, { n: 'A5', dur: 'h' }, { break: true },
+      { n: 'D5', dur: 'q' }, { n: 'F5', dur: 'q' }, { n: 'A5', dur: 'h' }, { break: true },
+      { n: 'B5', dur: 'q' }, { n: 'A5', dur: 'q' }, { n: 'F5', dur: 'h' }, { break: true },
+      
+      { n: 'D5', dur: 'q' }, { n: 'F5', dur: 'q' }, { n: 'A5', dur: 'h' }, { break: true },
+      { n: 'D5', dur: 'q' }, { n: 'F5', dur: 'q' }, { n: 'A5', dur: 'h' }, { break: true },
+      { n: 'D6', dur: 'q' }, { n: 'B5', dur: 'q' }, { n: 'A5', dur: 'h' }
+    ],
+  },
+  'littleroot': {
+    title: "Littleroot Town",
+    info: "A peaceful starting town theme from Pokémon Ruby/Sapphire/Emerald.",
+    notes: [
+      { n: 'F5', dur: 'q' }, { n: 'Bb5', dur: 'q' }, { n: 'A5', dur: 'q' }, { n: 'Bb5', dur: 'q' }, { break: true },
+      { n: 'C6', dur: 'h' }, { n: 'D6', dur: 'h' }, { break: true },
+      { n: 'F6', dur: 'q' }, { n: 'D6', dur: 'q' }, { n: 'C6', dur: 'q' }, { n: 'Bb5', dur: 'q' }, { break: true },
+      { n: 'C6', dur: 'h' }, { n: 'D6', dur: 'h' }, { break: true },
+      
+      { n: 'F5', dur: 'q' }, { n: 'Bb5', dur: 'q' }, { n: 'A5', dur: 'q' }, { n: 'Bb5', dur: 'q' }, { break: true },
+      { n: 'C6', dur: 'h' }, { n: 'D6', dur: 'h' }, { break: true },
+      { n: 'F6', dur: 'q' }, { n: 'D6', dur: 'q' }, { n: 'C6', dur: 'q' }, { n: 'Bb5', dur: 'q' }, { break: true },
+      { n: 'A5', dur: 'h' }, { n: 'F5', dur: 'h' }
+    ],
+  },
+  'blue-bird': {
+    title: "Blue Bird (Naruto Shippuden)",
+    info: "The energetic third opening theme from Naruto Shippuden by Ikimono-gakari.",
+    notes: [
+      { n: 'G5', dur: 'q' }, { n: 'C6', dur: 'q' }, { n: 'C6', dur: 'e' }, { n: 'C6', dur: 'q' }, { break: true },
+      { n: 'D6', dur: 'q' }, { n: 'D6', dur: 'e' }, { n: 'Eb6', dur: 'q' }, { n: 'D6', dur: 'q' }, { break: true },
+      
+      { n: 'C6', dur: 'e' }, { n: 'Bb5', dur: 'e' }, { n: 'Ab5', dur: 'q' }, { n: 'G5', dur: 'h' }, { break: true },
+      { n: 'Ab5', dur: 'q' }, { n: 'Ab5', dur: 'e' }, { n: 'G5', dur: 'e' }, { n: 'Ab5', dur: 'e' }, { n: 'Bb5', dur: 'e' }, { n: 'C6', dur: 'q' }, { break: true },
+      
+      { n: 'G5', dur: 'q' }, { n: 'C6', dur: 'q' }, { n: 'C6', dur: 'e' }, { n: 'C6', dur: 'q' }, { break: true },
+      { n: 'D6', dur: 'q' }, { n: 'D6', dur: 'e' }, { n: 'Eb6', dur: 'q' }, { n: 'D6', dur: 'q' }, { break: true },
+      
+      { n: 'C6', dur: 'e' }, { n: 'Bb5', dur: 'e' }, { n: 'Ab5', dur: 'q' }, { n: 'G5', dur: 'h' }, { break: true },
+      { n: 'Ab5', dur: 'q' }, { n: 'Ab5', dur: 'e' }, { n: 'G5', dur: 'e' }, { n: 'Ab5', dur: 'e' }, { n: 'Bb5', dur: 'e' }, { n: 'C6', dur: 'q' }
+    ]
+  }
+};
+
+
+function getFingering(noteName) {
+  // Try exact match first, then enharmonic
+  const enharmonics = { 'D#': 'Eb', 'Eb': 'D#', 'G#': 'Ab', 'Ab': 'G#', 'A#': 'Bb', 'Bb': 'A#', 'C#': 'Db', 'Db': 'C#', 'F#': 'Gb', 'Gb': 'F#' };
+  const octave = noteName.match(/\d/)?.[0] || '';
+  const baseName = noteName.replace(/\d/, '');
+  for (const f of FINGERINGS) {
+    if (f.note === noteName) return f;
+    if (f.note === baseName + octave) return f;
+    if (enharmonics[baseName] && f.note === enharmonics[baseName] + octave) return f;
+  }
+  return null;
+}
+
+function durLabel(dur) {
+  return { 'q': '♩', 'h': '𝅗𝅥', 'e': '♪', 'w': '𝅝' }[dur] || dur;
+}
+
+function generateNotesHtml(notes) {
+  let phrases = [];
+  let currentPhrase = [];
+  
+  notes.forEach(beat => {
+    if (beat.break) {
+      if (currentPhrase.length > 0) {
+        phrases.push(currentPhrase);
+        currentPhrase = [];
+      }
+    } else {
+      currentPhrase.push(beat);
+    }
+  });
+  if (currentPhrase.length > 0) phrases.push(currentPhrase);
+
+  return phrases.map(phrase => {
+    const phraseHtml = phrase.map(beat => {
+      const f = getFingering(beat.n);
+      const svg = f ? renderHoleSVG(f.holes, f.thumbs) : `<div style="color:var(--text-muted);font-size:0.7rem;">(no chart)</div>`;
+      const dur = beat.dur ? durLabel(beat.dur) : '&nbsp;';
+      return `
+        <div class="note-beat">
+          <div class="note-name">${beat.n}</div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">${dur}</div>
+          <div class="note-fingering">${svg}</div>
+        </div>
+      `;
+    }).join('');
+    return `<div class="song-phrase">${phraseHtml}</div>`;
+  }).join('');
+}
+
+function loadSong(id, btn) {
+  // Update active button
+  document.querySelectorAll('.song-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const song = SONGS[id];
+  if (!song) return;
+
+  const display = document.getElementById('song-display');
+  const notesHtml = generateNotesHtml(song.notes);
+
+  display.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem;">
+      <h3 style="color: var(--text-main); margin: 0;">${song.title}</h3>
+      <div>
+        <button class="practice-btn" onclick="startPracticeMode('builtin')" style="background: var(--accent-emerald); border: none; color: #000; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; margin-right: 0.5rem; transition: background 0.2s;">🎙️ Practice Mode</button>
+        <button onclick="editSongInCustomTab('${id}')" style="background: none; border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: background 0.2s;">✏️ Edit</button>
+      </div>
+    </div>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.75rem;">${song.info}</p>
+    <div class="song-notes">${notesHtml}</div>
+    <div style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 1rem;">
+      ♩ = quarter note &nbsp;|&nbsp; 𝅗𝅥 = half note &nbsp;|&nbsp; ♪ = eighth note
+    </div>
+  `;
+}
+
+function editSongInCustomTab(id) {
+  const song = SONGS[id];
+  if (!song) return;
+  
+  let tabString = '';
+  song.notes.forEach(beat => {
+    if (beat.break) {
+      tabString += '| ';
+    } else {
+      tabString += beat.n + ' ';
+    }
+  });
+  
+  const customTabBtn = document.querySelector('[data-song="custom-tab"]');
+  if (customTabBtn) loadCustomTabUI(customTabBtn);
+  else loadCustomTabUI(document.createElement('div'));
+  
+  document.getElementById('custom-tab-input').value = tabString.trim();
+  document.getElementById('save-song-id').value = id;
+  document.getElementById('save-song-title').value = song.title;
+  renderCustomTab();
+}
+
+function loadCustomTabUI(btn) {
+  document.querySelectorAll('.song-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const display = document.getElementById('song-display');
+  display.innerHTML = `
+    <h3 style="color: var(--text-main); margin-bottom: 0.25rem;">Custom Tab Editor</h3>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Type notes separated by spaces (e.g. <code>E4 G4 D4</code>). Use <code>|</code> to create a visual phrase break.</p>
+    <textarea id="custom-tab-input" style="width: 100%; height: 100px; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; font-family: 'JetBrains Mono', monospace; font-size: 1rem; margin-bottom: 1rem; resize: vertical;" placeholder="E4 G4 D4 | E4 G4 D4 | E4 G4 D5 C5 G4 | F4 E4 D4"></textarea>
+    <div style="display: flex; gap: 1rem; align-items: flex-end; margin-bottom: 1rem; flex-wrap: wrap;">
+      <button onclick="renderCustomTab()" style="background: var(--accent-cyan); color: #000; border: none; padding: 0.6rem 1.5rem; border-radius: 8px; font-weight: 700; cursor: pointer;">Render Tab</button>
+      <div style="flex: 1; min-width: 200px; display: flex; gap: 0.5rem; align-items: center; background: rgba(255,255,255,0.05); padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+        <input type="text" id="save-song-id" placeholder="ID (e.g. new-song)" style="flex: 1; background: transparent; border: none; color: white; padding: 0.2rem; font-size: 0.8rem;" />
+        <input type="text" id="save-song-title" placeholder="Title" style="flex: 2; background: transparent; border: none; color: white; padding: 0.2rem; font-size: 0.8rem; border-left: 1px solid var(--border-color);" />
+        <button onclick="saveCustomTab()" style="background: var(--accent-emerald); color: #000; border: none; padding: 0.3rem 0.8rem; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 0.8rem;">💾 Save</button>
+      </div>
+    </div>
+    <div id="save-feedback" style="color: var(--accent-emerald); font-size: 0.8rem; margin-bottom: 1rem; display: none;">Saved successfully!</div>
+    <div id="custom-tab-output" style="border-top: 1px solid var(--border-color); padding-top: 2rem;"></div>
+  `;
+}
+
+function renderCustomTab() {
+  const input = document.getElementById('custom-tab-input').value.trim();
+  const output = document.getElementById('custom-tab-output');
+  if (!input) {
+    output.innerHTML = '';
+    return;
+  }
+
+  const tokens = input.split(/\s+/);
+  let parsedNotes = [];
+  tokens.forEach(token => {
+    if (token === '|') parsedNotes.push({ break: true });
+    else parsedNotes.push({ n: token, dur: '' });
+  });
+  
+  const notesHtml = generateNotesHtml(parsedNotes);
+
+  output.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+      <h4 style="color: var(--text-main); margin: 0;">Generated Tab</h4>
+      <button class="practice-btn" onclick="startPracticeMode('custom')" style="background: var(--accent-emerald); border: none; color: #000; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: background 0.2s;">🎙️ Practice Mode</button>
+    </div>
+    <div class="song-notes">${notesHtml}</div>
+  `;
+}
+
+// ============================================================
+// TAB SWITCHING
+// ============================================================
+
+function switchTab(tab) {
+  document.querySelectorAll('.oc-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.oc-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).style.display = 'block';
+  document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+
+  // Stop tuner if leaving tuner tab
+  if (tab !== 'tuner' && analyser) stopTuner();
+}
+
+// ============================================================
+// LOCAL STORAGE & SONGBOOK PERSISTENCE
+// ============================================================
+
+function initSongs() {
+  try {
+    const saved = localStorage.getItem('ocarina_songs');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      SONGS = { ...SONGS, ...parsed };
+    }
+  } catch(e) { console.error('Failed to load saved songs', e); }
+  renderSongButtons();
+  renderOotButtons();
+}
+
+
+let OOT_MELODIES = {
+  'oot-zelda': { title: "Zelda's Lullaby", info: "◀ ▲ ▶ ◀ ▲ ▶", notes: [{n:'E5'},{n:'G5'},{n:'D5'},{break:true},{n:'E5'},{n:'G5'},{n:'D5'}] },
+  'oot-epona': { title: "Epona's Song", info: "▲ ◀ ▶ ▲ ◀ ▶", notes: [{n:'D6'},{n:'B5'},{n:'A5'},{break:true},{n:'D6'},{n:'B5'},{n:'A5'}] },
+  'oot-saria': { title: "Saria's Song", info: "▼ ▶ ◀ ▼ ▶ ◀", notes: [{n:'F5'},{n:'A5'},{n:'B5'},{break:true},{n:'F5'},{n:'A5'},{n:'B5'}] },
+  'oot-sun': { title: "Sun's Song", info: "▶ ▼ ▲ ▶ ▼ ▲", notes: [{n:'A5'},{n:'F5'},{n:'D6'},{break:true},{n:'A5'},{n:'F5'},{n:'D6'}] },
+  'oot-time': { title: "Song of Time", info: "▶ A ▼ ▶ A ▼", notes: [{n:'A5'},{n:'D5'},{n:'F5'},{break:true},{n:'A5'},{n:'D5'},{n:'F5'}] },
+  'oot-storms': { title: "Song of Storms", info: "A ▼ ▲ A ▼ ▲", notes: [{n:'D5'},{n:'F5'},{n:'D6'},{break:true},{n:'D5'},{n:'F5'},{n:'D6'}] },
+  'oot-minuet': { title: "Minuet of Forest", info: "A ▲ ◀ ▶ ◀ ▶", notes: [{n:'D5'},{n:'D6'},{n:'B5'},{n:'A5'},{n:'B5'},{n:'A5'}] },
+  'oot-bolero': { title: "Bolero of Fire", info: "▼ A ▼ A ▶ ▼ ▶ ▼", notes: [{n:'F5'},{n:'D5'},{n:'F5'},{n:'D5'},{n:'A5'},{n:'F5'},{n:'A5'},{n:'F5'}] },
+  'oot-serenade': { title: "Serenade of Water", info: "A ▼ ▶ ▶ ◀", notes: [{n:'D5'},{n:'F5'},{n:'A5'},{n:'A5'},{n:'B5'}] },
+  'oot-nocturne': { title: "Nocturne of Shadow", info: "◀ ▶ ▶ A ◀ ▶ ▼", notes: [{n:'B5'},{n:'A5'},{n:'A5'},{n:'D5'},{n:'B5'},{n:'A5'},{n:'F5'}] },
+  'oot-requiem': { title: "Requiem of Spirit", info: "A ▼ A ▶ ▼ A", notes: [{n:'D5'},{n:'F5'},{n:'D5'},{n:'A5'},{n:'F5'},{n:'D5'}] },
+  'oot-prelude': { title: "Prelude of Light", info: "▲ ▶ ▲ ▶ ◀ ▲", notes: [{n:'D6'},{n:'A5'},{n:'D6'},{n:'A5'},{n:'B5'},{n:'D6'}] },
+  'oot-scarecrow': { title: "Scarecrow's Song", info: "A ▼ A ▼ A ▼ A ▼ (Classic Speedrun/Lazy strat)", notes: [{n:'D5'},{n:'F5'},{n:'D5'},{n:'F5'},{n:'D5'},{n:'F5'},{n:'D5'},{n:'F5'}] }
+};
+
+function renderOotButtons() {
+  const container = document.getElementById('oot-buttons-container');
+  if (!container) return;
+  let html = '';
+  for (const [id, song] of Object.entries(OOT_MELODIES)) {
+    html += `<button class="song-btn" data-oot="${id}" onclick="loadOotSong('${id}', this)">${song.title}</button>`;
+  }
+  container.innerHTML = html;
+}
+
+function loadOotSong(id, btn) {
+  document.querySelectorAll('#oot-buttons-container .song-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+
+  const song = OOT_MELODIES[id];
+  if (!song) return;
+
+  const display = document.getElementById('oot-display');
+  const notesHtml = generateNotesHtml(song.notes);
+
+  let songSvg = '';
+  if (id === 'oot-zelda') songSvg = '<img src="/images/website-assets/royal-crest.svg" alt="Royal Crest" style="width: 32px; opacity: 0.6;">';
+  else if (id === 'oot-minuet') songSvg = '<img src="/images/website-assets/forest-medal.svg" alt="Forest Medallion" style="width: 32px; opacity: 0.6;">';
+  else if (id === 'oot-bolero') songSvg = '<img src="/images/website-assets/fire-medal.svg" alt="Fire Medallion" style="width: 32px; opacity: 0.6;">';
+  else if (id === 'oot-epona') songSvg = '<img src="/images/website-assets/epona.svg" alt="Epona" style="width: 32px; opacity: 0.6;">';
+  else if (id === 'oot-saria') songSvg = '<img src="/images/website-assets/sarias-Song.svg" alt="Saria" style="width: 32px; opacity: 0.6;">';
+
+  display.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem;">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <img src="/images/website-assets/triforce.svg" alt="Triforce" style="width: 24px; opacity: 0.6;">
+        <h3 style="color: var(--text-main); margin: 0;">${song.title}</h3>
+        ${songSvg}
+      </div>
+      <button class="practice-btn" onclick="startPracticeMode('oot')" style="background: var(--accent-emerald); border: none; color: #000; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: background 0.2s;">🎙️ Practice Mode</button>
+    </div>
+    <p style="color: var(--text-muted); font-size: 1.2rem; font-weight: bold; margin-bottom: 1.75rem;">N64: ${song.info}</p>
+    <div class="song-notes">${notesHtml}</div>
+  `;
+}
+
+function renderSongButtons() {
+  const container = document.getElementById('song-buttons-container');
+  if (!container) return;
+  
+  let html = '';
+  for (const [id, song] of Object.entries(SONGS)) {
+    html += `<button class="song-btn" data-song="${id}" onclick="loadSong('${id}', this)">${song.title}</button>`;
+  }
+  html += `<button class="song-btn" data-song="custom-tab" onclick="loadCustomTabUI(this)" style="border-color: var(--accent-cyan);">+ Custom Tab</button>`;
+  container.innerHTML = html;
+}
+
+function saveCustomTab() {
+  const inputStr = document.getElementById('custom-tab-input').value.trim();
+  const id = document.getElementById('save-song-id').value.trim();
+  const title = document.getElementById('save-song-title').value.trim();
+  
+  if (!inputStr || !id || !title) {
+    alert("Please provide notes, an ID, and a Title.");
+    return;
+  }
+  
+  const tokens = inputStr.split(/\s+/);
+  const notes = tokens.map(t => {
+    if (t === '|') return { break: true };
+    return { n: t, dur: 'q' };
+  });
+  
+  const newSong = { title: title, info: "Custom saved tab.", notes: notes };
+  SONGS[id] = newSong;
+  
+  try {
+    const saved = JSON.parse(localStorage.getItem('ocarina_songs') || '{}');
+    saved[id] = newSong;
+    localStorage.setItem('ocarina_songs', JSON.stringify(saved));
+  } catch(e) { console.error('Error saving to localStorage', e); }
+  
+  renderSongButtons();
+  
+  const fb = document.getElementById('save-feedback');
+  if (fb) {
+    fb.style.display = 'block';
+    setTimeout(() => fb.style.display = 'none', 3000);
+  }
+  
+  const btn = document.querySelector(`[data-song="${id}"]`);
+  if (btn) loadSong(id, btn);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  buildFingerChart();
+  initSongs();
+  
+  const firstBtn = document.querySelector('.song-btn:not([data-song="custom-tab"])');
+  if (firstBtn) {
+    const id = firstBtn.getAttribute('data-song');
+    loadSong(id, firstBtn);
+  }
+});
+</script>

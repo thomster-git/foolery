@@ -1,0 +1,758 @@
+<div class="page-container">
+    <div class="content-wrapper article-layout" style="margin: 4rem auto;">
+        <div class="article-content">
+        
+        <div class="breadcrumbs">
+            <a href="/">Home</a> ›
+            <a href="/tools/">Developer Tools</a> ›
+            <span>FFX 100% Tracker</span>
+        </div>
+
+        <div class="tracker-header" style="margin-bottom: 2rem;">
+            <h1 style="font-size: 3rem; color: var(--accent-cyan); margin-bottom: 1rem;">FFX 100% Completion Tracker</h1>
+            <p style="color: var(--text-muted); font-size: 1.2rem;">Your comprehensive checklist for achieving true 100% completion and the Platinum Trophy in Final Fantasy X.</p>
+            <div class="progress-container" style="margin-top: 1.5rem; background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                    <span style="font-weight: bold; font-size: 1.2rem;">Overall Progress</span>
+                    <span id="progress-text" style="color: var(--accent-cyan); font-weight: bold; font-size: 1.2rem;">0% (0 / 0)</span>
+                </div>
+                <div style="width: 100%; height: 12px; background: rgba(0,0,0,0.2); border-radius: 6px; overflow: hidden; margin-bottom: 1rem;">
+                    <div id="progress-bar" style="width: 0%; height: 100%; background: var(--accent-cyan); transition: width 0.3s ease;"></div>
+                </div>
+                <div style="text-align: right;">
+                    <button id="reset-btn" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); padding: 0.5rem 1rem; border-radius: var(--radius-sm); cursor: pointer; transition: all 0.2s;">Reset Progress</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="ffx-content markdown-body">
+            <h2>CHAPTER 1: CHRONOLOGICAL STORY WALKTHROUGH & CHECKLIST</h2>
+
+<h3>1. Dream Zanarkand & Submerged Ruins</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-9"><input type="checkbox" id="ffx-check-9" class="ffx-checkbox"> <span class="task-text">Watch opening sequences; defeat Sinscales with Auron.</span></label></li>
+  <li class="task-item"><label for="ffx-check-10"><input type="checkbox" id="ffx-check-10" class="ffx-checkbox"> <span class="task-text">Submerged Ruins: Search the water for chests (200 Gil, Potions, Hi-Potion).</span></label></li>
+  <li class="task-item"><label for="ffx-check-11"><input type="checkbox" id="ffx-check-11" class="ffx-checkbox"> <span class="task-text">Defeat Sahagin & Klikk; meet Rikku and the Al Bhed salvagers.</span></label></li>
+  <li class="task-item"><label for="ffx-check-12"><input type="checkbox" id="ffx-check-12" class="ffx-checkbox"> <span class="task-text"><strong>Al Bhed Salvage Ship:</strong> Pick up <strong>[ ] Al Bhed Primer Vol. I</strong> on the top deck near the crane/Save Sphere.</span></label></li>
+  <li class="task-item"><label for="ffx-check-13"><input type="checkbox" id="ffx-check-13" class="ffx-checkbox"> <span class="task-text">Underwater Salvage: Defeat Tros.</span></label></li>
+</ul>
+
+<h3>2. Besaid Island</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-14"><input type="checkbox" id="ffx-check-14" class="ffx-checkbox"> <span class="task-text">Swim to the secluded beach on the right side of Besaid Beach to open a chest containing the <strong>[ ] Moon Crest</strong> (Yuna's Celestial Crest).</span></label></li>
+  <li class="task-item"><label for="ffx-check-15"><input type="checkbox" id="ffx-check-15" class="ffx-checkbox"> <span class="task-text"><strong>Besaid Village:</strong> Enter the Crusaders Lodge to pick up <strong>[ ] Al Bhed Primer Vol. II</strong> on the counter.</span></label></li>
+  <li class="task-item"><label for="ffx-check-besaid-1"><input type="checkbox" id="ffx-check-besaid-1" class="ffx-checkbox"> <span class="task-text"><strong>Free Items:</strong> Speak to the Crusaders in the lodge and villagers around town to receive Potions, Phoenix Downs, and 400 Gil.</span></label></li>
+  <li class="task-item"><label for="ffx-check-16"><input type="checkbox" id="ffx-check-16" class="ffx-checkbox"> <span class="task-text"><strong>Valefor's Second Overdrive (Energy Blast):</strong> Speak to the shopkeeper in the item shop, then find the dog in the middle-right tent (or near the weaver) to learn <strong>Energy Blast</strong>. <em>(Crucial before leaving!)</em></span></label></li>
+  <div class="critical-warning" style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+    <strong>⚠️ Dark Valefor Blockade:</strong> Obtain the Destruction Sphere in the temple and Valefor's Energy Blast <em>before</em> boarding the S.S. Liki! If you leave Besaid, Dark Valefor will block the entrance upon your return.
+  </div>
+  <li class="task-item"><label for="ffx-check-17"><input type="checkbox" id="ffx-check-17" class="ffx-checkbox"> <span class="task-text"><strong>Besaid Cloister of Trials:</strong> </span></label></li>
+</ul>
+  - [ ] Solve the puzzle using the Destruction Sphere.
+  - [ ] Open the Destruction Sphere chest to obtain the <strong>Rod of Wisdom</strong> <em>(Required for Anima)</em>.
+<ul>
+  <li class="task-item"><label for="ffx-check-18"><input type="checkbox" id="ffx-check-18" class="ffx-checkbox"> <span class="task-text">Depart Besaid Beach; learn Overdrive mechanics during boss fights on the trail.</span></label></li>
+</ul>
+
+<h3>3. S.S. Liki & Kilika</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-19"><input type="checkbox" id="ffx-check-19" class="ffx-checkbox"> <span class="task-text"><strong>S.S. Liki:</strong> Go below deck into the Engine Room (past the chocobo) to pick up <strong>[ ] Al Bhed Primer Vol. III</strong> on the floor.</span></label></li>
+  <li class="task-item"><label for="ffx-check-liki-1"><input type="checkbox" id="ffx-check-liki-1" class="ffx-checkbox"> <span class="task-text"><strong>Free Items:</strong> Kick the suitcase in O'aka's cabin repeatedly for up to 20 Potions, and lend O'aka some Gil to help him out.</span></label></li>
+  <li class="task-item"><label for="ffx-check-20"><input type="checkbox" id="ffx-check-20" class="ffx-checkbox"> <span class="task-text">Defeat Sin and Sinspawn Echuilles.</span></label></li>
+  <li class="task-item"><label for="ffx-check-21"><input type="checkbox" id="ffx-check-21" class="ffx-checkbox"> <span class="task-text"><strong>Kilika Port:</strong> Enter the tavern/bar to pick up <strong>[ ] Al Bhed Primer Vol. IV</strong> on the counter.</span></label></li>
+  <li class="task-item"><label for="ffx-check-kilika-1"><input type="checkbox" id="ffx-check-kilika-1" class="ffx-checkbox"> <span class="task-text"><strong>Free Items:</strong> Rescue the little girl trapped in the collapsed tavern ruins, then speak to her family later to receive a Red Armlet.</span></label></li>
+  <li class="task-item"><label for="ffx-check-22"><input type="checkbox" id="ffx-check-22" class="ffx-checkbox"> <span class="task-text"><strong>Kilika Woods:</strong> Defeat Lord Ochu (or come back later) and Sinspawn Geneaux.</span></label></li>
+</ul>
+  - [ ] <em>Lancet:</em> Kimahri can Lancet <strong>Seed Cannon</strong> from Ragora.
+<ul>
+  <li class="task-item"><label for="ffx-check-23"><input type="checkbox" id="ffx-check-23" class="ffx-checkbox"> <span class="task-text"><strong>Kilika Cloister of Trials:</strong></span></label></li>
+</ul>
+  - [ ] Solve the puzzle using the Destruction Sphere.
+  - [ ] Open the Destruction Sphere chest to obtain the <strong>Red Ring</strong> <em>(Required for Anima)</em>.
+
+<h3>4. S.S. Winno & Luca</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-24"><input type="checkbox" id="ffx-check-24" class="ffx-checkbox"> <span class="task-text"><strong>S.S. Winno:</strong></span></label></li>
+</ul>
+  - [ ] Go to the bridge to find <strong>[ ] Al Bhed Primer Vol. V</strong> behind the helmsman.
+  - [ ] Complete the Blitzball mini-game on deck to learn the <strong>[ ] Jecht Shot</strong> (greatly eases winning the Luca tournament).
+<ul>
+  <li class="task-item"><label for="ffx-check-25"><input type="checkbox" id="ffx-check-25" class="ffx-checkbox"> <span class="task-text"><strong>Luca Stadium:</strong></span></label></li>
+</ul>
+  - [ ] In Basement B (locker room hallway), grab <strong>[ ] Al Bhed Primer Vol. VI</strong>.
+  - [ ] Inside the Aurochs Locker Room, open the locker to get the <strong>[ ] Jupiter / Mercury Crest</strong> (Wakka's Celestial Crest).
+<ul>
+  <li class="task-item"><label for="ffx-check-26"><input type="checkbox" id="ffx-check-26" class="ffx-checkbox"> <span class="task-text"><strong>Luca Theater:</strong></span></label></li>
+</ul>
+  - [ ] In the theater lobby/reception area, pick up <strong>[ ] Al Bhed Primer Vol. VII</strong> on the floor.
+<ul>
+  <li class="task-item"><label for="ffx-check-27"><input type="checkbox" id="ffx-check-27" class="ffx-checkbox"> <span class="task-text"><strong>Blitzball Tournament:</strong> Win the final match against the Luca Goers to receive a <strong>Strength Sphere</strong>.</span></label></li>
+  <li class="task-item"><label for="ffx-check-luca-1"><input type="checkbox" id="ffx-check-luca-1" class="ffx-checkbox"> <span class="task-text"><strong>Free Items:</strong> Check the docks (specifically Number 1 and 2 docks) to find chests containing 600 Gil and a Tidal Spear.</span></label></li>
+  <li class="task-item"><label for="ffx-check-28"><input type="checkbox" id="ffx-check-28" class="ffx-checkbox"> <span class="task-text"><strong>Early Blitzball Recruitment:</strong> Recruit top free agents around Luca:</span></label></li>
+</ul>
+  - [ ] <strong>Jumal</strong> (sitting on bench in Luca square - top-tier goalkeeper).
+  - [ ] <strong>Wedge</strong> (guarding the stadium entrance - elite shooter/forward).
+  - [ ] <strong>Zalitz</strong> (sitting near the theater path - excellent defender).
+
+<h3>5. Mi'ihen Highroad</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-29"><input type="checkbox" id="ffx-check-29" class="ffx-checkbox"> <span class="task-text">Recruit <strong>Ropp</strong> at Rin's Travel Agency (one of the best defenders in the game).</span></label></li>
+  <li class="task-item"><label for="ffx-check-30"><input type="checkbox" id="ffx-check-30" class="ffx-checkbox"> <span class="task-text"><strong>Rin's Travel Agency:</strong> Speak with Rin inside to receive <strong>[ ] Al Bhed Primer Vol. VIII</strong>.</span></label></li>
+  <li class="task-item"><label for="ffx-check-31"><input type="checkbox" id="ffx-check-31" class="ffx-checkbox"> <span class="task-text"><strong>Mi'ihen Highroad - Newroad North:</strong> Pick up <strong>[ ] Al Bhed Primer Vol. IX</strong> on the path.</span></label></li>
+  <li class="task-item"><label for="ffx-check-miihen-1"><input type="checkbox" id="ffx-check-miihen-1" class="ffx-checkbox"> <span class="task-text"><strong>Free Items:</strong> Make sure to speak to all the traveling NPCs walking along the Highroad. They give you free weapons and armor (Hunter's Spear, Ice Brand, Red Ring, etc.).</span></label></li>
+  <li class="task-item"><label for="ffx-check-32"><input type="checkbox" id="ffx-check-32" class="ffx-checkbox"> <span class="task-text">Defeat <strong>Chocobo Eater</strong> by pushing it off the cliff to get 2x Lv. 1 Key Spheres and free chocobo rides.</span></label></li>
+  <li class="task-item"><label for="ffx-check-33"><input type="checkbox" id="ffx-check-33" class="ffx-checkbox"> <span class="task-text"><strong>Mi'ihen Highroad - Oldroad South:</strong> Ride a chocobo to the southernmost dead-end of the Old Road to open the chest with the <strong>[ ] Mars / Saturn Crest</strong> (Auron's Celestial Crest).</span></label></li>
+  <li class="task-item"><label for="ffx-check-34"><input type="checkbox" id="ffx-check-34" class="ffx-checkbox"> <span class="task-text"><em>Lancet:</em> Kimahri can learn <strong>Fire Breath</strong> (Dual Horn) and <strong>Self-Destruct</strong> (Bomb).</span></label></li>
+</ul>
+
+<h3>6. Mushroom Rock Road & Djose</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-35"><input type="checkbox" id="ffx-check-35" class="ffx-checkbox"> <span class="task-text"><strong>Mushroom Rock Precipice:</strong> Before taking the elevator up to the command center, grab <strong>[ ] Al Bhed Primer Vol. X</strong> tucked in an alcove.</span></label></li>
+  <li class="task-item"><label for="ffx-check-36"><input type="checkbox" id="ffx-check-36" class="ffx-checkbox"> <span class="task-text">Talk to Gatta and Luzzu (your dialogue choices decide who survives Operation Mi'ihen).</span></label></li>
+  <li class="task-item"><label for="ffx-check-37"><input type="checkbox" id="ffx-check-37" class="ffx-checkbox"> <span class="task-text">Defeat Sinspawn Gui.</span></label></li>
+  <li class="task-item"><label for="ffx-check-mush-1"><input type="checkbox" id="ffx-check-mush-1" class="ffx-checkbox"> <span class="task-text"><strong>Free Items:</strong> Speak to the Crusaders along the path leading up to the command center to receive a Tough Bangle, Serene Bracer, and Mega-Potion.</span></label></li>
+  <li class="task-item"><label for="ffx-check-38"><input type="checkbox" id="ffx-check-38" class="ffx-checkbox"> <span class="task-text"><strong>Djose Highroad:</strong> Pick up <strong>[ ] Al Bhed Primer Vol. XI</strong> along the main path behind a boulder.</span></label></li>
+  <li class="task-item"><label for="ffx-check-39"><input type="checkbox" id="ffx-check-39" class="ffx-checkbox"> <span class="task-text"><em>Lancet:</em> Kimahri can learn <strong>Stone Breath</strong> (Basilisk).</span></label></li>
+  <li class="task-item"><label for="ffx-check-40"><input type="checkbox" id="ffx-check-40" class="ffx-checkbox"> <span class="task-text"><strong>Djose Cloister of Trials:</strong></span></label></li>
+</ul>
+  - [ ] Solve the puzzle using the Destruction Sphere.
+  - [ ] Open the Destruction Sphere chest to obtain the <strong>Magic Sphere</strong> <em>(Required for Anima)</em>.
+
+<h3>7. Moonflow & Guadosalam</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-41"><input type="checkbox" id="ffx-check-41" class="ffx-checkbox"> <span class="task-text"><strong>Moonflow North Wharf:</strong> Pick up <strong>[ ] Al Bhed Primer Vol. XII</strong> on the ground near the ramp.</span></label></li>
+  <li class="task-item"><label for="ffx-check-42"><input type="checkbox" id="ffx-check-42" class="ffx-checkbox"> <span class="task-text">Ride the Shoopuf; defeat Extractor to rescue Rikku (Rikku joins the party).</span></label></li>
+  <li class="task-item"><label for="ffx-check-43"><input type="checkbox" id="ffx-check-43" class="ffx-checkbox"> <span class="task-text"><strong>Guadosalam:</strong></span></label></li>
+</ul>
+  - [ ] Enter the house on the far left to find <strong>[ ] Al Bhed Primer Vol. XIII</strong>.
+  - [ ] Visit the Farplane; after Seymour leaves Guadosalam, return to the Farplane to open the chest on the left containing the <strong>[ ] Venus / Mars Crest</strong> (Lulu's Celestial Crest).
+
+<h3>8. Thunder Plains & Macalania Woods</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-44"><input type="checkbox" id="ffx-check-44" class="ffx-checkbox"> <span class="task-text"><strong>Thunder Plains Agency:</strong> Speak with Rin and choose "Okay" / "Pretty good" when asked about your Al Bhed study to receive <strong>[ ] Al Bhed Primer Vol. XIV</strong>.</span></label></li>
+  <li class="task-item"><label for="ffx-check-45"><input type="checkbox" id="ffx-check-45" class="ffx-checkbox"> <span class="task-text">Pray at 3 glowing Qactuar stones with <code>[Square]</code> (required to unlock Kimahri's Spirit Lance weapon).</span></label></li>
+  <li class="task-item"><label for="ffx-check-46"><input type="checkbox" id="ffx-check-46" class="ffx-checkbox"> <span class="task-text"><em>Lancet:</em> Kimahri can learn <strong>Aqua Breath</strong> (Chimera) and <strong>Thrust Kick</strong> (YKT-63 machina in Bevelle / Thunder Plains).</span></label></li>
+  <li class="task-item"><label for="ffx-check-47"><input type="checkbox" id="ffx-check-47" class="ffx-checkbox"> <span class="task-text"><strong>Macalania Woods - Lake Road:</strong> Pick up <strong>[ ] Al Bhed Primer Vol. XV</strong> near the Save Sphere.</span></label></li>
+  <li class="task-item"><label for="ffx-check-48"><input type="checkbox" id="ffx-check-48" class="ffx-checkbox"> <span class="task-text"><strong>Macalania Travel Agency:</strong> Grab <strong>[ ] Al Bhed Primer Vol. XVI</strong> sitting on the ground outside the agency.</span></label></li>
+  <li class="task-item"><label for="ffx-check-mac-1"><input type="checkbox" id="ffx-check-mac-1" class="ffx-checkbox"> <span class="task-text"><strong>Free Items:</strong> Speak to Tromell repeatedly before fighting Seymour to receive several free items.</span></label></li>
+  <li class="task-item"><label for="ffx-check-49"><input type="checkbox" id="ffx-check-49" class="ffx-checkbox"> <span class="task-text">Defeat <strong>Spherimorph</strong> in Macalania Woods to automatically receive <strong>[ ] Jecht Sphere #1</strong>.</span></label></li>
+</ul>
+
+<blockquote>💡 <strong>OPTIONAL BACKTRACK WINDOW (Pre-Dark Aeon Safety):</strong>  </blockquote>
+<blockquote>With Jecht Sphere #1 collected, the other 9 Jecht Spheres are now active across Spira! If you backtrack on foot right now all the way to Besaid, you can collect <strong>Jecht Sphere #2 (Besaid Village)</strong> and any missed items <strong>BEFORE</strong> Dark Valefor spawns in the late game!</blockquote>
+
+<ul>
+  <li class="task-item"><label for="ffx-check-50"><input type="checkbox" id="ffx-check-50" class="ffx-checkbox"> <span class="task-text"><strong>Macalania Cloister of Trials:</strong></span></label></li>
+</ul>
+  - [ ] Solve the puzzle using the Destruction Sphere.
+  - [ ] Open the Destruction Sphere chest to obtain the <strong>Luck Sphere</strong> <em>(Required for Anima)</em>.
+  <div class="critical-warning" style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+    <strong>⚠️ Dark Shiva Blockade:</strong> Ensure you complete the Destruction Sphere puzzle and grab the Luck Sphere <em>before</em> leaving the temple, otherwise Dark Shiva will ambush you at the entrance later.
+  </div>
+<ul>
+  <li class="task-item"><label for="ffx-check-51"><input type="checkbox" id="ffx-check-51" class="ffx-checkbox"> <span class="task-text">Defeat Wendigo; escape Lake Macalania.</span></label></li>
+</ul>
+
+<h3>9. Sanubia Desert (Bikanel Island)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-52"><input type="checkbox" id="ffx-check-52" class="ffx-checkbox"> <span class="task-text">Rejoin separated party members in the desert.</span></label></li>
+  <li class="task-item"><label for="ffx-check-53"><input type="checkbox" id="ffx-check-53" class="ffx-checkbox"> <span class="task-text"><strong>Sanubia Desert - Central:</strong> Pick up <strong>[ ] Al Bhed Primer Vol. XVII</strong> in the ruins.</span></label></li>
+  <li class="task-item"><label for="ffx-check-54"><input type="checkbox" id="ffx-check-54" class="ffx-checkbox"> <span class="task-text"><strong>Sanubia Desert - Central (North):</strong> Pick up <strong>[ ] Al Bhed Primer Vol. XVIII</strong> near the signpost.</span></label></li>
+  <li class="task-item"><label for="ffx-check-55"><input type="checkbox" id="ffx-check-55" class="ffx-checkbox"> <span class="task-text">Open the chest in the western desert pit to find the <strong>[ ] Mercury / Venus Crest</strong> (Rikku's Celestial Crest).</span></label></li>
+</ul>
+
+<h3>10. Al Bhed Home (🔴 STRICTLY MISSABLE ZONE)</h3>
+  <div class="critical-warning" style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+    <strong>🔴 Permanent Missables:</strong> Once you evacuate Home, you <strong>can never return</strong>. You must grab Primers XIX, XX, and XXI right now.
+  </div>
+<ul>
+  <li class="task-item"><label for="ffx-check-56"><input type="checkbox" id="ffx-check-56" class="ffx-checkbox"> <span class="task-text"><strong>[ ] Al Bhed Primer Vol. XIX:</strong> Pick up near the Save Sphere in the entrance area.</span></label></li>
+  <li class="task-item"><label for="ffx-check-57"><input type="checkbox" id="ffx-check-57" class="ffx-checkbox"> <span class="task-text"><strong>[ ] Al Bhed Primer Vol. XX:</strong> Enter the Living Quarters (first door on the right) and pick it up on the desk before leaving.</span></label></li>
+  <li class="task-item"><label for="ffx-check-58"><input type="checkbox" id="ffx-check-58" class="ffx-checkbox"> <span class="task-text"><strong>[ ] Al Bhed Primer Vol. XXI:</strong> Pick up on the floor in the main hallway corridor.</span></label></li>
+  <li class="task-item"><label for="ffx-check-59"><input type="checkbox" id="ffx-check-59" class="ffx-checkbox"> <span class="task-text">Board the Airship Fahrenheit; defeat Evrae.</span></label></li>
+</ul>
+
+<h3>11. Bevelle & Via Purifico (🔴 STRICTLY MISSABLE ZONE)</h3>
+  <div class="critical-warning" style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+    <strong>🔴 Permanent Missables:</strong> You only have one chance to grab Primer XXII on the priests' passage, and the Destruction Sphere in the Cloister of Trials is required but impossible to skip if you open the chest.
+  </div>
+<ul>
+  <li class="task-item"><label for="ffx-check-60"><input type="checkbox" id="ffx-check-60" class="ffx-checkbox"> <span class="task-text"><strong>[ ] Al Bhed Primer Vol. XXII:</strong> Immediately after the wedding scene on the highbridge, pick this up on the floor in the <strong>Priests' Passage</strong> <em>before</em> stepping onto the elevator to the Cloister of Trials!</span></label></li>
+  <li class="task-item"><label for="ffx-check-61"><input type="checkbox" id="ffx-check-61" class="ffx-checkbox"> <span class="task-text"><strong>Bevelle Cloister of Trials:</strong></span></label></li>
+</ul>
+  - [ ] Navigate the sliding glyph platforms.
+  - [ ] Open the mandatory Destruction Sphere chest containing the <strong>HP Sphere</strong> <em>(Required for Anima)</em>.
+  - [ ] <em>(Optional but recommended)</em> Open the optional chest containing Kimahri's <strong>Knight Lance</strong>.
+<ul>
+  <li class="task-item"><label for="ffx-check-62"><input type="checkbox" id="ffx-check-62" class="ffx-checkbox"> <span class="task-text">Via Purifico: Regroup party, defeat Isaaru's Aeons, and defeat Evrae Altana (use 2-3 Phoenix Downs for instant kill).</span></label></li>
+</ul>
+
+<h3>12. Calm Lands (🔴 CRITICAL ITEMS)</h3>
+  <div class="critical-warning" style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+    <strong>🔴 Permanent Missables:</strong> You <strong>must</strong> buy the Magic Counter Buckler from the hovercraft merchant on your <em>very first entry</em> to the Calm Lands. Also recruit Blitzball Player Durren in the gorge before progressing past Mt. Gagazet.
+  </div>
+  <li class="task-item"><label for="ffx-check-calm-1"><input type="checkbox" id="ffx-check-calm-1" class="ffx-checkbox"> <span class="task-text"><strong>Chests:</strong> Check the perimeter of the Calm Lands to find chests containing Farplane Winds and other valuable items.</span></label></li>
+<ul>
+  <li class="task-item"><label for="ffx-check-63"><input type="checkbox" id="ffx-check-63" class="ffx-checkbox"> <span class="task-text"><strong>[ ] Magic Counter Buckler (Missable):</strong> Immediately talk to the merchant on the hovercraft upon first entering the Calm Lands and purchase this shield.</span></label></li>
+  <li class="task-item"><label for="ffx-check-64"><input type="checkbox" id="ffx-check-64" class="ffx-checkbox"> <span class="task-text"><strong>[ ] Al Bhed Primer Vol. XXIII:</strong> Pick up in the northwest section of the Calm Lands.</span></label></li>
+  <li class="task-item"><label for="ffx-check-65"><input type="checkbox" id="ffx-check-65" class="ffx-checkbox"> <span class="task-text"><strong>Monster Arena:</strong> Visit the Arena in the east, buy capture weapons, and begin catching 1 of each fiend in the Calm Lands.</span></label></li>
+  <li class="task-item"><label for="ffx-check-66"><input type="checkbox" id="ffx-check-66" class="ffx-checkbox"> <span class="task-text"><strong>Chocobo Training:</strong> Complete all 4 training mini-games (Wobbly, Dodger, Hyper Dodger, Catcher Chocobo). Getting a 0:00.0 time on Catcher Chocobo awards the <strong>[ ] Sun Sigil</strong>.</span></label></li>
+  <li class="task-item"><label for="ffx-check-67"><input type="checkbox" id="ffx-check-67" class="ffx-checkbox"> <span class="task-text"><strong>Remiem Temple:</strong></span></label></li>
+</ul>
+  - [ ] Pick up <strong>[ ] Al Bhed Primer Vol. XXIV</strong> on the ground near the chocobo pen.
+  - [ ] Win the Remiem Chocobo Race to obtain the <strong>[ ] Cloudy Mirror</strong>.
+<ul>
+  <li class="task-item"><label for="ffx-check-68"><input type="checkbox" id="ffx-check-68" class="ffx-checkbox"> <span class="task-text"><strong>Cavern of the Stolen Fayth (Sunken Cave):</strong></span></label></li>
+</ul>
+  - [ ] Pick up <strong>[ ] Al Bhed Primer Vol. XXV</strong> in the deep cave branch.
+  - [ ] Defeat Lady Ginnem's Yojimbo.
+  - [ ] <strong>Recruit Yojimbo:</strong> Select the dialogue option <em>"To defeat, with the most powerful of enemies"</em> and negotiate his fee (~190,000 - 250,000 Gil).
+  - [ ] Pick up the <strong>[ ] Rusty Sword</strong> embedded in the ground outside the cave entrance.
+<ul>
+  <li class="task-item"><label for="ffx-check-69"><input type="checkbox" id="ffx-check-69" class="ffx-checkbox"> <span class="task-text"><strong>[ ] Durren (Missable Blitzball Player):</strong> Speak to Durren near the gorge pool by the Sunken Cave to recruit him if desired before progressing past Mt. Gagazet.</span></label></li>
+</ul>
+
+<h3>13. Mt. Gagazet (🔴 CRITICAL NPC)</h3>
+  <div class="critical-warning" style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+    <strong>🔴 Permanent Missable:</strong> You <strong>must</strong> speak to Wantz on the mountain path during your first ascent. If you skip talking to him, he will never appear in Macalania Woods later to sell empty 4-slot gear.
+  </div>
+  <li class="task-item"><label for="ffx-check-gagazet-1"><input type="checkbox" id="ffx-check-gagazet-1" class="ffx-checkbox"> <span class="task-text"><strong>Chests:</strong> Open the chests on the mountain trail to find a Defending Bracer and an HP Sphere.</span></label></li>
+<ul>
+  
+  <li class="task-item"><label for="ffx-check-71"><input type="checkbox" id="ffx-check-71" class="ffx-checkbox"> <span class="task-text"><strong>Biran & Yenke Ronso Boss Fight:</strong> Kimahri can Lancet almost all of his Ronso Rages here:</span></label></li>
+</ul>
+  - [ ] <strong>Doom</strong>
+  - [ ] <strong>White Wind</strong> (wait for Yenke to cast it first)
+  - [ ] <strong>Mighty Guard</strong> (wait for Biran to cast it first)
+  - [ ] <em>Also available:</em> Fire Breath, Aqua Breath, Stone Breath, Self-Destruct, Thrust Kick, Seed Cannon.
+<ul>
+  <li class="task-item"><label for="ffx-check-72"><input type="checkbox" id="ffx-check-72" class="ffx-checkbox"> <span class="task-text">Defeat <strong>Seymour Flux</strong>.</span></label></li>
+  <li class="task-item"><label for="ffx-check-73"><input type="checkbox" id="ffx-check-73" class="ffx-checkbox"> <span class="task-text">Open the hidden chest between the pillars along the trail to obtain the <strong>[ ] Saturn / Jupiter Crest</strong> (Kimahri's Celestial Crest).</span></label></li>
+  <li class="task-item"><label for="ffx-check-74"><input type="checkbox" id="ffx-check-74" class="ffx-checkbox"> <span class="task-text">Gagazet Mountain Cave: Complete Wakka and Rikku's swimming trials.</span></label></li>
+  <li class="task-item"><label for="ffx-check-75"><input type="checkbox" id="ffx-check-75" class="ffx-checkbox"> <span class="task-text">Defeat Sanctuary Keeper.</span></label></li>
+</ul>
+
+<h3>14. Zanarkand Ruins & Dome (🔴 CRITICAL CREST)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-76"><input type="checkbox" id="ffx-check-76" class="ffx-checkbox"> <span class="task-text">Solve the Zanarkand Cloister of Trials puzzle (step on floor tetris shapes in both rooms).</span></label></li>
+  <li class="task-item"><label for="ffx-check-77"><input type="checkbox" id="ffx-check-77" class="ffx-checkbox"> <span class="task-text">Defeat Spectral Keeper.</span></label></li>
+  <li class="task-item"><label for="ffx-check-78"><input type="checkbox" id="ffx-check-78" class="ffx-checkbox"> <span class="task-text">Defeat <strong>Lady Yunalesca</strong>.</span></label></li>
+  <li class="task-item"><label for="ffx-check-79"><input type="checkbox" id="ffx-check-79" class="ffx-checkbox"> <span class="task-text"><strong>[ ] Sun Crest (CRITICAL):</strong> Do <strong>NOT</strong> leave the arena! Walk down the staircase at the back of the chamber. The chest will materialize at the top. Open it to receive the <strong>Sun Crest</strong> for Tidus.</span></label></li>
+  <div class="critical-warning" style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+    <strong>⚠️ Dark Bahamut Blockade:</strong> If you leave the Zanarkand Dome without grabbing the Sun Crest, Dark Bahamut will guard the arena upon your return.
+  </div>
+  <li class="task-item"><label for="ffx-check-80"><input type="checkbox" id="ffx-check-80" class="ffx-checkbox"> <span class="task-text">Board the Airship: You now have full free-roam access across Spira!</span></label></li>
+</ul>
+
+<hr>
+
+<h2>CHAPTER 2: AIRSHIP ERA & SECRET DISCOVERIES</h2>
+
+<p>Once you have control of the Airship, visit the Highbridge in Bevelle to view the scene with Maester Mika. This permanently unlocks all world travel and activates Wantz in Macalania Woods.</p>
+
+<h3>1. Airship Passwords & Secret Coordinates</h3>
+Enter these exact coordinates and passwords in the Airship navigation console:
+
+<p>#### Passwords (Input on Nav Map)<br><ul><br>  <li class="task-item"><label for="ffx-check-81"><input type="checkbox" id="ffx-check-81" class="ffx-checkbox"> <span class="task-text"><code>GODHAND</code> -> Unlocks Mushroom Rock Ravine (Chest containing Rikku's Celestial Weapon: <strong>Godhand</strong>).</span></label></li><br>  <li class="task-item"><label for="ffx-check-82"><input type="checkbox" id="ffx-check-82" class="ffx-checkbox"> <span class="task-text"><code>VICTORIOUS</code> -> Unlocks Besaid Ruins 1 (Chest containing Rikku's <strong>Victorious</strong> armor).</span></label></li><br>  <li class="task-item"><label for="ffx-check-83"><input type="checkbox" id="ffx-check-83" class="ffx-checkbox"> <span class="task-text"><code>MURASAME</code> -> Unlocks Besaid Ruins 2 (Chest containing Auron's <strong>Murasame</strong> weapon).</span></label></li><br></ul></p>
+
+<p>#### Hidden Coordinates (Search Nav Map)<br><ul><br>  <li class="task-item"><label for="ffx-check-84"><input type="checkbox" id="ffx-check-84" class="ffx-checkbox"> <span class="task-text"><strong>Baaj Temple:</strong> <code>X: 11-16, Y: 57-63</code> (Anima & Onion Knight).</span></label></li><br>  <li class="task-item"><label for="ffx-check-85"><input type="checkbox" id="ffx-check-85" class="ffx-checkbox"> <span class="task-text"><strong>Sanubia Sands:</strong> <code>X: 12-16, Y: 41-45</code> (Tidus's Ascalon sword).</span></label></li><br>  <li class="task-item"><label for="ffx-check-86"><input type="checkbox" id="ffx-check-86" class="ffx-checkbox"> <span class="task-text"><strong>Besaid Falls:</strong> <code>X: 29-32, Y: 73-76</code> (Kimahri's Dragoon Lance).</span></label></li><br>  <li class="task-item"><label for="ffx-check-87"><input type="checkbox" id="ffx-check-87" class="ffx-checkbox"> <span class="task-text"><strong>Mi'ihen Ruins:</strong> <code>X: 33-36, Y: 55-60</code> (Rikku's Sonar armor).</span></label></li><br>  <li class="task-item"><label for="ffx-check-88"><input type="checkbox" id="ffx-check-88" class="ffx-checkbox"> <span class="task-text"><strong>Battle Site:</strong> <code>X: 39-43, Y: 56-60</code> (Lulu's Phantom Ring).</span></label></li><br>  <li class="task-item"><label for="ffx-check-89"><input type="checkbox" id="ffx-check-89" class="ffx-checkbox"> <span class="task-text"><strong>Omega Ruins:</strong> <code>X: 69-75, Y: 33-38</code> (Ultimate dungeon, Omega Weapon, Primer XXVI).</span></label></li><br></ul></p>
+
+<hr>
+
+<h3>2. Complete Al Bhed Primer Collection (26 Total)</h3>
+Ensure you have all 26 volumes. (Check Chapter 2 for I through XXV).
+<ul>
+  <li class="task-item"><label for="ffx-check-90"><input type="checkbox" id="ffx-check-90" class="ffx-checkbox"> <span class="task-text"><strong>[ ] Al Bhed Primer Vol. XXVI:</strong> Found on the ground in the main hall of the <strong>Omega Ruins</strong>.</span></label></li>
+  <li class="task-item"><label for="ffx-check-91"><input type="checkbox" id="ffx-check-91" class="ffx-checkbox"> <span class="task-text"><strong>Reward:</strong> Speak to <strong>Rin on the Airship</strong> after collecting all 26 Primers to earn the <strong>Master Linguist Trophy</strong> and <strong>99x Underdog's Secret</strong>.</span></label></li>
+</ul>
+
+<hr>
+
+<h3>3. All 10 Jecht Spheres (Auron's Bushido & Trophy)</h3>
+Collecting all 10 spheres unlocks all 4 of Auron's Overdrives (<em>Dragon Fang, Shooting Star, Banishing Blade, Tornado</em>) and the <strong>Messenger from the Past Trophy</strong>.
+
+<ul>
+  <li class="task-item"><label for="ffx-check-92"><input type="checkbox" id="ffx-check-92" class="ffx-checkbox"> <span class="task-text"><strong>#1 Macalania Woods:</strong> Automatically obtained after defeating Spherimorph.</span></label></li>
+  <li class="task-item"><label for="ffx-check-93"><input type="checkbox" id="ffx-check-93" class="ffx-checkbox"> <span class="task-text"><strong>#2 Besaid Village:</strong> On the ground to the right of Besaid Temple.</span></label></li>
+  <li class="task-item"><label for="ffx-check-94"><input type="checkbox" id="ffx-check-94" class="ffx-checkbox"> <span class="task-text"><strong>#3 S.S. Liki:</strong> On the bridge inside the captain's cabinet.</span></label></li>
+  <li class="task-item"><label for="ffx-check-95"><input type="checkbox" id="ffx-check-95" class="ffx-checkbox"> <span class="task-text"><strong>#4 Luca Stadium:</strong> Outside the Aurochs locker room in the hallway corridor.</span></label></li>
+  <li class="task-item"><label for="ffx-check-96"><input type="checkbox" id="ffx-check-96" class="ffx-checkbox"> <span class="task-text"><strong>#5 Mi'ihen Highroad:</strong> Southern dead-end of the Old Road (near Mars Crest chest).</span></label></li>
+  <li class="task-item"><label for="ffx-check-97"><input type="checkbox" id="ffx-check-97" class="ffx-checkbox"> <span class="task-text"><strong>#6 Mushroom Rock Road:</strong> Near the precipice elevator leading to the command center.</span></label></li>
+  <li class="task-item"><label for="ffx-check-98"><input type="checkbox" id="ffx-check-98" class="ffx-checkbox"> <span class="task-text"><strong>#7 Moonflow:</strong> South Wharf, near the Shoopuf dock.</span></label></li>
+  <li class="task-item"><label for="ffx-check-99"><input type="checkbox" id="ffx-check-99" class="ffx-checkbox"> <span class="task-text"><strong>#8 Thunder Plains:</strong> Southern half, near the middle lightning rod.</span></label></li>
+  <li class="task-item"><label for="ffx-check-100"><input type="checkbox" id="ffx-check-100" class="ffx-checkbox"> <span class="task-text"><strong>#9 Macalania Woods:</strong> South path, on the trail connecting to Thunder Plains.</span></label></li>
+  <li class="task-item"><label for="ffx-check-101"><input type="checkbox" id="ffx-check-101" class="ffx-checkbox"> <span class="task-text"><strong>#10 Mt. Gagazet:</strong> Mountain Trail, in an alcove along the snowy path.</span></label></li>
+</ul>
+
+<hr>
+
+<h3>4. Secret Aeons Checklist</h3>
+
+<p>#### 🔹 Yojimbo (Cavern of the Stolen Fayth)<br><ul><br>  <li class="task-item"><label for="ffx-check-102"><input type="checkbox" id="ffx-check-102" class="ffx-checkbox"> <span class="task-text">Navigate to the end of the Sunken Cave in Calm Lands Gorge.</span></label></li><br>  <li class="task-item"><label for="ffx-check-103"><input type="checkbox" id="ffx-check-103" class="ffx-checkbox"> <span class="task-text">Defeat Lady Ginnem's Yojimbo.</span></label></li><br>  <li class="task-item"><label for="ffx-check-104"><input type="checkbox" id="ffx-check-104" class="ffx-checkbox"> <span class="task-text">Answer <em>"To defeat, with the most powerful of enemies"</em> and pay his recruitment fee.</span></label></li><br></ul></p>
+
+<p>#### 🔹 Anima (Baaj Temple)<br><ul><br>  <li class="task-item"><label for="ffx-check-105"><input type="checkbox" id="ffx-check-105" class="ffx-checkbox"> <span class="task-text">Return to Zanarkand Dome Cloister of Trials: Step on all 7 white squares across both rooms, take the Destruction Sphere from room 1, insert it into room 2 to get the <strong>Magistral Rod</strong>.</span></label></li><br>  <li class="task-item"><label for="ffx-check-106"><input type="checkbox" id="ffx-check-106" class="ffx-checkbox"> <span class="task-text">Verify you have opened the Destruction Sphere chests in all 6 Temples:</span></label></li><br></ul><br>  - [ ] Besaid (Rod of Wisdom)<br>  - [ ] Kilika (Red Ring)<br>  - [ ] Djose (Magic Sphere)<br>  - [ ] Macalania (Luck Sphere)<br>  - [ ] Bevelle (HP Sphere)<br>  - [ ] Zanarkand (Magistral Rod)<br><ul><br>  <li class="task-item"><label for="ffx-check-107"><input type="checkbox" id="ffx-check-107" class="ffx-checkbox"> <span class="task-text">Fly to <strong>Baaj Temple</strong> (<code>X: 11-16, Y: 57-63</code>).</span></label></li><br>  <li class="task-item"><label for="ffx-check-108"><input type="checkbox" id="ffx-check-108" class="ffx-checkbox"> <span class="task-text">Dive into the water and defeat boss <strong>Geosgaeno</strong> <em>(Equip Stoneproof / Auto-Med!)</em>.</span></label></li><br>  <li class="task-item"><label for="ffx-check-109"><input type="checkbox" id="ffx-check-109" class="ffx-checkbox"> <span class="task-text">Enter the antechamber: Activate all 6 statues representing each temple.</span></label></li><br>  <li class="task-item"><label for="ffx-check-110"><input type="checkbox" id="ffx-check-110" class="ffx-checkbox"> <span class="task-text">Enter the Chamber of the Fayth to obtain <strong>Anima</strong> and the <strong>Feel the Pain Trophy</strong>.</span></label></li><br></ul></p>
+
+<p>#### 🔹 The Magus Sisters (Remiem Temple)<br><ul><br>  <li class="task-item"><label for="ffx-check-111"><input type="checkbox" id="ffx-check-111" class="ffx-checkbox"> <span class="task-text">Obtain all other 7 Aeons (Valefor, Ifrit, Ixion, Shiva, Bahamut, Yojimbo, Anima).</span></label></li><br>  <li class="task-item"><label for="ffx-check-112"><input type="checkbox" id="ffx-check-112" class="ffx-checkbox"> <span class="task-text">Obtain the <strong>Blossom Crown</strong>: Capture 1 of every fiend on Mt. Gagazet and speak to the Calm Lands Arena master.</span></label></li><br>  <li class="task-item"><label for="ffx-check-113"><input type="checkbox" id="ffx-check-113" class="ffx-checkbox"> <span class="task-text">Obtain the <strong>Flower Sceptre</strong>: Defeat Belgemine's Bahamut in Remiem Temple.</span></label></li><br>  <li class="task-item"><label for="ffx-check-114"><input type="checkbox" id="ffx-check-114" class="ffx-checkbox"> <span class="task-text">Unseal the Chamber of the Fayth at the back of Remiem Temple to obtain <strong>Cindy, Sandy, and Mindy</strong> and the <strong>Delta Attack Trophy</strong>.</span></label></li><br></ul></p>
+
+<p>#### 🔹 Belgemine Aeon Battles & Moon Sigil<br><ul><br>  <li class="task-item"><label for="ffx-check-115"><input type="checkbox" id="ffx-check-115" class="ffx-checkbox"> <span class="task-text">Defeat all of Belgemine's Aeons in Remiem Temple (Valefor through Magus Sisters).</span></label></li><br>  <li class="task-item"><label for="ffx-check-116"><input type="checkbox" id="ffx-check-116" class="ffx-checkbox"> <span class="task-text">Perform the <strong>Sending for Belgemine</strong> to receive the <strong>[ ] Moon Sigil</strong> (for Yuna's Nirvana) and the <strong>Overcoming the Past Trophy</strong>.</span></label></li><br></ul></p>
+
+<hr>
+
+<h2>CHAPTER 3: ALL 7 CELESTIAL WEAPONS & UPGRADES</h2>
+
+<h3>Step 0: The Celestial Mirror</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-117"><input type="checkbox" id="ffx-check-117" class="ffx-checkbox"> <span class="task-text">Win the Remiem Temple Chocobo Race to obtain the <strong>Cloudy Mirror</strong>.</span></label></li>
+  <li class="task-item"><label for="ffx-check-118"><input type="checkbox" id="ffx-check-118" class="ffx-checkbox"> <span class="task-text">Go to Macalania Woods (South): Talk to the mother and son who lost their father.</span></label></li>
+  <li class="task-item"><label for="ffx-check-119"><input type="checkbox" id="ffx-check-119" class="ffx-checkbox"> <span class="task-text">Go to the Campsite: Talk to the father and tell him his family is waiting.</span></label></li>
+  <li class="task-item"><label for="ffx-check-120"><input type="checkbox" id="ffx-check-120" class="ffx-checkbox"> <span class="task-text">Return to the mother and father: Talk to them twice; they say their son is missing.</span></label></li>
+  <li class="task-item"><label for="ffx-check-121"><input type="checkbox" id="ffx-check-121" class="ffx-checkbox"> <span class="task-text">Walk up the glowing crystal path to the north: Find the boy standing near the giant floating crystal.</span></label></li>
+  <li class="task-item"><label for="ffx-check-122"><input type="checkbox" id="ffx-check-122" class="ffx-checkbox"> <span class="task-text">Inspect the crystal using the Cloudy Mirror to transform it into the <strong>Celestial Mirror</strong>.</span></label></li>
+  <li class="task-item"><label for="ffx-check-123"><input type="checkbox" id="ffx-check-123" class="ffx-checkbox"> <span class="task-text"><em>Note:</em> Return to this same crystal with any base Celestial Weapon + Crest + Sigil to upgrade it fully!</span></label></li>
+</ul>
+
+<hr>
+
+<h3>1. Tidus: Caladbolg</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-124"><input type="checkbox" id="ffx-check-124" class="ffx-checkbox"> <span class="task-text"><strong>Base Weapon (Caladbolg):</strong> Complete the Calm Lands Chocobo Trainer mini-games. After winning Catcher Chocobo, the guard blocking the northwest slope moves. Walk down and examine the glyph on the wall with the Celestial Mirror.</span></label></li>
+  <li class="task-item"><label for="ffx-check-125"><input type="checkbox" id="ffx-check-125" class="ffx-checkbox"> <span class="task-text"><strong>Sun Crest:</strong> Zanarkand Dome, down the back stairs immediately after Yunalesca.</span></label></li>
+  <li class="task-item"><label for="ffx-check-126"><input type="checkbox" id="ffx-check-126" class="ffx-checkbox"> <span class="task-text"><strong>Sun Sigil:</strong> Achieve a final race time of <strong>0:00.0</strong> in the <strong>Catcher Chocobo</strong> mini-game (Calm Lands).</span></label></li>
+</ul>
+  - <em>Strategy:</em> Steer wide around birds, let trainer take hits, aim for 13-15 balloons and 0-1 birds.
+<ul>
+  <li class="task-item"><label for="ffx-check-127"><input type="checkbox" id="ffx-check-127" class="ffx-checkbox"> <span class="task-text"><strong>Fully Upgraded Caladbolg Abilities:</strong> Break Damage Limit, Triple Overdrive, Evade & Counter, Magic Counter.</span></label></li>
+</ul>
+
+<h3>2. Yuna: Nirvana</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-128"><input type="checkbox" id="ffx-check-128" class="ffx-checkbox"> <span class="task-text"><strong>Base Weapon (Nirvana):</strong> Capture at least 1 of each fiend in the Calm Lands. Open the chest in front of the Monster Arena.</span></label></li>
+  <li class="task-item"><label for="ffx-check-129"><input type="checkbox" id="ffx-check-129" class="ffx-checkbox"> <span class="task-text"><strong>Moon Crest:</strong> Besaid Island, hidden beach reachable by swimming right from the main shore.</span></label></li>
+  <li class="task-item"><label for="ffx-check-130"><input type="checkbox" id="ffx-check-130" class="ffx-checkbox"> <span class="task-text"><strong>Moon Sigil:</strong> Defeat all 8 of Belgemine's Aeons in Remiem Temple and send her.</span></label></li>
+  <li class="task-item"><label for="ffx-check-131"><input type="checkbox" id="ffx-check-131" class="ffx-checkbox"> <span class="task-text"><strong>Fully Upgraded Nirvana Abilities:</strong> Break Damage Limit, Triple Overdrive, Double AP, One MP Cost (Unlocks Valefor Break Damage Limit).</span></label></li>
+</ul>
+
+<h3>3. Auron: Masamune</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-132"><input type="checkbox" id="ffx-check-132" class="ffx-checkbox"> <span class="task-text"><strong>Base Weapon (Masamune):</strong></span></label></li>
+</ul>
+  - [ ] Grab the <strong>Rusty Sword</strong> from the ground outside the Cavern of the Stolen Fayth.
+  - [ ] Go to Mushroom Rock Road, take the elevator up to the statue of Lord Mi'ihen, and inspect the glyph with the Celestial Mirror.
+<ul>
+  <li class="task-item"><label for="ffx-check-133"><input type="checkbox" id="ffx-check-133" class="ffx-checkbox"> <span class="task-text"><strong>Mars / Saturn Crest:</strong> Mi'ihen Highroad - Oldroad South, chest at the southern dead-end.</span></label></li>
+  <li class="task-item"><label for="ffx-check-134"><input type="checkbox" id="ffx-check-134" class="ffx-checkbox"> <span class="task-text"><strong>Mars / Saturn Sigil:</strong> Unlock a combined total of <strong>10 Area Conquest or Species Conquest</strong> monsters in the Calm Lands Monster Arena.</span></label></li>
+  <li class="task-item"><label for="ffx-check-135"><input type="checkbox" id="ffx-check-135" class="ffx-checkbox"> <span class="task-text"><strong>Fully Upgraded Masamune Abilities:</strong> Break Damage Limit, Triple Overdrive, First Strike, Counterattack (Unlocks Yojimbo Break Damage Limit).</span></label></li>
+</ul>
+
+<h3>4. Wakka: World Champion</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-136"><input type="checkbox" id="ffx-check-136" class="ffx-checkbox"> <span class="task-text"><strong>Base Weapon (World Champion):</strong> Win 5 Blitzball matches (or place top 3 in a tournament). Speak to the bartender in the Luca Cafe with the Celestial Mirror.</span></label></li>
+  <li class="task-item"><label for="ffx-check-137"><input type="checkbox" id="ffx-check-137" class="ffx-checkbox"> <span class="task-text"><strong>Jupiter / Mercury Crest:</strong> Luca Stadium, inside a locker in the Aurochs locker room.</span></label></li>
+  <li class="task-item"><label for="ffx-check-138"><input type="checkbox" id="ffx-check-138" class="ffx-checkbox"> <span class="task-text"><strong>Jupiter / Mercury Sigil:</strong> Appears as the 1st place prize in a Blitzball <strong>League</strong> <em>after</em> unlocking all 3 of Wakka's Overdrive Reels (Attack Reels, Status Reels, Aurochs Reels).</span></label></li>
+  <li class="task-item"><label for="ffx-check-139"><input type="checkbox" id="ffx-check-139" class="ffx-checkbox"> <span class="task-text"><strong>Fully Upgraded World Champion Abilities:</strong> Break Damage Limit, Triple Overdrive, Double AP, Evade & Counter (Unlocks Ifrit Break Damage Limit).</span></label></li>
+</ul>
+
+<h3>5. Lulu: Onion Knight</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-140"><input type="checkbox" id="ffx-check-140" class="ffx-checkbox"> <span class="task-text"><strong>Base Weapon (Onion Knight):</strong> Baaj Temple, submerged chest in the southern pool (dive after defeating Geosgaeno).</span></label></li>
+  <li class="task-item"><label for="ffx-check-141"><input type="checkbox" id="ffx-check-141" class="ffx-checkbox"> <span class="task-text"><strong>Venus / Mars Crest:</strong> Guadosalam, inside the Farplane in a chest on the left.</span></label></li>
+  <li class="task-item"><label for="ffx-check-142"><input type="checkbox" id="ffx-check-142" class="ffx-checkbox"> <span class="task-text"><strong>Venus / Mars Sigil:</strong> Successfully dodge <strong>200 consecutive lightning strikes</strong> in the Thunder Plains without leaving the screen or getting hit, then open the chest in front of the Travel Agency.</span></label></li>
+</ul>
+  - <em>Strategy (Crater Trick):</em> Go to the southern Thunder Plains. Find the crater just south of the lightning tower. Stepping into the crater triggers a guaranteed, predictable lightning strike every time. Equip a <strong>No Encounters</strong> armor!
+<ul>
+  <li class="task-item"><label for="ffx-check-143"><input type="checkbox" id="ffx-check-143" class="ffx-checkbox"> <span class="task-text"><strong>Fully Upgraded Onion Knight Abilities:</strong> Break Damage Limit, Triple Overdrive, Magic Booster, One MP Cost (Unlocks Shiva Break Damage Limit).</span></label></li>
+</ul>
+
+<h3>6. Kimahri: Spirit Lance</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-144"><input type="checkbox" id="ffx-check-144" class="ffx-checkbox"> <span class="task-text"><strong>Base Weapon (Spirit Lance):</strong> Pray at 3 glowing Qactuar stones in Thunder Plains with <code>[Square]</code>. Then in the south plains, follow the ghost Qactuar to a ruined tower and pray again.</span></label></li>
+  <li class="task-item"><label for="ffx-check-145"><input type="checkbox" id="ffx-check-145" class="ffx-checkbox"> <span class="task-text"><strong>Saturn / Jupiter Crest:</strong> Mt. Gagazet, chest between pillars along the mountain trail past Seymour Flux.</span></label></li>
+  <li class="task-item"><label for="ffx-check-146"><input type="checkbox" id="ffx-check-146" class="ffx-checkbox"> <span class="task-text"><strong>Saturn / Jupiter Sigil:</strong> Complete both the North and South <strong>Butterfly Hunt</strong> mini-games in Macalania Woods <em>after</em> obtaining the Airship.</span></label></li>
+</ul>
+  - <em>Strategy:</em> Memorize the path; collect all 7 blue butterflies before time runs out while avoiding red butterflies (which trigger combat).
+<ul>
+  <li class="task-item"><label for="ffx-check-147"><input type="checkbox" id="ffx-check-147" class="ffx-checkbox"> <span class="task-text"><strong>Fully Upgraded Spirit Lance Abilities:</strong> Break Damage Limit, Triple Overdrive, Double AP, Evade & Counter (Unlocks Ixion Break Damage Limit).</span></label></li>
+</ul>
+
+<h3>7. Rikku: Godhand</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-148"><input type="checkbox" id="ffx-check-148" class="ffx-checkbox"> <span class="task-text"><strong>Base Weapon (Godhand):</strong> Enter password <code>GODHAND</code> into the Airship nav map, fly to Mushroom Rock Ravine, and open the chest with the Celestial Mirror.</span></label></li>
+  <li class="task-item"><label for="ffx-check-149"><input type="checkbox" id="ffx-check-149" class="ffx-checkbox"> <span class="task-text"><strong>Mercury / Venus Crest:</strong> Sanubia Desert (Central), chest in a pit in the western dunes.</span></label></li>
+  <li class="task-item"><label for="ffx-check-150"><input type="checkbox" id="ffx-check-150" class="ffx-checkbox"> <span class="task-text"><strong>Mercury / Venus Sigil:</strong> Complete the <strong>Cactuar Village (10 Gatekeepers)</strong> sidequest in Sanubia Desert:</span></label></li>
+</ul>
+  - [ ] Find all 10 Gatekeepers across Bikanel / Airship, complete the "Red-Light Green-Light" mini-game for each, and place their spheres into the Cactuar Stone.
+  - [ ] Enter the sunken Sandstorm valley to open the chest containing the Sigil.
+<ul>
+  <li class="task-item"><label for="ffx-check-151"><input type="checkbox" id="ffx-check-151" class="ffx-checkbox"> <span class="task-text"><strong>Fully Upgraded Godhand Abilities:</strong> Break Damage Limit, Triple Overdrive, Double AP, Gillionaire (Unlocks Anima Break Damage Limit).</span></label></li>
+</ul>
+
+<hr>
+
+<h2>CHAPTER 5: CHARACTER OVERDRIVE & ABILITY MASTERY</h2>
+
+<h3>1. Kimahri: 12 Ronso Rages (Learning! Trophy)</h3>
+Use Kimahri's <strong>Lancet</strong> ability on these enemies:
+<ul>
+  <li class="task-item"><label for="ffx-check-152"><input type="checkbox" id="ffx-check-152" class="ffx-checkbox"> <span class="task-text"><strong>Jump:</strong> Default starting Overdrive.</span></label></li>
+  <li class="task-item"><label for="ffx-check-153"><input type="checkbox" id="ffx-check-153" class="ffx-checkbox"> <span class="task-text"><strong>Seed Cannon:</strong> Ragora (Kilika), Sandragora (Bikanel), Biran.</span></label></li>
+  <li class="task-item"><label for="ffx-check-154"><input type="checkbox" id="ffx-check-154" class="ffx-checkbox"> <span class="task-text"><strong>Self-Destruct:</strong> Bomb (Mi'ihen), Grenade (Mt. Gagazet), Puroboros (Omega), Biran.</span></label></li>
+  <li class="task-item"><label for="ffx-check-155"><input type="checkbox" id="ffx-check-155" class="ffx-checkbox"> <span class="task-text"><strong>Fire Breath:</strong> Dual Horn (Mi'ihen), Grendel (Gagazet), Valaha (Stolen Fayth), Biran.</span></label></li>
+  <li class="task-item"><label for="ffx-check-156"><input type="checkbox" id="ffx-check-156" class="ffx-checkbox"> <span class="task-text"><strong>Stone Breath:</strong> Basilisk (Djose), Anacondaur (Calm Lands), Yenke.</span></label></li>
+  <li class="task-item"><label for="ffx-check-157"><input type="checkbox" id="ffx-check-157" class="ffx-checkbox"> <span class="task-text"><strong>Aqua Breath:</strong> Chimera (Macalania), Chimera Brain (Calm Lands), Yenke.</span></label></li>
+  <li class="task-item"><label for="ffx-check-158"><input type="checkbox" id="ffx-check-158" class="ffx-checkbox"> <span class="task-text"><strong>Thrust Kick:</strong> YKT-63 (Bevelle), YKT-11 (Zanarkand), Biran.</span></label></li>
+  <li class="task-item"><label for="ffx-check-159"><input type="checkbox" id="ffx-check-159" class="ffx-checkbox"> <span class="task-text"><strong>Bad Breath:</strong> Malboro (Calm Lands), Great Malboro (Omega / Inside Sin).</span></label></li>
+  <li class="task-item"><label for="ffx-check-160"><input type="checkbox" id="ffx-check-160" class="ffx-checkbox"> <span class="task-text"><strong>Doom:</strong> Ghost (Stolen Fayth), Wraith (Inside Sin), Biran.</span></label></li>
+  <li class="task-item"><label for="ffx-check-161"><input type="checkbox" id="ffx-check-161" class="ffx-checkbox"> <span class="task-text"><strong>White Wind:</strong> Yenke Ronso (Mt. Gagazet - let him cast it first!), Dark Flan, Spirit.</span></label></li>
+  <li class="task-item"><label for="ffx-check-162"><input type="checkbox" id="ffx-check-162" class="ffx-checkbox"> <span class="task-text"><strong>Mighty Guard:</strong> Biran Ronso (Mt. Gagazet - let him cast it first!), Behemoth, King Behemoth.</span></label></li>
+  <li class="task-item"><label for="ffx-check-163"><input type="checkbox" id="ffx-check-163" class="ffx-checkbox"> <span class="task-text"><strong>Nova:</strong> <strong>Omega Weapon</strong> (Omega Ruins) or <strong>Nemesis</strong> (Monster Arena).</span></label></li>
+</ul>
+
+<h3>2. Wakka: Overdrive Reels</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-164"><input type="checkbox" id="ffx-check-164" class="ffx-checkbox"> <span class="task-text"><strong>Attack Reels:</strong> 1st place prize in a Blitzball Tournament.</span></label></li>
+  <li class="task-item"><label for="ffx-check-165"><input type="checkbox" id="ffx-check-165" class="ffx-checkbox"> <span class="task-text"><strong>Status Reels:</strong> 1st place prize in a Blitzball League (requires Attack Reels + Wakka in 250 battles).</span></label></li>
+  <li class="task-item"><label for="ffx-check-166"><input type="checkbox" id="ffx-check-166" class="ffx-checkbox"> <span class="task-text"><strong>Aurochs Reels:</strong> 1st place prize in a Blitzball Tournament (requires Status Reels + Wakka in 450 battles).</span></label></li>
+</ul>
+
+<h3>3. Tidus: Swordplay Overdrives</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-167"><input type="checkbox" id="ffx-check-167" class="ffx-checkbox"> <span class="task-text"><strong>Spiral Cut:</strong> Default.</span></label></li>
+  <li class="task-item"><label for="ffx-check-168"><input type="checkbox" id="ffx-check-168" class="ffx-checkbox"> <span class="task-text"><strong>Slice & Dice:</strong> Perform Overdrive <strong>30 times</strong>.</span></label></li>
+  <li class="task-item"><label for="ffx-check-169"><input type="checkbox" id="ffx-check-169" class="ffx-checkbox"> <span class="task-text"><strong>Energy Rain:</strong> Perform Overdrive <strong>80 times</strong>.</span></label></li>
+  <li class="task-item"><label for="ffx-check-170"><input type="checkbox" id="ffx-check-170" class="ffx-checkbox"> <span class="task-text"><strong>Blitz Ace:</strong> Perform Overdrive <strong>240 times</strong>.</span></label></li>
+</ul>
+
+<hr>
+
+<h2>CHAPTER 7: MONSTER ARENA 100% CAPTURE LIST</h2>
+
+<p>Purchase Capture weapons from the Calm Lands Arena. You must capture <strong>10 of EVERY fiend</strong> across all 13 regions to unlock all Arena creations and spawn <strong>Nemesis</strong>.</p>
+
+<h3>1. Besaid Island (3 Fiends)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-171"><input type="checkbox" id="ffx-check-171" class="ffx-checkbox"> <span class="task-text">Dingo (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-172"><input type="checkbox" id="ffx-check-172" class="ffx-checkbox"> <span class="task-text">Condor (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-173"><input type="checkbox" id="ffx-check-173" class="ffx-checkbox"> <span class="task-text">Water Flan (10)</span></label></li>
+  <li><em>Unlock:</em> Stratavis</li>
+</ul>
+
+<h3>2. Kilika Woods (4 Fiends)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-174"><input type="checkbox" id="ffx-check-174" class="ffx-checkbox"> <span class="task-text">Dinonix (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-175"><input type="checkbox" id="ffx-check-175" class="ffx-checkbox"> <span class="task-text">Killer Bee (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-176"><input type="checkbox" id="ffx-check-176" class="ffx-checkbox"> <span class="task-text">Yellow Element (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-177"><input type="checkbox" id="ffx-check-177" class="ffx-checkbox"> <span class="task-text">Ragora (10)</span></label></li>
+  <li><em>Unlock:</em> Malboro Menace</li>
+</ul>
+
+<h3>3. Mi'ihen Highroad (8 Fiends)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-178"><input type="checkbox" id="ffx-check-178" class="ffx-checkbox"> <span class="task-text">Mi'ihen Fang (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-179"><input type="checkbox" id="ffx-check-179" class="ffx-checkbox"> <span class="task-text">Ipiria (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-180"><input type="checkbox" id="ffx-check-180" class="ffx-checkbox"> <span class="task-text">Floating Eye (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-181"><input type="checkbox" id="ffx-check-181" class="ffx-checkbox"> <span class="task-text">White Element (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-182"><input type="checkbox" id="ffx-check-182" class="ffx-checkbox"> <span class="task-text">Raldo (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-183"><input type="checkbox" id="ffx-check-183" class="ffx-checkbox"> <span class="task-text">Vouivre (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-184"><input type="checkbox" id="ffx-check-184" class="ffx-checkbox"> <span class="task-text">Bomb (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-185"><input type="checkbox" id="ffx-check-185" class="ffx-checkbox"> <span class="task-text">Dual Horn (10)</span></label></li>
+  <li><em>Unlock:</em> Kottos</li>
+</ul>
+
+<h3>4. Mushroom Rock Road (7 Fiends)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-186"><input type="checkbox" id="ffx-check-186" class="ffx-checkbox"> <span class="task-text">Raptor (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-187"><input type="checkbox" id="ffx-check-187" class="ffx-checkbox"> <span class="task-text">Gandarewa (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-188"><input type="checkbox" id="ffx-check-188" class="ffx-checkbox"> <span class="task-text">Thunder Flan (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-189"><input type="checkbox" id="ffx-check-189" class="ffx-checkbox"> <span class="task-text">Red Element (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-190"><input type="checkbox" id="ffx-check-190" class="ffx-checkbox"> <span class="task-text">Lamashtu (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-191"><input type="checkbox" id="ffx-check-191" class="ffx-checkbox"> <span class="task-text">Funguar (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-192"><input type="checkbox" id="ffx-check-192" class="ffx-checkbox"> <span class="task-text">Garuda (10)</span></label></li>
+  <li><em>Unlock:</em> Coeurlregina</li>
+</ul>
+
+<h3>5. Djose Highroad (7 Fiends)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-193"><input type="checkbox" id="ffx-check-193" class="ffx-checkbox"> <span class="task-text">Garm (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-194"><input type="checkbox" id="ffx-check-194" class="ffx-checkbox"> <span class="task-text">Simurgh (10) <em>(Rare: look in sunny patches)</em></span></label></li>
+  <li class="task-item"><label for="ffx-check-195"><input type="checkbox" id="ffx-check-195" class="ffx-checkbox"> <span class="task-text">Bite Bug (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-196"><input type="checkbox" id="ffx-check-196" class="ffx-checkbox"> <span class="task-text">Snow Flan (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-197"><input type="checkbox" id="ffx-check-197" class="ffx-checkbox"> <span class="task-text">Flame Flan (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-198"><input type="checkbox" id="ffx-check-198" class="ffx-checkbox"> <span class="task-text">Ochre Jelly (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-199"><input type="checkbox" id="ffx-check-199" class="ffx-checkbox"> <span class="task-text">Basilisk (10)</span></label></li>
+  <li><em>Unlock:</em> Juggernaut</li>
+</ul>
+
+<h3>6. Thunder Plains (8 Fiends)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-200"><input type="checkbox" id="ffx-check-200" class="ffx-checkbox"> <span class="task-text">Melusine (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-201"><input type="checkbox" id="ffx-check-201" class="ffx-checkbox"> <span class="task-text">Aerouge (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-202"><input type="checkbox" id="ffx-check-202" class="ffx-checkbox"> <span class="task-text">Buer (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-203"><input type="checkbox" id="ffx-check-203" class="ffx-checkbox"> <span class="task-text">Gold Element (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-204"><input type="checkbox" id="ffx-check-204" class="ffx-checkbox"> <span class="task-text">Kusariqqu (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-205"><input type="checkbox" id="ffx-check-205" class="ffx-checkbox"> <span class="task-text">Larva (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-206"><input type="checkbox" id="ffx-check-206" class="ffx-checkbox"> <span class="task-text">Iron Giant (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-207"><input type="checkbox" id="ffx-check-207" class="ffx-checkbox"> <span class="task-text">Qactuar (10) <em>(Pray at Qactuar stones to increase spawns)</em></span></label></li>
+  <li><em>Unlock:</em> Cactuar King</li>
+</ul>
+
+<h3>7. Macalania (10 Fiends)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-208"><input type="checkbox" id="ffx-check-208" class="ffx-checkbox"> <span class="task-text">Snow Wolf (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-209"><input type="checkbox" id="ffx-check-209" class="ffx-checkbox"> <span class="task-text">Iguion (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-210"><input type="checkbox" id="ffx-check-210" class="ffx-checkbox"> <span class="task-text">Wasp (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-211"><input type="checkbox" id="ffx-check-211" class="ffx-checkbox"> <span class="task-text">Evil Eye (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-212"><input type="checkbox" id="ffx-check-212" class="ffx-checkbox"> <span class="task-text">Ice Flan (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-213"><input type="checkbox" id="ffx-check-213" class="ffx-checkbox"> <span class="task-text">Blue Element (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-214"><input type="checkbox" id="ffx-check-214" class="ffx-checkbox"> <span class="task-text">Murussu (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-215"><input type="checkbox" id="ffx-check-215" class="ffx-checkbox"> <span class="task-text">Mafdet (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-216"><input type="checkbox" id="ffx-check-216" class="ffx-checkbox"> <span class="task-text">Xiphos (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-217"><input type="checkbox" id="ffx-check-217" class="ffx-checkbox"> <span class="task-text">Chimera (10)</span></label></li>
+  <li><em>Unlock:</em> Espada</li>
+</ul>
+
+<h3>8. Sanubia Desert / Bikanel (6 Fiends)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-218"><input type="checkbox" id="ffx-check-218" class="ffx-checkbox"> <span class="task-text">Sand Wolf (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-219"><input type="checkbox" id="ffx-check-219" class="ffx-checkbox"> <span class="task-text">Alcyone (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-220"><input type="checkbox" id="ffx-check-220" class="ffx-checkbox"> <span class="task-text">Mushussu (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-221"><input type="checkbox" id="ffx-check-221" class="ffx-checkbox"> <span class="task-text">Zu (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-222"><input type="checkbox" id="ffx-check-222" class="ffx-checkbox"> <span class="task-text">Sand Worm (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-223"><input type="checkbox" id="ffx-check-223" class="ffx-checkbox"> <span class="task-text">Cactuar (10)</span></label></li>
+  <li><em>Unlock:</em> Abyss Worm</li>
+</ul>
+
+<h3>9. Calm Lands (9 Fiends)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-224"><input type="checkbox" id="ffx-check-224" class="ffx-checkbox"> <span class="task-text">Skoll (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-225"><input type="checkbox" id="ffx-check-225" class="ffx-checkbox"> <span class="task-text">Nebiros (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-226"><input type="checkbox" id="ffx-check-226" class="ffx-checkbox"> <span class="task-text">Flame Flan (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-227"><input type="checkbox" id="ffx-check-227" class="ffx-checkbox"> <span class="task-text">Shred (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-228"><input type="checkbox" id="ffx-check-228" class="ffx-checkbox"> <span class="task-text">Anacondaur (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-229"><input type="checkbox" id="ffx-check-229" class="ffx-checkbox"> <span class="task-text">Ogre (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-230"><input type="checkbox" id="ffx-check-230" class="ffx-checkbox"> <span class="task-text">Coeurl (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-231"><input type="checkbox" id="ffx-check-231" class="ffx-checkbox"> <span class="task-text">Chimera Brain (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-232"><input type="checkbox" id="ffx-check-232" class="ffx-checkbox"> <span class="task-text">Malboro (10) <em>(Spawns frequently in the northwest)</em></span></label></li>
+  <li><em>Unlock:</em> Chimerageist & Nirvana chest</li>
+</ul>
+
+<h3>10. Sunken Cave / Stolen Fayth (9 Fiends)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-233"><input type="checkbox" id="ffx-check-233" class="ffx-checkbox"> <span class="task-text">Yowie (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-234"><input type="checkbox" id="ffx-check-234" class="ffx-checkbox"> <span class="task-text">Imp (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-235"><input type="checkbox" id="ffx-check-235" class="ffx-checkbox"> <span class="task-text">Dark Element (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-236"><input type="checkbox" id="ffx-check-236" class="ffx-checkbox"> <span class="task-text">Nidhogg (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-237"><input type="checkbox" id="ffx-check-237" class="ffx-checkbox"> <span class="task-text">Thorn (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-238"><input type="checkbox" id="ffx-check-238" class="ffx-checkbox"> <span class="task-text">Valaha (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-239"><input type="checkbox" id="ffx-check-239" class="ffx-checkbox"> <span class="task-text">Epaaj (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-240"><input type="checkbox" id="ffx-check-240" class="ffx-checkbox"> <span class="task-text">Ghost (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-241"><input type="checkbox" id="ffx-check-241" class="ffx-checkbox"> <span class="task-text">Tonberry (10) <em>(Rare: search green cave rooms)</em></span></label></li>
+  <li><em>Unlock:</em> Don Tonberry</li>
+</ul>
+
+<h3>11. Mt. Gagazet (12 Fiends)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-242"><input type="checkbox" id="ffx-check-242" class="ffx-checkbox"> <span class="task-text">Bandersnatch (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-243"><input type="checkbox" id="ffx-check-243" class="ffx-checkbox"> <span class="task-text">Ahriman (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-244"><input type="checkbox" id="ffx-check-244" class="ffx-checkbox"> <span class="task-text">Dark Flan (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-245"><input type="checkbox" id="ffx-check-245" class="ffx-checkbox"> <span class="task-text">Grenade (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-246"><input type="checkbox" id="ffx-check-246" class="ffx-checkbox"> <span class="task-text">Grat (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-247"><input type="checkbox" id="ffx-check-247" class="ffx-checkbox"> <span class="task-text">Grendel (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-248"><input type="checkbox" id="ffx-check-248" class="ffx-checkbox"> <span class="task-text">Bashura (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-249"><input type="checkbox" id="ffx-check-249" class="ffx-checkbox"> <span class="task-text">Mandragora (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-250"><input type="checkbox" id="ffx-check-250" class="ffx-checkbox"> <span class="task-text">Behemoth (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-251"><input type="checkbox" id="ffx-check-251" class="ffx-checkbox"> <span class="task-text">Splasher (10) <em>(Water)</em></span></label></li>
+  <li class="task-item"><label for="ffx-check-252"><input type="checkbox" id="ffx-check-252" class="ffx-checkbox"> <span class="task-text">Achelous (10) <em>(Water)</em></span></label></li>
+  <li class="task-item"><label for="ffx-check-253"><input type="checkbox" id="ffx-check-253" class="ffx-checkbox"> <span class="task-text">Maelspike (10) <em>(Water)</em></span></label></li>
+  <li><em>Unlock:</em> Catoblepas & Blossom Crown</li>
+</ul>
+
+<h3>12. Inside Sin (9 Fiends)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-254"><input type="checkbox" id="ffx-check-254" class="ffx-checkbox"> <span class="task-text">Exoray (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-255"><input type="checkbox" id="ffx-check-255" class="ffx-checkbox"> <span class="task-text">Wraith (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-256"><input type="checkbox" id="ffx-check-256" class="ffx-checkbox"> <span class="task-text">Gemini - Sword (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-257"><input type="checkbox" id="ffx-check-257" class="ffx-checkbox"> <span class="task-text">Gemini - Club (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-258"><input type="checkbox" id="ffx-check-258" class="ffx-checkbox"> <span class="task-text">Demonolith (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-259"><input type="checkbox" id="ffx-check-259" class="ffx-checkbox"> <span class="task-text">Great Malboro (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-260"><input type="checkbox" id="ffx-check-260" class="ffx-checkbox"> <span class="task-text">Barbatos (10) <em>(Inside Sin - City of Dying Dreams)</em></span></label></li>
+  <li class="task-item"><label for="ffx-check-261"><input type="checkbox" id="ffx-check-261" class="ffx-checkbox"> <span class="task-text">Adamantoise (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-262"><input type="checkbox" id="ffx-check-262" class="ffx-checkbox"> <span class="task-text">Behemoth King (10)</span></label></li>
+  <li><em>Unlock:</em> Abaddon</li>
+</ul>
+
+<h3>13. Omega Ruins (10 Fiends)</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-263"><input type="checkbox" id="ffx-check-263" class="ffx-checkbox"> <span class="task-text">Zaurus (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-264"><input type="checkbox" id="ffx-check-264" class="ffx-checkbox"> <span class="task-text">Floating Death (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-265"><input type="checkbox" id="ffx-check-265" class="ffx-checkbox"> <span class="task-text">Black Element (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-266"><input type="checkbox" id="ffx-check-266" class="ffx-checkbox"> <span class="task-text">Halma (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-267"><input type="checkbox" id="ffx-check-267" class="ffx-checkbox"> <span class="task-text">Puroboros (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-268"><input type="checkbox" id="ffx-check-268" class="ffx-checkbox"> <span class="task-text">Spirit (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-269"><input type="checkbox" id="ffx-check-269" class="ffx-checkbox"> <span class="task-text">Machea (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-270"><input type="checkbox" id="ffx-check-270" class="ffx-checkbox"> <span class="task-text">Master Coeurl (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-271"><input type="checkbox" id="ffx-check-271" class="ffx-checkbox"> <span class="task-text">Master Tonberry (10)</span></label></li>
+  <li class="task-item"><label for="ffx-check-272"><input type="checkbox" id="ffx-check-272" class="ffx-checkbox"> <span class="task-text">Varuna (10)</span></label></li>
+  <li><em>Unlock:</em> Vorban</li>
+</ul>
+
+<hr>
+
+<h3>Arena Boss Clear Checklist</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-273"><input type="checkbox" id="ffx-check-273" class="ffx-checkbox"> <span class="task-text"><strong>Area Conquest:</strong> Defeat all 13 Area Conquest creations.</span></label></li>
+  <li class="task-item"><label for="ffx-check-274"><input type="checkbox" id="ffx-check-274" class="ffx-checkbox"> <span class="task-text"><strong>Species Conquest:</strong> Defeat all 10 Species Conquest creations (Fenrir, Ornitholestes, Pterya, Hornet, Vidatu, One-Eye, Jumbo Flan, Nega Ghol, Tanket, Fafnir, Sleep Sprout, Bomb King, Juggernaut, Ironclad).</span></label></li>
+  <li class="task-item"><label for="ffx-check-275"><input type="checkbox" id="ffx-check-275" class="ffx-checkbox"> <span class="task-text"><strong>Original Creations:</strong> Defeat Earth Eater, Greater Sphere, Catastrophe, Th'uban, Neslug, Ultima Buster, Shinryu.</span></label></li>
+  <li class="task-item"><label for="ffx-check-276"><input type="checkbox" id="ffx-check-276" class="ffx-checkbox"> <span class="task-text"><strong>Spawn Nemesis:</strong> Capture 10 of every fiend in Spira + defeat every Area, Species, and Original creation at least once.</span></label></li>
+  <li class="task-item"><label for="ffx-check-277"><input type="checkbox" id="ffx-check-277" class="ffx-checkbox"> <span class="task-text"><strong>Defeat Nemesis:</strong> Overcome Nemesis to earn the <strong>Overcoming the Nemesis Trophy</strong>.</span></label></li>
+</ul>
+
+<hr>
+
+<h2>CHAPTER 9: SUPERBOSSES (DARK AEONS & PENANCE)</h2>
+
+<h3>Dark Aeons Checklist</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-278"><input type="checkbox" id="ffx-check-278" class="ffx-checkbox"> <span class="task-text"><strong>Dark Valefor (Besaid Village Entrance):</strong> 800,000 HP. (Reward: Energy Ray/Blast armor).</span></label></li>
+  <li class="task-item"><label for="ffx-check-279"><input type="checkbox" id="ffx-check-279" class="ffx-checkbox"> <span class="task-text"><strong>Dark Ifrit (Bikanel Desert - Home entrance):</strong> 1,400,000 HP. (Speak to the woman near the ruins).</span></label></li>
+  <li class="task-item"><label for="ffx-check-280"><input type="checkbox" id="ffx-check-280" class="ffx-checkbox"> <span class="task-text"><strong>Dark Ixion (Thunder Plains):</strong> 1,200,000 HP. (Speak to the soldier near the lightning rod in north plains; defeat twice!).</span></label></li>
+  <li class="task-item"><label for="ffx-check-281"><input type="checkbox" id="ffx-check-281" class="ffx-checkbox"> <span class="task-text"><strong>Dark Shiva (Macalania Temple Entrance):</strong> 1,100,000 HP. (Approached by Guado guards at the frozen bridge).</span></label></li>
+  <li class="task-item"><label for="ffx-check-282"><input type="checkbox" id="ffx-check-282" class="ffx-checkbox"> <span class="task-text"><strong>Dark Bahamut (Zanarkand Dome):</strong> 4,000,000 HP. (Spawns in Yunalesca's arena; counters everything with <em>Impulse</em> - equip Auto-Protect & Stoneproof/Ribbon).</span></label></li>
+  <li class="task-item"><label for="ffx-check-283"><input type="checkbox" id="ffx-check-283" class="ffx-checkbox"> <span class="task-text"><strong>Dark Yojimbo (Cavern of the Stolen Fayth):</strong> 1,600,000 HP. (<strong>Must defeat 5 times consecutively</strong> without leaving the cave or saving!).</span></label></li>
+  <li class="task-item"><label for="ffx-check-284"><input type="checkbox" id="ffx-check-284" class="ffx-checkbox"> <span class="task-text"><strong>Dark Anima (Mt. Gagazet Gate):</strong> 8,000,000 HP. (Re-complete Wakka's ball-throwing puzzle in Gagazet cave, then fight at mountain gate).</span></label></li>
+  <li class="task-item"><label for="ffx-check-285"><input type="checkbox" id="ffx-check-285" class="ffx-checkbox"> <span class="task-text"><strong>Dark Magus Sisters (Mushroom Rock Road):</strong> Cindy (3M HP), Sandy (2.5M HP), Mindy (2M HP). (Can fight together at the ravine or run to separate them into 1v1 battles).</span></label></li>
+  <li class="task-item"><label for="ffx-check-286"><input type="checkbox" id="ffx-check-286" class="ffx-checkbox"> <span class="task-text"><strong>Trophy Unlocked:</strong> <strong>A Journey's End</strong> (Defeat all Dark Aeons).</span></label></li>
+</ul>
+
+<hr>
+
+<h3>Penance Superboss Checklist</h3>
+<ul>
+  <li class="task-item"><label for="ffx-check-287"><input type="checkbox" id="ffx-check-287" class="ffx-checkbox"> <span class="task-text"><strong>Penance Core:</strong> 12,000,000 HP</span></label></li>
+  <li class="task-item"><label for="ffx-check-288"><input type="checkbox" id="ffx-check-288" class="ffx-checkbox"> <span class="task-text"><strong>Left Arm & Right Arm:</strong> 500,000 HP each</span></label></li>
+  <li class="task-item"><label for="ffx-check-289"><input type="checkbox" id="ffx-check-289" class="ffx-checkbox"> <span class="task-text"><strong>Trophy Unlocked:</strong> <strong>Perseverance Trophy</strong> (Defeat Penance).</span></label></li>
+</ul>
+
+<hr>
+
+<h2>CHAPTER 10: INSIDE SIN & 100% PLATINUM FINALE</h2>
+
+<ul>
+  <li class="task-item"><label for="ffx-check-290"><input type="checkbox" id="ffx-check-290" class="ffx-checkbox"> <span class="task-text">Complete the Sphere Grid for all 7 characters (<strong>Master Sphere Master Trophy</strong>).</span></label></li>
+  <li class="task-item"><label for="ffx-check-291"><input type="checkbox" id="ffx-check-291" class="ffx-checkbox"> <span class="task-text">Reach 99,999 damage with an attack (<strong>Mega Strike Trophy</strong>).</span></label></li>
+  <li class="task-item"><label for="ffx-check-292"><input type="checkbox" id="ffx-check-292" class="ffx-checkbox"> <span class="task-text">Enter <strong>Inside Sin</strong> via the Airship.</span></label></li>
+  <li class="task-item"><label for="ffx-check-293"><input type="checkbox" id="ffx-check-293" class="ffx-checkbox"> <span class="task-text">Complete the Point of No Return: Defeat Seymour Omnis, collect the 10 glyph eggs in the font, and enter the final arena.</span></label></li>
+  <li class="task-item"><label for="ffx-check-294"><input type="checkbox" id="ffx-check-294" class="ffx-checkbox"> <span class="task-text">Defeat <strong>Braska's Final Aeon</strong>.</span></label></li>
+  <li class="task-item"><label for="ffx-check-295"><input type="checkbox" id="ffx-check-295" class="ffx-checkbox"> <span class="task-text">Defeat all possessed Aeons and <strong>Yu Yevon</strong>.</span></label></li>
+  <li class="task-item"><label for="ffx-check-296"><input type="checkbox" id="ffx-check-296" class="ffx-checkbox"> <span class="task-text">Watch the ending credits and achieve <strong>Completion / Platinum Trophy (Completion)</strong>!</span></label></li>
+</ul>
+        </div>
+        </div> <!-- end article-content -->
+        {{ad_sidebar}}
+    </div>
+</div>
+
+<style>
+.ffx-content h2 {
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    margin-top: 3rem;
+}
+.ffx-content h3 {
+    color: var(--accent-cyan);
+    margin-top: 2rem;
+}
+.ffx-content ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+.ffx-content .task-item {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s;
+}
+.ffx-content .task-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+.ffx-content label {
+    display: flex;
+    align-items: flex-start;
+    cursor: pointer;
+    line-height: 1.5;
+}
+.ffx-content input[type="checkbox"] {
+    margin-top: 0.25rem;
+    margin-right: 1rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    accent-color: var(--accent-cyan);
+}
+.ffx-content .task-item.completed .task-text {
+    text-decoration: line-through;
+    color: var(--text-dim);
+}
+.ffx-content blockquote {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 4px solid #3b82f6;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const checkboxes = document.querySelectorAll('.ffx-checkbox');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const resetBtn = document.getElementById('reset-btn');
+    
+    // Load state
+    const savedState = JSON.parse(localStorage.getItem('ffxTrackerState')) || {};
+    
+    const updateProgress = () => {
+        let completed = 0;
+        const total = checkboxes.length;
+        
+        checkboxes.forEach(cb => {
+            if (cb.checked) {
+                completed++;
+                cb.closest('.task-item').classList.add('completed');
+            } else {
+                cb.closest('.task-item').classList.remove('completed');
+            }
+        });
+        
+        const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
+        progressBar.style.width = percentage + '%';
+        progressText.textContent = percentage + '% (' + completed + ' / ' + total + ')';
+    };
+
+    checkboxes.forEach(cb => {
+        if (savedState[cb.id]) {
+            cb.checked = true;
+        }
+        
+        cb.addEventListener('change', () => {
+            savedState[cb.id] = cb.checked;
+            localStorage.setItem('ffxTrackerState', JSON.stringify(savedState));
+            updateProgress();
+        });
+    });
+    
+    resetBtn.addEventListener('click', () => {
+        if(confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+            localStorage.removeItem('ffxTrackerState');
+            checkboxes.forEach(cb => cb.checked = false);
+            // clear savedState obj
+            Object.keys(savedState).forEach(k => delete savedState[k]);
+            updateProgress();
+        }
+    });
+
+    updateProgress();
+});
+</script>

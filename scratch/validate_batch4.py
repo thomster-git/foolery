@@ -1,0 +1,333 @@
+import json
+
+with open("/home/keel/Project-Atlas-main/taxonomy.json") as f:
+    tax = json.load(f)
+
+themes_set = set(tax["themes"])
+topics_set = set(tax["topics"])
+all_ids_set = set(tax["allIds"])
+
+with open("/home/keel/Project-Atlas-main/batch4.json") as f:
+    batch = json.load(f)
+
+# candidate data
+data = [
+  {
+    "id": "has-the-large-hadron-collider-destroyed-the-world-yet",
+    "path": "/home/keel/Project-Atlas-main/content/library/websites/has-the-large-hadron-collider-destroyed-the-world-yet.md",
+    "topics": ["technology", "entertainment"],
+    "tags": ["single-serving", "early-internet", "humor", "physics"],
+    "themes": ["curiosity", "nostalgia"],
+    "related": ["let-me-google-that-for-you", "my-story-with-typing-trainers-and-early-internet", "youtube"]
+  },
+  {
+    "id": "let-me-google-that-for-you",
+    "path": "/home/keel/Project-Atlas-main/content/library/websites/let-me-google-that-for-you.md",
+    "topics": ["technology", "internet-culture"],
+    "tags": ["search-utility", "early-internet", "humor", "web"],
+    "themes": ["nostalgia", "curiosity"],
+    "related": ["has-the-large-hadron-collider-destroyed-the-world-yet", "my-story-with-typing-trainers-and-early-internet", "my-story-with-misunderstandings-and-literal-intent", "youtube"]
+  },
+  {
+    "id": "youtube",
+    "path": "/home/keel/Project-Atlas-main/content/library/websites/youtube.md",
+    "topics": ["entertainment", "internet-culture"],
+    "tags": ["video-platform", "streaming", "creators", "entertainment"],
+    "themes": ["curiosity", "nostalgia"],
+    "related": ["penguinz0", "good-mythical-morning", "pewdiepie", "my-story-with-public-voice-and-social-ridicule"]
+  },
+  {
+    "id": "baseball-trend-analyzer",
+    "path": "/home/keel/Project-Atlas-main/content/projects/baseball-trend-analyzer.md",
+    "topics": ["baseball", "technology"],
+    "tags": ["baseball", "analytics", "developer-tool", "mlb", "trends"],
+    "themes": ["systems-thinking", "curiosity"],
+    "related": ["apple-tv", "project-atlas", "keel-systems"]
+  },
+  {
+    "id": "battery-dispenser",
+    "path": "/home/keel/Project-Atlas-main/content/projects/battery-dispenser.md",
+    "topics": ["engineering", "design"],
+    "tags": ["3d-printing", "laser-cutting", "workshop", "organization"],
+    "themes": ["craftsmanship", "systems-thinking"],
+    "related": ["etchcentric-creations", "xtool-s1", "my-story-with-3d-printing-and-laser-engraving"]
+  },
+  {
+    "id": "discord-ai-bot",
+    "path": "/home/keel/Project-Atlas-main/content/projects/discord-ai-bot.md",
+    "topics": ["automation", "technology"],
+    "tags": ["discord-bot", "gemini-api", "automation", "node-js"],
+    "themes": ["systems-thinking", "creativity"],
+    "related": ["building-a-comprehensive-discord-ecosystem", "discord-vs-corporate-comms", "discord", "project-atlas"]
+  },
+  {
+    "id": "etchcentric-creations",
+    "path": "/home/keel/Project-Atlas-main/content/projects/etchcentric-creations.md",
+    "topics": ["technology", "design"],
+    "tags": ["laser-engraving", "slate-art", "woodworking", "maker-business"],
+    "themes": ["craftsmanship", "creativity"],
+    "related": ["battery-dispenser", "xtool-s1-40w-diode-laser", "my-story-with-etchcentric-and-laser-engraving", "my-story-with-3d-printing-and-laser-engraving"]
+  },
+  {
+    "id": "keel-systems",
+    "path": "/home/keel/Project-Atlas-main/content/projects/keel-systems.md",
+    "topics": ["infrastructure", "technology"],
+    "tags": ["it-consulting", "infrastructure", "honest-kpis", "msp"],
+    "themes": ["systems-thinking", "pragmatism"],
+    "related": ["my-story-with-keel-systems-and-honest-kpis", "my-story-with-cfi", "project-atlas", "my-story-with-the-msp-trap-and-broken-infrastructure"]
+  },
+  {
+    "id": "next-gen-proxmox-home-lab",
+    "path": "/home/keel/Project-Atlas-main/content/projects/next-gen-proxmox-home-lab.md",
+    "topics": ["home-lab", "technology"],
+    "tags": ["proxmox", "gpu-passthrough", "virtualization", "self-hosting"],
+    "themes": ["systems-thinking", "craftsmanship"],
+    "related": ["my-story-with-home-lab-and-proxmox", "proxmox-ve", "i7-13700k", "msi-z690-a"]
+  },
+  {
+    "id": "personal-digital-garden-creator",
+    "path": "/home/keel/Project-Atlas-main/content/projects/personal-digital-garden-creator.md",
+    "topics": ["technology", "self-hosting"],
+    "tags": ["digital-garden", "knowledge-graph", "publishing", "self-hosted"],
+    "themes": ["systems-thinking", "creativity"],
+    "related": ["project-atlas", "keel-systems", "my-story-with-everything-is-connected", "manifesto"]
+  },
+  {
+    "id": "project-atlas",
+    "path": "/home/keel/Project-Atlas-main/content/projects/project-atlas.md",
+    "topics": ["technology", "writing"],
+    "tags": ["knowledge-graph", "digital-garden", "static-site", "markdown"],
+    "themes": ["systems-thinking", "connection"],
+    "related": ["personal-digital-garden-creator", "manifesto", "keel-systems", "my-story-with-everything-is-connected"]
+  },
+  {
+    "id": "my-story-with",
+    "path": "/home/keel/Project-Atlas-main/content/series/my-story-with.md",
+    "topics": ["writing", "audhd"],
+    "tags": ["memoir", "personal-essays", "storytelling", "reflection"],
+    "themes": ["identity", "growth"],
+    "related": ["my-story-with-neurodiversity-and-adult-diagnosis", "my-story-with-autistic-burnout-and-sensory-regulation", "my-story-with-everything-is-connected", "project-atlas"]
+  },
+  {
+    "id": "apple-tv",
+    "path": "/home/keel/Project-Atlas-main/content/shit-list/apple-tv.md",
+    "topics": ["baseball", "entertainment"],
+    "tags": ["streaming", "paywall", "mlb", "broadcasting"],
+    "themes": ["worldview", "pragmatism"],
+    "related": ["baseball-trend-analyzer", "youtube"]
+  },
+  {
+    "id": "bigmerla",
+    "path": "/home/keel/Project-Atlas-main/content/shit-list/bigmerla.md",
+    "topics": ["internet-culture", "entertainment"],
+    "tags": ["twitch-streamer", "content-creator", "social-media", "influencer"],
+    "themes": ["worldview", "identity"],
+    "related": ["mizkif", "qtcinderella", "asmongold", "my-story-with-public-voice-and-social-ridicule"]
+  },
+  {
+    "id": "canada-fluorspar",
+    "path": "/home/keel/Project-Atlas-main/content/shit-list/canada-fluorspar.md",
+    "topics": ["infrastructure", "career"],
+    "tags": ["mining", "industrial-it", "mismanagement", "receivership"],
+    "themes": ["systems-thinking", "resilience"],
+    "related": ["leaving-cfi", "my-story-with-cfi", "my-story-with-the-msp-trap-and-broken-infrastructure", "my-story-with-the-akira-ransomware-attack"]
+  },
+  {
+    "id": "hasan-abi",
+    "path": "/home/keel/Project-Atlas-main/content/shit-list/hasan-abi.md",
+    "topics": ["politics", "internet-culture"],
+    "tags": ["twitch-streamer", "political-commentary", "streaming", "influencer"],
+    "themes": ["worldview", "identity"],
+    "related": ["my-story-with-politics-and-polarization", "asmongold", "my-story-with-public-voice-and-social-ridicule", "mizkif"]
+  },
+  {
+    "id": "mizkif",
+    "path": "/home/keel/Project-Atlas-main/content/shit-list/mizkif.md",
+    "topics": ["internet-culture", "entertainment"],
+    "tags": ["twitch-streamer", "content-creator", "drama", "streaming"],
+    "themes": ["worldview", "identity"],
+    "related": ["qtcinderella", "asmongold", "my-story-with-public-voice-and-social-ridicule", "hasan-abi"]
+  },
+  {
+    "id": "qtcinderella",
+    "path": "/home/keel/Project-Atlas-main/content/shit-list/qtcinderella.md",
+    "topics": ["internet-culture", "entertainment"],
+    "tags": ["twitch-streamer", "content-creator", "streaming", "social-media"],
+    "themes": ["worldview", "identity"],
+    "related": ["mizkif", "asmongold", "my-story-with-public-voice-and-social-ridicule", "bigmerla"]
+  },
+  {
+    "id": "sheilagh-oleary",
+    "path": "/home/keel/Project-Atlas-main/content/shit-list/sheilagh-oleary.md",
+    "topics": ["politics", "gender-studies"],
+    "tags": ["local-politics", "gender-pay-gap", "newfoundland", "public-policy"],
+    "themes": ["worldview", "pragmatism"],
+    "related": ["yvette-coffey", "my-story-with-politics-and-polarization"]
+  },
+  {
+    "id": "yvette-coffey",
+    "path": "/home/keel/Project-Atlas-main/content/shit-list/yvette-coffey.md",
+    "topics": ["politics", "gender-studies"],
+    "tags": ["local-politics", "gender-pay-gap", "newfoundland", "public-policy"],
+    "themes": ["worldview", "pragmatism"],
+    "related": ["sheilagh-oleary", "my-story-with-politics-and-polarization"]
+  },
+  {
+    "id": "thread-audhd-diagnosis",
+    "path": "/home/keel/Project-Atlas-main/content/threads/thread-audhd-diagnosis.md",
+    "topics": ["audhd", "health-and-fitness"],
+    "tags": ["adult-diagnosis", "unmasking", "autistic-burnout", "neurodiversity"],
+    "themes": ["identity", "growth"],
+    "related": ["my-story-with-neurodiversity-and-adult-diagnosis", "my-story-with-autistic-burnout-and-sensory-regulation", "unmasking-autism", "im-autistic-now-what"]
+  },
+  {
+    "id": "thread-proxmox-homelab",
+    "path": "/home/keel/Project-Atlas-main/content/threads/thread-proxmox-homelab.md",
+    "topics": ["home-lab", "self-hosting"],
+    "tags": ["proxmox", "home-lab", "self-hosting", "lxc-containers"],
+    "themes": ["systems-thinking", "craftsmanship"],
+    "related": ["my-story-with-home-lab-and-proxmox", "next-gen-proxmox-home-lab", "proxmox-ve", "the-case-for-self-hosting-over-cloud-datacenters"]
+  },
+  {
+    "id": "thread-ps2-hardware-modding",
+    "path": "/home/keel/Project-Atlas-main/content/threads/thread-ps2-hardware-modding.md",
+    "topics": ["gaming", "technology"],
+    "tags": ["ps2", "retro-gaming", "hardware-modding", "freemcboot"],
+    "themes": ["nostalgia", "craftsmanship"],
+    "related": ["my-story-with-ps2-modding-and-retro-gaming", "ps2-expansion", "retro-gaming-consoles", "ffx"]
+  },
+  {
+    "id": "thread-xtool-laser-engraving",
+    "path": "/home/keel/Project-Atlas-main/content/threads/thread-xtool-laser-engraving.md",
+    "topics": ["drawing", "technology"],
+    "tags": ["xtool", "laser-engraving", "slate-art", "makerspace"],
+    "themes": ["craftsmanship", "creativity"],
+    "related": ["etchcentric-creations", "my-story-with-3d-printing-and-laser-engraving", "my-story-with-etchcentric-and-laser-engraving", "xtool-s1-40w-diode-laser"]
+  },
+  {
+    "id": "i7-13700k",
+    "path": "/home/keel/Project-Atlas-main/content/i7-13700k.md",
+    "topics": ["home-lab", "technology"],
+    "tags": ["cpu", "proxmox", "virtualization", "hardware", "intel"],
+    "themes": ["systems-thinking", "craftsmanship"],
+    "related": ["next-gen-proxmox-home-lab", "msi-z690-a", "proxmox-ve", "my-story-with-home-lab-and-proxmox"]
+  },
+  {
+    "id": "cell-booster",
+    "path": "/home/keel/Project-Atlas-main/content/wishlist/cell-booster.md",
+    "topics": ["technology", "infrastructure"],
+    "tags": ["cellular", "connectivity", "signal-booster", "telecom", "hardware"],
+    "themes": ["resilience", "systems-thinking"],
+    "related": ["my-story-with-everything-is-connected", "my-story-with-mechanical-engineering-and-systems-thinking"]
+  },
+  {
+    "id": "dj-control-inpulse-500",
+    "path": "/home/keel/Project-Atlas-main/content/dj-control-inpulse-500.md",
+    "topics": ["music", "audio-engineering"],
+    "tags": ["dj-controller", "mixing", "audio-gear", "music-production"],
+    "themes": ["curiosity", "creativity"],
+    "related": ["skrillex", "my-story-with-music-and-emotional-anchoring", "focusrite-scarlett-2i2", "my-story-with-audio-gear-and-podcasting"]
+  },
+  {
+    "id": "electronic-drum-kit",
+    "path": "/home/keel/Project-Atlas-main/content/electronic-drum-kit.md",
+    "topics": ["music", "engineering"],
+    "tags": ["electronic-drums", "diy-music", "percussion", "midi", "music-gear"],
+    "themes": ["craftsmanship", "creativity"],
+    "related": ["roland-gokeys", "squier-stratocaster", "my-story-with-audio-gear-and-podcasting", "my-story-with-music-and-emotional-anchoring"]
+  },
+  {
+    "id": "freeze-dryer",
+    "path": "/home/keel/Project-Atlas-main/content/wishlist/freeze-dryer.md",
+    "topics": ["technology", "health-and-fitness"],
+    "tags": ["freeze-drying", "food-preservation", "preparedness", "homesteading"],
+    "themes": ["craftsmanship", "sustainability"],
+    "related": ["etchcentric-creations", "my-story-with-3d-printing-and-laser-engraving", "battery-dispenser"]
+  },
+  {
+    "id": "sennheiser-hd25",
+    "path": "/home/keel/Project-Atlas-main/content/sennheiser-hd25.md",
+    "topics": ["audio-engineering", "music"],
+    "tags": ["headphones", "studio-monitoring", "audio-gear", "sound-design"],
+    "themes": ["craftsmanship", "curiosity"],
+    "related": ["focusrite-scarlett-2i2", "bose-quietcomfort-pro-2", "my-story-with-audio-gear-and-podcasting", "shure-sm7b-microphone"]
+  },
+  {
+    "id": "msi-z690-a",
+    "path": "/home/keel/Project-Atlas-main/content/msi-z690-a.md",
+    "topics": ["home-lab", "technology"],
+    "tags": ["motherboard", "proxmox", "iommu", "gpu-passthrough", "hardware"],
+    "themes": ["systems-thinking", "craftsmanship"],
+    "related": ["i7-13700k", "next-gen-proxmox-home-lab", "proxmox-ve", "my-story-with-home-lab-and-proxmox"]
+  },
+  {
+    "id": "shure-smb7",
+    "path": "/home/keel/Project-Atlas-main/content/shure-smb7.md",
+    "topics": ["audio-engineering", "music"],
+    "tags": ["microphone", "vocal-recording", "audio-gear", "dynamic-mic", "studio"],
+    "themes": ["craftsmanship", "curiosity"],
+    "related": ["shure-sm7b-microphone", "focusrite-scarlett-2i2", "my-story-with-audio-gear-and-podcasting", "shure-sm58"]
+  }
+]
+
+assert len(data) == len(batch), f"Length mismatch: {len(data)} vs {len(batch)}"
+
+errors = []
+for i, (item, b) in enumerate(zip(data, batch)):
+    # ID
+    if item["id"] != b["id"]:
+        errors.append(f"Item {i} id mismatch: {item['id']} vs {b['id']}")
+    
+    # Path
+    expected_path = "/home/keel/Project-Atlas-main/" + b["path"]
+    if item["path"] != expected_path:
+        errors.append(f"Item {i} path mismatch: {item['path']} vs {expected_path}")
+    
+    # Themes: 1-2, in taxonomy
+    themes = item.get("themes", [])
+    if not (1 <= len(themes) <= 2):
+        errors.append(f"Item {i} ({item['id']}) themes count error: {len(themes)}")
+    for t in themes:
+        if t not in themes_set:
+            errors.append(f"Item {i} ({item['id']}) invalid theme: {t}")
+    if len(themes) != len(set(themes)):
+        errors.append(f"Item {i} ({item['id']}) duplicate themes: {themes}")
+
+    # Topics: 1-2, in taxonomy
+    topics = item.get("topics", [])
+    if not (1 <= len(topics) <= 2):
+        errors.append(f"Item {i} ({item['id']}) topics count error: {len(topics)}")
+    for top in topics:
+        if top not in topics_set:
+            errors.append(f"Item {i} ({item['id']}) invalid topic: {top}")
+    if len(topics) != len(set(topics)):
+        errors.append(f"Item {i} ({item['id']}) duplicate topics: {topics}")
+
+    # Tags: 3-5, concise
+    tags = item.get("tags", [])
+    if not (3 <= len(tags) <= 5):
+        errors.append(f"Item {i} ({item['id']}) tags count error: {len(tags)}")
+    for tag in tags:
+        if len(tag.split()) > 2:
+            errors.append(f"Item {i} ({item['id']}) tag too long (>2 words): {tag}")
+    if len(tags) != len(set(tags)):
+        errors.append(f"Item {i} ({item['id']}) duplicate tags: {tags}")
+
+    # Related: 2-4, in allIds, no self
+    related = item.get("related", [])
+    if not (2 <= len(related) <= 4):
+        errors.append(f"Item {i} ({item['id']}) related count error: {len(related)}")
+    for r in related:
+        if r not in all_ids_set:
+            errors.append(f"Item {i} ({item['id']}) invalid related ID: {r}")
+        if r == item["id"]:
+            errors.append(f"Item {i} ({item['id']}) self-referencing related ID: {r}")
+    if len(related) != len(set(related)):
+        errors.append(f"Item {i} ({item['id']}) duplicate related: {related}")
+
+if errors:
+    print(f"Validation FAILED with {len(errors)} errors:")
+    for e in errors:
+        print(" -", e)
+else:
+    print("Validation PASSED! All 32 items strictly meet all rules.")

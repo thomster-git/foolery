@@ -1,0 +1,988 @@
+[
+  {
+    "id": "has-the-large-hadron-collider-destroyed-the-world-yet",
+    "path": "content/library/websites/has-the-large-hadron-collider-destroyed-the-world-yet.md",
+    "title": "HasTheLargeHadronColliderDestroyedTheWorldYet.com",
+    "summary": "A classic single-serving website.",
+    "type": "website",
+    "currentThemes": [
+      "curiosity",
+      "nostalgia"
+    ],
+    "currentTopics": [
+      "technology",
+      "entertainment"
+    ],
+    "currentTags": [
+      "web",
+      "funny",
+      "science"
+    ],
+    "currentRelated": [
+      "let-me-google-that-for-you",
+      "my-story-with-typing-trainers-and-early-internet",
+      "youtube"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "let-me-google-that-for-you",
+    "path": "content/library/websites/let-me-google-that-for-you.md",
+    "title": "Let Me Google That For You (LMGTFY)",
+    "summary": "Classic early web humor utility for playfully pointing users toward basic search queries.",
+    "type": "website",
+    "currentThemes": [
+      "nostalgia"
+    ],
+    "currentTopics": [
+      "technology"
+    ],
+    "currentTags": [
+      "website",
+      "search",
+      "humor",
+      "early-internet"
+    ],
+    "currentRelated": [
+      "my-story-with-typing-trainers-and-early-internet",
+      "my-story-with-misunderstandings-and-literal-intent"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "youtube",
+    "path": "content/library/websites/youtube.md",
+    "title": "YouTube",
+    "summary": "The platform that accounts for 95% of my watch time and entertainment.",
+    "type": "website",
+    "currentThemes": [
+      "nostalgia",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "entertainment"
+    ],
+    "currentTags": [
+      "video",
+      "streaming",
+      "social"
+    ],
+    "currentRelated": [
+      "penguinz0",
+      "good-mythical-morning",
+      "pewdiepie"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "baseball-trend-analyzer",
+    "path": "content/projects/baseball-trend-analyzer.md",
+    "title": "Baseball Trend Analyzer",
+    "summary": "A developer tool that tracks MLB team performance on a per-game basis and predicts trend lines based on upcoming matchups.",
+    "type": "project",
+    "currentThemes": [
+      "systems-thinking",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "baseball",
+      "technology"
+    ],
+    "currentTags": [],
+    "currentRelated": [],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "battery-dispenser",
+    "path": "content/projects/battery-dispenser.md",
+    "title": "Battery Dispenser & Workshop Storage",
+    "summary": "A custom laser-cut wood and 3D-printed gravity-fed battery storage dispenser designed for AA, AAA, and 9V cells.",
+    "type": "project",
+    "currentThemes": [
+      "creativity",
+      "craftsmanship",
+      "systems-thinking"
+    ],
+    "currentTopics": [
+      "technology",
+      "drawing"
+    ],
+    "currentTags": [
+      "batteries",
+      "laser-cutter",
+      "3d-printing",
+      "storage",
+      "etsy",
+      "workshop"
+    ],
+    "currentRelated": [
+      "etchcentric-creations",
+      "xtool-s1"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "discord-ai-bot",
+    "path": "content/projects/discord-ai-bot.md",
+    "title": "Discord AI Assistant Bot",
+    "summary": "I recently developed a highly capable Discord bot by bridging the **Google AI API (Gemini)** with the **Discord API**. What started as a simple integration has ...",
+    "type": "project",
+    "currentThemes": [],
+    "currentTopics": [
+      "automation",
+      "internet-culture"
+    ],
+    "currentTags": [
+      "node.js",
+      "discord.js",
+      "google-ai",
+      "api-integration"
+    ],
+    "currentRelated": [],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "etchcentric-creations",
+    "path": "content/projects/etchcentric-creations.md",
+    "title": "EtchCentric Creations",
+    "summary": "My laser engraving and manufacturing business focused on custom products, slate artwork, wood wall art, and small-scale production.",
+    "type": "project",
+    "currentThemes": [
+      "creativity",
+      "craftsmanship",
+      "growth"
+    ],
+    "currentTopics": [
+      "technology",
+      "drawing"
+    ],
+    "currentTags": [
+      "laser",
+      "engraving",
+      "woodworking",
+      "slate",
+      "small-business",
+      "etchcentric"
+    ],
+    "currentRelated": [
+      "battery-dispenser",
+      "keel-systems",
+      "xtool-s1"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "keel-systems",
+    "path": "content/projects/keel-systems.md",
+    "title": "Keel Systems",
+    "summary": "A future IT consulting practice built on a single philosophy — tell clients the truth about their technology, report honest KPIs, and build internal capability instead of dependency. A direct response to everything I watched go wrong at CFI.",
+    "type": "project",
+    "currentThemes": [
+      "systems-thinking",
+      "craftsmanship",
+      "resilience"
+    ],
+    "currentTopics": [
+      "technology",
+      "home-lab"
+    ],
+    "currentTags": [
+      "keel-systems",
+      "it-consulting",
+      "msp",
+      "small-business",
+      "honest-kpis",
+      "organizational-honesty",
+      "technology"
+    ],
+    "currentRelated": [
+      "my-story-with-keel-systems-and-honest-kpis",
+      "my-story-with-cfi",
+      "project-atlas",
+      "proxmox-ve"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "next-gen-proxmox-home-lab",
+    "path": "content/projects/next-gen-proxmox-home-lab.md",
+    "title": "Next-Gen Proxmox Home Lab",
+    "summary": "The architectural plan for my next-generation Proxmox VE home lab, featuring an upgraded CPU, onboard graphics for Nextcloud and Jellyfin, and GPU passthrough for a native Windows 11 VM experience.",
+    "type": "project",
+    "currentThemes": [
+      "systems-thinking"
+    ],
+    "currentTopics": [
+      "home-lab",
+      "technology"
+    ],
+    "currentTags": [
+      "proxmox",
+      "gpu-passthrough",
+      "windows-11",
+      "nextcloud",
+      "jellyfin",
+      "virtualization"
+    ],
+    "currentRelated": [
+      "my-story-with-home-lab-and-proxmox",
+      "proxmox-ve"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "personal-digital-garden-creator",
+    "path": "content/projects/personal-digital-garden-creator.md",
+    "title": "Digital Garden Creator Software",
+    "summary": "A packaged self-hosted application allowing creators to publish interactive, paywalled digital gardens with knowledge graphs.",
+    "type": "project",
+    "currentThemes": [
+      "systems-thinking",
+      "creativity"
+    ],
+    "currentTopics": [
+      "technology"
+    ],
+    "currentTags": [
+      "digital-garden",
+      "software",
+      "paywall",
+      "nodejs"
+    ],
+    "currentRelated": [
+      "project-atlas",
+      "keel-systems",
+      "my-story-with-everything-is-connected"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "project-atlas",
+    "path": "content/projects/project-atlas.md",
+    "title": "Project Atlas",
+    "summary": "A personal knowledge platform that connects articles, projects, interests, and experiences into a searchable network of ideas.",
+    "type": "project",
+    "currentThemes": [
+      "curiosity",
+      "systems-thinking",
+      "learning",
+      "connection"
+    ],
+    "currentTopics": [
+      "technology",
+      "home-lab"
+    ],
+    "currentTags": [
+      "markdown",
+      "static-site",
+      "knowledge-graph",
+      "javascript"
+    ],
+    "currentRelated": [
+      "keel-systems",
+      "etchcentric-creations"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with",
+    "path": "content/series/my-story-with.md",
+    "title": "My Story With",
+    "summary": "This is a placeholder stub for My Story With. It is currently being written or imported.",
+    "type": "article",
+    "currentThemes": [],
+    "currentTopics": [],
+    "currentTags": [],
+    "currentRelated": [],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "apple-tv",
+    "path": "content/shit-list/apple-tv.md",
+    "title": "AppleTV+",
+    "summary": "For monopolizing Friday Night Baseball and taking away my Friday night Jays games behind an unnecessary paywall.",
+    "type": "shit-list",
+    "currentThemes": [],
+    "currentTopics": [
+      "baseball",
+      "technology"
+    ],
+    "currentTags": [
+      "corporate",
+      "streaming",
+      "sports"
+    ],
+    "currentRelated": [
+      "baseball"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "bigmerla",
+    "path": "content/shit-list/bigmerla.md",
+    "title": "Bigmerla",
+    "summary": "She tries to portray a run-down mom lifestyle while producing a tremendous amount of content. That level of output requires either a dedicated team or a massive amount of time and effort behind the scenes.",
+    "type": "shit-list",
+    "currentThemes": [
+      "resilience",
+      "connection"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "creator",
+      "twitch"
+    ],
+    "currentRelated": [
+      "asmongold",
+      "my-story-with-public-voice-and-social-ridicule",
+      "my-story-with-videogames-and-adhd"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "canada-fluorspar",
+    "path": "content/shit-list/canada-fluorspar.md",
+    "title": "Canada Fluorspar Inc. (CFI)",
+    "summary": "A masterclass in how NOT to run a remote mining operation or its IT infrastructure.",
+    "type": "shit-list",
+    "currentThemes": [
+      "systems-thinking",
+      "resilience"
+    ],
+    "currentTopics": [
+      "technology"
+    ],
+    "currentTags": [
+      "mining",
+      "industrial",
+      "mismanagement",
+      "receivership"
+    ],
+    "currentRelated": [
+      "leaving-cfi",
+      "my-story-with-cfi",
+      "my-story-with-the-msp-trap-and-broken-infrastructure",
+      "my-story-with-the-akira-ransomware-attack"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "hasan-abi",
+    "path": "content/shit-list/hasan-abi.md",
+    "title": "HasanAbi",
+    "summary": "He's on here for all of the reasons he is currently getting criticized for online. The biggest issues for me are the blatant lying (like the dog shocking incident) and his history of making radicalizing statements.",
+    "type": "shit-list",
+    "currentThemes": [
+      "identity",
+      "connection"
+    ],
+    "currentTopics": [
+      "politics",
+      "gaming"
+    ],
+    "currentTags": [
+      "creator",
+      "twitch"
+    ],
+    "currentRelated": [
+      "my-story-with-politics-and-polarization",
+      "asmongold",
+      "my-story-with-public-voice-and-social-ridicule"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "mizkif",
+    "path": "content/shit-list/mizkif.md",
+    "title": "Mizkif",
+    "summary": "I've never liked the way he portrays himself; I actually blocked him on Twitter a very long time ago. Recently, he's been trying to twist narratives and go on \"demon time\" just to deflect heat off his own back and push it onto someone else.",
+    "type": "shit-list",
+    "currentThemes": [
+      "connection",
+      "identity"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "creator",
+      "twitch"
+    ],
+    "currentRelated": [
+      "asmongold",
+      "my-story-with-videogames-and-adhd",
+      "my-story-with-public-voice-and-social-ridicule"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "qtcinderella",
+    "path": "content/shit-list/qtcinderella.md",
+    "title": "QTCinderella",
+    "summary": "Very similar to Mizkif, though maybe to a slightly lesser extreme. Her jokes have always rubbed me the wrong way. She acts like this high and mighty person, but the second a rock is thrown her way, she instantly crumbles and cries victim.",
+    "type": "shit-list",
+    "currentThemes": [
+      "connection",
+      "creativity"
+    ],
+    "currentTopics": [
+      "gaming",
+      "video-editing"
+    ],
+    "currentTags": [
+      "creator",
+      "twitch"
+    ],
+    "currentRelated": [
+      "asmongold",
+      "my-story-with-public-voice-and-social-ridicule",
+      "my-story-with-videogames-and-adhd"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "sheilagh-oleary",
+    "path": "content/shit-list/sheilagh-oleary.md",
+    "title": "Sheilagh O'Leary",
+    "summary": "Advocating for the gender pay gap without acknowledging the nuanced reality of how it is calculated, ignoring factors like parental leave and occupational risk.",
+    "type": "shit-list",
+    "currentThemes": [],
+    "currentTopics": [
+      "politics",
+      "gender-studies"
+    ],
+    "currentTags": [
+      "politics",
+      "local"
+    ],
+    "currentRelated": [
+      "my-story-with-politics-and-polarization",
+      "yvette-coffey"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "yvette-coffey",
+    "path": "content/shit-list/yvette-coffey.md",
+    "title": "Yvette Coffey",
+    "summary": "Advocating for the gender pay gap without acknowledging the nuanced reality of how it is calculated, ignoring factors like parental leave and occupational risk.",
+    "type": "shit-list",
+    "currentThemes": [],
+    "currentTopics": [
+      "politics",
+      "gender-studies"
+    ],
+    "currentTags": [
+      "politics",
+      "local"
+    ],
+    "currentRelated": [
+      "my-story-with-politics-and-polarization",
+      "sheilagh-oleary"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "thread-audhd-diagnosis",
+    "path": "content/threads/thread-audhd-diagnosis.md",
+    "title": "@ThomsFoolery Thread: Adult AuDHD, IQ & Unmasking",
+    "summary": "Getting diagnosed with ADHD at 31 and Autism at 32 completely reframed 30 years of lived experience. High-functioning masking works until it leads to burnout. Thread on unmasking & navigating late diagnosis... 🧵",
+    "type": "tweet",
+    "currentThemes": [
+      "identity",
+      "resilience",
+      "growth"
+    ],
+    "currentTopics": [
+      "audhd",
+      "health-and-fitness",
+      "politics"
+    ],
+    "currentTags": [
+      "twitter",
+      "x-thread",
+      "audhd",
+      "unmasking"
+    ],
+    "currentRelated": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-autistic-burnout-and-sensory-regulation",
+      "unmasking-autism",
+      "im-autistic-now-what"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "thread-proxmox-homelab",
+    "path": "content/threads/thread-proxmox-homelab.md",
+    "title": "@ThomsFoolery Post: Proxmox VE & Self-Hosting",
+    "summary": "Spinning up new LXC containers on Proxmox VE for local automation testing. Nothing beats the feeling of owning your infrastructure and data locally without third-party cloud lock-in. 💻🌐",
+    "type": "tweet",
+    "currentThemes": [
+      "systems-thinking",
+      "craftsmanship"
+    ],
+    "currentTopics": [
+      "home-lab",
+      "technology"
+    ],
+    "currentTags": [
+      "twitter",
+      "proxmox",
+      "home-lab",
+      "self-hosting",
+      "proxmox-ve"
+    ],
+    "currentRelated": [
+      "my-story-with-home-lab-and-proxmox",
+      "next-gen-proxmox-home-lab",
+      "proxmox-ve",
+      "keel-systems"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "thread-ps2-hardware-modding",
+    "path": "content/threads/thread-ps2-hardware-modding.md",
+    "title": "@ThomsFoolery Post: PS2 Hardware Hard Drive Modding",
+    "summary": "Reviving classic PlayStation 2 hardware with FreeMcBoot, internal SATA hard drive mods, and OPL homebrew. Retro game preservation meets hardware hacking. 🎮💾",
+    "type": "tweet",
+    "currentThemes": [
+      "nostalgia",
+      "craftsmanship"
+    ],
+    "currentTopics": [
+      "gaming",
+      "technology"
+    ],
+    "currentTags": [
+      "twitter",
+      "ps2",
+      "retro-gaming",
+      "hardware-modding"
+    ],
+    "currentRelated": [
+      "my-story-with-ps2-modding-and-retro-gaming",
+      "ps2-expansion",
+      "retro-gaming-consoles",
+      "ffx"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "thread-xtool-laser-engraving",
+    "path": "content/threads/thread-xtool-laser-engraving.md",
+    "title": "@ThomsFoolery Post: xTool S1 Slate Laser Craftsmanship",
+    "summary": "Testing vector laser engraving passes on natural slate stone with the xTool S1 40W diode. High contrast line work turning digital sketches into permanent physical art pieces. 🪵🔥",
+    "type": "tweet",
+    "currentThemes": [
+      "craftsmanship",
+      "creativity"
+    ],
+    "currentTopics": [
+      "drawing",
+      "technology"
+    ],
+    "currentTags": [
+      "twitter",
+      "xtool",
+      "laser",
+      "etchcentric"
+    ],
+    "currentRelated": [
+      "etchcentric-creations",
+      "my-story-with-3d-printing-and-laser-engraving",
+      "my-story-with-etchcentric-and-laser-engraving",
+      "xtool-s1-40w-diode-laser"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "i7-13700k",
+    "path": "content/i7-13700k.md",
+    "title": "Intel Core i7-13700K",
+    "summary": "16-core CPU for Proxmox home server and gaming VM.",
+    "type": "wishlist",
+    "currentThemes": [
+      "systems-thinking",
+      "craftsmanship"
+    ],
+    "currentTopics": [
+      "home-lab",
+      "technology"
+    ],
+    "currentTags": [
+      "cpu",
+      "proxmox",
+      "virtualization",
+      "hardware",
+      "intel"
+    ],
+    "currentRelated": [
+      "next-gen-proxmox-home-lab",
+      "msi-z690-a",
+      "proxmox-ve",
+      "my-story-with-home-lab-and-proxmox"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "cell-booster",
+    "path": "content/wishlist/cell-booster.md",
+    "title": "Cell Phone Boosters",
+    "summary": "To solve the absolute ass cell service in my area.",
+    "type": "wishlist",
+    "currentThemes": [
+      "resilience",
+      "systems-thinking"
+    ],
+    "currentTopics": [
+      "technology"
+    ],
+    "currentTags": [
+      "cellular",
+      "connectivity",
+      "telecom",
+      "hardware",
+      "signal-booster"
+    ],
+    "currentRelated": [
+      "my-story-with-everything-is-connected",
+      "my-story-with-mechanical-engineering-and-systems-thinking"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "dj-control-inpulse-500",
+    "path": "content/dj-control-inpulse-500.md",
+    "title": "Hercules DJControl Inpulse 500",
+    "summary": "For exploring a small personal interest in DJing.",
+    "type": "wishlist",
+    "currentThemes": [
+      "curiosity",
+      "creativity"
+    ],
+    "currentTopics": [
+      "music",
+      "audio-engineering"
+    ],
+    "currentTags": [
+      "djing",
+      "music-production",
+      "audio-gear",
+      "mixing",
+      "controller"
+    ],
+    "currentRelated": [
+      "skrillex",
+      "my-story-with-music-and-emotional-anchoring",
+      "focusrite-scarlett-2i2",
+      "my-story-with-audio-gear-and-podcasting"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "electronic-drum-kit",
+    "path": "content/electronic-drum-kit.md",
+    "title": "Electronic Drum Kit",
+    "summary": "Project to create a full e-kit piece by piece.",
+    "type": "wishlist",
+    "currentThemes": [
+      "craftsmanship",
+      "creativity"
+    ],
+    "currentTopics": [
+      "music",
+      "technology"
+    ],
+    "currentTags": [
+      "drums",
+      "electronic-drums",
+      "diy",
+      "music-gear",
+      "percussion"
+    ],
+    "currentRelated": [
+      "roland-gokeys",
+      "squier-stratocaster",
+      "my-story-with-audio-gear-and-podcasting",
+      "my-story-with-music-and-emotional-anchoring"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "freeze-dryer",
+    "path": "content/wishlist/freeze-dryer.md",
+    "title": "Freeze Dryer",
+    "summary": "An endless opportunity tool for preserving food and making unique products.",
+    "type": "wishlist",
+    "currentThemes": [
+      "curiosity",
+      "craftsmanship"
+    ],
+    "currentTopics": [
+      "technology",
+      "health-and-fitness"
+    ],
+    "currentTags": [
+      "freeze-drying",
+      "food-preservation",
+      "diy",
+      "appliances"
+    ],
+    "currentRelated": [
+      "etchcentric-creations",
+      "my-story-with-3d-printing-and-laser-engraving",
+      "battery-dispenser"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "sennheiser-hd25",
+    "path": "content/sennheiser-hd25.md",
+    "title": "Sennheiser HD 25",
+    "summary": "Headphones for studio recording.",
+    "type": "wishlist",
+    "currentThemes": [
+      "craftsmanship",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "audio-engineering",
+      "music"
+    ],
+    "currentTags": [
+      "headphones",
+      "studio-recording",
+      "monitoring",
+      "audio-gear"
+    ],
+    "currentRelated": [
+      "focusrite-scarlett-2i2",
+      "bose-quietcomfort-pro-2",
+      "my-story-with-audio-gear-and-podcasting",
+      "shure-sm7b-microphone"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "msi-z690-a",
+    "path": "content/msi-z690-a.md",
+    "title": "MSI PRO Z690-A DDR4",
+    "summary": "Motherboard with clean IOMMU groupings for GPU passthrough.",
+    "type": "wishlist",
+    "currentThemes": [
+      "systems-thinking",
+      "craftsmanship"
+    ],
+    "currentTopics": [
+      "home-lab",
+      "technology"
+    ],
+    "currentTags": [
+      "motherboard",
+      "proxmox",
+      "iommu",
+      "hardware",
+      "virtualization"
+    ],
+    "currentRelated": [
+      "i7-13700k",
+      "next-gen-proxmox-home-lab",
+      "proxmox-ve",
+      "my-story-with-home-lab-and-proxmox"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "shure-smb7",
+    "path": "content/shure-smb7.md",
+    "title": "Shure SM7B",
+    "summary": "Vocal microphone.",
+    "type": "wishlist",
+    "currentThemes": [
+      "craftsmanship",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "audio-engineering",
+      "music"
+    ],
+    "currentTags": [
+      "microphone",
+      "vocal-recording",
+      "audio-gear",
+      "dynamic-mic",
+      "studio"
+    ],
+    "currentRelated": [
+      "shure-sm7b-microphone",
+      "focusrite-scarlett-2i2",
+      "my-story-with-audio-gear-and-podcasting",
+      "shure-sm58"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  }
+]

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="{{lang}}">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Primary Meta -->
+<title>{{page_title}}</title>
+<meta name="description" content="{{meta_description}}">
+<meta name="author" content="{{site_author}}">
+
+<!-- Canonical -->
+<link rel="canonical" href="{{canonical_url}}">
+
+<!-- Open Graph / Social Sharing -->
+<meta property="og:type" content="{{og_type}}">
+<meta property="og:site_name" content="{{site_title}}">
+<meta property="og:title" content="{{og_title}}">
+<meta property="og:description" content="{{meta_description}}">
+<meta property="og:url" content="{{canonical_url}}">
+<meta property="og:image" content="{{og_image}}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_CA">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@ThomsFoolery">
+<meta name="twitter:creator" content="@ThomsFoolery">
+<meta name="twitter:title" content="{{og_title}}">
+<meta name="twitter:description" content="{{meta_description}}">
+<meta name="twitter:image" content="{{og_image}}">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+<meta name="theme-color" content="#0b0f19">
+
+<!-- RSS Feed Autodiscovery -->
+<link rel="alternate" type="application/rss+xml" title="{{site_title}} RSS Feed" href="/rss.xml">
+
+<!-- Analytics -->
+<script defer data-domain="thomsfoolery.com" src="https://plausible.io/js/script.js"></script>
+<!-- {{google_adsense}} disabled for now -->
+
+<!-- Google Fonts: Outfit & JetBrains Mono -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Styles -->
+<link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/atlas.css">
+
+</head>
+
+<body>
+
+{{header}}
+
+<main id="main-content">
+
+{{content}}
+
+</main>
+
+{{footer}}
+
+<div id="search-modal" class="search-modal" hidden>
+  <div class="search-overlay" id="search-overlay"></div>
+  <div class="search-dialog" role="dialog" aria-modal="true" aria-label="Knowledge Graph Search">
+    <div class="search-header">
+      <input type="search" id="search-input" placeholder="Search articles, topics, projects, themes..." autofocus autocomplete="off">
+      <button id="search-close" class="search-close" aria-label="Close Search">&times;</button>
+    </div>
+    <div id="search-results" class="search-results">
+      <div class="search-hint">Type a query to search across the entire Knowledge Graph...</div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/atlas.js?v=2"></script>
+
+</body>
+
+</html>

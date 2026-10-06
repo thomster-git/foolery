@@ -1,0 +1,328 @@
+import json
+
+output = [
+  {
+    "id": "my-story-with-public-voice-and-social-ridicule",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-public-voice-and-social-ridicule.md",
+    "topics": ["internet-culture", "audhd"],
+    "tags": ["social-media", "cyberbullying", "vulnerability"],
+    "themes": ["identity", "resilience"],
+    "related": ["project-atlas", "my-story-with-neurodiversity-and-adult-diagnosis", "my-story-with-autistic-burnout-and-sensory-regulation"]
+  },
+  {
+    "id": "my-story-with-the-7-year-waitlist",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-the-7-year-waitlist.md",
+    "topics": ["audhd", "health-and-fitness"],
+    "tags": ["healthcare", "newfoundland", "advocacy", "burnout"],
+    "themes": ["mental-health", "resilience"],
+    "related": ["my-story-with-neurodiversity-and-adult-diagnosis", "thread-audhd-diagnosis", "my-story-with-autistic-burnout-and-sensory-regulation"]
+  },
+  {
+    "id": "my-story-with-the-akira-ransomware-attack",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-the-akira-ransomware-attack.md",
+    "topics": ["technology", "audhd"],
+    "tags": ["ransomware", "cybersecurity", "meltdown", "mining"],
+    "themes": ["resilience", "mental-health"],
+    "related": ["my-story-with-the-msp-trap-and-broken-infrastructure", "my-story-with-autistic-burnout-and-sensory-regulation"]
+  },
+  {
+    "id": "my-story-with-the-msp-trap-and-broken-infrastructure",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-the-msp-trap-and-broken-infrastructure.md",
+    "topics": ["technology", "infrastructure"],
+    "tags": ["it-coordination", "msp", "mining", "networking"],
+    "themes": ["systems-thinking", "pragmatism"],
+    "related": ["sensible-infrastructure-and-white-box-servers", "my-story-with-mechanical-engineering-and-systems-thinking", "canada-fluorspar"]
+  },
+  {
+    "id": "my-story-with-the-nicu-and-corporate-coldness",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-the-nicu-and-corporate-coldness.md",
+    "topics": ["parenting", "career"],
+    "tags": ["nicu", "layoff", "healthcare", "newfoundland"],
+    "themes": ["connection", "resilience"],
+    "related": ["my-story-with-cfi", "leaving-cfi"]
+  },
+  {
+    "id": "my-story-with-typing-trainers-and-early-internet",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-typing-trainers-and-early-internet.md",
+    "topics": ["technology", "internet-culture"],
+    "tags": ["msn-messenger", "typing", "retro-tech"],
+    "themes": ["nostalgia", "learning"],
+    "related": ["runescape", "my-story-with-videogames-and-adhd", "miniclip"]
+  },
+  {
+    "id": "my-story-with-videogames-and-adhd",
+    "path": "/home/keel/Project-Atlas-main/content/articles/my-story-with-videogames-and-adhd.md",
+    "topics": ["gaming", "audhd"],
+    "tags": ["adhd", "xbox-360", "snes", "multiplayer"],
+    "themes": ["identity", "nostalgia"],
+    "related": ["halo-3", "cod-4", "my-story-with-ps2-modding-and-retro-gaming"]
+  },
+  {
+    "id": "sensible-infrastructure-and-custom-servers",
+    "path": "/home/keel/Project-Atlas-main/content/articles/sensible-infrastructure-and-custom-servers.md",
+    "topics": ["self-hosting", "infrastructure"],
+    "tags": ["servers", "vendor-lock-in", "ai"],
+    "themes": ["pragmatism", "independence"],
+    "related": ["sensible-infrastructure-and-white-box-servers", "the-case-for-self-hosting-over-cloud-datacenters", "my-story-with-the-msp-trap-and-broken-infrastructure"]
+  },
+  {
+    "id": "sensible-infrastructure-and-white-box-servers",
+    "path": "/home/keel/Project-Atlas-main/content/articles/sensible-infrastructure-and-white-box-servers.md",
+    "topics": ["infrastructure", "technology"],
+    "tags": ["servers", "proxmox", "mining", "cost-savings"],
+    "themes": ["pragmatism", "systems-thinking"],
+    "related": ["sensible-infrastructure-and-custom-servers", "canada-fluorspar", "my-story-with-the-msp-trap-and-broken-infrastructure"]
+  },
+  {
+    "id": "the-case-for-self-hosting-over-cloud-datacenters",
+    "path": "/home/keel/Project-Atlas-main/content/articles/the-case-for-self-hosting-over-cloud-datacenters.md",
+    "topics": ["self-hosting", "technology"],
+    "tags": ["cloud-computing", "datacenters", "environment"],
+    "themes": ["sustainability", "independence"],
+    "related": ["sensible-infrastructure-and-custom-servers", "my-story-with-home-lab-and-proxmox"]
+  },
+  {
+    "id": "the-high-horse-of-sharenting",
+    "path": "/home/keel/Project-Atlas-main/content/articles/the-high-horse-of-sharenting.md",
+    "topics": ["parenting", "internet-culture"],
+    "tags": ["privacy", "social-media", "sharenting"],
+    "themes": ["pragmatism", "worldview"],
+    "related": ["my-story-with-potty-training-and-parenting"]
+  },
+  {
+    "id": "the-wrong-twin",
+    "path": "/home/keel/Project-Atlas-main/content/articles/the-wrong-twin.md",
+    "topics": ["entertainment"],
+    "tags": ["memory", "twins", "jukebox", "friendship"],
+    "themes": ["childhood", "nostalgia"],
+    "related": ["my-story-with-early-childhood-and-reoccurring-dreams", "my-story-with-family-memories-and-santa-claus"]
+  },
+  {
+    "id": "tone-policing-and-ableism",
+    "path": "/home/keel/Project-Atlas-main/content/articles/tone-policing-and-ableism.md",
+    "topics": ["internet-culture", "audhd"],
+    "tags": ["ableism", "tone-policing", "neurodivergence"],
+    "themes": ["worldview", "identity"],
+    "related": ["my-story-with-medical-stigma-and-advocacy", "my-story-with-misunderstandings-and-literal-intent"]
+  },
+  {
+    "id": "workflow-design-and-the-human-element",
+    "path": "/home/keel/Project-Atlas-main/content/articles/workflow-design-and-the-human-element.md",
+    "topics": ["technology", "design"],
+    "tags": ["workflow", "process-design", "software-adoption"],
+    "themes": ["systems-thinking", "pragmatism"],
+    "related": ["my-story-with-mechanical-engineering-and-systems-thinking", "keel-systems"]
+  },
+  {
+    "id": "autism-burnout-recovery-workbook",
+    "path": "/home/keel/Project-Atlas-main/content/autism-burnout-recovery-workbook.md",
+    "topics": ["audhd", "health-and-fitness"],
+    "tags": ["recovery", "burnout", "boundaries", "book"],
+    "themes": ["mental-health", "resilience"],
+    "related": ["unmasking-autism", "my-story-with-autistic-burnout-and-sensory-regulation"]
+  },
+  {
+    "id": "unmasking-autism",
+    "path": "/home/keel/Project-Atlas-main/content/unmasking-autism.md",
+    "topics": ["audhd"],
+    "tags": ["masking", "unlearning", "book"],
+    "themes": ["identity", "mental-health"],
+    "related": ["autism-burnout-recovery-workbook", "my-story-with-neurodiversity-and-adult-diagnosis"]
+  },
+  {
+    "id": "baccalieu-trail-brewing-company",
+    "path": "/home/keel/Project-Atlas-main/content/library/companies/baccalieu-trail-brewing-company.md",
+    "topics": ["entertainment"],
+    "tags": ["brewery", "craft-beer", "newfoundland"],
+    "themes": ["connection", "craftsmanship"],
+    "related": ["great-big-sea"]
+  },
+  {
+    "id": "cdw-canada",
+    "path": "/home/keel/Project-Atlas-main/content/library/companies/cdw-canada.md",
+    "topics": ["technology", "infrastructure"],
+    "tags": ["vendor", "it-solutions", "enterprise"],
+    "themes": ["connection", "systems-thinking"],
+    "related": ["canada-fluorspar", "my-story-with-the-msp-trap-and-broken-infrastructure"]
+  },
+  {
+    "id": "bo-burnham",
+    "path": "/home/keel/Project-Atlas-main/content/library/creators/comedy/bo-burnham.md",
+    "topics": ["entertainment", "music"],
+    "tags": ["comedy", "satire", "filmmaker", "creator"],
+    "themes": ["creativity", "mental-health"],
+    "related": ["my-story-with-bo-burnham"]
+  },
+  {
+    "id": "asmongold",
+    "path": "/home/keel/Project-Atlas-main/content/library/creators/youtube/asmongold.md",
+    "topics": ["gaming", "internet-culture"],
+    "tags": ["streaming", "commentary", "hardware", "creator"],
+    "themes": ["curiosity", "worldview"],
+    "related": ["youtube", "cyberpunk-2077"]
+  },
+  {
+    "id": "good-mythical-morning",
+    "path": "/home/keel/Project-Atlas-main/content/library/creators/youtube/good-mythical-morning.md",
+    "topics": ["entertainment", "internet-culture"],
+    "tags": ["comedy", "talk-show", "youtube"],
+    "themes": ["nostalgia", "curiosity"],
+    "related": ["youtube", "penguinz0", "pewdiepie"]
+  },
+  {
+    "id": "im-autistic-now-what",
+    "path": "/home/keel/Project-Atlas-main/content/library/creators/youtube/im-autistic-now-what.md",
+    "topics": ["audhd", "internet-culture"],
+    "tags": ["education", "masking", "youtube"],
+    "themes": ["identity", "learning"],
+    "related": ["unmasking-autism", "my-journey-with-neurodiversity"]
+  },
+  {
+    "id": "penguinz0",
+    "path": "/home/keel/Project-Atlas-main/content/library/creators/youtube/penguinz0.md",
+    "topics": ["entertainment", "internet-culture"],
+    "tags": ["commentary", "youtube", "creator"],
+    "themes": ["worldview", "nostalgia"],
+    "related": ["youtube", "pewdiepie", "asmongold"]
+  },
+  {
+    "id": "pewdiepie",
+    "path": "/home/keel/Project-Atlas-main/content/library/creators/youtube/pewdiepie.md",
+    "topics": ["gaming", "internet-culture"],
+    "tags": ["youtube", "creator", "sweden"],
+    "themes": ["nostalgia", "growth"],
+    "related": ["youtube", "penguinz0", "good-mythical-morning"]
+  },
+  {
+    "id": "guitar-hero-3",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/misc/guitar-hero-3.md",
+    "topics": ["gaming", "music"],
+    "tags": ["rhythm", "physical-gameplay", "retro"],
+    "themes": ["nostalgia", "curiosity"],
+    "related": ["my-story-with-videogames-and-adhd", "my-story-with-live-music-and-concerts"]
+  },
+  {
+    "id": "miniclip",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/misc/miniclip.md",
+    "topics": ["gaming", "internet-culture"],
+    "tags": ["flash", "browser-games", "retro"],
+    "themes": ["nostalgia", "childhood"],
+    "related": ["runescape", "habbo-hotel", "whyville"]
+  },
+  {
+    "id": "ps2-expansion",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/misc/ps2-expansion.md",
+    "topics": ["gaming", "technology"],
+    "tags": ["modding", "hardware", "ps2", "sata"],
+    "themes": ["craftsmanship", "nostalgia"],
+    "related": ["my-story-with-ps2-modding-and-retro-gaming", "ffx", "thread-ps2-hardware-modding"]
+  },
+  {
+    "id": "habbo-hotel",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/mmo/habbo-hotel.md",
+    "topics": ["gaming", "internet-culture"],
+    "tags": ["social", "browser-games", "banned"],
+    "themes": ["childhood", "nostalgia"],
+    "related": ["whyville", "miniclip", "runescape"]
+  },
+  {
+    "id": "runescape",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/mmo/runescape.md",
+    "topics": ["gaming", "internet-culture"],
+    "tags": ["mmo", "economics", "grinding"],
+    "themes": ["learning", "nostalgia"],
+    "related": ["my-story-with-typing-trainers-and-early-internet", "miniclip", "habbo-hotel"]
+  },
+  {
+    "id": "whyville",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/mmo/whyville.md",
+    "topics": ["gaming", "parenting"],
+    "tags": ["social", "kids", "browser-games"],
+    "themes": ["childhood", "connection"],
+    "related": ["habbo-hotel", "my-story-with-family-memories-and-santa-claus"]
+  },
+  {
+    "id": "cyberpunk-2077",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/rpg/cyberpunk-2077.md",
+    "topics": ["gaming", "design"],
+    "tags": ["rpg", "open-world", "sci-fi"],
+    "themes": ["craftsmanship", "worldview"],
+    "related": ["starcraft-2", "the-legend-of-zelda-ocarina-of-time"]
+  },
+  {
+    "id": "ffx",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/rpg/ffx.md",
+    "topics": ["gaming"],
+    "tags": ["rpg", "narrative", "ps2", "final-fantasy"],
+    "themes": ["nostalgia", "learning"],
+    "related": ["ps2-expansion", "my-story-with-ps2-modding-and-retro-gaming"]
+  },
+  {
+    "id": "pokemon",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/rpg/pokemon.md",
+    "topics": ["gaming"],
+    "tags": ["rpg", "nintendo", "collecting"],
+    "themes": ["childhood", "nostalgia"],
+    "related": ["the-legend-of-zelda-ocarina-of-time", "my-story-with-coin-collecting"]
+  },
+  {
+    "id": "the-legend-of-zelda-ocarina-of-time",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/rpg/the-legend-of-zelda-ocarina-of-time.md",
+    "topics": ["gaming"],
+    "tags": ["n64", "adventure", "nintendo"],
+    "themes": ["childhood", "nostalgia"],
+    "related": ["pokemon", "perfect-dark"]
+  },
+  {
+    "id": "cod-4",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/shooters/cod-4.md",
+    "topics": ["gaming"],
+    "tags": ["fps", "multiplayer", "competitive"],
+    "themes": ["connection", "nostalgia"],
+    "related": ["halo-3", "cs-go", "my-story-with-videogames-and-adhd"]
+  },
+  {
+    "id": "cs-go",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/shooters/cs-go.md",
+    "topics": ["gaming"],
+    "tags": ["fps", "competitive", "pc-gaming"],
+    "themes": ["learning", "growth"],
+    "related": ["cod-4", "halo-3"]
+  },
+  {
+    "id": "halo-3",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/shooters/halo-3.md",
+    "topics": ["gaming"],
+    "tags": ["fps", "social-gaming", "xbox"],
+    "themes": ["connection", "nostalgia"],
+    "related": ["cod-4", "my-story-with-videogames-and-adhd"]
+  },
+  {
+    "id": "perfect-dark",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/shooters/perfect-dark.md",
+    "topics": ["gaming"],
+    "tags": ["n64", "shooter", "co-op"],
+    "themes": ["connection", "childhood"],
+    "related": ["siphon-filter-2", "the-legend-of-zelda-ocarina-of-time"]
+  },
+  {
+    "id": "siphon-filter-2",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/shooters/siphon-filter-2.md",
+    "topics": ["gaming"],
+    "tags": ["stealth", "co-op", "playstation"],
+    "themes": ["connection", "childhood"],
+    "related": ["perfect-dark", "my-story-with-family-memories-and-santa-claus"]
+  },
+  {
+    "id": "starcraft-2",
+    "path": "/home/keel/Project-Atlas-main/content/library/games/strategy/starcraft-2.md",
+    "topics": ["gaming"],
+    "tags": ["rts", "strategy", "apm"],
+    "themes": ["systems-thinking", "learning"],
+    "related": ["my-story-with-mechanical-engineering-and-systems-thinking", "cyberpunk-2077"]
+  }
+]
+
+with open('/home/keel/Project-Atlas-main/output2.json', 'w') as f:
+    json.dump(output, f, indent=2)
+

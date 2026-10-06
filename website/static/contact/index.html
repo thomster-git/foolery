@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact | Jonathan Thoms</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --panel: rgba(20, 25, 39, 0.65);
+      --panel2: #1a2035;
+      --border: #252f45;
+      --text: #e2e8f0;
+      --text-light: #94a3b8;
+
+      --blue: #3b82f6;
+      --cyan: #06b6d4;
+      --green: #10b981;
+      --red: #ef4444;
+      --gold: #f59e0b;
+      --purple: #7c3aed;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *:focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 4px; }
+    body { background: var(--bg); color: var(--text); font-family: 'Outfit', system-ui, sans-serif; min-height: 100vh; }
+
+    /* ── HEADER ───────────────────────────────────────────────────── */
+    .store-header {
+      max-width: 1200px; margin: 0 auto;
+      padding: 2rem 2rem 1.5rem;
+      display: flex; justify-content: space-between; align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem; flex-wrap: wrap;
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(12px);
+    }
+    .store-header h1 { font-size: 1.9rem; font-weight: 800; background: linear-gradient(135deg, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .store-header p { color: var(--text-light); margin-top: 0.3rem; font-size: 0.9rem; max-width: 520px; line-height: 1.5; }
+    .header-back { color: var(--cyan); text-decoration: none; font-size: 0.85rem; margin-top: 0.5rem; display: inline-block; opacity: 0.75; }
+    .header-back:hover { opacity: 1; }
+
+    /* ── MAIN CONTENT ─────────────────────────────────────────────── */
+    .store-main { max-width: 800px; margin: 0 auto; padding: 3rem 2rem 4rem; }
+    
+    .contact-card {
+      background: var(--panel);
+      backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2.5rem;
+    }
+    .contact-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+    .contact-card p {
+      color: var(--text-light);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .form-control {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.8rem 1rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--cyan);
+    }
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      transition: opacity 0.2s;
+      font-family: inherit;
+    }
+    .btn-submit:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="store-header">
+    <div>
+      <h1>Request Access</h1>
+      <p>Need a token to access locked content or tools? Send a request below.</p>
+      <a href="/" class="header-back">← Back to Atlas</a>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="store-main">
+    <div class="contact-card">
+      <h2>Contact Us</h2>
+      <p>Whether you're looking for a preview token, want to discuss a project, or just have a question, feel free to reach out. We'll get back to you as soon as possible.</p>
+      
+      <form action="mailto:jonathan.thoms@gmail.com" method="GET" enctype="text/plain">
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" class="form-control" placeholder="e.g. Requesting a Preview Token" required>
+        </div>
+        <div class="form-group">
+          <label for="body">Message</label>
+          <textarea id="body" name="body" class="form-control" placeholder="Hi Jon, I'd like to request a token to view the..." required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Open in Email Client</button>
+      </form>
+    </div>
+  </main>
+
+</body>
+</html>

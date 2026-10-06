@@ -1,0 +1,82 @@
+<footer>
+
+  <div class="footer-inner">
+
+    <div class="footer-brand">
+      <span class="footer-title">Thoms Foolery</span>
+      <span class="footer-tagline">Everything is Connected.</span>
+      
+      <!-- Newsletter Signup inside footer-brand column -->
+      <section class="newsletter-signup footer-newsletter" aria-label="Newsletter signup" style="margin-top: 1.5rem; padding: 0;">
+        <h3 class="newsletter-title" style="font-size: 1rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+          <span class="newsletter-icon" aria-hidden="true" style="font-size: 1.1rem; filter: none; background: none; -webkit-text-fill-color: initial;">✉️</span>
+          The Monday Dispatch
+        </h3>
+        <p class="newsletter-desc" style="font-size: 0.8rem; margin-bottom: 1rem; color: var(--text-dim); max-width: 300px;">
+          One email. Every Monday. What I've been thinking about, building, reading, and exploring.
+        </p>
+        <form
+          class="newsletter-form"
+          action="https://buttondown.com/api/emails/embed-subscribe/thomsfoolery"
+          method="post"
+          target="popupwindow"
+          onsubmit="window.open('https://buttondown.com/thomsfoolery', 'popupwindow')"
+          id="footer-newsletter-form"
+          style="display: flex; flex-direction: column; gap: 0.5rem;"
+        >
+          <div class="newsletter-fields" style="display: flex; gap: 0.5rem;">
+            <label for="footer-newsletter-email" class="sr-only">Email address</label>
+            <input
+              id="footer-newsletter-email"
+              type="email"
+              name="email"
+              placeholder="your@email.com"
+              required
+              autocomplete="email"
+              class="newsletter-input"
+              style="padding: 0.5rem 0.75rem; border-radius: 4px; border: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: var(--text-color); font-size: 0.85rem; width: 100%; max-width: 200px;"
+            />
+            <button type="submit" class="newsletter-btn" id="footer-newsletter-submit" style="padding: 0.5rem 0.75rem; border-radius: 4px; border: none; background: var(--accent-indigo); color: white; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: background 0.2s;">
+              Subscribe
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="/articles/">Articles</a>
+      <a href="/projects/">Projects</a>
+      <a href="/library/">Library</a>
+      <a href="/topics/">Topics</a>
+      <a href="/themes/">Themes</a>
+      <a href="/tags/">Tags</a>
+      <a href="/shit-list/">The Shit List</a>
+      <a href="/sponsors/">Sponsors</a>
+      <a href="https://etchcentric.ca/" target="_blank">Laser Store</a>
+      <a href="/start/">Start Here</a>
+    </nav>
+
+    <div class="footer-social">
+      <a href="https://x.com/ThomsFoolery" target="_blank" rel="noopener noreferrer" aria-label="Follow on X / Twitter">X / Twitter</a>
+      <a href="https://discord.gg/84c7ut6cg6" target="_blank" rel="noopener noreferrer" aria-label="Join Discord">Discord</a>
+      <a href="https://www.linkedin.com/in/jonathan-thoms-a43b65a4/" target="_blank" rel="noopener noreferrer" aria-label="Connect on LinkedIn">LinkedIn</a>
+      <a href="https://www.twitch.tv/thomsfoolery" target="_blank" rel="noopener noreferrer" aria-label="Follow on Twitch">Twitch</a>
+      <a href="/rss.xml" target="_blank" rel="noopener noreferrer" aria-label="RSS Feed">RSS</a>
+    </div>
+
+    <div class="footer-meta">
+      <span>&copy; <span id="footer-year"></span> Jonathan Thoms</span>
+      <span class="footer-separator">·</span>
+      <a href="/sitemap.xml">Sitemap</a>
+      <span class="footer-separator">·</span>
+      <a href="/start/">Start Here</a>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  const y = document.getElementById("footer-year");
+  if (y) y.textContent = new Date().getFullYear();
+</script>

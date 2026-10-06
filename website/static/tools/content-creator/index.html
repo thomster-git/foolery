@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Content Creator — Thoms Foolery Dev Tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- ── ACCESS GATE ─────────────────────────────────────────── -->
+  <script>
+    (function() {
+      // SHA-256 hash of the passphrase (so the plain-text password is never in source).
+      // Current passphrase hash = SHA-256("atlas-tools-2025")
+      const HASH = 'f8de1cba94987a1b2163fa342574f24fa7a1ac8ba88cce226ed6852b14e6af17';
+
+      async function sha256(msg) {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+      }
+
+      function showGate() {
+        document.documentElement.style.cssText = 'background:#0b0f19;';
+        const overlay = document.createElement('div');
+        overlay.id = 'access-gate';
+        overlay.style.cssText = [
+          'position:fixed;inset:0;z-index:9999;',
+          'background:rgba(11,15,25,0.97);backdrop-filter:blur(8px);',
+          'display:flex;align-items:center;justify-content:center;font-family:Outfit,sans-serif;'
+        ].join('');
+        overlay.innerHTML = `
+          <div style="background:#141927;border:1px solid #252f45;border-radius:16px;padding:2.5rem 2rem;max-width:380px;width:90%;text-align:center;">
+            <div style="font-size:2rem;margin-bottom:0.75rem;">🔒</div>
+            <h1 style="color:#e2e8f0;font-size:1.2rem;font-weight:700;margin-bottom:0.4rem;">Developer Tool</h1>
+            <p style="color:#64748b;font-size:0.85rem;margin-bottom:1.5rem;line-height:1.5;">This tool is for site administrators only. Enter the access passphrase to continue.</p>
+            <input id="gate-input" type="password" placeholder="Passphrase" autocomplete="off"
+              style="width:100%;background:#1a2035;border:1px solid #252f45;border-radius:8px;padding:0.7rem 1rem;color:#e2e8f0;font-size:0.95rem;font-family:inherit;outline:none;margin-bottom:0.75rem;transition:border-color 0.15s;">
+            <div id="gate-err" style="color:#ef4444;font-size:0.8rem;min-height:1.2rem;margin-bottom:0.75rem;"></div>
+            <button id="gate-btn" style="width:100%;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;border:none;border-radius:8px;padding:0.7rem;font-weight:700;font-size:0.95rem;font-family:inherit;cursor:pointer;">
+              Unlock
+            </button>
+          </div>`;
+        document.body ? document.body.appendChild(overlay) : document.addEventListener('DOMContentLoaded', () => document.body.appendChild(overlay));
+
+        function tryUnlock() {
+          const val = document.getElementById('gate-input').value;
+          sha256(val).then(hash => {
+            if (hash === HASH) {
+              sessionStorage.setItem('cc-access', '1');
+              overlay.style.opacity = '0';
+              overlay.style.transition = 'opacity 0.3s';
+              setTimeout(() => overlay.remove(), 300);
+            } else {
+              document.getElementById('gate-err').textContent = 'Incorrect passphrase.';
+              document.getElementById('gate-input').style.borderColor = '#ef4444';
+              setTimeout(() => { document.getElementById('gate-input').style.borderColor = '#252f45'; }, 1500);
+            }
+          });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+          document.getElementById('gate-btn').addEventListener('click', tryUnlock);
+          document.getElementById('gate-input').addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+          document.getElementById('gate-input').focus();
+        });
+      }
+
+      if (!sessionStorage.getItem('cc-access')) {
+        showGate();
+      }
+    })();
+  </script>
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --panel: #141927;
+      --panel2: #1a2035;
+      --border: #252f45;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --accent: #7c3aed;
+      --accent2: #06b6d4;
+      --green: #10b981;
+      --red: #ef4444;
+      --amber: #f59e0b;
+      --radius: 10px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-left { display: flex; align-items: center; gap: 1rem; }
+    .header h1 { font-size: 1.1rem; font-weight: 700; color: var(--accent2); }
+    .header-back {
+      color: var(--muted); text-decoration: none; font-size: 0.85rem;
+      display: flex; align-items: center; gap: 0.25rem;
+      transition: color 0.15s;
+    }
+    .header-back:hover { color: var(--text); }
+    .save-status { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+
+    /* LAYOUT */
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr 380px;
+      height: calc(100vh - 60px);
+    }
+
+    /* LEFT SIDEBAR */
+    .sidebar {
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      padding: 1.5rem 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .sidebar-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      padding: 0.25rem 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .type-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--muted);
+      padding: 0.6rem 0.75rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.9rem;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: all 0.15s;
+      width: 100%;
+    }
+    .type-btn:hover { background: var(--panel2); color: var(--text); }
+    .type-btn.active {
+      background: rgba(124, 58, 237, 0.15);
+      border-color: var(--accent);
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
+    /* MAIN EDITOR */
+    .editor-area {
+      padding: 2rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .field-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .required-badge {
+      font-size: 0.65rem;
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--red);
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+    .field-input, .field-textarea, .field-select {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 0.65rem 0.85rem;
+      width: 100%;
+      transition: border-color 0.15s;
+    }
+    .field-input:focus, .field-textarea:focus, .field-select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .field-textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+    .field-select option { background: var(--panel); }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+
+    .tag-input-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.5rem;
+      min-height: 44px;
+      cursor: text;
+    }
+    .tag-input-container:focus-within { border-color: var(--accent); }
+    .tag-pill-item {
+      background: rgba(124, 58, 237, 0.2);
+      border: 1px solid rgba(124, 58, 237, 0.4);
+      color: var(--accent2);
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+    }
+    .tag-pill-item button {
+      background: none; border: none; color: inherit; cursor: pointer;
+      font-size: 0.85rem; line-height: 1; padding: 0;
+    }
+    .tag-raw-input {
+      background: none; border: none; outline: none; color: var(--text);
+      font-family: inherit; font-size: 0.85rem; min-width: 120px; flex: 1;
+    }
+
+    /* PREVIEW */
+    .preview-panel {
+      background: var(--panel);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+    .preview-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .preview-header-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .preview-tabs { display: flex; gap: 0.25rem; }
+    .preview-tab {
+      background: none; border: 1px solid var(--border); color: var(--muted);
+      padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.78rem;
+      cursor: pointer; font-family: inherit; transition: all 0.15s;
+    }
+    .preview-tab.active { background: var(--accent); border-color: var(--accent); color: white; font-weight: 600; }
+
+    .preview-content {
+      flex: 1;
+      padding: 1.25rem;
+      overflow-y: auto;
+    }
+    #markdown-preview {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: var(--muted);
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    #rendered-preview { font-size: 0.88rem; line-height: 1.7; color: var(--text); }
+    #rendered-preview h1, #rendered-preview h2 { color: var(--accent2); margin: 1rem 0 0.5rem; }
+    #rendered-preview p { margin-bottom: 0.75rem; color: var(--muted); }
+
+    /* FOOTER ACTION BAR */
+    .footer-bar {
+      background: var(--panel);
+      border-top: 1px solid var(--border);
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      align-items: center;
+      grid-column: 1 / -1;
+    }
+    .btn {
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .btn-ghost:hover { border-color: var(--text); color: var(--text); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-success { background: var(--green); color: white; }
+    .btn-success:hover { background: #0d9467; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--panel2);
+      border: 1px solid var(--green);
+      border-radius: var(--radius);
+      padding: 0.75rem 1.25rem;
+      font-size: 0.88rem;
+      color: var(--green);
+      z-index: 9999;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* Dynamic field sections */
+    .field-section { display: none; }
+    .field-section.visible { display: contents; }
+
+    @media (max-width: 1100px) {
+      .layout { grid-template-columns: 220px 1fr; }
+      .preview-panel { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <a href="/tools/" class="header-back">← Tools</a>
+    <h1>📝 Content Creator</h1>
+  </div>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <span class="save-status" id="save-status">Unsaved</span>
+    <a href="/" style="color:var(--muted);font-size:0.82rem;text-decoration:none;">thomsfoolery.com</a>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-rows:1fr auto;height:calc(100vh - 60px);">
+  <div class="layout">
+
+    <!-- LEFT: Content Type Selector -->
+    <div class="sidebar">
+      <div class="sidebar-label">Content Type</div>
+
+      <button class="type-btn active" data-type="article" onclick="setType('article', this)">
+        📄 Article
+      </button>
+      <button class="type-btn" data-type="project" onclick="setType('project', this)">
+        🛠️ Project
+      </button>
+      <button class="type-btn" data-type="topic" onclick="setType('topic', this)">
+        🏷️ Topic
+      </button>
+      <button class="type-btn" data-type="theme" onclick="setType('theme', this)">
+        🎨 Theme
+      </button>
+
+      <div class="sidebar-label" style="margin-top:1rem;">Library</div>
+      <button class="type-btn" data-type="book" onclick="setType('book', this)">
+        📚 Book
+      </button>
+      <button class="type-btn" data-type="hardware" onclick="setType('hardware', this)">
+        🖥️ Hardware
+      </button>
+      <button class="type-btn" data-type="software" onclick="setType('software', this)">
+        💿 Software
+      </button>
+      <button class="type-btn" data-type="tool" onclick="setType('tool', this)">
+        🔧 Tool
+      </button>
+      <button class="type-btn" data-type="creator" onclick="setType('creator', this)">
+        🎙️ Creator
+      </button>
+      <button class="type-btn" data-type="service" onclick="setType('service', this)">
+        🌐 Service
+      </button>
+
+      <div class="sidebar-label" style="margin-top:1rem;">Other Sections</div>
+      <button class="type-btn" data-type="wishlist" onclick="setType('wishlist', this)">
+        ⭐ Wishlist Item
+      </button>
+      <button class="type-btn" data-type="shit-list" onclick="setType('shit-list', this)">
+        🚫 Shit List Entry
+      </button>
+      <button class="type-btn" data-type="store" onclick="setType('store', this)">
+        🔥 Laser Store Item
+      </button>
+
+      <div style="margin-top:1rem;border-top:1px solid var(--border);padding-top:0.75rem;">
+        <div class="sidebar-label" style="margin-bottom:0.5rem;">Saved Drafts</div>
+        <div id="drafts-list" style="display:flex;flex-direction:column;gap:0.35rem;max-height:220px;overflow-y:auto;"></div>
+        <button onclick="saveDraft()" style="margin-top:0.6rem;width:100%;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#10b981;padding:0.45rem;border-radius:8px;font-family:inherit;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.15s;">+ Save Draft</button>
+      </div>
+
+      <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--border);">
+        <div style="font-size:0.72rem;color:var(--muted);line-height:1.5;">
+          Drafts are saved in your browser. Download the .md file when ready to publish.
+        </div>
+      </div>
+    </div>
+
+    <!-- MIDDLE: Form Editor -->
+    <div class="editor-area">
+
+      <!-- Always-present fields -->
+      <div>
+        <div class="section-title">Core Metadata</div>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label">Title <span class="required-badge">Required</span></label>
+              <input type="text" id="f-title" class="field-input" placeholder="e.g. My Thoughts on Proxmox" oninput="updatePreview()">
+            </div>
+            <div class="field-group">
+              <label class="field-label">ID / Slug <span class="required-badge">Required</span></label>
+              <input type="text" id="f-id" class="field-input" placeholder="e.g. my-thoughts-on-proxmox" oninput="updatePreview()">
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Summary <span class="required-badge">Required</span></label>
+            <input type="text" id="f-summary" class="field-input" placeholder="One sentence description shown in cards and previews" oninput="updatePreview()">
+          </div>
+
+          <div class="grid-3">
+            <div class="field-group">
+              <label class="field-label">Status</label>
+              <select id="f-status" class="field-select" onchange="updatePreview()">
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+                <option value="active">Active</option>
+                <option value="planning">Planning</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Date Created</label>
+              <input type="date" id="f-created" class="field-input" oninput="updatePreview()">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Date Updated</label>
+              <input type="date" id="f-updated" class="field-input" oninput="updatePreview()">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tags / Topics / Themes -->
+      <div>
+        <div class="section-title">Taxonomy</div>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div class="field-group">
+            <label class="field-label">Tags</label>
+            <div class="tag-input-container" id="tags-container" onclick="document.getElementById('tags-raw').focus()">
+              <input type="text" id="tags-raw" class="tag-raw-input" placeholder="Type a tag, press Enter or comma..." onkeydown="handleTagInput(event, 'tags')">
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="field-group">
+              <label class="field-label">Topics</label>
+              <div class="tag-input-container" id="topics-container" onclick="document.getElementById('topics-raw').focus()">
+                <input type="text" id="topics-raw" class="tag-raw-input" placeholder="technology, gaming, audhd..." onkeydown="handleTagInput(event, 'topics')">
+              </div>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Themes</label>
+              <div class="tag-input-container" id="themes-container" onclick="document.getElementById('themes-raw').focus()">
+                <input type="text" id="themes-raw" class="tag-raw-input" placeholder="curiosity, craftsmanship..." onkeydown="handleTagInput(event, 'themes')">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article-specific fields -->
+      <div id="section-article" class="field-section visible">
+        <div class="section-title">Article Settings</div>
+        <div class="grid-2">
+          <div class="field-group">
+            <label class="field-label">Access Level</label>
+            <select id="f-access" class="field-select" onchange="updatePreview()">
+              <option value="public">Public</option>
+              <option value="members">Members</option>
+              <option value="paid">Paid</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Reading Time (min)</label>
+            <input type="number" id="f-reading-time" class="field-input" placeholder="5" oninput="updatePreview()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Library-specific fields (book, hardware, software, tool, creator, service) -->
+      <div id="section-library" class="field-section">
+        <div class="section-title">Library Details</div>
+        <div class="grid-2">
+          <div class="field-group">
+            <label class="field-label">Rating (0–10)</label>
+            <input type="number" id="f-rating" class="field-input" placeholder="8.5" min="0" max="10" step="0.5" oninput="updatePreview()">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Purchase / Link URL</label>
+            <input type="url" id="f-link-url" class="field-input" placeholder="https://..." oninput="updatePreview()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Wishlist-specific fields -->
+      <div id="section-wishlist" class="field-section">
+        <div class="section-title">Wishlist Details</div>
+        <div class="grid-2">
+          <div class="field-group">
+            <label class="field-label">Price</label>
+            <input type="text" id="f-price" class="field-input" placeholder="$499.99 or TBD" oninput="updatePreview()">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Category</label>
+            <select id="f-category" class="field-select" onchange="updatePreview()">
+              <option value="Hardware">Hardware</option>
+              <option value="Audio">Audio</option>
+              <option value="Music">Music</option>
+              <option value="Tools">Tools</option>
+              <option value="Infrastructure">Infrastructure</option>
+              <option value="Misc">Misc</option>
+            </select>
+          </div>
+          <div class="field-group" style="grid-column:1/-1;">
+            <label class="field-label">Purchase URL</label>
+            <input type="url" id="f-wishlist-url" class="field-input" placeholder="https://www.newegg.ca/..." oninput="updatePreview()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Shit-list specific fields -->
+      <div id="section-shit-list" class="field-section">
+        <div class="section-title">Shit List Details</div>
+        <div class="grid-2">
+          <div class="field-group">
+            <label class="field-label">Company / Product</label>
+            <input type="text" id="f-company" class="field-input" placeholder="Company name" oninput="updatePreview()">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Date Added</label>
+            <input type="date" id="f-sl-date" class="field-input" oninput="updatePreview()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Store-specific fields -->
+      <div id="section-store" class="field-section">
+        <div class="section-title">Laser Store Details</div>
+        <div class="grid-3">
+          <div class="field-group">
+            <label class="field-label">Price</label>
+            <input type="text" id="f-store-price" class="field-input" placeholder="$15.00" oninput="updatePreview()">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Stock Quantity</label>
+            <input type="number" id="f-store-qty" class="field-input" placeholder="10" oninput="updatePreview()">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Item Category</label>
+            <select id="f-store-cat" class="field-select" onchange="updatePreview()">
+              <option value="blank">Available Blank</option>
+              <option value="event">Special Event</option>
+              <option value="commission">Commission</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Body content -->
+      <div>
+        <div class="section-title">Body Content</div>
+        <div class="field-group">
+          <label class="field-label">Main Content (Markdown)</label>
+          <textarea id="f-body" class="field-textarea" style="min-height:200px;" placeholder="Write your content here using Markdown formatting...
+
+# Heading 1
+## Heading 2
+
+A paragraph with **bold** and *italic* text.
+
+- List item one
+- List item two
+
+[Link text](https://example.com)" oninput="updatePreview()"></textarea>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: Preview -->
+    <div class="preview-panel">
+      <div class="preview-header">
+        <span class="preview-header-title">Preview</span>
+        <div class="preview-tabs">
+          <button class="preview-tab active" onclick="switchPreviewTab('markdown', this)">Markdown</button>
+          <button class="preview-tab" onclick="switchPreviewTab('rendered', this)">Rendered</button>
+        </div>
+      </div>
+      <div class="preview-content">
+        <pre id="markdown-preview"></pre>
+        <div id="rendered-preview" style="display:none;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER ACTION BAR -->
+  <div class="footer-bar">
+    <span id="filename-display" style="font-size:0.82rem;color:var(--muted);font-family:'JetBrains Mono',monospace;"></span>
+    <button class="btn btn-ghost" onclick="clearForm()">🗑️ Clear</button>
+    <button class="btn btn-ghost" onclick="copyMarkdown()">📋 Copy Markdown</button>
+    <button class="btn btn-primary" onclick="downloadMarkdown()">⬇️ Download .md</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// State
+let state = {
+  type: 'article',
+  tags: [],
+  topics: [],
+  themes: []
+};
+
+// Content type → section mapping
+const typeSections = {
+  article: ['section-article'],
+  project: [],
+  topic: [],
+  theme: [],
+  book: ['section-library'],
+  hardware: ['section-library'],
+  software: ['section-library'],
+  tool: ['section-library'],
+  creator: ['section-library'],
+  service: ['section-library'],
+  wishlist: ['section-wishlist'],
+  'shit-list': ['section-shit-list'],
+  store: ['section-store']
+};
+
+const allSections = ['section-article', 'section-library', 'section-wishlist', 'section-shit-list', 'section-store'];
+
+// Type descriptors for output path hint
+const typeInfo = {
+  article: { dir: 'content/articles/', emoji: '📄' },
+  project: { dir: 'content/projects/', emoji: '🛠️' },
+  topic: { dir: 'content/topics/', emoji: '🏷️' },
+  theme: { dir: 'content/themes/', emoji: '🎨' },
+  book: { dir: 'content/library/books/', emoji: '📚' },
+  hardware: { dir: 'content/library/hardware/', emoji: '🖥️' },
+  software: { dir: 'content/library/software/', emoji: '💿' },
+  tool: { dir: 'content/library/tools/', emoji: '🔧' },
+  creator: { dir: 'content/library/creators/', emoji: '🎙️' },
+  service: { dir: 'content/library/services/', emoji: '🌐' },
+  wishlist: { dir: 'content/wishlist/', emoji: '⭐' },
+  'shit-list': { dir: 'content/shit-list/', emoji: '🚫' },
+  store: { dir: 'website/static/store/', emoji: '🔥' }
+};
+
+function setType(type, btn) {
+  state.type = type;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  
+  allSections.forEach(s => document.getElementById(s).classList.remove('visible'));
+  (typeSections[type] || []).forEach(s => document.getElementById(s).classList.add('visible'));
+  
+  updatePreview();
+}
+
+// Tag input system
+function handleTagInput(e, field) {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const raw = e.target.value.trim().replace(/,$/, '');
+    if (raw) addTag(field, raw);
+    e.target.value = '';
+  } else if (e.key === 'Backspace' && e.target.value === '' && state[field].length > 0) {
+    removeTag(field, state[field].length - 1);
+  }
+}
+
+function addTag(field, value) {
+  if (!state[field].includes(value)) {
+    state[field].push(value);
+    renderTags(field);
+    updatePreview();
+  }
+}
+
+function removeTag(field, index) {
+  state[field].splice(index, 1);
+  renderTags(field);
+  updatePreview();
+}
+
+function renderTags(field) {
+  const container = document.getElementById(field + '-container');
+  const rawInput = document.getElementById(field + '-raw');
+  const pills = container.querySelectorAll('.tag-pill-item');
+  pills.forEach(p => p.remove());
+  
+  state[field].forEach((tag, i) => {
+    const pill = document.createElement('div');
+    pill.className = 'tag-pill-item';
+    pill.innerHTML = `${tag} <button onclick="removeTag('${field}', ${i})">×</button>`;
+    container.insertBefore(pill, rawInput);
+  });
+}
+
+// Generate markdown frontmatter
+function generateMarkdown() {
+  const title = document.getElementById('f-title').value;
+  const id = document.getElementById('f-id').value || slugify(title);
+  const summary = document.getElementById('f-summary').value;
+  const status = document.getElementById('f-status').value;
+  const created = document.getElementById('f-created').value;
+  const updated = document.getElementById('f-updated').value;
+  const body = document.getElementById('f-body').value;
+  const type = state.type;
+
+  let fm = `---\n`;
+  fm += `id: ${id}\n`;
+  fm += `title: ${title}\n`;
+  fm += `type: ${type}\n`;
+  if (summary) fm += `summary: ${summary}\n`;
+  if (status) fm += `status: ${status}\n`;
+  if (created) fm += `created: ${created}\n`;
+  if (updated) fm += `updated: ${updated}\n`;
+  
+  if (state.tags.length > 0) {
+    fm += `tags:\n${state.tags.map(t => `  - ${t}`).join('\n')}\n`;
+  }
+  if (state.topics.length > 0) {
+    fm += `topics:\n${state.topics.map(t => `  - ${t}`).join('\n')}\n`;
+  }
+  if (state.themes.length > 0) {
+    fm += `themes:\n${state.themes.map(t => `  - ${t}`).join('\n')}\n`;
+  }
+
+  // Type-specific fields
+  if (type === 'article') {
+    const access = document.getElementById('f-access').value;
+    const readTime = document.getElementById('f-reading-time').value;
+    if (access && access !== 'public') fm += `access: ${access}\n`;
+    if (readTime) fm += `reading_time: ${readTime}\n`;
+  }
+
+  if (['book','hardware','software','tool','creator','service'].includes(type)) {
+    const rating = document.getElementById('f-rating').value;
+    const linkUrl = document.getElementById('f-link-url').value;
+    if (rating) fm += `rating: ${rating}\n`;
+    if (linkUrl) fm += `url: ${linkUrl}\n`;
+  }
+
+  if (type === 'wishlist') {
+    const price = document.getElementById('f-price').value;
+    const category = document.getElementById('f-category').value;
+    const url = document.getElementById('f-wishlist-url').value;
+    if (price) fm += `price: ${price}\n`;
+    if (category) fm += `category: ${category}\n`;
+    if (url) fm += `url: ${url}\n`;
+  }
+
+  if (type === 'shit-list') {
+    const company = document.getElementById('f-company').value;
+    const slDate = document.getElementById('f-sl-date').value;
+    if (company) fm += `company: ${company}\n`;
+    if (slDate) fm += `date_added: ${slDate}\n`;
+  }
+
+  if (type === 'store') {
+    const price = document.getElementById('f-store-price').value;
+    const qty = document.getElementById('f-store-qty').value;
+    const cat = document.getElementById('f-store-cat').value;
+    if (price) fm += `price: ${price}\n`;
+    if (qty) fm += `qty: ${qty}\n`;
+    if (cat) fm += `store_type: ${cat}\n`;
+  }
+
+  fm += `---\n\n`;
+  fm += body;
+  return fm;
+}
+
+function updatePreview() {
+  const md = generateMarkdown();
+  const id = document.getElementById('f-id').value || slugify(document.getElementById('f-title').value) || 'my-content';
+  const info = typeInfo[state.type] || { dir: 'content/', emoji: '📄' };
+  
+  document.getElementById('markdown-preview').textContent = md;
+  document.getElementById('filename-display').textContent = `→ ${info.dir}${id}.md`;
+  document.getElementById('save-status').textContent = 'Unsaved';
+  
+  // Simple rendered preview
+  let rendered = md
+    .replace(/^---[\s\S]*?---\n\n?/, '')
+    .replace(/^# (.*)/gm, '<h1>$1</h1>')
+    .replace(/^## (.*)/gm, '<h2>$1</h2>')
+    .replace(/^### (.*)/gm, '<h3>$3</h3>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" style="color:var(--accent2)">$1</a>')
+    .replace(/^- (.*)/gm, '<li>$1</li>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/^([^<\n].+)$/gm, '$1');
+  document.getElementById('rendered-preview').innerHTML = `<p>${rendered}</p>`;
+}
+
+function switchPreviewTab(tab, btn) {
+  document.querySelectorAll('.preview-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('markdown-preview').style.display = tab === 'markdown' ? 'block' : 'none';
+  document.getElementById('rendered-preview').style.display = tab === 'rendered' ? 'block' : 'none';
+}
+
+function slugify(str) {
+  return (str || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+function copyMarkdown() {
+  navigator.clipboard.writeText(generateMarkdown()).then(() => showToast('✅ Markdown copied to clipboard!'));
+}
+
+function downloadMarkdown() {
+  const id = document.getElementById('f-id').value || slugify(document.getElementById('f-title').value) || 'content';
+  const md = generateMarkdown();
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${id}.md`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(`✅ Downloaded ${id}.md`);
+  document.getElementById('save-status').textContent = 'Downloaded';
+}
+
+function clearForm() {
+  if (!confirm('Clear all fields? This cannot be undone.')) return;
+  document.querySelectorAll('.field-input, .field-textarea, .field-select').forEach(el => {
+    if (el.type === 'select-one') el.selectedIndex = 0;
+    else el.value = '';
+  });
+  ['tags','topics','themes'].forEach(f => {
+    state[f] = [];
+    renderTags(f);
+  });
+  updatePreview();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Auto-generate ID from title
+document.getElementById('f-title').addEventListener('input', (e) => {
+  const idField = document.getElementById('f-id');
+  if (!idField.dataset.manuallyEdited) {
+    idField.value = slugify(e.target.value);
+  }
+  updatePreview();
+});
+document.getElementById('f-id').addEventListener('input', (e) => {
+  e.target.dataset.manuallyEdited = e.target.value ? 'true' : '';
+  updatePreview();
+});
+
+// Set today's date as default
+document.getElementById('f-created').value = new Date().toISOString().split('T')[0];
+
+// ── DRAFT SYSTEM ────────────────────────────────────────────────
+const DRAFT_KEY = 'atlas-content-creator-drafts';
+
+function getFormSnapshot() {
+  return {
+    type: state.type,
+    tags: [...state.tags],
+    topics: [...state.topics],
+    themes: [...state.themes],
+    fields: Object.fromEntries(
+      ['f-title','f-id','f-summary','f-status','f-created','f-updated','f-body',
+       'f-access','f-reading-time','f-rating','f-link-url','f-price','f-category',
+       'f-wishlist-url','f-company','f-sl-date','f-store-price','f-store-qty','f-store-cat']
+        .map(id => [id, document.getElementById(id)?.value || ''])
+    )
+  };
+}
+
+function applySnapshot(snap) {
+  // Set type
+  const typeBtn = document.querySelector(`.type-btn[data-type="${snap.type}"]`);
+  if (typeBtn) setType(snap.type, typeBtn);
+  // Restore tags
+  ['tags','topics','themes'].forEach(f => {
+    state[f] = snap[f] || [];
+    renderTags(f);
+  });
+  // Restore field values
+  Object.entries(snap.fields || {}).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  });
+  updatePreview();
+}
+
+function loadDrafts() {
+  try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveDrafts(drafts) {
+  localStorage.setItem(DRAFT_KEY, JSON.stringify(drafts));
+}
+
+function renderDraftsList() {
+  const list = document.getElementById('drafts-list');
+  const drafts = loadDrafts();
+  if (drafts.length === 0) {
+    list.innerHTML = '<div style="font-size:0.75rem;color:var(--muted);padding:0.4rem 0;">No drafts yet.</div>';
+    return;
+  }
+  list.innerHTML = drafts.map((d, i) => `
+    <div style="background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:0.45rem 0.6rem;display:flex;align-items:center;gap:0.5rem;">
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:0.8rem;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.name || 'Untitled'}</div>
+        <div style="font-size:0.7rem;color:var(--muted);">${d.type} · ${d.savedAt}</div>
+      </div>
+      <button onclick="loadDraft(${i})" title="Load" style="background:none;border:none;color:var(--accent2);cursor:pointer;font-size:0.8rem;padding:0.1rem 0.3rem;">↩</button>
+      <button onclick="deleteDraft(${i})" title="Delete" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.9rem;padding:0.1rem 0.3rem;">×</button>
+    </div>
+  `).join('');
+}
+
+function saveDraft() {
+  const title = document.getElementById('f-title').value || 'Untitled';
+  const snap = getFormSnapshot();
+  const drafts = loadDrafts();
+  // Check if a draft with same title+type exists — update it
+  const existing = drafts.findIndex(d => d.name === title && d.type === state.type);
+  const entry = {
+    name: title,
+    type: state.type,
+    savedAt: new Date().toLocaleString('en-CA', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }),
+    snapshot: snap
+  };
+  if (existing >= 0) {
+    drafts[existing] = entry;
+    showToast(`✅ Draft "${title}" updated`);
+  } else {
+    drafts.unshift(entry);
+    showToast(`✅ Draft "${title}" saved`);
+  }
+  saveDrafts(drafts);
+  renderDraftsList();
+}
+
+function loadDraft(index) {
+  const drafts = loadDrafts();
+  if (!drafts[index]) return;
+  applySnapshot(drafts[index].snapshot);
+  showToast(`📂 Loaded "${drafts[index].name}"`);
+}
+
+function deleteDraft(index) {
+  const drafts = loadDrafts();
+  const name = drafts[index]?.name || 'draft';
+  drafts.splice(index, 1);
+  saveDrafts(drafts);
+  renderDraftsList();
+  showToast(`🗑️ Deleted "${name}"`);
+}
+
+// Auto-save every 60 seconds silently
+setInterval(() => {
+  const title = document.getElementById('f-title').value;
+  if (!title) return;
+  const snap = getFormSnapshot();
+  const drafts = loadDrafts();
+  const existing = drafts.findIndex(d => d.name === title && d.type === state.type);
+  if (existing >= 0) {
+    drafts[existing].snapshot = snap;
+    drafts[existing].savedAt = '(auto) ' + new Date().toLocaleTimeString('en-CA', { hour:'2-digit', minute:'2-digit' });
+    saveDrafts(drafts);
+    renderDraftsList();
+  }
+}, 60000);
+
+// Initial render
+renderDraftsList();
+updatePreview();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,135 @@
+<div class="page-container">
+    <div class="content-wrapper" style="max-width: 960px; margin: 2rem auto;">
+
+        <div class="breadcrumbs" style="margin-bottom: 2rem;">
+            <a href="/">Home</a> ›
+            <span>Dev Tools</span>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <h1 style="font-size: 3rem; color: var(--accent-cyan); margin-bottom: 1rem;">Dev &amp; Internal Tools</h1>
+            <p style="font-size: 1.2rem; color: var(--text-muted);">Personal utilities, trackers, and internal apps. Not necessarily meant for public audiences.</p>
+        </div>
+
+        <div class="tools-grid">
+
+            <a href="/tools/skill-building/" class="tool-card">
+                <div class="tool-card-inner">
+                    <div class="tool-icon">🧠</div>
+                    <h2 class="tool-title">Skill Building</h2>
+                    <p class="tool-desc">An interactive roadmap and checklist application designed to track progression through complex learning objectives.</p>
+                </div>
+            </a>
+
+            <a href="/tools/runescape-bond-tracker/" class="tool-card">
+                <div class="tool-card-inner">
+                    <div class="tool-icon">💎</div>
+                    <h2 class="tool-title">RS Bond Tracker</h2>
+                    <p class="tool-desc">A financial modeling tool to track Old School RuneScape wealth and optimize bond purchasing strategies.</p>
+                </div>
+            </a>
+
+            <a href="/tools/ffx-tracker.html" class="tool-card">
+                <div class="tool-card-inner">
+                    <div class="tool-icon">⚔️</div>
+                    <h2 class="tool-title">FFX 100% Tracker</h2>
+                    <p class="tool-desc">A comprehensive completionist checklist for Final Fantasy X, tracking items, overdrives, and sidequests.</p>
+                </div>
+            </a>
+
+            <a href="/tools/content-creator/" class="tool-card">
+                <div class="tool-card-inner" style="position: relative; overflow: hidden;">
+                    <div class="tool-badge">NEW</div>
+                    <div class="tool-icon">📝</div>
+                    <h2 class="tool-title">Content Creator</h2>
+                    <p class="tool-desc">GUI for creating markdown content files. Select a content type, fill in the fields, and download or copy the generated markdown directly.</p>
+                    <span class="tool-link">Read Project Writeup →</span>
+                </div>
+            </a>
+
+            <a href="/tools/twitter-db/" class="tool-card">
+                <div class="tool-card-inner" style="position: relative; overflow: hidden;">
+                    <div class="tool-badge">NEW</div>
+                    <div class="tool-icon">🐦</div>
+                    <h2 class="tool-title">Twitter DB Gen</h2>
+                    <p class="tool-desc">Automatically parse Twitter/X URLs into the JSON schema required for ingestion into the Project Atlas knowledge graph.</p>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .tools-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+        align-items: start;
+    }
+
+    .tool-card {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    .tool-card-inner {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .tool-card:hover .tool-card-inner {
+        transform: translateY(-4px);
+        border-color: var(--accent-cyan);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .tool-badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: linear-gradient(135deg, #7c3aed, #06b6d4);
+        font-size: 0.65rem;
+        font-weight: 700;
+        padding: 0.3rem 0.75rem;
+        border-radius: 0 var(--radius-lg) 0 8px;
+        color: white;
+        letter-spacing: 0.05em;
+    }
+
+    .tool-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .tool-title {
+        font-size: 1.4rem;
+        color: var(--text-main);
+        margin: 0;
+    }
+
+    .tool-desc {
+        color: var(--text-muted);
+        line-height: 1.6;
+        margin: 0;
+        flex: 1;
+    }
+
+    .tool-link {
+        display: inline-block;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+        font-size: 0.9rem;
+        color: var(--accent-cyan);
+        font-weight: 600;
+    }
+</style>

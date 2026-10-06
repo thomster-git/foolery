@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thornster — Bond Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold:     #d4a843;
+      --gold-dim: #8a6a22;
+      --bronze:   #b87333;
+      --green:    #3dba6e;
+      --green-dim:#1e6b3e;
+      --red:      #d94444;
+      --blue:     #4a9fd4;
+      --bg:       #0d0f14;
+      --bg2:      #151820;
+      --bg3:      #1c2030;
+      --bg4:      #242840;
+      --border:   #2e3450;
+      --text:     #d8dde8;
+      --text-dim: #7a82a0;
+      --rs3:      #4a9fd4;
+      --osrs:     #d4a843;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg, #0d0f14 0%, #1a1230 50%, #0d1420 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 2rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 60% 0%, rgba(212,168,67,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .header-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+    .header-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .title-block h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #f0d060, #d4a843, #b87333);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.04em;
+    }
+    .title-block p {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+      font-weight: 400;
+    }
+    .header-badges { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: flex-start; margin-top: 0.2rem; }
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .badge-rs3 { background: rgba(74,159,212,0.15); border: 1px solid rgba(74,159,212,0.4); color: var(--rs3); }
+    .badge-osrs { background: rgba(212,168,67,0.12); border: 1px solid rgba(212,168,67,0.4); color: var(--osrs); }
+    .badge-level { background: rgba(61,186,110,0.12); border: 1px solid rgba(61,186,110,0.35); color: var(--green); }
+
+    /* ── BOND PROGRESS STRIP ── */
+    .bond-strip {
+      margin-top: 1.5rem;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      display: flex; gap: 2rem; flex-wrap: wrap; align-items: center;
+    }
+    .bond-col { flex: 1; min-width: 200px; }
+    .bond-col label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .bond-input-row { display: flex; align-items: center; gap: 0.5rem; }
+    .bond-input-row input {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      width: 150px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .bond-input-row input:focus { border-color: var(--gold); }
+    .bond-input-row span { color: var(--text-dim); font-size: 0.8rem; }
+    .bond-progress-wrap { flex: 2; min-width: 260px; }
+    .bond-bar-labels { display: flex; justify-content: space-between; margin-bottom: 0.4rem; }
+    .bond-bar-labels span { font-size: 0.75rem; color: var(--text-dim); }
+    .bond-bar-labels strong { font-size: 0.75rem; color: var(--gold); }
+    .bond-bar {
+      height: 18px;
+      background: var(--bg4);
+      border-radius: 9px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .bond-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #b87333, #d4a843, #f0d060);
+      border-radius: 9px;
+      transition: width 0.6s cubic-bezier(.4,0,.2,1);
+      position: relative;
+    }
+    .bond-bar-fill::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+      border-radius: 9px;
+    }
+    .bond-stats { display: flex; gap: 1.5rem; margin-top: 0.6rem; flex-wrap: wrap; }
+    .bond-stat span { font-size: 0.7rem; color: var(--text-dim); display: block; }
+    .bond-stat strong { font-size: 0.85rem; color: var(--text); }
+
+    /* ── DAILY GP EARNED INDICATOR ── */
+    .daily-earned-strip {
+      margin-top: 1rem;
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .daily-earned-pill {
+      background: rgba(61,186,110,0.08);
+      border: 1px solid rgba(61,186,110,0.25);
+      border-radius: 10px;
+      padding: 0.6rem 1rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .daily-earned-pill .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+    .daily-earned-pill .label { font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+    .daily-earned-pill .val { font-size: 0.95rem; font-weight: 700; color: var(--green); }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+
+    /* ── TABS ── */
+    .tabs-wrap { max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem 0; }
+    .tabs { display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border); }
+    .tab {
+      padding: 0.7rem 1.4rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-bottom: none;
+      color: var(--text-dim);
+      transition: all 0.2s;
+      position: relative;
+      bottom: -1px;
+    }
+    .tab:hover { color: var(--text); background: var(--bg3); }
+    .tab.active-rs3 { color: var(--rs3); border-color: var(--border); border-bottom-color: var(--bg); background: var(--bg); }
+    .tab.active-osrs { color: var(--osrs); border-color: var(--border); border-bottom-color: var(--bg); background: var(--bg); }
+    .tab.active-flip { color: var(--blue); border-color: var(--border); border-bottom-color: var(--bg); background: var(--bg); }
+    .tab.active-mile { color: var(--green); border-color: var(--border); border-bottom-color: var(--bg); background: var(--bg); }
+
+    /* ── MAIN ── */
+    .main { max-width: 1100px; margin: 0 auto; padding: 1.5rem 2rem 4rem; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── SECTION HEADER ── */
+    .section-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .section-header .accent { width: 4px; height: 1.5rem; border-radius: 2px; }
+    .accent-rs3 { background: var(--rs3); }
+    .accent-osrs { background: var(--osrs); }
+    .accent-green { background: var(--green); }
+    .accent-blue { background: var(--blue); }
+    .section-header h2 { font-size: 1rem; font-weight: 600; font-family: 'Cinzel', serif; letter-spacing: 0.05em; }
+
+    /* ── DAILY TASK CARDS ── */
+    .tasks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1rem; }
+    .task-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .task-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      border-radius: 12px 12px 0 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .task-card.rs3-card::before { background: linear-gradient(90deg, var(--rs3), #6db8e8); }
+    .task-card.osrs-card::before { background: linear-gradient(90deg, var(--gold), #f0d060); }
+    .task-card:hover { border-color: #3e4560; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+    .task-card.done { border-color: rgba(61,186,110,0.4); background: rgba(61,186,110,0.04); }
+    .task-card.done::before { opacity: 1; background: linear-gradient(90deg, var(--green), #6be0a0) !important; }
+    .task-card.done .task-name { text-decoration: line-through; color: var(--text-dim); }
+
+    .task-header { display: flex; align-items: flex-start; gap: 0.75rem; }
+    .task-checkbox {
+      width: 22px; height: 22px; min-width: 22px;
+      border-radius: 6px;
+      border: 2px solid var(--border);
+      background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+      margin-top: 1px;
+    }
+    .task-card.done .task-checkbox {
+      background: var(--green);
+      border-color: var(--green);
+    }
+    .task-checkbox svg { opacity: 0; transition: opacity 0.2s; }
+    .task-card.done .task-checkbox svg { opacity: 1; }
+    .task-meta { flex: 1; }
+    .task-name { font-size: 0.95rem; font-weight: 600; line-height: 1.3; }
+    .task-tags { display: flex; gap: 0.4rem; margin-top: 0.4rem; flex-wrap: wrap; }
+    .tag {
+      font-size: 0.62rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .tag-gp { background: rgba(212,168,67,0.12); color: var(--gold); border: 1px solid rgba(212,168,67,0.25); }
+    .tag-time { background: rgba(74,159,212,0.1); color: var(--blue); border: 1px solid rgba(74,159,212,0.2); }
+    .tag-daily { background: rgba(61,186,110,0.1); color: var(--green); border: 1px solid rgba(61,186,110,0.2); }
+    .tag-timer { background: rgba(184,115,51,0.12); color: var(--bronze); border: 1px solid rgba(184,115,51,0.25); }
+    .tag-locked { background: rgba(217,68,68,0.1); color: var(--red); border: 1px solid rgba(217,68,68,0.2); }
+    .task-instructions {
+      margin-top: 0.75rem;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      line-height: 1.55;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+    .task-instructions a { color: var(--blue); text-decoration: none; }
+    .task-instructions a:hover { text-decoration: underline; }
+
+    /* ── TIMER ── */
+    .task-timer {
+      margin-top: 0.75rem;
+      background: var(--bg4);
+      border-radius: 8px;
+      padding: 0.6rem 0.75rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .timer-display { font-size: 1.1rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--gold); flex: 1; }
+    .timer-display.running { color: var(--green); }
+    .timer-display.done-t { color: var(--red); animation: blink 1s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .timer-btn {
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+    .timer-btn-start { border-color: rgba(61,186,110,0.5); color: var(--green); background: rgba(61,186,110,0.1); }
+    .timer-btn-start:hover { background: rgba(61,186,110,0.2); }
+    .timer-btn-reset { border-color: var(--border); color: var(--text-dim); background: transparent; }
+    .timer-btn-reset:hover { border-color: var(--text-dim); color: var(--text); }
+
+    /* ── CHECKLIST (OSRS Priority) ── */
+    .checklist { display: flex; flex-direction: column; gap: 0.6rem; }
+    .check-item {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .check-item:hover { border-color: #3e4560; }
+    .check-item.checked { border-color: rgba(61,186,110,0.35); background: rgba(61,186,110,0.04); }
+    .check-item.checked .check-label { text-decoration: line-through; color: var(--text-dim); }
+    .check-box {
+      width: 20px; height: 20px; min-width: 20px;
+      border-radius: 5px;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; margin-top: 1px;
+    }
+    .check-item.checked .check-box { background: var(--green); border-color: var(--green); }
+    .check-item.checked .check-box svg { opacity: 1; }
+    .check-box svg { opacity: 0; transition: opacity 0.2s; }
+    .check-content { flex: 1; }
+    .check-label { font-size: 0.9rem; font-weight: 600; }
+    .check-detail { font-size: 0.77rem; color: var(--text-dim); margin-top: 0.25rem; line-height: 1.4; }
+    .check-impact {
+      font-size: 0.7rem; font-weight: 600; color: var(--gold);
+      margin-top: 0.3rem;
+    }
+    .priority-urgent .check-box { border-color: rgba(217,68,68,0.6); }
+    .priority-urgent:not(.checked) { border-left: 3px solid var(--red); }
+    .priority-high:not(.checked) { border-left: 3px solid var(--gold); }
+    .priority-medium:not(.checked) { border-left: 3px solid var(--blue); }
+    .priority-long_term:not(.checked) { border-left: 3px solid var(--text-dim); }
+    .priority-milestone:not(.checked) { border-left: 3px solid var(--green); }
+
+    /* ── MILESTONES ── */
+    .milestones-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.9rem; }
+    .milestone-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem;
+      transition: all 0.2s;
+    }
+    .milestone-card.ms-done { border-color: rgba(61,186,110,0.4); }
+    .milestone-card.ms-inprog { border-color: rgba(212,168,67,0.35); }
+    .milestone-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
+    .milestone-name { font-size: 0.9rem; font-weight: 600; }
+    .ms-badge {
+      font-size: 0.62rem; font-weight: 700; padding: 0.2rem 0.5rem;
+      border-radius: 4px; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap;
+    }
+    .ms-badge-todo { background: rgba(122,130,160,0.15); color: var(--text-dim); border: 1px solid rgba(122,130,160,0.25); }
+    .ms-badge-inprog { background: rgba(212,168,67,0.12); color: var(--gold); border: 1px solid rgba(212,168,67,0.3); }
+    .ms-badge-done { background: rgba(61,186,110,0.12); color: var(--green); border: 1px solid rgba(61,186,110,0.3); }
+    .milestone-desc { font-size: 0.77rem; color: var(--text-dim); margin-top: 0.4rem; line-height: 1.4; }
+    .milestone-game { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      margin-top: 0.6rem; }
+    .milestone-game.rs3 { color: var(--rs3); }
+    .milestone-game.osrs { color: var(--osrs); }
+    .skill-progress { margin-top: 0.7rem; }
+    .skill-progress-labels { display: flex; justify-content: space-between; font-size: 0.7rem;
+      color: var(--text-dim); margin-bottom: 0.3rem; }
+    .skill-bar {
+      height: 8px; background: var(--bg4); border-radius: 4px; overflow: hidden;
+    }
+    .skill-bar-fill {
+      height: 100%; border-radius: 4px;
+      background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+      transition: width 0.8s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ── FLIP CALC ── */
+    .flip-calc {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      max-width: 560px;
+    }
+    .flip-calc h3 { font-size: 0.9rem; font-weight: 600; margin-bottom: 1rem; font-family: 'Cinzel', serif; }
+    .calc-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+    .calc-row label { font-size: 0.78rem; color: var(--text-dim); min-width: 90px; }
+    .calc-row input {
+      background: var(--bg4);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+      width: 180px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .calc-row input:focus { border-color: var(--blue); }
+    .calc-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+    .calc-result { background: var(--bg4); border-radius: 10px; padding: 1rem; }
+    .calc-result-row { display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.82rem; padding: 0.25rem 0; }
+    .calc-result-row .val-pos { color: var(--green); font-weight: 700; }
+    .calc-result-row .val-neg { color: var(--red); font-weight: 700; }
+    .calc-result-row .val-neutral { color: var(--text); font-weight: 600; }
+    .calc-result-total {
+      border-top: 1px solid var(--border);
+      margin-top: 0.5rem;
+      padding-top: 0.75rem;
+      font-size: 1rem; font-weight: 700;
+    }
+    .flip-items-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-top: 2rem; margin-bottom: 1rem;
+    }
+    .flip-items-header h3 { font-size: 0.9rem; font-weight: 600; font-family: 'Cinzel', serif; }
+    .flip-table { width: 100%; border-collapse: collapse; }
+    .flip-table th {
+      text-align: left; font-size: 0.7rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--text-dim); padding: 0.4rem 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .flip-table td { padding: 0.6rem 0.6rem; font-size: 0.82rem; border-bottom: 1px solid rgba(46,52,80,0.5); }
+    .flip-table tr:last-child td { border-bottom: none; }
+    .cap-low  { background: rgba(212,168,67,0.1); color: var(--gold); border-radius: 4px; padding: 0.15rem 0.4rem; font-size: 0.68rem; font-weight: 600; }
+    .cap-med  { background: rgba(74,159,212,0.1); color: var(--blue); border-radius: 4px; padding: 0.15rem 0.4rem; font-size: 0.68rem; font-weight: 600; }
+
+    /* ── RESET DAILY BUTTON ── */
+    .reset-daily-btn {
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      border: 1px solid rgba(217,68,68,0.35);
+      background: rgba(217,68,68,0.08);
+      color: var(--red);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+    }
+    .reset-daily-btn:hover { background: rgba(217,68,68,0.15); }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      background: rgba(74,159,212,0.07);
+      border: 1px solid rgba(74,159,212,0.2);
+      border-radius: 10px;
+      padding: 0.9rem 1.1rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    .info-box strong { color: var(--text); }
+
+    /* ── GP SUMMARY ROW ── */
+    .gp-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .gp-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+    }
+    .gp-box .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-dim); font-weight: 600; }
+    .gp-box .value { font-size: 1rem; font-weight: 700; margin-top: 0.3rem; }
+    .gp-box .value.gold { color: var(--gold); }
+    .gp-box .value.green { color: var(--green); }
+    .gp-box .value.blue { color: var(--blue); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .header { padding: 1.5rem 1.25rem 1.25rem; }
+      .tabs-wrap { padding: 1rem 1.25rem 0; }
+      .main { padding: 1.25rem 1.25rem 3rem; }
+      .bond-strip { flex-direction: column; gap: 1rem; }
+      .tasks-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="/js/auth.js"></script>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="title-block">
+        <h1>⚔ Thornster — Bond Tracker</h1>
+        <p>RS3 Daily Engine + OSRS Growth Plan</p>
+      </div>
+      <div class="header-badges">
+        <span class="badge badge-rs3">RS3 · Lv 2923</span>
+        <span class="badge badge-osrs">OSRS · Lv 1451</span>
+        <span class="badge badge-level">Combat 138 (RS3)</span>
+      </div>
+    </div>
+
+    <!-- Bond Progress -->
+    <div class="bond-strip">
+      <div class="bond-col">
+        <label>Your Current GP Bank</label>
+        <div class="bond-input-row">
+          <input type="number" id="currentGP" value="0" placeholder="0" min="0" step="100000" oninput="updateBond()" />
+          <span>GP</span>
+        </div>
+      </div>
+      <div class="bond-col">
+        <label>Bond Target</label>
+        <div class="bond-input-row">
+          <input type="number" id="bondTarget" value="130000000" min="1000000" step="1000000" oninput="updateBond()" />
+          <span>GP (RS3)</span>
+        </div>
+      </div>
+      <div class="bond-progress-wrap">
+        <div class="bond-bar-labels">
+          <span>Progress to next bond</span>
+          <strong id="bondPct">0%</strong>
+        </div>
+        <div class="bond-bar">
+          <div class="bond-bar-fill" id="bondBarFill" style="width:0%"></div>
+        </div>
+        <div class="bond-stats">
+          <div class="bond-stat">
+            <span>Still need</span>
+            <strong id="bondStillNeed">130M</strong>
+          </div>
+          <div class="bond-stat">
+            <span>Days remaining</span>
+            <strong id="bondDaysLeft">—</strong>
+          </div>
+          <div class="bond-stat">
+            <span>Bonds banked</span>
+            <strong id="bondsBanked">0</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily earned -->
+    <div class="daily-earned-strip">
+      <div class="daily-earned-pill">
+        <div class="dot"></div>
+        <div>
+          <div class="label">RS3 dailies earned today</div>
+          <div class="val" id="rs3DailyEarned">0 GP</div>
+        </div>
+      </div>
+      <div class="daily-earned-pill" style="border-color:rgba(212,168,67,0.25);background:rgba(212,168,67,0.06)">
+        <div class="dot" style="background:var(--gold)"></div>
+        <div>
+          <div class="label">OSRS tasks completed</div>
+          <div class="val" id="osrsTasksDone" style="color:var(--gold)">0 / 8</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TABS ═══ -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <div class="tab active-rs3" onclick="switchTab('rs3',this)" id="tab-rs3">🌿 RS3 Dailies</div>
+    <div class="tab" onclick="switchTab('osrs',this)" id="tab-osrs">⚔ OSRS Checklist</div>
+    <div class="tab" onclick="switchTab('alch',this)" id="tab-alch">🔥 High Alch</div>
+    <div class="tab" onclick="switchTab('flip',this)" id="tab-flip">📈 Flip Scanner</div>
+    <div class="tab" onclick="switchTab('mile',this)" id="tab-mile">🏆 Milestones</div>
+  </div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<div class="main">
+
+  <!-- ────────────────────── RS3 PANEL ────────────────────── -->
+  <div class="panel active" id="panel-rs3">
+
+    <div class="info-box">
+      <strong>Your RS3 account (2923 total, 585M XP) is your bond engine.</strong>
+      Just 20–30 minutes of dailies generates <strong>11M–30M GP</strong> — enough to buy a 130M bond every 4–12 days.
+      Check each task off as you complete it. Timers auto-start for herb/wax runs.
+    </div>
+
+    <div class="gp-summary">
+      <div class="gp-box">
+        <div class="label">RS3 Bond Cost</div>
+        <div class="value gold" id="rs3LiveBond">Loading...</div>
+      </div>
+      <div class="gp-box">
+        <div class="label">Min. Daily Target</div>
+        <div class="value gold">9.3M GP</div>
+      </div>
+      <div class="gp-box">
+        <div class="label">Daily Low Estimate</div>
+        <div class="value green">18M GP</div>
+      </div>
+      <div class="gp-box">
+        <div class="label">Daily High Estimate</div>
+        <div class="value green">42M GP</div>
+      </div>
+      <div class="gp-box">
+        <div class="label">Bond in (low)</div>
+        <div class="value blue">~8 days</div>
+      </div>
+      <div class="gp-box">
+        <div class="label">Bond in (high)</div>
+        <div class="value green">~4 days</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="accent accent-rs3"></div>
+      <h2>Daily Tasks — RS3</h2>
+    </div>
+    <div class="tasks-grid" id="rs3TasksGrid"></div>
+
+    <button class="reset-daily-btn" onclick="resetDailyRS3()">↺ Reset RS3 Daily Tasks</button>
+  </div>
+
+  <!-- ────────────────────── OSRS PANEL ────────────────────── -->
+  <div class="panel" id="panel-osrs">
+
+    <div class="info-box">
+      <strong>OSRS Endgame Push.</strong> While RS3 handles your bond cost,
+      your OSRS account is heavily pushing towards Grandmaster quests (Song of the Elves, Dragon Slayer II).
+      Urgent skill grinds should be tackled first.
+    </div>
+
+    <div class="gp-summary">
+      <div class="gp-box">
+        <div class="label">OSRS Bond Cost</div>
+        <div class="value gold" id="osrsLiveBond">Loading...</div>
+      </div>
+      <div class="gp-box">
+        <div class="label">Barrows Now</div>
+        <div class="value green">~1M/hr</div>
+      </div>
+      <div class="gp-box">
+        <div class="label">Corrupted Gauntlet</div>
+        <div class="value blue">4–5M/hr</div>
+      </div>
+      <div class="gp-box">
+        <div class="label">Vorkath (target)</div>
+        <div class="value blue">3M/hr</div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="accent accent-osrs"></div>
+      <h2>OSRS Daily Routine</h2>
+    </div>
+    <div class="tasks-grid" id="osrsTasksGrid" style="margin-bottom:2rem"></div>
+
+    <div class="section-header">
+      <div class="accent accent-osrs"></div>
+      <h2>Priority Checklist — OSRS Unlocks</h2>
+    </div>
+    <div class="checklist" id="osrsChecklist"></div>
+  </div>
+
+  <!-- ────────────────────── FLIP PANEL ────────────────────── -->
+  <!-- ────────────────────── ALCH PANEL ────────────────────── -->
+  <div class="panel" id="panel-alch">
+    <div class="info-box">
+      <strong>High Alchemy Calculator.</strong> Live OSRS GE data to maximize profit for your Nature Runes.
+    </div>
+    <div class="flip-calc">
+      <h3>🔥 High Alch Configuration</h3>
+      <div class="calc-row">
+        <label>Nature Rune Price (GP)</label>
+        <input type="number" id="naturePrice" value="100" />
+      </div>
+      <button class="reset-daily-btn" style="margin-top:10px" onclick="fetchAlchData()">Fetch Live GE Data</button>
+    </div>
+    <table class="flip-table" style="margin-top:20px;">
+      <thead>
+        <tr><th>Item</th><th>Buy Price</th><th>Alch Value</th><th>Profit</th><th>Limit Timer</th></tr>
+      </thead>
+      <tbody id="alchTableBody">
+         <tr><td colspan="5" style="text-align:center">Click Fetch to load live data</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel" id="panel-flip">
+    <div class="info-box">
+      <strong>OSRS GE Flip Scanner.</strong> Live GE data scanner. The 2% GE tax is taken from your sale price.
+    </div>
+    
+    <div style="text-align:center; margin-bottom: 20px;">
+        <button class="reset-daily-btn" onclick="fetchFlipData()">Scan Live GE Markets</button>
+    </div>
+
+    <div class="flip-calc">
+      <h3>⚖ Manual Flip Profit Calculator</h3>
+      <div class="calc-row">
+        <label>Buy Price</label>
+        <input type="number" id="fcBuy" placeholder="e.g. 1500000" oninput="calcFlip()" />
+      </div>
+      <div class="calc-row">
+        <label>Sell Price</label>
+        <input type="number" id="fcSell" placeholder="e.g. 1600000" oninput="calcFlip()" />
+      </div>
+      <div class="calc-row">
+        <label>Quantity</label>
+        <input type="number" id="fcQty" value="1" min="1" oninput="calcFlip()" />
+      </div>
+      <div class="calc-divider"></div>
+      <div class="calc-result" id="calcResult">
+        <div class="calc-result-row"><span>GE Tax (2%, max 5M)</span><span class="val-neg" id="fcTax">—</span></div>
+        <div class="calc-result-row"><span>Net per item</span><span class="val-neutral" id="fcNetPer">—</span></div>
+        <div class="calc-result-row"><span>ROI %</span><span class="val-neutral" id="fcROI">—</span></div>
+        <div class="calc-result-row calc-result-total">
+          <span>Total Profit</span><span id="fcTotal">Enter prices above</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flip-items-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="accent accent-blue"></div>
+        <h3 style="margin: 0;">Live Flip Recommendations</h3>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <label style="font-size: 0.85rem; color: var(--text-light);">Available Cash:</label>
+        <input type="number" id="flipCashStack" value="20000000" onchange="fetchFlipData()" placeholder="e.g. 20000000" style="width: 110px; padding: 6px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-dark); color: var(--text-main); font-size: 0.9rem;" />
+      </div>
+    </div>
+    
+    <!-- OCR Ingestion -->
+    <div id="pasteZone" tabindex="0" style="margin-top: 15px; padding: 15px; border: 2px dashed var(--border); border-radius: 8px; text-align: center; color: var(--text-light); cursor: pointer; transition: all 0.2s;">
+      📸 Click here, then press <strong>Ctrl+V</strong> to paste a GE History screenshot and extract item names.
+    </div>
+    <div id="ocrStatus" style="font-size: 0.85rem; color: var(--green); margin-top: 5px; display: none;"></div>
+
+    <table class="flip-table">
+      <thead>
+        <tr><th>Item</th><th>Prices</th><th>Profit</th></tr>
+      </thead>
+      <tbody id="flipTableBody">
+        <tr><td colspan="3" style="text-align:center">Click Scan to load live data</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ────────────────────── MILESTONES PANEL ────────────────────── -->
+  <div class="panel" id="panel-mile">
+
+    <div class="info-box">
+      <strong>Track your long-term goals.</strong> Click a milestone to mark it done.
+      Each one unlocks a new tier of income or sustainability.
+    </div>
+
+    <div class="section-header">
+      <div class="accent accent-green"></div>
+      <h2>Bond Milestones</h2>
+    </div>
+    <div class="milestones-grid" id="milestonesGrid"></div>
+  </div>
+
+</div>
+
+<!-- ═══ SCRIPT ═══ -->
+<script>
+const SAVE_KEY = 'thornster_bond_v1';
+
+// ── DATA ──────────────────────────────────────────────────
+const rs3Tasks = [
+  {
+    id:'rs3_bak_bolts', name:'Bakriminel Bolts',
+    gp:'3M–5M', time:'10 min', tags:['daily', 'entry-level'],
+    instructions:'Chop bloodwood trees (Edgeville, Prifddinas, Wilderness). Top tier GP/min. Need 99 WC, 102 Fletching. <a href="https://runescape.wiki/w/Money_making_guide/Fletching_bakriminel_bolts" target="_blank">Wiki Guide</a>',
+    gpMin:3000000, gpMax:5000000,
+    available:true
+  },
+  {
+    id:'rs3_herb_runs', name:'High-Tier Herb Runs',
+    gp:'5M–13M', time:'8–10 min', tags:['daily', '80min timer', 'entry-level'],
+    timerMin:80,
+    instructions:'Plant Torstol or Bloodweed (requires Wildy tasks). Equip Dwarven Harvester, Juju Farming Potions. <a href="https://runescape.wiki/w/Calculator:Farming/Herbs" target="_blank">Herb Calc</a>',
+    gpMin:5000000, gpMax:13000000,
+    available:true
+  },
+  {
+    id:'rs3_croesus', name:'Croesus (4-Man)',
+    gp:'40M–80M/hr', time:'1 hour', tags:['bossing', 'skilling'],
+    instructions:'Zero combat required. Use your 99+ Hunter, Woodcutting, Fishing, or Mining. Join Croesus FC for teams. <a href="https://runescape.wiki/w/Money_making_guide/Defeating_Croesus" target="_blank">Wiki Guide</a>',
+    gpMin:40000000, gpMax:80000000,
+    available:true
+  },
+  {
+    id:'rs3_arch_glacor', name:'Arch-Glacor (0 Mech)',
+    gp:'5M–10M/hr', time:'AFK/Mobile', tags:['bossing', 'afk', 'mobile-safe'],
+    instructions:'100% safe bossing. Turn off all mechanics, use Revolution. 1 click every 5 mins. Up to 100M/hr if you turn on 5 mechanics later! <a href="https://runescape.wiki/w/Arch-Glacor" target="_blank">Wiki Guide</a>',
+    gpMin:5000000, gpMax:10000000,
+    available:true
+  },
+  {
+    id:'rs3_reaper', name:'Daily Reaper Task',
+    gp:'15M–30M', time:'20–40 min', tags:['daily', 'bossing'],
+    instructions:'Get task from Death. Hydrix yields massive profit. Forces you to learn new bosses. <a href="https://runescape.wiki/w/Soul_Reaper" target="_blank">Wiki Guide</a>',
+    gpMin:15000000, gpMax:30000000,
+    available:true
+  }
+];
+
+const osrsDailyTasks = [
+  {
+    id:'osrs_herb_runs', name:'OSRS Herb Runs',
+    gp:'200K–600K/run', time:'5–8 min', tags:['80min timer'],
+    timerMin:80,
+    instructions:'Plant Ranarr seeds: Falador, Catherby, Ardougne, Canifis, Hosidius. Equip Magic Secateurs, use Ultracompost.',
+    gpMin:200000, gpMax:600000,
+    available:true
+  },
+  {
+    id:'osrs_birdhouses', name:'Birdhouse Runs',
+    gp:'50K–150K/run', time:'2–3 min', tags:['50min timer'],
+    timerMin:50,
+    instructions:'Fossil Island birdhouses (Teak/Mahogany). Nests contain high-value seeds and rings. Pairs perfectly with herb runs.',
+    gpMin:50000, gpMax:150000,
+    available:true
+  },
+  {
+    id:'osrs_magic_longs', name:'Fletch Magic Longbows',
+    gp:'1M/day', time:'AFK', tags:['afk'],
+    instructions:'Fletch magic longbows (u) or string them while doing RS3 dailies/watching TV. Very low effort passive GP.',
+    gpMin:100000, gpMax:1000000,
+    available:true
+  },
+  {
+    id:'osrs_barrows', name:'Barrows Run',
+    gp:'Varies', time:'10 min', tags:['pvm'],
+    instructions:'With 85 Magic, Barrows is easy. Use Iban Blast or Trident. Good chance for 1M+ drops.',
+    gpMin:0, gpMax:0,
+    available:true
+  }
+];
+
+const osrsChecklist = [
+  { id:'oc_sote_con', label:'Train Construction to 70', detail:'Requires ~3.5M GP for Mahogany Tables or Teak Benches. Very fast.', impact:'Song of the Elves requirement', priority:'urgent' },
+  { id:'oc_sote_farm', label:'Train Farming to 70', detail:'Current: 53. Do tree runs (Papaya/Mahogany) once a day.', impact:'Song of the Elves requirement', priority:'urgent' },
+  { id:'oc_sote_herb', label:'Train Herblore to 70', detail:'Current: 57. Make Super Restores or Prayer Potions (check GP/xp).', impact:'Song of the Elves requirement', priority:'high' },
+  { id:'oc_sote_hunt', label:'Train Hunter to 70', detail:'Current: 50. Birdhouse runs or Orange Salamanders.', impact:'Song of the Elves requirement', priority:'high' },
+  { id:'oc_range75', label:'Train Ranged to 75 (Blowpipe)', detail:'Current: 63. Ammonite crabs with Magic Shortbow (i) or Cannon slayer.', impact:'Unlocks Toxic Blowpipe for Vorkath/Zulrah', priority:'medium' },
+  { id:'oc_ds2_thiev', label:'Train Thieving to 60', detail:'Current: 53. Ardougne Knights or Blackjacking. Fast skill.', impact:'Dragon Slayer II requirement', priority:'medium' },
+  { id:'oc_ds2_craft', label:'Train Crafting to 62', detail:'Current: 61. Only 1 level away! Glassblowing or D\'hide bodies.', impact:'Dragon Slayer II requirement', priority:'medium' },
+  { id:'oc_corrupted', label:'Long-term: Corrupted Gauntlet', detail:'Complete Song of the Elves. 0 risk, 0 gear required. 4M–5M GP/hr.', impact:'Endgame money printing', priority:'long_term' }
+];
+
+const flipItems = [
+  { name:'Prayer Potions',   cap:'low',    note:'Constant demand from slayers & PvMers' },
+  { name:'Stamina Potions',  cap:'low',    note:'Staple item, consistent resell' },
+  { name:'Nature Runes',     cap:'low',    note:'Huge volume, tight but safe margins' },
+  { name:'Cannonballs',      cap:'low',    note:'30–60 GP/ball, always high demand' },
+  { name:'Super Restores',   cap:'low',    note:'PvM staple, constant churn' },
+  { name:'Saradomin Brews',  cap:'low',    note:'PvM staple, pairs with Restores' },
+  { name:'Ranging Potions',  cap:'medium', note:'Solid PvM supply demand' },
+  { name:'Dragon Bones',     cap:'medium', note:'Consistent Prayer training demand' },
+  { name:'Zulrah Scales',    cap:'medium', note:'High volume endgame supply' },
+];
+
+const milestones = [
+  { id:'ms_rs3_inv',       name:'RS3: Basic Invention Perks',     game:'RS3',  desc:'Unlock entry-level PvM perks (Precise, Equilibrium) for faster boss kills.', status:'todo' },
+  { id:'ms_sote',          name:'OSRS: Song of the Elves',        game:'OSRS', desc:'Requires base 70s. Unlocks Corrupted Gauntlet (4M+ GP/hr).', status:'in_progress' },
+  { id:'ms_ds2',           name:'OSRS: Dragon Slayer II',         game:'OSRS', desc:'Requires 200QP, 62 Craft, 60 Thiev. Unlocks Vorkath (3M/hr).', status:'in_progress' },
+  { id:'ms_range75',       name:'OSRS: Ranged 75 (Blowpipe)',     game:'OSRS', desc:'Massive DPS upgrade for Vorkath/Zulrah.', curLevel:63, targetLevel:75, status:'todo' },
+  { id:'ms_corrupted',     name:'OSRS: Corrupted Gauntlet Ready', game:'OSRS', desc:'Zero risk. Requires SotE completion.', status:'todo' },
+];
+
+
+let trackedItems = JSON.parse(localStorage.getItem('tracked_flips') || '{}');
+
+function toggleTrackItem(id, rowEl) {
+  if (trackedItems[id]) {
+    delete trackedItems[id];
+    rowEl.style.backgroundColor = '';
+    rowEl.style.borderLeft = '';
+  } else {
+    trackedItems[id] = true;
+    rowEl.style.backgroundColor = 'rgba(52, 152, 219, 0.1)';
+    rowEl.style.borderLeft = '4px solid var(--blue)';
+  }
+  localStorage.setItem('tracked_flips', JSON.stringify(trackedItems));
+}
+
+// OCR paste listener
+document.addEventListener('DOMContentLoaded', () => {
+  const pasteZone = document.getElementById('pasteZone');
+  if(!pasteZone) return;
+  pasteZone.addEventListener('paste', async (e) => {
+    e.preventDefault();
+    const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+    let file = null;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') === 0) {
+        file = items[i].getAsFile();
+        break;
+      }
+    }
+    if (!file) return alert('No image found in clipboard.');
+    
+    document.getElementById('ocrStatus').style.display = 'block';
+    document.getElementById('ocrStatus').textContent = 'Analyzing image... (may take a few seconds)';
+    
+    try {
+      const worker = await Tesseract.createWorker('eng');
+      const ret = await worker.recognize(file);
+      await worker.terminate();
+      
+      const words = ret.data.text.split('\n').filter(l => l.trim().length > 3);
+      console.log('OCR Result:', words);
+      
+      // Attempt to auto-track recognized item names
+      let trackedCount = 0;
+      const allRows = document.querySelectorAll('.flip-table tbody tr');
+      allRows.forEach(row => {
+        const itemNameObj = row.querySelector('strong');
+        if(!itemNameObj) return;
+        const name = itemNameObj.textContent.toLowerCase();
+        
+        const matched = words.some(w => name.includes(w.toLowerCase().trim()) || w.toLowerCase().trim().includes(name));
+        if(matched) {
+          trackedItems[name] = true;
+          row.style.backgroundColor = 'rgba(52, 152, 219, 0.1)';
+          row.style.borderLeft = '4px solid var(--blue)';
+          trackedCount++;
+        }
+      });
+      localStorage.setItem('tracked_flips', JSON.stringify(trackedItems));
+      
+      document.getElementById('ocrStatus').textContent = `Success! Tracked ${trackedCount} items from image.`;
+      setTimeout(() => { document.getElementById('ocrStatus').style.display = 'none'; }, 5000);
+      
+    } catch(err) {
+      console.error(err);
+      document.getElementById('ocrStatus').textContent = 'OCR Failed: ' + err.message;
+      document.getElementById('ocrStatus').style.color = 'var(--red)';
+    }
+  });
+});
+
+// ── STATE ──────────────────────────────────────────────────
+let state = {
+  rs3Done:{}, osrsDailyDone:{}, osrsChecked:{}, msChecked:{},
+  rs3DailyGP:0,
+  timers:{}, // id -> { interval, secondsLeft, running }
+  bondGP:0, bondTarget:130000000,
+  lastDailyReset: ''
+};
+
+function saveState() { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }
+function loadState() {
+  const s = localStorage.getItem(SAVE_KEY);
+  if (s) {
+    const loaded = JSON.parse(s);
+    state = {...state, ...loaded};
+    state.timers = {};
+  }
+  // auto-reset dailies if new day
+  const today = new Date().toDateString();
+  if (state.lastDailyReset !== today) {
+    state.rs3Done = {};
+    state.osrsDailyDone = {};
+    state.rs3DailyGP = 0;
+    state.lastDailyReset = today;
+    saveState();
+  }
+}
+
+// ── FORMAT ─────────────────────────────────────────────────
+function fmtExactGP(n) {
+  return n.toLocaleString();
+}
+function fmtGP(n) {
+  if (n >= 1e9) return (n/1e9).toFixed(2)+'B';
+  if (n >= 1e6) return (n/1e6).toFixed(1)+'M';
+  if (n >= 1e3) return Math.round(n/1e3)+'K';
+  return n.toFixed(0);
+}
+function fmtTime(sec) {
+  const m = Math.floor(sec/60), s = sec%60;
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+// ── TABS ───────────────────────────────────────────────────
+const activeClasses = { rs3:'active-rs3', osrs:'active-osrs', flip:'active-flip', mile:'active-mile' };
+function switchTab(name, el) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>{ Object.values(activeClasses).forEach(c=>t.classList.remove(c)); });
+  document.getElementById('panel-'+name).classList.add('active');
+  el.classList.add(activeClasses[name]);
+}
+
+// ── BOND PROGRESS ──────────────────────────────────────────
+function updateBond() {
+  const gp = parseFloat(document.getElementById('currentGP').value)||0;
+  const target = parseFloat(document.getElementById('bondTarget').value)||130000000;
+  state.bondGP = gp; state.bondTarget = target; saveState();
+  const pct = Math.min(100, (gp/target)*100);
+  document.getElementById('bondBarFill').style.width = pct+'%';
+  document.getElementById('bondPct').textContent = pct.toFixed(1)+'%';
+  const need = Math.max(0, target-gp);
+  document.getElementById('bondStillNeed').textContent = fmtGP(need)+'GP';
+  const avgDaily = 20000000;
+  document.getElementById('bondDaysLeft').textContent = need>0 ? Math.ceil(need/avgDaily)+' days' : '✓ Done!';
+  document.getElementById('bondsBanked').textContent = Math.floor(gp/target);
+}
+
+// ── RS3 DAILY GP COUNTER ───────────────────────────────────
+function recalcRS3Daily() {
+  let total = 0;
+  rs3Tasks.forEach(t => {
+    if (state.rs3Done[t.id]) {
+      total += (t.gpMin + t.gpMax) / 2;
+    }
+  });
+  state.rs3DailyGP = total;
+  document.getElementById('rs3DailyEarned').textContent = fmtGP(total)+' GP';
+  saveState();
+}
+function recalcOSRSTasks() {
+  const done = osrsChecklist.filter(c=>state.osrsChecked[c.id]).length;
+  document.getElementById('osrsTasksDone').textContent = done + ' / ' + osrsChecklist.length;
+}
+
+// ── TASK CARDS ─────────────────────────────────────────────
+function makeCheckSVG() {
+  return `<svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+    <path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+}
+
+function buildTaskCard(task, gameClass, doneMap, onToggle) {
+  const isDone = !!doneMap[task.id];
+  const card = document.createElement('div');
+  card.className = `task-card ${gameClass} ${isDone?'done':''}`;
+  card.id = 'card-'+task.id;
+
+  const tagsHtml = task.tags.map(t => {
+    let cls = 'tag-daily';
+    if (t.includes('timer')) cls='tag-timer';
+    if (t==='locked') cls='tag-locked';
+    return `<span class="tag ${cls}">${t}</span>`;
+  }).join('');
+
+  const lockedNote = !task.available ? `<div style="margin-top:.6rem;font-size:.75rem;color:var(--red)">🔒 ${task.unlockCondition}</div>` : '';
+
+  card.innerHTML = `
+    <div class="task-header">
+      <div class="task-checkbox">${makeCheckSVG()}</div>
+      <div class="task-meta">
+        <div class="task-name">${task.name}</div>
+        <div class="task-tags">
+          <span class="tag tag-gp">💰 ${task.gp}</span>
+          <span class="tag tag-time">⏱ ${task.time}</span>
+          ${tagsHtml}
+        </div>
+      </div>
+    </div>
+    ${lockedNote}
+    <div class="task-instructions">${task.instructions}</div>
+    ${task.timerMin ? buildTimerHTML(task.id, task.timerMin) : ''}
+  `;
+
+  card.addEventListener('click', e => {
+    if (e.target.closest('.timer-btn')) return;
+    if (e.target.tagName==='A') return;
+    onToggle(task.id, card);
+  });
+
+  if (task.timerMin) setupTimerEvents(card, task.id, task.timerMin);
+  return card;
+}
+
+function buildTimerHTML(id, timerMin) {
+  return `<div class="task-timer" id="timer-wrap-${id}">
+    <div class="timer-display" id="timer-disp-${id}">${fmtTime(timerMin*60)}</div>
+    <button class="timer-btn timer-btn-start" onclick="startTimer('${id}',${timerMin*60})">Start</button>
+    <button class="timer-btn timer-btn-reset" onclick="resetTimer('${id}',${timerMin*60})">Reset</button>
+  </div>`;
+}
+
+function setupTimerEvents(card, id, timerMin) {
+  // nothing extra needed here — handled by onclick in HTML
+}
+
+// ── TIMERS ─────────────────────────────────────────────────
+function startTimer(id, totalSec) {
+  if (state.timers[id]?.running) return;
+  const left = state.timers[id]?.secondsLeft ?? totalSec;
+  state.timers[id] = { running:true, secondsLeft:left };
+  state.timers[id].interval = setInterval(() => {
+    state.timers[id].secondsLeft--;
+    const disp = document.getElementById('timer-disp-'+id);
+    if (!disp) { clearInterval(state.timers[id].interval); return; }
+    if (state.timers[id].secondsLeft <= 0) {
+      clearInterval(state.timers[id].interval);
+      state.timers[id].running = false;
+      state.timers[id].secondsLeft = 0;
+      disp.textContent = '✓ READY!';
+      disp.className = 'timer-display done-t';
+    } else {
+      disp.textContent = fmtTime(state.timers[id].secondsLeft);
+      disp.className = 'timer-display running';
+    }
+  }, 1000);
+}
+function resetTimer(id, totalSec) {
+  if (state.timers[id]?.interval) clearInterval(state.timers[id].interval);
+  state.timers[id] = { running:false, secondsLeft:totalSec };
+  const disp = document.getElementById('timer-disp-'+id);
+  if (disp) { disp.textContent = fmtTime(totalSec); disp.className = 'timer-display'; }
+}
+
+// ── CHECKLIST ──────────────────────────────────────────────
+function buildCheckItem(item) {
+  const el = document.createElement('div');
+  el.className = `check-item priority-${item.priority} ${state.osrsChecked[item.id]?'checked':''}`;
+  el.id = 'ci-'+item.id;
+  el.innerHTML = `
+    <div class="check-box">${makeCheckSVG()}</div>
+    <div class="check-content">
+      <div class="check-label">${item.label}</div>
+      <div class="check-detail">${item.detail}</div>
+      ${item.impact?`<div class="check-impact">→ ${item.impact}</div>`:``}
+    </div>
+  `;
+  el.addEventListener('click', () => {
+    state.osrsChecked[item.id] = !state.osrsChecked[item.id];
+    el.classList.toggle('checked', state.osrsChecked[item.id]);
+    saveState(); recalcOSRSTasks();
+  });
+  return el;
+}
+
+// ── MILESTONES ─────────────────────────────────────────────
+function buildMilestoneCard(ms) {
+  const el = document.createElement('div');
+  const isDone = !!state.msChecked[ms.id];
+  const status = isDone ? 'done' : ms.status;
+  el.className = `milestone-card ${status==='done'?'ms-done':status==='in_progress'?'ms-inprog':''}`;
+  el.id = 'ms-'+ms.id;
+
+  const badgeCls = status==='done'?'ms-badge-done':status==='in_progress'?'ms-badge-inprog':'ms-badge-todo';
+  const badgeTxt = status==='done'?'✓ Done':status==='in_progress'?'In Progress':'Not Started';
+
+  let progressHtml = '';
+  if (ms.curLevel && ms.targetLevel && !isDone) {
+    const pct = Math.min(100, ((ms.curLevel - 1) / (ms.targetLevel - 1)) * 100);
+    progressHtml = `<div class="skill-progress">
+      <div class="skill-progress-labels"><span>Level ${ms.curLevel}</span><span>Target: ${ms.targetLevel}</span></div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:${pct.toFixed(1)}%"></div></div>
+    </div>`;
+  }
+
+  el.innerHTML = `
+    <div class="milestone-top">
+      <div class="milestone-name">${ms.name}</div>
+      <div class="ms-badge ${badgeCls}">${badgeTxt}</div>
+    </div>
+    <div class="milestone-desc">${ms.desc}</div>
+    ${progressHtml}
+    <div class="milestone-game ${ms.game.toLowerCase()}">${ms.game}</div>
+  `;
+  el.style.cursor='pointer';
+  el.addEventListener('click', () => {
+    state.msChecked[ms.id] = !state.msChecked[ms.id];
+    saveState();
+    // re-render
+    el.replaceWith(buildMilestoneCard(ms));
+  });
+  return el;
+}
+
+// ── FLIP CALC ──────────────────────────────────────────────
+function calcFlip() {
+  const buy = parseFloat(document.getElementById('fcBuy').value)||0;
+  const sell = parseFloat(document.getElementById('fcSell').value)||0;
+  const qty = parseInt(document.getElementById('fcQty').value)||1;
+  if (!buy || !sell) return;
+  const taxPer = Math.min(5000000, sell * 0.02);
+  const netPer = sell - taxPer - buy;
+  const roi = (netPer / buy * 100);
+  const total = netPer * qty;
+
+  document.getElementById('fcTax').textContent = '-'+fmtGP(taxPer)+' GP';
+  document.getElementById('fcNetPer').className = 'val-neutral';
+  document.getElementById('fcNetPer').textContent = (netPer>=0?'+':'')+fmtGP(netPer)+' GP';
+  document.getElementById('fcROI').textContent = roi.toFixed(2)+'%';
+  document.getElementById('fcROI').className = roi>=3?'val-pos':'val-neg';
+  document.getElementById('fcTotal').textContent = (total>=0?'+':'')+fmtGP(total)+' GP ('+(qty)+' items)';
+  document.getElementById('fcTotal').className = total>=0?'val-pos':'val-neg';
+}
+
+// ── BUILD FLIP TABLE ───────────────────────────────────────
+function buildFlipTable() {
+  const tbody = document.getElementById('flipTableBody');
+  flipItems.forEach(item => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${item.name}</td>
+      <td><span class="cap-${item.cap}">${item.cap.toUpperCase()}</span></td>
+      <td style="color:var(--text-dim);font-size:0.78rem">${item.note}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ── RESET DAILY ────────────────────────────────────────────
+function resetDailyRS3() {
+  if (!confirm('Reset all RS3 daily task checkmarks?')) return;
+  state.rs3Done = {};
+  state.rs3DailyGP = 0;
+  document.querySelectorAll('.task-card.rs3-card').forEach(c=>c.classList.remove('done'));
+  recalcRS3Daily();
+  saveState();
+}
+
+// ── INIT ───────────────────────────────────────────────────
+function init() {
+  loadState();
+
+  // Bond inputs
+  document.getElementById('currentGP').value = state.bondGP||0;
+  document.getElementById('bondTarget').value = state.bondTarget||130000000;
+  updateBond();
+
+  // RS3 Tasks
+  const rs3Grid = document.getElementById('rs3TasksGrid');
+  rs3Tasks.forEach(t => {
+    const card = buildTaskCard(t, 'rs3-card', state.rs3Done, (id, card) => {
+      state.rs3Done[id] = !state.rs3Done[id];
+      card.classList.toggle('done', state.rs3Done[id]);
+      recalcRS3Daily(); saveState();
+    });
+    rs3Grid.appendChild(card);
+  });
+
+  // OSRS Daily
+  const osrsGrid = document.getElementById('osrsTasksGrid');
+  osrsDailyTasks.forEach(t => {
+    const card = buildTaskCard(t, 'osrs-card', state.osrsDailyDone, (id, card) => {
+      state.osrsDailyDone[id] = !state.osrsDailyDone[id];
+      card.classList.toggle('done', state.osrsDailyDone[id]);
+      saveState();
+    });
+    osrsGrid.appendChild(card);
+  });
+
+  // OSRS Checklist
+  const checklist = document.getElementById('osrsChecklist');
+  osrsChecklist.forEach(item => checklist.appendChild(buildCheckItem(item)));
+
+  // Milestones
+  const mg = document.getElementById('milestonesGrid');
+  milestones.forEach(ms => mg.appendChild(buildMilestoneCard(ms)));
+
+  // Flip table
+  buildFlipTable();
+
+  // Restore daily GP
+  recalcRS3Daily();
+  recalcOSRSTasks();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+// ── OSRS LIVE DATA ─────────────────────────────────────────
+async function fetchWikiAPI(endpoint) {
+  const res = await fetch(`https://prices.runescape.wiki/api/v1/osrs/${endpoint}`, {
+    headers: { 'User-Agent': 'Keel_ProjectAtlas_OSRSTracker' }
+  });
+  return await res.json();
+}
+
+async function fetchAlchData() {
+  const tb = document.getElementById('alchTableBody');
+  tb.innerHTML = '<tr><td colspan="5" style="text-align:center">Loading data from OSRS Wiki...</td></tr>';
+  try {
+    const [mapping, latest, hour] = await Promise.all([
+      fetchWikiAPI('mapping'),
+      fetchWikiAPI('latest'),
+      fetchWikiAPI('1h')
+    ]);
+    const natPrice = parseInt(document.getElementById('naturePrice').value) || 100;
+    
+    let items = mapping.filter(i => i.highalch > 0 && i.limit > 0 && latest.data[i.id] && latest.data[i.id].high > 0);
+    
+    let results = items.map(i => {
+      const buyPrice = latest.data[i.id].high;
+      const profit = i.highalch - buyPrice - natPrice; // NO GE TAX ON ALCH
+      const h = hour.data[i.id];
+      const vol = h ? ((h.highPriceVolume || 0) + (h.lowPriceVolume || 0)) : 0;
+      return { ...i, buyPrice, profit, vol };
+    });
+    
+    // Bug fix: remove 1gp manipulated prices and dead volume items
+    results = results.filter(r => r.buyPrice > 10 && r.vol >= 50 && r.profit > 0);
+    
+    // Sort by profit descending
+    results.sort((a,b) => b.profit - a.profit);
+    results = results.slice(0, 100);
+    
+    tb.innerHTML = '';
+    results.forEach(r => {
+      let limitColor = 'var(--green)';
+      if (r.limit <= 10) limitColor = 'var(--red)';
+      else if (r.limit <= 200) limitColor = 'var(--yellow)';
+      
+      const isTracked = trackedItems[r.name] ? true : false;
+      const trackStyle = isTracked ? 'background-color: rgba(52, 152, 219, 0.1); border-left: 4px solid var(--blue);' : '';
+      
+      tb.innerHTML += `<tr style="cursor:pointer; ${trackStyle}" onclick="toggleTrackItem(this.dataset.name, this)" data-name="${r.name.replace(/"/g, '&quot;')}">
+        <td><strong>${r.name}</strong><br><small style="color:${limitColor}">Limit: ${r.limit}</small></td>
+        <td class="val-neutral">${fmtExactGP(r.buyPrice)}</td>
+        <td class="val-neutral">${fmtExactGP(r.highalch)}</td>
+        <td class="${r.profit>0?'val-pos':'val-neg'}">+${fmtExactGP(r.profit)}</td>
+        <td><button class="limit-timer-btn" data-item-id="${r.id}" onclick="startLimitTimer(event, '${r.id}')" style="font-size: 0.8rem; padding: 4px 8px; border-radius: 4px; background: var(--bg-light); border: 1px solid var(--border); color: var(--text-main); cursor: pointer; transition: 0.2s;">Start 4h</button></td>
+      </tr>`;
+    });
+  } catch(e) {
+    tb.innerHTML = '<tr><td colspan="5" style="color:var(--red);text-align:center">Error fetching data</td></tr>';
+    console.error(e);
+  }
+}
+
+// ── LIVE API LOGIC ───────────────────────────────────────
+async function fetchLiveBonds() {
+  try {
+    const osrsRes = await fetchWikiAPI('latest'); // osrs
+    const rs3Res = await fetch('https://prices.runescape.wiki/api/v1/rs/latest', { headers: {'User-Agent': 'Keel_ProjectAtlas_BondTracker'} }).then(r=>r.json());
+    
+    // OSRS Bond ID: 13190, RS3 Bond ID: 29492
+    if(osrsRes.data['13190'] && document.getElementById('osrsLiveBond')) {
+       document.getElementById('osrsLiveBond').textContent = fmtGP(osrsRes.data['13190'].high);
+       if(!state.bondTarget || state.bondTarget === 130000000 || state.bondTarget === 14000000) {
+         // Auto update the manual input field
+         document.getElementById('bondTarget').value = osrsRes.data['13190'].high;
+         updateBond();
+       }
+    }
+    if(rs3Res.data['29492'] && document.getElementById('rs3LiveBond')) {
+       document.getElementById('rs3LiveBond').textContent = fmtGP(rs3Res.data['29492'].high);
+       // Auto set RS3 bond as default target if tracking RS3
+       document.getElementById('bondTarget').value = rs3Res.data['29492'].high;
+       updateBond();
+    }
+  } catch(e) {
+    console.error("Bond fetch error", e);
+  }
+}
+
+
+// ── FILTER LISTS ─────────────────────────────────────────
+const FLIP_BLACKLIST = [
+  'Old school bond', 'Bond', 'Bond (untradeable)',
+  'Chronicle', 'Dwarven stout', 'Asgarnian ale', 'Mind bomb'
+];
+
+function isBlacklisted(name) {
+  return FLIP_BLACKLIST.some(b => name.toLowerCase().includes(b.toLowerCase()));
+}
+
+async function fetchFlipData() {
+  const tb = document.getElementById('flipTableBody');
+  const game = document.getElementById('flipGameSelect') ? document.getElementById('flipGameSelect').value : 'osrs';
+  
+  tb.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:2rem;">Scanning Live Markets...</td></tr>';
+  
+  const baseUrl = game === 'rs3' ? 'https://prices.runescape.wiki/api/v1/rs' : 'https://prices.runescape.wiki/api/v1/osrs';
+  const headers = {'User-Agent': 'Keel_ProjectAtlas_FlipScanner'};
+  
+  try {
+    const [mapping, latest, hour] = await Promise.all([
+      fetch(baseUrl + '/mapping', {headers}).then(r=>r.json()),
+      fetch(baseUrl + '/latest', {headers}).then(r=>r.json()),
+      fetch(baseUrl + '/1h', {headers}).then(r=>r.json())
+    ]);
+    
+    let results = [];
+    mapping.forEach(i => {
+      // 1. Filter out bonds and untradeables
+      if (isBlacklisted(i.name)) return;
+      
+      const l = latest.data[i.id];
+      const h = hour.data[i.id];
+      
+      // 2. Validate data presence
+      if (!l || !l.high || !l.low) return;
+      
+      // 3. Volume floor (must trade 50+ times an hour minimum to even be considered)
+      const vol = h ? ((h.highPriceVolume || 0) + (h.lowPriceVolume || 0)) : 0;
+      if (game === 'osrs' && vol < 50) return; 
+      
+      const buy = l.low;
+      const sell = l.high;
+      if (buy >= sell) return;
+      
+      // 4. Exact Tax Math
+      const taxRate = game === 'rs3' ? 0.02 : 0.01; 
+      const maxTax = game === 'rs3' ? 5000000 : 5000000;
+      const tax = Math.min(maxTax, Math.floor(sell * taxRate));
+      const net = sell - tax - buy;
+      if (net <= 0) return;
+      
+      const roi = (net / buy) * 100;
+      
+      // 5. Total Potential Profit Calculation (Margin * Expected Tradable Volume)
+      const effectiveLimit = i.limit || 10000; // If no limit, assume infinite for math
+      
+      const cashStackInput = document.getElementById('flipCashStack');
+      const maxCash = cashStackInput && cashStackInput.value ? parseInt(cashStackInput.value) : Infinity;
+      
+      if (buy > maxCash) return; // Can't even afford one
+      const affordableVolume = Math.floor(maxCash / buy);
+      
+      const baseVolume = game === 'rs3' ? Math.min(effectiveLimit, 100) : Math.min(effectiveLimit, vol);
+      const expectedVolume = Math.min(baseVolume, affordableVolume);
+      
+      const totalPotentialProfit = net * expectedVolume;
+      
+      results.push({
+        name: i.name,
+        limit: i.limit || '∞',
+        buy, sell, net, roi, vol, totalPotentialProfit
+      });
+    });
+    
+    // 6. Sort by Absolute Potential Profit, not just ROI
+    results = results.filter(r => r.roi > 1 && r.buy > 100 && r.net > 10)
+                     .sort((a,b) => b.totalPotentialProfit - a.totalPotentialProfit);
+    results = results.slice(0, 50);
+    
+    tb.innerHTML = '';
+    results.forEach(r => {
+      const rowColor = r.vol > 100 ? 'rgba(46, 204, 113, 0.1)' : 'transparent';
+      tb.innerHTML += `<tr style="background: ${rowColor}; cursor:pointer; ${trackedItems[r.name] ? 'background-color: rgba(52, 152, 219, 0.1); border-left: 4px solid var(--blue);' : ''}" onclick="toggleTrackItem(this.dataset.name, this)" data-name="${r.name.replace(/"/g, '&quot;')}">
+        <td><strong>${r.name}</strong><br><small style="color:var(--text-light)">Vol: ${r.vol || '?'} / Lmt: ${r.limit}</small></td>
+        <td><span style="color:var(--green)">S: ${fmtExactGP(r.sell)}</span><br><span style="color:var(--red)">B: ${fmtExactGP(r.buy)}</span></td>
+        <td class="${r.net>0?'val-pos':'val-neg'}">+${fmtExactGP(r.net)}<br><small>(${r.roi.toFixed(1)}%)</small></td>
+      </tr>`;
+    });
+  } catch(e) {
+    tb.innerHTML = '<tr><td colspan="3" style="color:var(--red);text-align:center">Error fetching market data</td></tr>';
+    console.error(e);
+  }
+}
+// ── LIMIT TIMER LOGIC ──────────────────────────────────────
+const LIMIT_TIMERS_KEY = 'osrs_limit_timers';
+function getTimers() {
+  return JSON.parse(localStorage.getItem(LIMIT_TIMERS_KEY) || '{}');
+}
+function saveTimers(timers) {
+  localStorage.setItem(LIMIT_TIMERS_KEY, JSON.stringify(timers));
+}
+function startLimitTimer(event, itemId) {
+  event.stopPropagation();
+  const timers = getTimers();
+  timers[itemId] = Date.now() + 14400000;
+  saveTimers(timers);
+}
+
+setInterval(() => {
+  const timers = getTimers();
+  const btns = document.querySelectorAll('.limit-timer-btn');
+  let updated = false;
+  btns.forEach(btn => {
+    const itemId = btn.dataset.itemId;
+    const targetTime = timers[itemId];
+    if (targetTime) {
+      const now = Date.now();
+      if (targetTime > now) {
+        const remaining = targetTime - now;
+        const h = Math.floor(remaining / 3600000);
+        const m = Math.floor((remaining % 3600000) / 60000).toString().padStart(2, '0');
+        const s = Math.floor((remaining % 60000) / 1000).toString().padStart(2, '0');
+        btn.innerText = `${h}:${m}:${s}`;
+        btn.style.background = 'rgba(231, 76, 60, 0.15)';
+        btn.style.color = 'var(--red)';
+        btn.style.borderColor = 'var(--red)';
+      } else {
+        delete timers[itemId];
+        updated = true;
+        btn.innerText = 'Start 4h';
+        btn.style.background = 'var(--bg-light)';
+        btn.style.color = 'var(--text-main)';
+        btn.style.borderColor = 'var(--border)';
+      }
+    } else {
+      if(btn.innerText !== 'Start 4h') {
+        btn.innerText = 'Start 4h';
+        btn.style.background = 'var(--bg-light)';
+        btn.style.color = 'var(--text-main)';
+        btn.style.borderColor = 'var(--border)';
+      }
+    }
+  });
+  if (updated) saveTimers(timers);
+}, 1000);
+</script>
+</body>
+</html>

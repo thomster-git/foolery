@@ -1,0 +1,845 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="tracker-wrapper">
+    <div class="tracker-header">
+        <div class="th-left">
+            <div class="live-badge">
+                <span class="pulse-dot"></span> LIVE
+            </div>
+            <h1 class="th-title">BET TRACKER</h1>
+        </div>
+        <div class="th-right" id="th-updated">
+            Updated just now
+        </div>
+    </div>
+
+    <!-- P/L Chart and Summary -->
+    <div class="dashboard-grid">
+        <div class="chart-container">
+            <div class="chart-header">Bankroll Over Time (P/L)</div>
+            <canvas id="plChart" width="400" height="150"></canvas>
+        </div>
+        <div class="summary-container" id="summary-container">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+        <div class="import-container" style="flex: 1; margin-bottom: 0;">
+            <details>
+                <summary class="import-summary">+ Import New Tickets</summary>
+                <div class="import-body">
+                    <textarea id="ticket-input" placeholder="Paste ticket text here (e.g. # Selections Odds...)"></textarea>
+                    <div class="import-actions">
+                        <button id="btn-import">Import Tickets</button>
+                        <button id="btn-clear" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: #fca5a5;">Clear All Data</button>
+                    </div>
+                </div>
+            </details>
+        </div>
+
+        <div class="import-container" style="flex: 1; margin-bottom: 0;">
+            <details>
+                <summary class="import-summary" style="color: var(--accent-cyan);">🧮 Recovery Calculator</summary>
+                <div class="import-body">
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <input type="number" id="calc-loss" placeholder="Amount to recover ($)" style="flex:1; min-width: 120px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; padding: 0.8rem;">
+                        <input type="number" id="calc-target" placeholder="New profit ($)" style="flex:1; min-width: 120px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; padding: 0.8rem;">
+                        <input type="number" id="calc-odds" step="0.01" placeholder="Decimal Odds" style="flex:1; min-width: 120px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; padding: 0.8rem;">
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(16, 185, 129, 0.05); padding: 1rem; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                        <span style="color: #a1a1aa; font-weight: bold; font-family: 'Space Grotesk', sans-serif;">TARGET WAGER:</span>
+                        <span id="calc-result" style="color: #10b981; font-size: 1.8rem; font-weight: bold; font-family: monospace;">$0.00</span>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="tabs-nav">
+        <button class="tab-btn active" data-tab="live">Live / Recent Tickets</button>
+        <button class="tab-btn" data-tab="history">Historical Archive</button>
+    </div>
+
+    <div id="tickets-container" class="tickets-grid">
+        <!-- Cards injected by JS -->
+    </div>
+</div>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
+
+    .tracker-wrapper {
+        max-width: 1400px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+        font-family: 'Inter', sans-serif;
+        color: #fff;
+    }
+
+    .tracker-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(90deg, #111, #1a1a1a);
+        padding: 1.5rem 2rem;
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.1);
+        margin-bottom: 2rem;
+    }
+
+    .th-left { display: flex; align-items: center; gap: 1rem; }
+    .live-badge {
+        background: #10b981;
+        color: #000;
+        font-weight: bold;
+        padding: 0.25rem 0.75rem;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+    }
+    .pulse-dot {
+        width: 8px; height: 8px; background: #fff; border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+        70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+    }
+
+    .th-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 2.5rem;
+        margin: 0;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+    .th-right { font-family: monospace; color: #a1a1aa; font-size: 0.9rem; }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .chart-container {
+        background: #18181b;
+        border-radius: 20px;
+        padding: 1.5rem;
+        border: 1px solid rgba(255,255,255,0.05);
+        position: relative;
+        height: 300px;
+    }
+    .summary-container {
+        background: #18181b;
+        border-radius: 20px;
+        padding: 1.5rem;
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+    .chart-header { font-size: 0.85rem; color: #a1a1aa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .sum-box {
+        background: rgba(255,255,255,0.03);
+        padding: 1rem;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .sum-label { color: #a1a1aa; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+    .sum-val { font-size: 1.5rem; font-weight: bold; }
+    .val-green { color: #10b981; }
+    .val-red { color: #ef4444; }
+
+    .import-container { margin-bottom: 2rem; background: #18181b; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
+    .import-summary { padding: 1rem 1.5rem; cursor: pointer; color: #10b981; font-weight: bold; list-style: none; user-select: none; }
+    .import-summary::-webkit-details-marker { display: none; }
+    .import-body { padding: 0 1.5rem 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    #ticket-input { width: 100%; height: 120px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #fff; padding: 1rem; font-family: monospace; resize: vertical; }
+    .import-actions { display: flex; gap: 1rem; }
+    .import-actions button { padding: 0.5rem 1.5rem; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.5); background: rgba(16, 185, 129, 0.1); color: #10b981; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+    .import-actions button:hover { background: rgba(16, 185, 129, 0.2); }
+
+    .tabs-nav {
+        display: flex; gap: 1rem; margin-bottom: 2rem;
+    }
+    .tab-btn {
+        background: transparent; border: none; color: #a1a1aa; font-size: 1.1rem;
+        font-family: 'Space Grotesk', sans-serif; font-weight: bold; cursor: pointer;
+        padding-bottom: 0.5rem; border-bottom: 2px solid transparent; transition: all 0.2s;
+    }
+    .tab-btn:hover { color: #fff; }
+    .tab-btn.active { color: #10b981; border-bottom-color: #10b981; }
+
+    .tickets-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .t-card {
+        background: #18181b;
+        border-radius: 24px;
+        border: 1px solid rgba(255,255,255,0.05);
+        position: relative;
+        display: flex; flex-direction: column;
+        overflow: hidden;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .t-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(16,185,129,0.15); }
+
+    .t-stamp {
+        position: absolute; top: 10px; left: 10px;
+        padding: 4px 16px; font-size: 16px; font-weight: 900;
+        border: 4px solid; transform: rotate(-10deg); z-index: 20;
+        background: rgba(0,0,0,0.8); backdrop-filter: blur(4px);
+        font-family: 'Space Grotesk', sans-serif;
+        animation: stampPop 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+    .stamp-cashed { color: #34d399; border-color: #10b981; box-shadow: 0 0 20px rgba(16,185,129,0.4); }
+    .stamp-crashed { color: #f87171; border-color: #ef4444; box-shadow: 0 0 20px rgba(239,68,68,0.4); }
+
+    @keyframes stampPop {
+        0% { transform: scale(0.5) rotate(-30deg); opacity: 0; }
+        100% { transform: scale(1) rotate(-10deg); opacity: 1; }
+    }
+
+    .t-header { display: flex; justify-content: space-between; padding: 1.5rem 1.5rem 0.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .t-id { background: rgba(255,255,255,0.1); font-family: monospace; font-size: 0.8rem; padding: 0.2rem 0.6rem; border-radius: 12px; }
+    .t-date { color: #a1a1aa; font-size: 0.8rem; font-weight: bold; }
+
+    .t-matchup { padding: 1rem 1.5rem 0; font-size: 1.5rem; font-weight: 700; font-family: 'Space Grotesk', sans-serif; line-height: 1.2; }
+    .t-pick { padding: 0.5rem 1.5rem 1.5rem; font-size: 1.2rem; color: #e4e4e7; }
+
+    .t-scorebox { background: #0f0f11; margin: 0 1.5rem; padding: 1rem; border-radius: 16px; text-align: center; font-weight: bold; font-family: monospace; color: #a1a1aa; }
+    .t-scorebox-live { color: #10b981; }
+    .t-scorebox-flex { display: flex; justify-content: space-between; align-items: center; }
+
+    .t-footer { display: flex; justify-content: space-between; padding: 1.5rem; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); }
+    .t-stake { color: #a1a1aa; font-size: 0.75rem; }
+    .t-stake span { display: block; color: #fff; font-size: 1.5rem; font-weight: bold; }
+    .t-odds { text-align: right; color: #a1a1aa; font-size: 0.75rem; }
+    .t-odds span { display: block; color: #10b981; font-size: 2rem; font-weight: bold; line-height: 1; margin-bottom: 0.2rem; }
+
+</style>
+
+<script>
+(function() {
+    const DB_KEY = 'atlas_bet_tracker_v3';
+    let dbTickets = [];
+    
+    try {
+        const saved = localStorage.getItem(DB_KEY);
+        if (saved) {
+            dbTickets = JSON.parse(saved);
+            let migrated = false;
+            // Data Migration: convert old 'status' field to 'grade'
+            dbTickets.forEach(t => {
+                if (!t.id) {
+                    t.id = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+                    migrated = true;
+                }
+                if (t.status && !t.grade) {
+                    if (t.status === "WON") t.grade = "CASHED";
+                    else if (t.status === "LOST") t.grade = "CRASHED";
+                    else t.grade = "PENDING";
+                    delete t.status;
+                    migrated = true;
+                }
+                if (!t.grade) { t.grade = "PENDING"; migrated = true; }
+            });
+            if (migrated) saveDB();
+        }
+    } catch(e) {}
+
+    // Preload with initial data if database is empty
+    if (dbTickets.length === 0) {
+        dbTickets = [
+            { id: "986", sport: "MLB", matchup: "Boston vs New York Y", pick: "New York Y", odds: 1.73, wager: 1.00, date: "2026-09-29", grade: "CASHED", rawDate: "29 sep 21:00" },
+            { id: "961", sport: "NHL", matchup: "Montreal vs Toronto", pick: "Montreal", odds: 1.84, wager: 1.00, date: "2026-09-29", grade: "CASHED", rawDate: "29 sep 20:00" },
+            { id: "452", sport: "MLB", matchup: "Boston vs New York Y", pick: "New York Y", odds: 1.68, wager: 1.00, date: "2026-09-30", grade: "CASHED", rawDate: "30 sep 21:00" },
+            { id: "982", sport: "MLB", matchup: "New York Y vs Tampa Bay", pick: "New York Y", odds: 2.10, wager: 1.00, date: "2026-10-03", grade: "PENDING", rawDate: "3 oct 19:30" },
+            { id: "008", sport: "NFL", matchup: "New England vs Buffalo", pick: "Buffalo -6.5", odds: 1.84, wager: 1.00, date: "2026-10-04", grade: "PENDING", rawDate: "4 oct 14:00" },
+            { id: "012", sport: "NFL", matchup: "Denver vs San Francisco", pick: "San Francisco", odds: 1.68, wager: 1.00, date: "2026-10-04", grade: "PENDING", rawDate: "4 oct 17:25" }
+        ];
+        saveDB();
+    }
+
+    function saveDB() {
+        localStorage.setItem(DB_KEY, JSON.stringify(dbTickets));
+    }
+
+    let currentTab = 'live';
+    let allGames = [];
+
+    const container = document.getElementById('tickets-container');
+    const summary = document.getElementById('summary-container');
+    const tabs = document.querySelectorAll('.tab-btn');
+
+
+    async function fetchESPNData(sportPath, sportCode) {
+        try {
+            const datesToFetch = new Set();
+            dbTickets.forEach(t => {
+                if (t.sport === sportCode && (t.grade === "PENDING" || t.grade === "LIVE")) {
+                    datesToFetch.add(t.date.replace(/-/g, ''));
+                }
+            });
+            if (datesToFetch.size === 0) {
+                datesToFetch.add(new Date().toLocaleDateString('en-CA').replace(/-/g, ''));
+            }
+
+            for (const d of datesToFetch) {
+                const url = `https://site.api.espn.com/apis/site/v2/sports/${sportPath}/scoreboard?dates=${d}`;
+                const response = await fetch(url, { method: 'GET', headers: { 'Accept': 'application/json' } });
+                if (!response.ok) continue;
+                const data = await response.json();
+                if (data.events) {
+                    for (const e of data.events) {
+                        const comp = e.competitions[0];
+                        if (!comp) continue;
+                        const away = comp.competitors.find(c => c.homeAway === 'away');
+                        const home = comp.competitors.find(c => c.homeAway === 'home');
+                        if (!away || !home) continue;
+                        
+                        const stateType = e.status.type.state;
+                        let abstractGameState = 'Preview';
+                        if (stateType === 'in') abstractGameState = 'Live';
+                        if (stateType === 'post') abstractGameState = 'Final';
+
+                        // Convert UTC date to local US date (e.g., late night games)
+                        const dObj = new Date(e.date);
+                        const officialDate = dObj.toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+
+                        let winProb = null;
+                        if (comp.situation && comp.situation.lastPlay && comp.situation.lastPlay.probability) {
+                            winProb = {
+                                home: Math.round(comp.situation.lastPlay.probability.homeWinPercentage * 100),
+                                away: Math.round(comp.situation.lastPlay.probability.awayWinPercentage * 100)
+                            };
+                        } else if (stateType === 'in' && e.id) {
+                            try {
+                                const sumRes = await fetch(`https://site.api.espn.com/apis/site/v2/sports/${sportPath}/summary?event=${e.id}`);
+                                if (sumRes.ok) {
+                                    const sumData = await sumRes.json();
+                                    if (sumData.winprobability && sumData.winprobability.length > 0) {
+                                        const lastProb = sumData.winprobability[sumData.winprobability.length - 1];
+                                        winProb = {
+                                            home: Math.round(lastProb.homeWinPercentage * 100),
+                                            away: 100 - Math.round(lastProb.homeWinPercentage * 100)
+                                        };
+                                    }
+                                }
+                            } catch(err) {}
+                        }
+
+                        allGames.push({
+                            sport: sportCode,
+                            officialDate: officialDate,
+                            status: { abstractGameState: abstractGameState },
+                            linescore: { inningState: e.status.type.detail || '', currentInning: '' },
+                            winProb: winProb,
+                            teams: {
+                                away: { team: { name: away.team.displayName || away.team.name, abbreviation: away.team.abbreviation || 'AWAY' }, score: parseInt(away.score || 0) },
+                                home: { team: { name: home.team.displayName || home.team.name, abbreviation: home.team.abbreviation || 'HOME' }, score: parseInt(home.score || 0) }
+                            }
+                        });
+                    }
+                }
+            }
+        } catch (err) {
+            console.warn(`ESPN API fetch failed for ${sportCode}:`, err);
+        }
+    }
+
+    const teamAliases = {
+        "New York Y": "Yankees",
+        "Chicago C": "Cubs",
+        "Cleveland": "Guardians",
+        "Atlanta": "Braves",
+        "Arizona": "Diamondbacks",
+        "Tampa Bay": "Rays",
+        "Minnesota": "Twins",
+        "Philadelphia": "Phillies",
+        "Colorado": "Rockies",
+        "Cincinnati": "Reds",
+        "Texas": "Rangers",
+        "Boston": "Red Sox",
+        "LosAngelesD": "Dodgers"
+    };
+
+    function findMatchingGame(ticket) {
+        if (!allGames || allGames.length === 0) return null;
+        
+        let splitChar = ticket.matchup.includes(' @ ') ? ' @ ' : ' vs ';
+        let [team1, team2] = ticket.matchup.split(splitChar).map(t => t ? t.trim() : "");
+        const t1Name = teamAliases[team1] || team1;
+        const t2Name = teamAliases[team2] || team2;
+
+        return allGames.find(game => {
+            if (game.sport !== ticket.sport) return false;
+            const away = game.teams.away.team.name || "";
+            const home = game.teams.home.team.name || "";
+            const teamsMatch = (away.includes(t1Name) || away.includes(team1) || home.includes(t1Name) || home.includes(team1)) &&
+                               (away.includes(t2Name) || away.includes(team2) || home.includes(t2Name) || home.includes(team2));
+            
+            // officialDate is a clean YYYY-MM-DD string matching the scheduled local game date
+            const dateMatch = game.officialDate === ticket.date;
+
+            return teamsMatch && dateMatch;
+        });
+    }
+
+    function checkTicketGrade(ticket) {
+        if (ticket.grade !== "PENDING") return ticket.grade;
+        // if (ticket.sport !== "MLB") return "PENDING"; // Removed so NFL/NHL can grade
+
+        const game = findMatchingGame(ticket);
+        if (!game) return "PENDING";
+        
+        const state = game.status.abstractGameState;
+        if (state !== "Final") return "LIVE";
+
+        // Evaluate logic
+        const awayScore = parseInt(game.teams.away.score || 0);
+        const homeScore = parseInt(game.teams.home.score || 0);
+        
+        // Simple moneyline parsing:
+        let pickedTeam = ticket.pick.trim();
+        let isRunline = false;
+        let spread = 0;
+        let isTotal = false;
+        let totalVal = 0;
+        let totalDir = 'over';
+
+        if(pickedTeam.toLowerCase().includes('over')) {
+            isTotal = true;
+            totalVal = parseFloat(pickedTeam.replace(/[a-zA-Z\s]/g,''));
+            totalDir = 'over';
+        } else if(pickedTeam.toLowerCase().includes('under')) {
+            isTotal = true;
+            totalVal = parseFloat(pickedTeam.replace(/[a-zA-Z\s]/g,''));
+            totalDir = 'under';
+        } else if(pickedTeam.match(/[+-]\d+\.?\d*/)) {
+            isRunline = true;
+            let parts = pickedTeam.match(/(.+)\s+([+-]\d+\.?\d*)/);
+            if (parts) {
+                pickedTeam = parts[1].trim();
+                spread = parseFloat(parts[2]);
+            }
+        } else {
+            pickedTeam = pickedTeam.replace('ML', '').trim();
+        }
+
+        const pickedAlias = teamAliases[pickedTeam] || pickedTeam;
+        let betTeamScore = 0;
+        let oppTeamScore = 0;
+
+        if (game.teams.away.team.name.includes(pickedAlias) || game.teams.away.team.name.includes(pickedTeam)) {
+            betTeamScore = awayScore;
+            oppTeamScore = homeScore;
+        } else if (game.teams.home.team.name.includes(pickedAlias) || game.teams.home.team.name.includes(pickedTeam)) {
+            betTeamScore = homeScore;
+            oppTeamScore = awayScore;
+        }
+
+        let result;
+        if (isTotal) {
+            const sum = awayScore + homeScore;
+            if (sum === totalVal) result = "PUSH";
+            else if ((totalDir === 'over' && sum > totalVal) || (totalDir === 'under' && sum < totalVal)) result = "CASHED";
+            else result = "CRASHED";
+        } else {
+            // Moneyline or runline
+            const margin = betTeamScore - oppTeamScore;
+            if (margin + spread > 0) result = "CASHED";
+            else if (margin + spread === 0) result = "PUSH";
+            else result = "CRASHED";
+        }
+
+        // Only permanently commit the grade once the game is truly Final
+        ticket.grade = result;
+        saveDB();
+        return ticket.grade;
+    }
+
+    function renderUI() {
+        const today = new Date().toLocaleDateString('en-CA');
+        
+        let displayTickets = [];
+        if (currentTab === 'live') {
+            displayTickets = dbTickets.filter(t => t.date === today || t.grade === "PENDING" || t.grade === "LIVE");
+        } else {
+            displayTickets = dbTickets.filter(t => t.date !== today && t.grade !== "PENDING" && t.grade !== "LIVE");
+        }
+
+        let html = '';
+        displayTickets.sort((a,b) => String(b.id).localeCompare(String(a.id))).forEach(t => {
+            const currentGrade = checkTicketGrade(t);
+
+            let stamp = '';
+            if (currentGrade === "CASHED") stamp = '<div class="t-stamp stamp-cashed">CASHED</div>';
+            else if (currentGrade === "CRASHED" || currentGrade === "LOST") stamp = '<div class="t-stamp stamp-crashed">CRASHED</div>';
+            else if (currentGrade === "PUSH") stamp = '<div class="t-stamp" style="color:#fcd34d; border-color:#fbbf24;">PUSH</div>';
+
+            const potential = t.wager * t.odds;
+
+            let scoreBox = '<div class="t-scorebox">NOT STARTED</div>';
+            if (currentGrade === "CASHED" || currentGrade === "CRASHED" || currentGrade === "LOST") {
+                scoreBox = '<div class="t-scorebox">FINAL</div>';
+            }
+
+            if (currentGrade === "PENDING" || currentGrade === "LIVE") {
+                const game = findMatchingGame(t);
+                if (game) {
+                    const state = game.status.abstractGameState;
+                    if (state === "Live") {
+                        const awayScore = game.teams.away.score || 0;
+                        const homeScore = game.teams.home.score || 0;
+                        const awayTeam = game.teams.away.team.abbreviation || "AWAY";
+                        const homeTeam = game.teams.home.team.abbreviation || "HOME";
+                        const inning = game.linescore ? game.linescore.inningState + " " + game.linescore.currentInning : "LIVE";
+                        
+                        let probHtml = "";
+                        if (game.winProb) {
+                            probHtml = `<div style="font-size:0.75rem; color: var(--accent-cyan); margin-top: 0.8rem; letter-spacing: 1px;">WIN PROB: ${game.winProb.away}% - ${game.winProb.home}%</div>`;
+                        }
+
+                        scoreBox = `
+                        <div class="t-scorebox">
+                            <div class="t-scorebox-flex">
+                                <div style="text-align:left;"><div style="font-size:0.7rem;color:#a1a1aa;">${awayTeam}</div><div style="font-size:1.8rem;color:#fff;">${awayScore}</div></div>
+                                <div class="t-scorebox-live" style="font-size:0.8rem; animation:pulse 2s infinite;">${inning}</div>
+                                <div style="text-align:right;"><div style="font-size:0.7rem;color:#a1a1aa;">${homeTeam}</div><div style="font-size:1.8rem;color:#fff;">${homeScore}</div></div>
+                            </div>
+                            ${probHtml}
+                        </div>`;
+                    } else if (state === "Final") {
+                        scoreBox = '<div class="t-scorebox">FINAL</div>';
+                    } else {
+                        scoreBox = `<div class="t-scorebox t-scorebox-live">STARTING SOON</div>`;
+                    }
+                } else {
+                    scoreBox = '<div class="t-scorebox t-scorebox-live">AWAITING GAME DATA...</div>';
+                }
+            }
+
+            html += `
+            <div class="t-card">
+                ${stamp}
+                <div class="t-header">
+                    <div style="display:flex; gap:0.5rem; align-items:center;">
+                        <span class="t-id">#${t.id}</span>
+                        <span style="color:#10b981; font-size:0.8rem; font-weight:bold;">${t.sport}</span>
+                    </div>
+                    <span class="t-date">${t.rawDate || t.date}</span>
+                </div>
+                <div class="t-matchup">${t.matchup}</div>
+                <div class="t-pick">${t.pick}</div>
+                ${scoreBox}
+                <div class="t-footer">
+                    <div class="t-stake">STAKE <span>$${t.wager.toFixed(2)}</span></div>
+                    <div class="t-odds">DECIMAL <span>+${t.odds.toFixed(2)}</span>$${potential.toFixed(2)} POTENTIAL</div>
+                </div>
+            </div>`;
+        });
+        
+        if (displayTickets.length === 0) {
+            html = '<div style="grid-column:1/-1; text-align:center; padding:3rem; color:#a1a1aa;">No tickets found for this view.</div>';
+        }
+        container.innerHTML = html;
+
+        // Render Summary
+        let totalStake = 0, realizedPL = 0, won = 0, lost = 0;
+        dbTickets.forEach(t => {
+            totalStake += t.wager;
+            if (t.grade === "CASHED") {
+                won++;
+                realizedPL += (t.wager * t.odds) - t.wager;
+            } else if (t.grade === "CRASHED" || t.grade === "LOST") {
+                lost++;
+                realizedPL -= t.wager;
+            }
+        });
+
+        summary.innerHTML = `
+            <div class="summary-grid">
+                <div class="sum-box">
+                    <span class="sum-label">Total Stake</span>
+                    <span class="sum-val">$${totalStake.toFixed(2)}</span>
+                </div>
+                <div class="sum-box">
+                    <span class="sum-label">Realized P/L</span>
+                    <span class="sum-val ${realizedPL >= 0 ? 'val-green' : 'val-red'}">${realizedPL >= 0 ? '+' : ''}$${realizedPL.toFixed(2)}</span>
+                </div>
+                <div class="sum-box">
+                    <span class="sum-label">Record</span>
+                    <span class="sum-val">${won}W - ${lost}L</span>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderChart() {
+        const ctx = document.getElementById('plChart');
+        if(!ctx) return;
+        const context2d = ctx.getContext('2d');
+        
+        // Build a daily P/L map from resolved tickets only
+        const dailyPL = {};
+        dbTickets.forEach(t => {
+            if (t.grade === "PENDING" || t.grade === "LIVE") return;
+            if (!dailyPL[t.date]) dailyPL[t.date] = 0;
+            if (t.grade === "CASHED") {
+                dailyPL[t.date] += (t.wager * t.odds) - t.wager;
+            } else if (t.grade !== "PUSH") {
+                dailyPL[t.date] -= t.wager;
+            }
+        });
+
+        // Find the earliest resolved date, or fall back to today
+        const resolvedDates = Object.keys(dailyPL).sort();
+        const today = new Date().toLocaleDateString('en-CA');
+
+        // Build a continuous date range from first bet (or today if none) to today
+        const startDateStr = resolvedDates.length > 0 ? resolvedDates[0] : today;
+        const allDates = [];
+        const cur = new Date(startDateStr + 'T12:00:00');
+        const end = new Date(today + 'T12:00:00');
+        while (cur <= end) {
+            allDates.push(cur.toLocaleDateString('en-CA'));
+            cur.setDate(cur.getDate() + 1);
+        }
+
+        // Accumulate P/L across the full date range, holding flat on days with no action
+        let cumSum = 0;
+        const chartLabels = [];
+        const chartData = [];
+
+        // Add a $0 starting point one day before
+        const firstDay = new Date(startDateStr + 'T12:00:00');
+        firstDay.setDate(firstDay.getDate() - 1);
+        chartLabels.push(firstDay.toLocaleDateString('en-CA'));
+        chartData.push(0);
+
+        allDates.forEach(d => {
+            cumSum += (dailyPL[d] || 0);
+            chartLabels.push(d);
+            chartData.push(parseFloat(cumSum.toFixed(2)));
+        });
+
+        // Destroy old chart instance if exists
+        if(window.myPlChart) window.myPlChart.destroy();
+
+        window.myPlChart = new Chart(context2d, {
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Bankroll P/L',
+                    data: chartData,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.08)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.1,
+                    pointRadius: chartData.map((v, i) => {
+                        // Only show dots on days where P/L actually changed
+                        if (i === 0) return 3;
+                        return chartData[i] !== chartData[i-1] ? 5 : 2;
+                    }),
+                    pointBackgroundColor: '#10b981'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#a1a1aa', maxTicksLimit: 8 } },
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#a1a1aa', callback: v => '$' + v.toFixed(2) } }
+                }
+            }
+        });
+    }
+
+    // Parser Logic
+    const importBtn = document.getElementById('btn-import');
+    if(importBtn) {
+        importBtn.addEventListener('click', () => {
+            const text = document.getElementById('ticket-input').value;
+            let blocks = text.split(/\n?#\s+Selections\s+Odds\n?/g).filter(b => b.trim());
+            
+            // Fallback for pasted text without the header
+            if (blocks.length === 1 && !text.includes('Selections')) {
+                const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+                // Are these individual tickets on single lines?
+                if (lines.length > 0 && lines.every(l => l.includes('vs') || l.match(/bet|wager/i))) {
+                    blocks = lines;
+                } else {
+                    blocks = [text];
+                }
+            }
+
+            let added = 0;
+
+            blocks.forEach(block => {
+                let lines = block.split('\n').map(l => l.trim()).filter(l => l);
+                
+                let id = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+                const idMatch = block.match(/(?:^\s*|^#?\s*)(\d{3,})/);
+                if (idMatch) id = idMatch[1];
+
+                // One-liner fallback
+                if (lines.length === 1) {
+                    let l = lines[0];
+                    let matchupMatch = l.match(/(.+? vs .+?)(?:\s|$)/i);
+                    let matchup = matchupMatch ? matchupMatch[1].trim() : "Unknown Matchup";
+                    
+                    let oddsMatch = l.match(/([\d\.]+)\s+odds/i) || l.match(/ML\s+([\d\.]+)/i);
+                    let odds = oddsMatch ? parseFloat(oddsMatch[1]) : 1.00;
+                    
+                    let wagerMatch = l.match(/(?:bet|wager).*?\$([\d\.]+)/i);
+                    let wager = wagerMatch ? parseFloat(wagerMatch[1]) : 1.00;
+                    
+                    let pick = "Unknown Pick";
+                    if (l.toLowerCase().includes('yankees')) pick = "New York Y";
+                    else pick = matchup; // fallback
+                    
+                    if (!dbTickets.some(t => t.id === id)) {
+                        dbTickets.push({
+                            id, sport: "MLB", matchup, pick, odds, wager, date: new Date().toLocaleDateString('en-CA'), grade: "PENDING", rawDate: "Today"
+                        });
+                        added++;
+                    }
+                    return;
+                }
+
+                if (lines.length < 3) return;
+
+                if (dbTickets.some(t => t.id === id)) return;
+
+                let matchup = lines.find(l => l.includes(' vs ') || l.includes(' @ ')) || "Unknown Matchup";
+                let pickLine = lines.find(l => l.includes('Pick:'));
+                let pick = pickLine ? pickLine.replace(/.*Pick:\s*/, '').trim() : "Unknown Pick";
+                
+                let oddsMatch = block.match(/(?:Pick:.*\n?)\s*(\d+\.\d{2})/);
+                if (!oddsMatch) oddsMatch = block.match(/(\d+\.\d{2})\s*$/m);
+                let odds = oddsMatch ? parseFloat(oddsMatch[1]) : 1.00;
+
+                let wagerMatch = block.match(/Wager Amount \$([\d\.]+)/i) || block.match(/Bet \$([\d\.]+)/i);
+                let wager = wagerMatch ? parseFloat(wagerMatch[1]) : 1.00;
+
+                let sportLine = lines.find(l => l.includes('BASEBALL') || l.includes('FOOTBALL') || l.includes('HOCKEY'));
+                let sport = sportLine ? (sportLine.split(' - ')[1] || sportLine).trim() : "MLB";
+
+                // For date, look for something like "30 sep 21:00"
+                let dateLine = lines.find(l => /^\d+\s+[a-zA-Z]{3}/.test(l));
+                let dateStr = dateLine || new Date().toLocaleDateString('en-CA');
+
+                // Attempt to parse the date from string e.g. "30 sep 21:00" -> "2026-09-30"
+                let dParts = dateStr.match(/(\d+)\s+([a-zA-Z]+)/);
+                let isoDate = new Date().toLocaleDateString('en-CA');
+                if (dParts) {
+                    const day = dParts[1].padStart(2, '0');
+                    const monthMap = {jan:'01',feb:'02',mar:'03',apr:'04',may:'05',jun:'06',jul:'07',aug:'08',sep:'09',oct:'10',nov:'11',dec:'12'};
+                    const mon = monthMap[dParts[2].toLowerCase().substring(0,3)] || '01';
+                    // Assume current year
+                    const yr = new Date().getFullYear();
+                    isoDate = `${yr}-${mon}-${day}`;
+                }
+
+                dbTickets.push({
+                    id, sport, matchup, pick, odds, wager, date: isoDate, grade: "PENDING", rawDate: dateStr
+                });
+                added++;
+            });
+
+            if (added > 0) {
+                saveDB();
+                document.getElementById('ticket-input').value = '';
+                alert(`Successfully imported ${added} new tickets!`);
+                renderUI();
+                renderChart();
+            } else {
+                alert('No new valid tickets found or they are duplicates.');
+            }
+        });
+    }
+
+    const clearBtn = document.getElementById('btn-clear');
+    if(clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            if(confirm('Are you sure you want to clear all your ticket history?')){
+                dbTickets = [];
+                saveDB();
+                renderUI();
+                renderChart();
+            }
+        });
+    }
+
+    tabs.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            tabs.forEach(t => t.classList.remove('active'));
+            e.target.classList.add('active');
+            currentTab = e.target.dataset.tab;
+            renderUI();
+        });
+    });
+
+    // Main Update Cycle
+    async function updateData() {
+        allGames = [];
+        await fetchESPNData('baseball/mlb', 'MLB');
+        await fetchESPNData('football/nfl', 'NFL');
+        await fetchESPNData('hockey/nhl', 'NHL');
+        renderUI();
+        renderChart();
+    }
+
+    // Auto-update
+    setInterval(() => {
+        const d = new Date();
+        const updated = document.getElementById('th-updated');
+        if(updated) updated.textContent = `Updated ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`;
+    }, 1000);
+
+    // Initial sequence
+    updateData();
+    setInterval(updateData, 90000);
+
+    // Recovery Calculator
+    const calcLoss = document.getElementById('calc-loss');
+    const calcTarget = document.getElementById('calc-target');
+    const calcOdds = document.getElementById('calc-odds');
+    const calcResult = document.getElementById('calc-result');
+
+    function updateCalculator() {
+        const loss = parseFloat(calcLoss.value) || 0;
+        const target = parseFloat(calcTarget.value) || 0;
+        const odds = parseFloat(calcOdds.value) || 0;
+
+        if (odds > 1) {
+            const requiredWager = (loss + target) / (odds - 1);
+            calcResult.textContent = "$" + requiredWager.toFixed(2);
+        } else {
+            calcResult.textContent = "$0.00";
+        }
+    }
+
+    calcLoss.addEventListener('input', updateCalculator);
+    calcTarget.addEventListener('input', updateCalculator);
+    calcOdds.addEventListener('input', updateCalculator);
+
+})();
+</script>

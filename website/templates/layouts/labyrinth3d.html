@@ -1,0 +1,57 @@
+<div id="labyrinth-container" style="width: 100vw; height: 100vh; background: #0b0f19; position: relative; overflow: hidden; margin: 0; padding: 0;">
+    
+    <!-- UI Overlay -->
+    <div style="position: absolute; top: 1rem; left: 1rem; z-index: 10; display: flex; align-items: center; gap: 1rem;">
+        <a href="/" style="background: var(--bg-surface); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem 1rem; border-radius: var(--radius-md); text-decoration: none; font-weight: bold; font-family: monospace;">← Exit Labyrinth</a>
+        
+        <div style="background: rgba(19, 27, 46, 0.8); border: 1px solid var(--border-color); padding: 0.5rem 1rem; border-radius: var(--radius-md); color: var(--text-main); font-family: monospace; display: flex; align-items: center; gap: 0.5rem;">
+            Soul Room: 
+            <select id="room-selector" style="background: transparent; border: none; color: var(--accent-cyan); font-weight: bold; font-family: monospace; outline: none; cursor: pointer;">
+                <option value="" disabled selected>Loading...</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- WebGL Container -->
+    <div id="webgl-container" style="display: block; width: 100%; height: 100%; touch-action: none;"></div>
+    
+    <!-- Sidebar Panel (Hidden by default) -->
+    <div id="info-sidebar" style="position: absolute; top: 0; right: -400px; width: 350px; height: 100vh; background: rgba(19, 27, 46, 0.85); backdrop-filter: blur(12px); border-left: 1px solid rgba(56, 189, 248, 0.3); z-index: 20; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; padding: 2rem; box-sizing: border-box; color: #f8fafc;">
+        <button id="close-sidebar" style="position: absolute; top: 1rem; right: 1rem; background: transparent; border: none; color: #cbd5e1; font-size: 1.5rem; cursor: pointer; padding: 0.5rem;">&times;</button>
+        
+        <div style="margin-top: 2rem; flex-grow: 1;">
+            <div id="sidebar-type" style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; color: #38bdf8; font-family: monospace; margin-bottom: 0.5rem;">Type</div>
+            <h2 id="sidebar-title" style="margin: 0 0 1rem 0; font-size: 1.75rem; color: #ffffff;">Title</h2>
+            <p id="sidebar-desc" style="color: #e2e8f0; line-height: 1.6; font-size: 0.95rem;">Description will go here.</p>
+        </div>
+        
+        <a id="sidebar-link" href="#" style="display: inline-block; width: 100%; padding: 1rem; text-align: center; background: #cbd5e1; color: #0f172a; text-decoration: none; font-weight: bold; border-radius: var(--radius-md); margin-top: 1rem; box-sizing: border-box; transition: background 0.2s ease;">Enter Full Page</a>
+    </div>
+    
+    <!-- Controls Info Box -->
+    <div id="controls-box" style="position: absolute; bottom: 1rem; left: 1rem; background: rgba(19, 27, 46, 0.85); backdrop-filter: blur(8px); border: 1px solid rgba(56, 189, 248, 0.3); padding: 1.5rem; border-radius: var(--radius-md); color: var(--text-main); font-family: monospace; z-index: 10; pointer-events: none; max-width: 250px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: opacity 0.3s;">
+        <h3 style="margin-top: 0; color: var(--accent-cyan); font-size: 1rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px;">Controls</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 0.85rem; line-height: 1.8; color: var(--text-muted);">
+            <li><strong style="color: white;">Left-Click + Drag</strong>: Rotate</li>
+            <li><strong style="color: white;">Right-Click + Drag</strong>: Pan</li>
+            <li><strong style="color: white;">Scroll</strong>: Zoom</li>
+            <li><strong style="color: white;">Click Node</strong>: Travel & Inspect</li>
+            <li><strong style="color: white;">Arrows (←/→)</strong>: Next/Prev Door</li>
+            <li><strong style="color: white;">Arrows (↑/↓)</strong>: Floor Up/Down</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Three.js and Dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<!-- The new 3D Labyrinth logic -->
+<script src="/js/labyrinth3d.js"></script>

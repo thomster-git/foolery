@@ -1,0 +1,126 @@
+<div class="page-container">
+    <div class="content-wrapper" style="max-width: 1000px; margin: 2rem auto;">
+        
+        <div class="breadcrumbs" style="margin-bottom: 2rem;">
+            <a href="/">Home</a> ›
+            <span>The Wishlist</span>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <h1 style="font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem;">The Wishlist</h1>
+            <p style="font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+                A living document of gear, projects, and tools I'm planning to acquire or build.
+            </p>
+        </div>
+
+        <h2 style="font-size: 1.75rem; color: var(--text-main); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Active Wishlist</h2>
+        <div class="wishlist-grid" style="margin-bottom: 4rem;">
+            {{active_items}}
+        </div>
+
+        <h2 style="font-size: 1.75rem; color: var(--text-main); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Ideas & Research (Drafts)</h2>
+        <div class="wishlist-grid wishlist-drafts-grid">
+            {{draft_items}}
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .wishlist-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+        gap: 2rem;
+    }
+
+    .wishlist-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .wishlist-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-cyan);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .wishlist-card-draft {
+        opacity: 0.75;
+        border-style: dashed;
+    }
+    
+    .wishlist-card-draft:hover {
+        opacity: 1;
+        border-style: solid;
+    }
+
+    .wishlist-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        gap: 1rem;
+    }
+
+    .wishlist-title {
+        font-size: 1.35rem;
+        color: var(--text-main);
+        margin: 0;
+        line-height: 1.3;
+    }
+
+    .wishlist-price {
+        font-family: var(--font-mono);
+        font-size: 1.1rem;
+        color: var(--green);
+        background: rgba(46, 204, 113, 0.1);
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        white-space: nowrap;
+    }
+
+    .wishlist-category {
+        margin-bottom: 1.5rem;
+    }
+
+    .wishlist-body {
+        color: var(--text-muted);
+        line-height: 1.6;
+        flex-grow: 1;
+        margin-bottom: 2rem;
+    }
+
+    .wishlist-body p {
+        margin-bottom: 0.75rem;
+    }
+
+    .wishlist-btn {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem 1.5rem;
+        background: var(--accent-cyan);
+        color: var(--bg-dark);
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: var(--radius-md);
+        transition: background 0.2s ease, transform 0.1s ease;
+    }
+
+    .wishlist-btn:hover:not(.disabled) {
+        background: var(--text-main);
+        transform: scale(1.02);
+    }
+
+    .wishlist-btn.disabled {
+        background: var(--bg-light);
+        color: var(--text-muted);
+        cursor: not-allowed;
+        border: 1px solid var(--border-color);
+    }
+</style>

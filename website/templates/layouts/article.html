@@ -1,0 +1,102 @@
+<div class="article-layout">
+    <article class="article-content">
+
+        <h1>{{title}}</h1>
+
+        <div class="article-meta-author-date" style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+            <span class="meta-author" style="font-weight: 600; color: var(--accent-cyan);">By {{author}}</span> •
+            <span class="meta-date">{{created_formatted}}</span>
+        </div>
+
+        <p class="summary">{{summary}}</p>
+
+        <div class="article-meta-bar">
+            <span class="meta-item reading-time">⏱️ {{reading_time}}</span>
+        </div>
+
+        {{audio_player}}
+
+        <div class="article-body">
+        {{body}}
+        </div>
+
+        {{newsletter_signup}}
+
+        <div class="article-share" style="margin: 3rem 0 2rem; padding: 1.5rem; background: var(--bg-card-hover); border-radius: var(--radius-md); text-align: center;">
+            <h3 style="margin-top: 0; font-size: 1.1rem; margin-bottom: 1rem;">Share this article</h3>
+            <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn-share-twitter" style="background: #1DA1F2; color: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600;" onclick="window.open('https://twitter.com/intent/tweet?text=Reading: {{title}}&url=' + encodeURIComponent(window.location.href), '_blank')">Share on X / Twitter</button>
+                
+                <button class="btn-share-facebook" style="background: #1877F2; color: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600;" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href), '_blank')">Share on Facebook</button>
+
+                <button class="btn-share-linkedin" style="background: #0A66C2; color: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600;" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href), '_blank')">Share on LinkedIn</button>
+
+                <button class="btn-share-native" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600;" onclick="if(navigator.share) navigator.share({title: '{{title}}', url: window.location.href}).catch(console.error)">Share via...</button>
+            </div>
+        </div>
+
+        <div class="article-prev-next" style="display: flex; justify-content: space-between; margin-bottom: 3rem; font-weight: 600; font-size: 0.95rem;">
+            <div class="prev-article">{{{prev_article}}}</div>
+            <div class="next-article">{{{next_article}}}</div>
+        </div>
+
+        {{graph_html}}
+
+        <section>
+            <h2>Topics</h2>
+            {{topics}}
+        </section>
+
+        <section>
+            <h2>Themes</h2>
+            {{themes}}
+        </section>
+
+        <section>
+            <h2>Related Content</h2>
+            {{related}}
+        </section>
+
+        <section>
+            <h2>Tags</h2>
+            <div class="tags-container">{{tags}}</div>
+        </section>
+
+        <!-- SEO: Structured Data / JSON-LD -->
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": "{{title}}",
+          "description": "{{summary}}",
+          "url": "{{canonical_url}}",
+          "datePublished": "{{created_iso}}",
+          "dateModified": "{{created_iso}}",
+          "wordCount": {{word_count}},
+          "author": {
+            "@type": "Person",
+            "name": "Jonathan Thoms",
+            "url": "https://thomsfoolery.com",
+            "sameAs": [
+              "https://x.com/ThomsFoolery",
+              "https://www.linkedin.com/in/jonathan-thoms-a43b65a4/"
+            ]
+          },
+          "publisher": {
+            "@type": "Person",
+            "name": "Jonathan Thoms",
+            "url": "https://thomsfoolery.com"
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "{{canonical_url}}"
+          },
+          "inLanguage": "en-CA",
+          "keywords": [{{tags_json}}]
+        }
+        </script>
+
+    </article>
+
+    {{ad_sidebar}}
+</div>

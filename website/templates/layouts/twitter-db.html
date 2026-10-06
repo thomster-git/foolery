@@ -1,0 +1,106 @@
+<div class="page-container article-layout" style="margin: 2rem auto;">
+    <div class="article-content">
+    
+    <div class="breadcrumbs" style="margin-bottom: 2rem;">
+        <a href="/">Home</a> ›
+        <a href="/tools/">Developer Tools</a> ›
+        <span>Twitter DB Generator</span>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 3rem;">
+        <h1 style="font-size: 2.5rem; color: var(--accent-cyan); margin-bottom: 1rem;">Twitter URL Database Generator</h1>
+        <p style="font-size: 1.1rem; color: var(--text-muted);">Paste a list of X / Twitter URLs to automatically generate the JSON payload required for data/tweets.json ingestion.</p>
+    </div>
+
+    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 2rem;">
+        
+        <label for="twitter-urls" style="display: block; margin-bottom: 0.5rem; font-weight: bold; color: var(--text-main);">Paste URLs (One per line)</label>
+        <textarea id="twitter-urls" rows="8" style="width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; color: #fff; padding: 1rem; font-family: monospace; margin-bottom: 1rem;" placeholder="https://x.com/username/status/1234567890&#10;https://twitter.com/username/status/0987654321"></textarea>
+        
+        <button id="generate-btn" style="background: linear-gradient(135deg, #7c3aed, #06b6d4); color: #fff; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; font-weight: bold; cursor: pointer;">Generate JSON</button>
+
+    </div>
+
+    <div id="output-container" style="display: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h2 style="margin: 0; font-size: 1.2rem; color: var(--text-main);">Generated Output</h2>
+            <button id="save-btn" style="background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.5); color: #a78bfa; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">Select tweets.json & Save</button>
+        </div>
+        <pre id="json-output" style="background: rgba(0,0,0,0.5); padding: 1rem; border-radius: 8px; overflow-x: auto; color: #a5b4fc; font-size: 0.9rem; margin: 0;"></pre>
+    </div>
+
+    </div> <!-- end article-content -->
+    {{ad_sidebar}}
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const generateBtn = document.getElementById("generate-btn");
+    const saveBtn = document.getElementById("save-btn");
+    const inputArea = document.getElementById("twitter-urls");
+    const outputContainer = document.getElementById("output-container");
+    const jsonOutput = document.getElementById("json-output");
+
+    let currentResults = [];
+    let fileHandle = null;
+
+    generateBtn.addEventListener("click", () => {
+        const text = inputArea.value.trim();
+        if (!text) return;
+
+        const lines = text.split("\n").map(l => l.trim()).filter(l => l.length > 0);
+        currentResults = [];
+
+        for (const line of lines) {
+            const match = line.match(/https?:\/\/(?:twitter\.com|x\.com)\/[a-zA-Z0-9_]+\/status\/([0-9]+)/);
+            if (match && match[1]) {
+                const id = match[1];
+                currentResults.push({
+                    id: id,
+                    url: line,
+                    added: new Date().toISOString().split('T')[0],
+                    notes: ""
+                });
+            }
+        }
+
+        if (currentResults.length > 0) {
+            jsonOutput.textContent = JSON.stringify(currentResults, null, 4);
+            outputContainer.style.display = "block";
+        } else {
+            alert("No valid Twitter/X status URLs found.");
+        }
+    });
+
+    saveBtn.addEventListener("click", async () => {
+        try {
+            const ogText = saveBtn.textContent;
+            saveBtn.textContent = "Saving...";
+            
+            const res = await fetch("http://localhost:3001/api/add-tweets", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(currentResults)
+            });
+            
+            const data = await res.json();
+            
+            if (data.status === "ok") {
+                saveBtn.textContent = "Saved Successfully!";
+                inputArea.value = "";
+                setTimeout(() => { 
+                    saveBtn.textContent = ogText; 
+                    outputContainer.style.display = "none";
+                }, 3000);
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Failed to save via API: " + err.message + "\nMake sure the local admin server is running!");
+            saveBtn.textContent = "Save Failed";
+            setTimeout(() => { saveBtn.textContent = "Save to DB"; }, 3000);
+        }
+    });
+});
+</script>

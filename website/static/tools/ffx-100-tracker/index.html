@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FFX 100% Tracker | Project Atlas</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-light: #94a3b8;
+      
+      --blue: #3b82f6;
+      --purple: #8b5cf6;
+      --gold: #f59e0b;
+      --green: #10b981;
+      --red: #ef4444;
+      --cyan: #06b6d4;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding: 2rem; }
+    
+    .header { max-width: 1000px; margin: 0 auto 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .header h1 { font-size: 2rem; font-weight: 800; color: var(--cyan); display: flex; align-items: center; gap: 10px; }
+    .header p { color: var(--text-light); margin-top: 5px; }
+
+    .tabs { display: flex; gap: 1rem; max-width: 1000px; margin: 0 auto 2rem; overflow-x: auto; padding-bottom: 5px; }
+    .tab { background: var(--panel); border: 1px solid var(--border); color: var(--text-light); padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-weight: 600; white-space: nowrap; transition: 0.2s; }
+    .tab:hover { background: #2a3b52; color: white; }
+    .tab.active-miss { background: var(--red); color: white; border-color: var(--red); }
+    .tab.active-weapons { background: var(--gold); color: white; border-color: var(--gold); }
+    .tab.active-aeons { background: var(--purple); color: white; border-color: var(--purple); }
+    .tab.active-arena { background: var(--cyan); color: #0f172a; border-color: var(--cyan); }
+
+    .panel { display: none; max-width: 1000px; margin: 0 auto; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; }
+    .panel.active { display: block; }
+
+    .checklist { display: grid; gap: 1rem; }
+    .check-item { display: flex; align-items: flex-start; gap: 1rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; transition: 0.2s; }
+    .check-item:hover { border-color: var(--blue); }
+    .check-item.done { background: rgba(16, 185, 129, 0.1); border-color: var(--green); opacity: 0.7; }
+    .check-item.done h3 { text-decoration: line-through; color: var(--text-light); }
+
+    .checkbox { width: 24px; height: 24px; border: 2px solid var(--text-light); border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: 0.2s; }
+    .check-item.done .checkbox { background: var(--green); border-color: var(--green); }
+    .checkbox svg { width: 14px; height: 14px; opacity: 0; }
+    .check-item.done .checkbox svg { opacity: 1; }
+
+    .content h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+    .content p { font-size: 0.9rem; color: var(--text-light); line-height: 1.5; }
+    .content .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-right: 5px; margin-top: 5px; background: #334155; }
+    .tag.missable { background: var(--red); color: white; }
+    .tag.grind { background: var(--gold); color: #0f172a; }
+
+    .section-title { margin: 2rem 0 1rem; color: var(--blue); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+    .section-title:first-child { margin-top: 0; }
+  </style>
+  <script src="/js/auth.js"></script>
+</head>
+<body>
+
+<div class="header">
+  <h1>⚔️ FFX 100% Tracker</h1>
+  <p>Track your missables, God Weapons, and Sphere Grid grind for Final Fantasy X (Switch).</p>
+  <a href="/" style="color:var(--blue);text-decoration:none;font-size:0.9rem;margin-top:10px;display:inline-block;">← Back to Project Atlas</a>
+</div>
+
+<div class="tabs">
+  <div class="tab active-miss" onclick="switchTab('miss', this)">🚨 Permanent Missables</div>
+  <div class="tab" onclick="switchTab('weapons', this)">⚔️ Celestial Weapons</div>
+  <div class="tab" onclick="switchTab('aeons', this)">🔮 Aeons & Secrets</div>
+  <div class="tab" onclick="switchTab('arena', this)">🏟️ Monster Arena & Grind</div>
+</div>
+
+<!-- MISSABLES -->
+<div class="panel active" id="panel-miss">
+  <h2 class="section-title">The Danger Zone (Do NOT Miss These)</h2>
+  <p style="margin-bottom:1rem;color:var(--text-light)">Final Fantasy X has only a few truly permanent missable items that prevent 100% completion if forgotten.</p>
+  <div class="checklist" id="list-missables"></div>
+</div>
+
+<!-- WEAPONS -->
+<div class="panel" id="panel-weapons">
+  <h2 class="section-title">Celestial (God) Weapons</h2>
+  <div class="checklist" id="list-weapons"></div>
+</div>
+
+<!-- AEONS -->
+<div class="panel" id="panel-aeons">
+  <h2 class="section-title">Hidden Aeons & Destruction Spheres</h2>
+  <div class="checklist" id="list-aeons"></div>
+</div>
+
+<!-- ARENA -->
+<div class="panel" id="panel-arena">
+  <h2 class="section-title">The Sphere Grid Grind (Don Tonberry AP)</h2>
+  <p style="margin-bottom:1rem;color:var(--text-light)">How to max out your stats to fight the Dark Aeons and Penance.</p>
+  <div class="checklist" id="list-arena"></div>
+</div>
+
+<script>
+const SAVE_KEY = 'ffx_100_tracker';
+let state = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}');
+
+const data = {
+  missables: [
+    { id: 'm1', title: 'Al Bhed Primer Vol. XIX', desc: 'Located outside the Al Bhed Home. If you enter the Home and finish the sequence, you can never get this back.', tags: ['missable', 'al-bhed'] },
+    { id: 'm2', title: 'Al Bhed Primer Vol. XX', desc: 'Inside the Al Bhed Home, in the Living Quarters. Grab it before proceeding.', tags: ['missable', 'al-bhed'] },
+    { id: 'm3', title: 'Al Bhed Primer Vol. XXI', desc: 'Inside the Al Bhed Home, Main Corridor.', tags: ['missable', 'al-bhed'] },
+    { id: 'm4', title: 'Al Bhed Primer Vol. XXII', desc: 'Bevelle Temple - Priests\\' Passage. Immediately after the wedding crash.', tags: ['missable', 'al-bhed'] },
+    { id: 'm5', title: 'No Encounters Weapon Drop', desc: 'When fighting Geosgaeno (Baaj Temple underwater boss), it has a rare chance to drop a weapon with No Encounters. This is the ONLY No Encounters weapon in the game (others are armor).', tags: ['missable', 'drop'] }
+  ],
+  weapons: [
+    { id: 'w1', title: 'Tidus: Caladbolg', desc: '1. Win Chocobo Race at Remiem Temple (Cloudy Mirror). 2. Power it up at Macalania Woods (Celestial Mirror). 3. Win Catcher Chocobo with a time of 0:0:0 in Calm Lands (Sun Sigil).', tags: ['tidus', 'grind'] },
+    { id: 'w2', title: 'Yuna: Nirvana', desc: '1. Capture 1 of every fiend in Calm Lands (Nirvana). 2. Defeat all of Belgemine\\'s Aeons at Remiem Temple (Moon Sigil).', tags: ['yuna'] },
+    { id: 'w3', title: 'Auron: Masamune', desc: '1. Get Rusty Sword near Cavern of Stolen Fayth. 2. Place on Lord Mi\\'ihen statue in Mushroom Rock. 3. Collect all 10 Jecht Spheres worldwide (Mars Sigil).', tags: ['auron'] },
+    { id: 'w4', title: 'Wakka: World Champion', desc: '1. Talk to bartender in Luca Cafe. 2. Win Blitzball Tournaments to get Attack Reels, Status Reels, Aurochs Reels, and Jupiter Sigil. (Recruit Brother and Ropp!)', tags: ['wakka', 'blitzball', 'grind'] },
+    { id: 'w5', title: 'Lulu: Onion Knight', desc: '1. Return to Baaj Temple underwater. 2. Dodge 200 Lightning Strikes in a row in the Thunder Plains (Venus Sigil). Equip No Encounters!', tags: ['lulu', 'grind'] },
+    { id: 'w6', title: 'Rikku: Godhand', desc: '1. Input GODHAND as an airship password. 2. Complete the Cactuar Village minigame in Bikanel Desert (Mercury Sigil).', tags: ['rikku'] },
+    { id: 'w7', title: 'Kimahri: Spirit Lance', desc: '1. Pray at 3 Qactuar stones in Thunder Plains. 2. Complete the Butterfly Catching minigame in Macalania Woods (Saturn Sigil).', tags: ['kimahri', 'grind'] }
+  ],
+  aeons: [
+    { id: 'a1', title: 'Anima (Destruction Spheres)', desc: 'You must use the Destruction Sphere to get the hidden treasure in all 6 Cloisters of Trials (Besaid, Kilika, Djose, Macalania, Bevelle, Zanarkand). Then visit Baaj Temple.', tags: ['aeon', 'missable-warning'] },
+    { id: 'a2', title: 'Yojimbo', desc: 'Cavern of the Stolen Fayth in Calm Lands. Choose "To defeat the most powerful of enemies" to lower his asking price.', tags: ['aeon'] },
+    { id: 'a3', title: 'Magus Sisters', desc: '1. Capture every fiend in Mt. Gagazet (Blossom Crown). 2. Defeat all of Belgemine\\'s Aeons up to Bahamut (Flower Scepter). 3. Unlock Anima and Yojimbo. 4. Go to Remiem Temple.', tags: ['aeon'] }
+  ],
+  arena: [
+    { id: 'ar1', title: 'Unlock Don Tonberry (AP Trick)', desc: 'Capture 1 of every fiend in the Cavern of the Stolen Fayth. Equip weapons with Overdrive->AP, Triple AP, and Triple Overdrive. Set Overdrive mode to Stoic/Comrade.', tags: ['arena', 'grind'] },
+    { id: 'ar2', title: 'Strength Spheres (Juggernaut)', desc: 'Capture 5 of every horned fiend (Dual Horn, Valaha, Grendel) to unlock Juggernaut. Drops Strength Spheres.', tags: ['stats'] },
+    { id: 'ar3', title: 'Defense Spheres (Tanket)', desc: 'Capture 3 of every armored fiend (Helm, Buna, Mura) to unlock Tanket. Drops Defense Spheres.', tags: ['stats'] },
+    { id: 'ar4', title: 'Magic Spheres (Jumbo Flan)', desc: 'Capture 3 of every Flan to unlock Jumbo Flan. Drops Magic Spheres (use Anima\\'s Pain to kill it).', tags: ['stats'] },
+    { id: 'ar5', title: 'Agility Spheres (Fenrir)', desc: 'Capture 3 of every Wolf fiend to unlock Fenrir. Drops Agility Spheres.', tags: ['stats'] },
+    { id: 'ar6', title: 'Luck Spheres (Greater Sphere)', desc: 'Unlock 2 Species Conquests to fight Greater Sphere. Drops Luck Spheres. (Hardest grind in the game).', tags: ['stats', 'grind'] },
+    { id: 'ar7', title: 'Fortune Spheres (Earth Eater)', desc: 'Unlock 2 Area Conquests to fight Earth Eater. Drops Fortune Spheres to activate Luck nodes.', tags: ['stats', 'grind'] }
+  ]
+};
+
+function toggleItem(id) {
+  state[id] = !state[id];
+  localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+  render();
+}
+
+const svgCheck = \`<svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>\`;
+
+function renderList(containerId, items) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = items.map(item => {
+    const isDone = state[item.id];
+    const tags = item.tags.map(t => \`<span class="tag \${t}">\${t}</span>\`).join('');
+    return \`
+      <div class="check-item \${isDone ? 'done' : ''}" onclick="toggleItem('\${item.id}')">
+        <div class="checkbox">\${svgCheck}</div>
+        <div class="content">
+          <h3>\${item.title}</h3>
+          <p>\${item.desc}</p>
+          <div>\${tags}</div>
+        </div>
+      </div>
+    \`;
+  }).join('');
+}
+
+function render() {
+  renderList('list-missables', data.missables);
+  renderList('list-weapons', data.weapons);
+  renderList('list-aeons', data.aeons);
+  renderList('list-arena', data.arena);
+}
+
+function switchTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.className = t.className.replace(/active-\\w+/, ''));
+  el.classList.add('active-' + name);
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+}
+
+render();
+</script>
+
+</body>
+</html>

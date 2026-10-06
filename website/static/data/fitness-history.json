@@ -1,0 +1,24 @@
+[
+  {
+    "date": "2026-09-17",
+    "weight": 287,
+    "bodyFat": 25,
+    "measurements": {
+      "neck": 18,
+      "shoulder": 54,
+      "chest": 50,
+      "waist": 44,
+      "hips": 46,
+      "biceps": 17.5,
+      "thighs": 28,
+      "head": 24
+    },
+    "lifts": {
+      "squat": 315,
+      "bench": 225,
+      "deadlift": 365
+    },
+    "routine": "Drop-off Circuit (M-F), lifting 4x/week",
+    "diet": "High protein (227g), tracked macros."
+  }
+]

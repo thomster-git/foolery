@@ -1,0 +1,31 @@
+{
+  "name": "project-atlas",
+  "version": "0.3.0",
+  "description": "An open, data-driven platform for building interconnected digital gardens (powering Thoms Foolery)",
+  "type": "module",
+  "main": "website/main.js",
+  "bin": {
+    "atlas": "website/cli/atlas.js"
+  },
+  "scripts": {
+    "admin": "node website/server/admin-server.js",
+    "build": "node website/main.js",
+    "cli": "node website/cli/atlas.js",
+    "deploy": "node website/cli/commands/deploy.js",
+    "dev": "node website/main.js",
+    "fetch-tweets": "node scripts/fetch-tweets.js",
+    "enrich-tweets": "node scripts/enrich-tweets.js",
+    "import-tweets": "node scripts/import-archive.js",
+    "preview": "npx --yes serve website/dist",
+    "test": "node website/main.js"
+  },
+  "keywords": [
+    "digital-garden",
+    "knowledge-graph",
+    "static-site-generator",
+    "atlas",
+    "thoms-foolery"
+  ],
+  "author": "Jonathan Thoms",
+  "license": "MIT"
+}

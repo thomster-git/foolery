@@ -1,0 +1,42 @@
+
+======================================
+ Project Atlas Build
+======================================
+
+Cleaning up old dist directory...
+✓ Loaded 233 markdown files.
+✓ Parsed 233 content objects.
+✓ Normalized 233 objects.
+✓ Injected 142 external tweets.
+✓ Validation passed.
+✓ Validation passed.
+✓ Routing & relationships resolved.
+
+======================================
+ Building Atlas
+======================================
+✓ Relationships
+✓ Routing
+✓ Search
+✓ Graph
+✓ Navigation
+✓ Recommendations
+✓ Statistics
+  Building Sitemap...
+✓ Sitemap
+  Building RSS Feed...
+✓ RSS
+✓ Database
+Generating HTML...
+  Building Dev Tools Page...
+✓ HTML Generated
+✓ Pages
+✓ Index Pages
+✓ Feed
+✓ LLM Exporter
+✓ Export
+
+======================================
+ Atlas Build Complete
+======================================
+

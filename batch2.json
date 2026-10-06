@@ -1,0 +1,1229 @@
+[
+  {
+    "id": "my-story-with-public-voice-and-social-ridicule",
+    "path": "content/articles/my-story-with-public-voice-and-social-ridicule.md",
+    "title": "My Story With Public Voice & Social Ridicule",
+    "summary": "I haven't reclaimed my public voice yet. A YouTube commentary mocked at school, Facebook selfies questioned for sexual orientation, Snapchat expressions picked apart — the accumulated cost of being visibly different online, and why Project Atlas might finally be the exception.",
+    "type": "article",
+    "currentThemes": [
+      "resilience",
+      "identity",
+      "growth"
+    ],
+    "currentTopics": [
+      "video-editing",
+      "audhd"
+    ],
+    "currentTags": [
+      "content-creation",
+      "public-voice",
+      "youtube",
+      "social-media",
+      "autism-masking",
+      "vulnerability",
+      "ridicule",
+      "project-atlas"
+    ],
+    "currentRelated": [
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "my-story-with-autistic-burnout-and-sensory-regulation",
+      "my-story-with-everything-is-connected",
+      "project-atlas"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-the-7-year-waitlist",
+    "path": "content/articles/my-story-with-the-7-year-waitlist.md",
+    "title": "My Story With Mental Health & The 7-Year Waitlist",
+    "summary": "The journey from panic attacks and severe burnout to discovering late-in-life neurodiversity, and the systemic failure of Newfoundland's 7-year public waitlist for an adult AuDHD diagnosis.",
+    "type": "article",
+    "currentThemes": [
+      "resilience",
+      "identity",
+      "identity"
+    ],
+    "currentTopics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "currentTags": [
+      "healthcare",
+      "newfoundland",
+      "audhd",
+      "advocacy",
+      "autistic-burnout",
+      "newfoundland",
+      "audhd",
+      "advocacy",
+      "burnout"
+    ],
+    "currentRelated": [
+      "my-story-with-neurodiversity-and-adult-diagnosis"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-the-akira-ransomware-attack",
+    "path": "content/articles/my-story-with-the-akira-ransomware-attack.md",
+    "title": "Surviving the Akira Ransomware Attack & Autistic Meltdown",
+    "summary": "How I became the sole person standing between a ransomware gang and a fluorspar mine's complete operational collapse — and how the pressure triggered a massive Autistic Meltdown.",
+    "type": "article",
+    "currentThemes": [
+      "resilience"
+    ],
+    "currentTopics": [
+      "technology",
+      "audhd"
+    ],
+    "currentTags": [
+      "ransomware",
+      "akira",
+      "cybersecurity",
+      "datto",
+      "audhd",
+      "autistic-burnout",
+      "mining",
+      "akira",
+      "cybersecurity",
+      "datto",
+      "audhd",
+      "burnout",
+      "mining"
+    ],
+    "currentRelated": [
+      "my-story-with-the-msp-trap-and-broken-infrastructure",
+      "my-story-with-the-7-year-waitlist"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-the-msp-trap-and-broken-infrastructure",
+    "path": "content/articles/my-story-with-the-msp-trap-and-broken-infrastructure.md",
+    "title": "The MSP Trap: Inheriting Broken IT Infrastructure",
+    "summary": "How I went from a mechanical engineering grad to the sole person managing industrial IT at a fluorspar mine — exposing MSP incompetence, broken firewalls, and the reality of undocumented infrastructure.",
+    "type": "article",
+    "currentThemes": [
+      "systems-thinking",
+      "craftsmanship"
+    ],
+    "currentTopics": [
+      "technology"
+    ],
+    "currentTags": [
+      "it-coordination",
+      "mining",
+      "msp",
+      "network-infrastructure",
+      "newfoundland",
+      "canada-fluorspar"
+    ],
+    "currentRelated": [
+      "keel-systems",
+      "my-story-with-keel-systems-and-honest-kpis"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-the-nicu-and-corporate-coldness",
+    "path": "content/articles/my-story-with-the-nicu-and-corporate-coldness.md",
+    "title": "My Story With The NICU & Corporate Coldness",
+    "summary": "The traumatic birth of my son, a broken hospital support system in the NICU, and receiving a layoff email from my employer while sitting in the hospital room.",
+    "type": "article",
+    "currentThemes": [
+      "resilience",
+      "connection"
+    ],
+    "currentTopics": [
+      "health-and-fitness",
+      "politics"
+    ],
+    "currentTags": [
+      "healthcare",
+      "newfoundland",
+      "nicu",
+      "cfi",
+      "canada-fluorspar",
+      "advocacy"
+    ],
+    "currentRelated": [
+      "my-story-with-cfi",
+      "my-story-with-cfi"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-typing-trainers-and-early-internet",
+    "path": "content/articles/my-story-with-typing-trainers-and-early-internet.md",
+    "title": "My Story With Typing Trainers & Early Internet Culture",
+    "summary": "How MSN Messenger, typing software, and early web culture shaped my relationship with computers.",
+    "type": "article",
+    "currentThemes": [
+      "nostalgia",
+      "learning",
+      "growth"
+    ],
+    "currentTopics": [
+      "technology",
+      "internet-culture"
+    ],
+    "currentTags": [
+      "msn-messenger",
+      "typing",
+      "retro-tech"
+    ],
+    "currentRelated": [
+      "runescape",
+      "my-story-with-videogames-and-adhd",
+      "my-story-with-ps2-modding-and-retro-gaming"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "my-story-with-videogames-and-adhd",
+    "path": "content/articles/my-story-with-videogames-and-adhd.md",
+    "title": "My Story With Video Games, ADHD & Focus",
+    "summary": "How undiagnosed ADHD shaped my relationship with video games, from watching parents play SNES to online multiplayer on Xbox 360.",
+    "type": "article",
+    "currentThemes": [
+      "identity",
+      "growth",
+      "nostalgia"
+    ],
+    "currentTopics": [
+      "gaming",
+      "audhd"
+    ],
+    "currentTags": [
+      "gaming",
+      "adhd",
+      "xbox-360",
+      "snes"
+    ],
+    "currentRelated": [
+      "cod-4",
+      "guitar-hero-3",
+      "halo-3",
+      "my-story-with-ps2-modding-and-retro-gaming"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "sensible-infrastructure-and-custom-servers",
+    "path": "content/articles/sensible-infrastructure-and-custom-servers.md",
+    "title": "Sensible Infrastructure And Custom Servers",
+    "summary": "Why building white-box servers and self-hosting—especially in the age of AI—is critical for avoiding vendor lock-in and extortionate MSP fees.",
+    "type": "article",
+    "currentThemes": [],
+    "currentTopics": [],
+    "currentTags": [
+      "infrastructure",
+      "self-hosting",
+      "pragmatism"
+    ],
+    "currentRelated": [],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "sensible-infrastructure-and-white-box-servers",
+    "path": "content/articles/sensible-infrastructure-and-white-box-servers.md",
+    "title": "White-Box Servers & Sensible Infrastructure",
+    "summary": "Why I planned a $34,000 custom server build for a remote mine site instead of spending $80,000 on enterprise hardware.",
+    "type": "article",
+    "currentThemes": [
+      "pragmatism",
+      "independence"
+    ],
+    "currentTopics": [
+      "self-hosting",
+      "home-lab"
+    ],
+    "currentTags": [
+      "proxmox",
+      "servers",
+      "infrastructure",
+      "networking",
+      "canada-fluorspar"
+    ],
+    "currentRelated": [
+      "my-story-with-cfi",
+      "leaving-cfi",
+      "proxmox-ve",
+      "my-story-with-the-msp-trap-and-broken-infrastructure"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "the-case-for-self-hosting-over-cloud-datacenters",
+    "path": "content/articles/the-case-for-self-hosting-over-cloud-datacenters.md",
+    "title": "The Cloud is a Trap: Why I Advocate for Self-Hosting over Datacenters",
+    "summary": "Exploring the hidden costs, environmental impact, and loss of control associated with modern cloud datacenters, and why a properly sized, self-hosted server is a better investment for companies.",
+    "type": "article",
+    "currentThemes": [
+      "worldview",
+      "systems-thinking",
+      "independence",
+      "sustainability"
+    ],
+    "currentTopics": [
+      "technology",
+      "infrastructure"
+    ],
+    "currentTags": [
+      "self-hosting",
+      "cloud-computing",
+      "datacenters",
+      "artificial-intelligence",
+      "infrastructure"
+    ],
+    "currentRelated": [
+      "sensible-infrastructure-and-custom-servers",
+      "my-story-with-the-msp-trap-and-broken-infrastructure",
+      "my-story-with-home-lab-and-proxmox"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "the-high-horse-of-sharenting",
+    "path": "content/articles/the-high-horse-of-sharenting.md",
+    "title": "The \\\"High Horse\\\" of Sharenting: A Pragmatic Look at Social Media Privacy",
+    "summary": "A pragmatic look at social media privacy, oversharing logistics, and why we need to step down from the privacy pedestal.",
+    "type": "article",
+    "currentThemes": [
+      "worldview",
+      "identity"
+    ],
+    "currentTopics": [
+      "parenting",
+      "technology"
+    ],
+    "currentTags": [
+      "social-media",
+      "privacy",
+      "parenting"
+    ],
+    "currentRelated": [
+      "pewdiepie"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "the-wrong-twin",
+    "path": "content/articles/the-wrong-twin.md",
+    "title": "The Wrong Twin: A Childhood Jukebox Memory",
+    "summary": "A funny childhood memory about excitedly sharing quarters for the jukebox with a friend, only to realize I was talking to his twin brother.",
+    "type": "article",
+    "currentThemes": [
+      "childhood",
+      "nostalgia"
+    ],
+    "currentTopics": [
+      "childhood"
+    ],
+    "currentTags": [
+      "personal",
+      "childhood",
+      "memory"
+    ],
+    "currentRelated": [],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "tone-policing-and-ableism",
+    "path": "content/articles/tone-policing-and-ableism.md",
+    "title": "Tone Policing and Ableism",
+    "summary": "I recently watched a [video clip](https://x.com/FoxNews/status/2095606784882860540) that perfectly encapsulates a subtle, yet deeply pervasive issue: the inters...",
+    "type": "article",
+    "currentThemes": [],
+    "currentTopics": [
+      "internet-culture"
+    ],
+    "currentTags": [
+      "social-commentary",
+      "ableism",
+      "neurodivergence",
+      "tone-policing",
+      "worldview"
+    ],
+    "currentRelated": [],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "workflow-design-and-the-human-element",
+    "path": "content/articles/workflow-design-and-the-human-element.md",
+    "title": "Workflow Design and the Human Element",
+    "summary": "Why it doesn't matter how good a piece of software is if you haven't mapped out the human process first.",
+    "type": "article",
+    "currentThemes": [
+      "pragmatism",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "systems-thinking",
+      "technology"
+    ],
+    "currentTags": [
+      "workflow",
+      "software-adoption",
+      "process-design"
+    ],
+    "currentRelated": [
+      "my-story-with-mechanical-engineering-and-systems-thinking",
+      "my-story-with-keel-systems-and-honest-kpis",
+      "keel-systems"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "autism-burnout-recovery-workbook",
+    "path": "content/autism-burnout-recovery-workbook.md",
+    "title": "The Autism Burnout Recovery Workbook by Dr. Vivian Ness",
+    "summary": "A practical guide for recovering from Autistic Burnout, managing energy caps, and rebuilding boundaries after masking.",
+    "type": "book",
+    "currentThemes": [
+      "identity",
+      "resilience",
+      "resilience"
+    ],
+    "currentTopics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "currentTags": [
+      "book",
+      "autism",
+      "autistic-burnout",
+      "recovery",
+      "autism",
+      "burnout",
+      "recovery"
+    ],
+    "currentRelated": [
+      "unmasking-autism",
+      "my-story-with-autistic-burnout-and-sensory-regulation",
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "thread-audhd-diagnosis"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "unmasking-autism",
+    "path": "content/unmasking-autism.md",
+    "title": "Unmasking Autism by Dr. Devon Price",
+    "summary": "A foundational book exploring high-functioning autistic masking, neurodivergent unlearning, and autistic burnout recovery.",
+    "type": "book",
+    "currentThemes": [
+      "identity",
+      "resilience"
+    ],
+    "currentTopics": [
+      "audhd",
+      "health-and-fitness"
+    ],
+    "currentTags": [
+      "book",
+      "autism",
+      "audhd",
+      "unmasking"
+    ],
+    "currentRelated": [
+      "autism-burnout-recovery-workbook",
+      "my-story-with-autistic-burnout-and-sensory-regulation",
+      "my-story-with-autigender-and-identity",
+      "my-story-with-neurodiversity-and-adult-diagnosis"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "baccalieu-trail-brewing-company",
+    "path": "content/library/companies/baccalieu-trail-brewing-company.md",
+    "title": "Baccalieu Trail Brewing Company",
+    "summary": "Local craft brewery located on the Baccalieu Trail in Newfoundland.",
+    "type": "company",
+    "currentThemes": [
+      "connection"
+    ],
+    "currentTopics": [
+      "technology"
+    ],
+    "currentTags": [
+      "brewery",
+      "craft-beer",
+      "newfoundland"
+    ],
+    "currentRelated": [
+      "great-big-sea",
+      "library",
+      "project-atlas"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "cdw-canada",
+    "path": "content/library/companies/cdw-canada.md",
+    "title": "CDW Canada",
+    "summary": "An IT solutions provider that offered excellent service and the best prices during my time as an IT Coordinator for Canada Fluorspar.",
+    "type": "company",
+    "currentThemes": [
+      "systems-thinking",
+      "connection"
+    ],
+    "currentTopics": [
+      "technology"
+    ],
+    "currentTags": [
+      "vendor",
+      "it",
+      "enterprise"
+    ],
+    "currentRelated": [
+      "canada-fluorspar",
+      "my-story-with-cfi",
+      "sensible-infrastructure-and-white-box-servers"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "bo-burnham",
+    "path": "content/library/creators/comedy/bo-burnham.md",
+    "title": "Bo Burnham",
+    "summary": "American comedian, musician, writer, director, and actor known for his musical comedy specials 'Words Words Words', 'what.', 'Make Happy', and 'Inside'.",
+    "type": "creator",
+    "currentThemes": [
+      "creativity",
+      "identity"
+    ],
+    "currentTopics": [
+      "music",
+      "video-editing"
+    ],
+    "currentTags": [
+      "comedy",
+      "music",
+      "filmmaker",
+      "satire"
+    ],
+    "currentRelated": [
+      "my-story-with-bo-burnham",
+      "my-story-with-music-and-emotional-anchoring",
+      "my-story-with-donald-glover",
+      "my-story-with-public-voice-and-social-ridicule"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "asmongold",
+    "path": "content/library/creators/youtube/asmongold.md",
+    "title": "Asmongold / Zackrawrr",
+    "summary": "Content creator and streamer focusing on gaming culture, hardware news, and commentary.",
+    "type": "creator",
+    "currentThemes": [
+      "nostalgia"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "creator",
+      "streaming",
+      "gaming"
+    ],
+    "currentRelated": [
+      "my-story-with-videogames-and-adhd",
+      "runescape",
+      "starcraft-2",
+      "retro-gaming-consoles"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "good-mythical-morning",
+    "path": "content/library/creators/youtube/good-mythical-morning.md",
+    "title": "Good Mythical Morning",
+    "summary": "A long-time favorite YouTube channel I've been watching for years.",
+    "type": "creator",
+    "currentThemes": [
+      "nostalgia",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "entertainment"
+    ],
+    "currentTags": [
+      "youtube",
+      "creator",
+      "comedy"
+    ],
+    "currentRelated": [
+      "youtube",
+      "penguinz0",
+      "pewdiepie"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "im-autistic-now-what",
+    "path": "content/library/creators/youtube/im-autistic-now-what.md",
+    "title": "I'm Autistic, Now What? (YouTube Channel)",
+    "summary": "Educational YouTube channel sharing late-diagnosed autistic perspectives, masking breakdowns, and AuDHD lived experiences.",
+    "type": "creator",
+    "currentThemes": [
+      "identity",
+      "connection"
+    ],
+    "currentTopics": [
+      "audhd",
+      "video-editing"
+    ],
+    "currentTags": [
+      "creator",
+      "youtube",
+      "autism",
+      "audhd"
+    ],
+    "currentRelated": [
+      "my-journey-with-neurodiversity",
+      "my-story-with-neurodiversity-and-adult-diagnosis",
+      "unmasking-autism",
+      "autism-burnout-recovery-workbook"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "penguinz0",
+    "path": "content/library/creators/youtube/penguinz0.md",
+    "title": "penguinz0",
+    "summary": "A YouTuber I've been watching for a very long time, even though we don't always see eye to eye.",
+    "type": "creator",
+    "currentThemes": [
+      "nostalgia",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "entertainment"
+    ],
+    "currentTags": [
+      "youtube",
+      "creator",
+      "commentary"
+    ],
+    "currentRelated": [
+      "youtube",
+      "good-mythical-morning",
+      "pewdiepie"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "pewdiepie",
+    "path": "content/library/creators/youtube/pewdiepie.md",
+    "title": "PewDiePie",
+    "summary": "A massive YouTube creator I started watching before he was kicked out of his apartment in Sweden by his homophobic landlord.",
+    "type": "creator",
+    "currentThemes": [
+      "nostalgia",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "entertainment"
+    ],
+    "currentTags": [
+      "youtube",
+      "creator",
+      "gaming",
+      "commentary"
+    ],
+    "currentRelated": [
+      "youtube",
+      "penguinz0",
+      "good-mythical-morning"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "guitar-hero-3",
+    "path": "content/library/games/misc/guitar-hero-3.md",
+    "title": "Guitar Hero 3",
+    "summary": "The peak of the rhythm game era, combining my love for music with intense, physical gameplay.",
+    "type": "game",
+    "currentThemes": [
+      "nostalgia"
+    ],
+    "currentTopics": [
+      "gaming",
+      "music"
+    ],
+    "currentTags": [
+      "game",
+      "rhythm",
+      "guitar-hero"
+    ],
+    "currentRelated": [
+      "my-story-with-ps2-modding-and-retro-gaming"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "miniclip",
+    "path": "content/library/games/misc/miniclip.md",
+    "title": "Miniclip",
+    "summary": "A classic flash gaming site home to many nostalgic memories, specifically Bush Shootout.",
+    "type": "game",
+    "currentThemes": [
+      "nostalgia",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "flash",
+      "browser",
+      "retro",
+      "web"
+    ],
+    "currentRelated": [
+      "whyville",
+      "habbo-hotel",
+      "my-story-with-typing-trainers-and-early-internet"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "ps2-expansion",
+    "path": "content/library/games/misc/ps2-expansion.md",
+    "title": "PlayStation 2 Network Adaptor & SATA HDD Mod",
+    "summary": "Hardware expansion mod for the original fat PS2 console allowing internal SATA hard drive game backups via OPL.",
+    "type": "game",
+    "currentThemes": [
+      "nostalgia",
+      "craftsmanship"
+    ],
+    "currentTopics": [
+      "gaming",
+      "technology"
+    ],
+    "currentTags": [
+      "ps2",
+      "hardware",
+      "modding",
+      "retro-gaming"
+    ],
+    "currentRelated": [
+      "my-story-with-ps2-modding-and-retro-gaming",
+      "thread-ps2-hardware-modding",
+      "retro-gaming-consoles",
+      "ffx"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "habbo-hotel",
+    "path": "content/library/games/mmo/habbo-hotel.md",
+    "title": "Habbo Hotel",
+    "summary": "A social game I was quickly banned from playing by my mom and uncle.",
+    "type": "game",
+    "currentThemes": [
+      "nostalgia",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "browser",
+      "social",
+      "retro"
+    ],
+    "currentRelated": [
+      "whyville",
+      "runescape",
+      "miniclip"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "runescape",
+    "path": "content/library/games/mmo/runescape.md",
+    "title": "RuneScape",
+    "summary": "The defining title of my MMO era, teaching me early lessons in economics, grinding, and online social dynamics.",
+    "type": "game",
+    "currentThemes": [
+      "nostalgia"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "game",
+      "mmo",
+      "runescape"
+    ],
+    "currentRelated": [
+      "my-story-with-ps2-modding-and-retro-gaming"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "whyville",
+    "path": "content/library/games/mmo/whyville.md",
+    "title": "Whyville",
+    "summary": "A kids' chat room game where my mom helped me grind clams to buy cosmetics.",
+    "type": "game",
+    "currentThemes": [
+      "nostalgia",
+      "connection"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "browser",
+      "social",
+      "retro",
+      "kids"
+    ],
+    "currentRelated": [
+      "habbo-hotel",
+      "miniclip",
+      "my-story-with-typing-trainers-and-early-internet"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "cyberpunk-2077",
+    "path": "content/library/games/rpg/cyberpunk-2077.md",
+    "title": "Cyberpunk 2077",
+    "summary": "A modern open-world masterpiece that stands alongside the classics in my library.",
+    "type": "game",
+    "currentThemes": [
+      "craftsmanship"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "game",
+      "rpg",
+      "cyberpunk"
+    ],
+    "currentRelated": [
+      "my-story-with-ps2-modding-and-retro-gaming"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "ffx",
+    "path": "content/library/games/rpg/ffx.md",
+    "title": "Final Fantasy X",
+    "summary": "A foundational RPG experience that shaped my appreciation for narrative, deep mechanics, and the PS2 era.",
+    "type": "game",
+    "currentThemes": [
+      "nostalgia"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "game",
+      "rpg",
+      "final-fantasy",
+      "ps2"
+    ],
+    "currentRelated": [
+      "my-story-with-ps2-modding-and-retro-gaming"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "pokemon",
+    "path": "content/library/games/rpg/pokemon.md",
+    "title": "Pokémon (Yellow, Silver, Crystal, Sapphire, Platinum)",
+    "summary": "The quintessential childhood RPGs that ingrained mechanics, typing, and collecting into my gaming DNA.",
+    "type": "game",
+    "currentThemes": [
+      "nostalgia"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "game",
+      "rpg",
+      "nintendo",
+      "pokemon"
+    ],
+    "currentRelated": [
+      "my-story-with-ps2-modding-and-retro-gaming"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "the-legend-of-zelda-ocarina-of-time",
+    "path": "content/library/games/rpg/the-legend-of-zelda-ocarina-of-time.md",
+    "title": "The Legend of Zelda: Ocarina of Time",
+    "summary": "A childhood favorite game I never actually beat, following a common theme of my childhood gaming.",
+    "type": "game",
+    "currentThemes": [
+      "nostalgia",
+      "curiosity"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "n64",
+      "nintendo",
+      "adventure",
+      "retro"
+    ],
+    "currentRelated": [
+      "ffx",
+      "pokemon",
+      "my-story-with-videogames-and-adhd"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "cod-4",
+    "path": "content/library/games/shooters/cod-4.md",
+    "title": "Call of Duty 4",
+    "summary": "A cornerstone of the multiplayer shooter era, defining online competitive play with friends.",
+    "type": "game",
+    "currentThemes": [
+      "nostalgia"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "game",
+      "fps",
+      "call-of-duty"
+    ],
+    "currentRelated": [
+      "my-story-with-ps2-modding-and-retro-gaming"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "cs-go",
+    "path": "content/library/games/shooters/cs-go.md",
+    "title": "CS:GO",
+    "summary": "The game that really honed my mouse and keyboard skills, getting up to Gold rank.",
+    "type": "game",
+    "currentThemes": [
+      "learning",
+      "nostalgia"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "fps",
+      "competitive",
+      "pc"
+    ],
+    "currentRelated": [
+      "cod-4",
+      "halo-3",
+      "my-story-with-videogames-and-adhd"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "halo-3",
+    "path": "content/library/games/shooters/halo-3.md",
+    "title": "Halo 3",
+    "summary": "A monumental shooter that shaped late-night social gaming rituals.",
+    "type": "game",
+    "currentThemes": [
+      "nostalgia"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "game",
+      "fps",
+      "halo"
+    ],
+    "currentRelated": [
+      "my-story-with-ps2-modding-and-retro-gaming"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "perfect-dark",
+    "path": "content/library/games/shooters/perfect-dark.md",
+    "title": "Perfect Dark",
+    "summary": "A childhood classic similar to Siphon Filter, where my dad and I almost beat the last level.",
+    "type": "game",
+    "currentThemes": [
+      "nostalgia",
+      "connection"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "n64",
+      "retro",
+      "shooter"
+    ],
+    "currentRelated": [
+      "siphon-filter-2",
+      "the-legend-of-zelda-ocarina-of-time",
+      "my-story-with-videogames-and-adhd"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "siphon-filter-2",
+    "path": "content/library/games/shooters/siphon-filter-2.md",
+    "title": "Siphon Filter 2",
+    "summary": "A classic childhood game I played through with my dad, famous for our cardboard screen-split strategy.",
+    "type": "game",
+    "currentThemes": [
+      "nostalgia",
+      "connection"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "playstation",
+      "retro",
+      "stealth",
+      "co-op"
+    ],
+    "currentRelated": [
+      "perfect-dark",
+      "the-legend-of-zelda-ocarina-of-time",
+      "ps2-expansion"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  },
+  {
+    "id": "starcraft-2",
+    "path": "content/library/games/strategy/starcraft-2.md",
+    "title": "StarCraft 2",
+    "summary": "The pinnacle of RTS and strategic gameplay for me, demanding high APM and intense focus.",
+    "type": "game",
+    "currentThemes": [
+      "systems-thinking"
+    ],
+    "currentTopics": [
+      "gaming"
+    ],
+    "currentTags": [
+      "game",
+      "rts",
+      "starcraft"
+    ],
+    "currentRelated": [
+      "my-story-with-ps2-modding-and-retro-gaming"
+    ],
+    "missing": [
+      "themes",
+      "topics",
+      "tags",
+      "related"
+    ]
+  }
+]

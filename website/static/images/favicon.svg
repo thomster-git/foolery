@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+  <rect width="48" height="48" rx="10" fill="#0b0f19"/>
+  <!-- Knowledge graph nodes -->
+  <circle cx="24" cy="24" r="5" fill="#38bdf8" opacity="0.95"/>
+  <circle cx="10" cy="14" r="3" fill="#818cf8" opacity="0.85"/>
+  <circle cx="38" cy="12" r="3" fill="#818cf8" opacity="0.85"/>
+  <circle cx="8"  cy="36" r="2.5" fill="#34d399" opacity="0.8"/>
+  <circle cx="38" cy="36" r="2.5" fill="#34d399" opacity="0.8"/>
+  <circle cx="22" cy="8"  r="2"   fill="#c084fc" opacity="0.75"/>
+  <circle cx="40" cy="26" r="2"   fill="#fbbf24" opacity="0.75"/>
+  <!-- Edges -->
+  <line x1="24" y1="24" x2="10" y2="14" stroke="#38bdf8" stroke-width="1.2" opacity="0.5"/>
+  <line x1="24" y1="24" x2="38" y2="12" stroke="#38bdf8" stroke-width="1.2" opacity="0.5"/>
+  <line x1="24" y1="24" x2="8"  y2="36" stroke="#818cf8" stroke-width="1"   opacity="0.4"/>
+  <line x1="24" y1="24" x2="38" y2="36" stroke="#818cf8" stroke-width="1"   opacity="0.4"/>
+  <line x1="24" y1="24" x2="22" y2="8"  stroke="#c084fc" stroke-width="1"   opacity="0.4"/>
+  <line x1="24" y1="24" x2="40" y2="26" stroke="#fbbf24" stroke-width="1"   opacity="0.4"/>
+  <line x1="10" y1="14" x2="22" y2="8"  stroke="#818cf8" stroke-width="0.8" opacity="0.3"/>
+  <line x1="38" y1="12" x2="40" y2="26" stroke="#818cf8" stroke-width="0.8" opacity="0.3"/>
+</svg>

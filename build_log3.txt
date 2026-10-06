@@ -1,0 +1,48 @@
+
+> project-atlas@0.3.0 build
+> node website/main.js
+
+
+======================================
+ Project Atlas Build
+======================================
+
+Cleaning up old dist directory...
+✓ Loaded 233 markdown files.
+✓ Parsed 233 content objects.
+✓ Normalized 233 objects.
+✓ Injected 142 external tweets.
+✓ Validation passed.
+✓ Validation passed.
+✓ Routing & relationships resolved.
+
+======================================
+ Building Atlas
+======================================
+✓ Relationships
+✓ Routing
+✓ Search
+✓ Graph
+✓ Navigation
+✓ Recommendations
+✓ Statistics
+  Building Sitemap...
+✓ Sitemap
+  Building RSS Feed...
+✓ RSS
+✓ Database
+Generating HTML...
+  Building Dev Tools Page...
+Found 53 articles.
+audhd-and-systems-thinking, aviation-checklists-for-life, bottom-up-systems-thinking, building-a-comprehensive-discord-ecosystem, collecting, discord-vs-corporate-comms, from-rocks-to-routers-qa-qc-and-it, leaving-cfi, manifesto, my-journey-with-neurodiversity, my-story-with-3d-printing-and-laser-engraving, my-story-with-audio-gear-and-podcasting, my-story-with-autigender-and-identity, my-story-with-autistic-burnout-and-sensory-regulation, my-story-with-billy-talent, my-story-with-bo-burnham, my-story-with-cfi, my-story-with-coin-collecting, my-story-with-donald-glover, my-story-with-early-childhood-and-reoccurring-dreams, my-story-with-elementary-school-and-unwritten-social-rules, my-story-with-etchcentric-and-laser-engraving, my-story-with-everything-is-connected, my-story-with-family-memories-and-santa-claus, my-story-with-healthcare, my-story-with-home-lab-and-proxmox, my-story-with-keel-systems-and-honest-kpis, my-story-with-lego-robotics-and-atlanta, my-story-with-lifting-and-sensory-regulation, my-story-with-live-music-and-concerts, my-story-with-mechanical-engineering-and-systems-thinking, my-story-with-mechanical-engineering, my-story-with-medical-stigma-and-advocacy, my-story-with-misunderstandings-and-literal-intent, my-story-with-music-and-emotional-anchoring, my-story-with-neurodiversity-and-adult-diagnosis, my-story-with-politics-and-polarization, my-story-with-potty-training-and-parenting, my-story-with-ps2-modding-and-retro-gaming, my-story-with-public-voice-and-social-ridicule, my-story-with-the-7-year-waitlist, my-story-with-the-akira-ransomware-attack, my-story-with-the-msp-trap-and-broken-infrastructure, my-story-with-the-nicu-and-corporate-coldness, my-story-with-typing-trainers-and-early-internet, my-story-with-videogames-and-adhd, performative-anti-bullying, sensible-infrastructure-and-white-box-servers, the-case-for-self-hosting-over-cloud-datacenters, the-high-horse-of-sharenting, the-wrong-twin, tone-policing-and-ableism, workflow-design-and-the-human-element
+✓ HTML Generated
+✓ Pages
+✓ Index Pages
+✓ Feed
+✓ LLM Exporter
+✓ Export
+
+======================================
+ Atlas Build Complete
+======================================
+
