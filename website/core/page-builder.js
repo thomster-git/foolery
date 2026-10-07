@@ -42,6 +42,7 @@ export default class PageBuilder {
 
         await this.buildHomepage(content);
         await this.buildStartPage();
+        await this.buildUsesPage();
         await this.buildToolsPage();
         await this.buildDevToolsPage();
         await this.buildResumePage();
@@ -1243,8 +1244,33 @@ export default class PageBuilder {
             template,
             "Start Here",
             {
-                description: "New to Thoms Foolery? Choose your path — resume, 3D knowledge graph, fitness journey, or find me on socials.",
+                description: "New to Thoms Foolery? Read the Project Atlas manifesto and explore early experiments in systems mapping.",
                 path: "/start/",
+                ogType: "website"
+            }
+        );
+
+        await fs.writeFile(path.join(folder, "index.html"), html);
+
+    }
+
+    //--------------------------------------------------
+    // Uses Page
+    //--------------------------------------------------
+
+    async buildUsesPage() {
+
+        const folder = path.join(this.output, "uses");
+        await fs.mkdir(folder, { recursive: true });
+
+        const template = await this.loadLayout("uses.html");
+
+        const html = await this.wrapPage(
+            template,
+            "What I Use | Thoms Foolery",
+            {
+                description: "A curated list of the hardware, software, and everyday carry that powers Thoms Foolery.",
+                path: "/uses/",
                 ogType: "website"
             }
         );
