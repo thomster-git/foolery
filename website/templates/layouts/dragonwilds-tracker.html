@@ -31,6 +31,7 @@
         <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0; overflow-x: auto;">
             <button class="dw-tab-btn active" data-tab="guide" style="background: none; border: none; border-bottom: 3px solid var(--accent-cyan); color: var(--accent-cyan); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">📋 Progression Guide</button>
             <button class="dw-tab-btn" data-tab="quests" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">⚔️ Quests</button>
+            <button class="dw-tab-btn" data-tab="gear" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">🛡️ Gear</button>
             <button class="dw-tab-btn" data-tab="stats" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">📊 Stats Profile</button>
         </div>
 
@@ -247,6 +248,91 @@
 
         </div>
         <!-- End Quests Tab -->
+
+        <!-- Tab: Gear Progression -->
+        <div id="dw-tab-gear" class="dw-tab-panel" style="display: none;">
+            <h2 style="color: var(--accent-cyan); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Armor Progression</h2>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 2rem; color: var(--text-main);">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                        <th style="padding: 0.75rem;">Set</th>
+                        <th style="padding: 0.75rem;">Crafting Method</th>
+                        <th style="padding: 0.75rem;">Components</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.75rem;"><strong>Set 1</strong></td>
+                        <td style="padding: 0.75rem;"><a href="https://dragonwilds.runescape.wiki/w/Crafting_table" target="_blank" style="color: var(--accent-cyan);">Crafting table</a></td>
+                        <td style="padding: 0.75rem;">Reinforced helmet, body, and legs</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.75rem;"><strong>Set 2</strong></td>
+                        <td style="padding: 0.75rem;"><a href="https://dragonwilds.runescape.wiki/w/Armour_bench" target="_blank" style="color: var(--accent-cyan);">Armour bench</a></td>
+                        <td style="padding: 0.75rem;">Bronze helmet, platebody, and platelegs</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.75rem;"><strong>Set 3</strong></td>
+                        <td style="padding: 0.75rem;"><a href="https://dragonwilds.runescape.wiki/w/Armour_bench" target="_blank" style="color: var(--accent-cyan);">Armour bench</a></td>
+                        <td style="padding: 0.75rem;">Iron/Paladin's helmet, platebody, and platelegs <br><span style="color: var(--text-muted); font-size: 0.9em;">(Optional: Gilded Paladin armour for fashionscape)</span></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.75rem;"><strong>Set 4</strong></td>
+                        <td style="padding: 0.75rem;"><a href="https://dragonwilds.runescape.wiki/w/Armour_bench" target="_blank" style="color: var(--accent-cyan);">Armour bench</a></td>
+                        <td style="padding: 0.75rem;">Steel/Fallen Hoplite's armour <br><span style="color: var(--text-muted); font-size: 0.9em;">(Optional: White armour for fashionscape)</span></td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.75rem;"><strong>Set 5</strong></td>
+                        <td style="padding: 0.75rem;"><a href="https://dragonwilds.runescape.wiki/w/Armour_bench" target="_blank" style="color: var(--accent-cyan);">Armour bench</a></td>
+                        <td style="padding: 0.75rem;">Mithril/Black armour</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.75rem;"><strong>Set 6</strong></td>
+                        <td style="padding: 0.75rem;"><a href="https://dragonwilds.runescape.wiki/w/Armour_bench" target="_blank" style="color: var(--accent-cyan);">Armour bench</a></td>
+                        <td style="padding: 0.75rem;">Adamant/Obsidian armour</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.75rem;"><strong>Set 7</strong></td>
+                        <td style="padding: 0.75rem;"><a href="https://dragonwilds.runescape.wiki/w/Armour_bench" target="_blank" style="color: var(--accent-cyan);">Armour bench</a></td>
+                        <td style="padding: 0.75rem;">Rune armour</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 0.75rem;"><strong>Set 8</strong></td>
+                        <td style="padding: 0.75rem;">N/A</td>
+                        <td style="padding: 0.75rem;">Dragon armour <br><span style="color: var(--text-muted); font-size: 0.9em;">(Reward from Queenslayer's reward pack)</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 style="color: var(--accent-cyan); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Recommended Set Bonus Strategy</h2>
+            
+            <div class="critical-warning" style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                <strong style="color: #10b981;">💡 Hybrid Gear Recommendation:</strong> Since the helmet provides the least amount of defense stats, I highly recommend replacing it with the <strong>magic equivalent</strong> for your gear tier.
+            </div>
+
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">By swapping the melee helmet for a magic one, you unlock a powerful combination of set bonuses:</p>
+            <ul style="list-style: none; padding-left: 0; margin-bottom: 1.5rem;">
+                <li style="margin-bottom: 0.5rem; color: var(--text-main);">✨ <strong>1/3 Magic Set Bonus:</strong> -50% Stamina regen delay</li>
+                <li style="margin-bottom: 0.5rem; color: var(--text-main);">🛡️ <strong>1/3 Melee Set Bonus:</strong> -33% Block stamina cost</li>
+                <li style="margin-bottom: 0.5rem; color: var(--text-main);">💥 <strong>2/3 Melee Set Bonus:</strong> +50% Crit chance after blocking</li>
+            </ul>
+
+            <p style="color: var(--text-muted); margin-bottom: 2rem;"><em>Note: By doing this, you will miss out on the <strong>3/3 Melee Set Bonus</strong> (+25% Damage to staggered targets), but the stamina and crit benefits generally outweigh this loss.</em></p>
+
+            <h3 style="color: var(--text-main); margin-top: 1.5rem;">Magic Helmet Equivalents</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Here are the corresponding magic helmets to pair with each gear set for the optimal hybrid bonus strategy:</p>
+            <ul style="list-style: none; padding-left: 0;">
+                <li class="task-item"><span class="task-text"><strong>Set 1:</strong> <a href="https://dragonwilds.runescape.wiki/w/Apprentice_hat" target="_blank" style="color: var(--accent-cyan);">Apprentice hat</a></span></li>
+                <li class="task-item"><span class="task-text"><strong>Set 2:</strong> <a href="https://dragonwilds.runescape.wiki/w/Wizard_hat" target="_blank" style="color: var(--accent-cyan);">Wizard hat</a></span></li>
+                <li class="task-item"><span class="task-text"><strong>Set 3:</strong> <a href="https://dragonwilds.runescape.wiki/w/Dark_mage_hood" target="_blank" style="color: var(--accent-cyan);">Dark mage hood</a> OR <a href="https://dragonwilds.runescape.wiki/w/Dragonkin_mage_hood" target="_blank" style="color: var(--accent-cyan);">Dragonkin mage hood</a></span></li>
+                <li class="task-item"><span class="task-text"><strong>Set 4:</strong> <a href="https://dragonwilds.runescape.wiki/w/Splitbark_helm" target="_blank" style="color: var(--accent-cyan);">Splitbark helm</a> OR <a href="https://dragonwilds.runescape.wiki/w/Necromancer%27s_crown" target="_blank" style="color: var(--accent-cyan);">Necromancer's crown</a></span></li>
+                <li class="task-item"><span class="task-text"><strong>Set 5:</strong> <a href="https://dragonwilds.runescape.wiki/w/Mystic_hat" target="_blank" style="color: var(--accent-cyan);">Mystic hat</a> OR <a href="https://dragonwilds.runescape.wiki/w/Zamorak_hood" target="_blank" style="color: var(--accent-cyan);">Zamorak hood</a></span></li>
+                <li class="task-item"><span class="task-text"><strong>Set 6:</strong> <a href="https://dragonwilds.runescape.wiki/w/Infinity_robe_hat" target="_blank" style="color: var(--accent-cyan);">Infinity robe hat</a> OR <a href="https://dragonwilds.runescape.wiki/w/Lunar_Garou_hat" target="_blank" style="color: var(--accent-cyan);">Lunar Garou hat</a></span></li>
+                <li class="task-item"><span class="task-text"><strong>Set 7:</strong> <a href="https://dragonwilds.runescape.wiki/w/Ancestral_Hat" target="_blank" style="color: var(--accent-cyan);">Ancestral Hat</a></span></li>
+                <li class="task-item"><span class="task-text"><strong>Set 8:</strong> <a href="https://dragonwilds.runescape.wiki/w/Ancestral_Hat" target="_blank" style="color: var(--accent-cyan);">Ancestral Hat</a> OR <a href="https://dragonwilds.runescape.wiki/w/Dragon_Full_Helm" target="_blank" style="color: var(--accent-cyan);">Dragon Full Helm</a></span></li>
+            </ul>
+        </div>
+        <!-- End Gear Progression Tab -->
 
         <!-- Tab: Stats Profile -->
         <div id="dw-tab-stats" class="dw-tab-panel" style="display: none;">

@@ -2,16 +2,40 @@
   <div class="content-wrapper article-layout" style="margin: 2rem auto;">
     <div class="article-content">
 
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Ocarina Practice Tool & Tuner",
+      "url": "https://thomsfoolery.com/tools/ocarina/",
+      "applicationCategory": "MusicApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0"
+      },
+      "description": "Interactive ocarina fingering chart, live microphone tuner, and Zelda songbook for 12-hole Alto C ocarinas."
+    }
+    </script>
+
     <div class="breadcrumbs" style="margin-bottom: 2rem;">
       <a href="/">Home</a> ›
-      <a href="/tools/">Developer Tools</a> ›
+      <a href="/tools/">Interactive Tools</a> ›
       <span>Ocarina Practice</span>
     </div>
 
     <div style="text-align: center; margin-bottom: 2.5rem;">
       <h1 style="font-size: 2.5rem; color: var(--accent-cyan); margin-bottom: 0.5rem;">🎵 Ocarina Practice</h1>
       <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1rem;">12-hole tenor/alto C ocarina — fingering chart, live tuner, and Zelda songbook.</p>
-      <a href="https://twitter.com/intent/tweet?text=Everything%20is%20connected.%20I%20found%20the%20pattern%20at%20Thoms%20Foolery.%20Can%20you%20see%20it%3F%20%F0%9F%91%81%EF%B8%8F%F0%9F%95%B8%EF%B8%8F&url=https://thomsfoolery.com/tools/ocarina/" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.4rem 0.8rem; font-size: 0.85rem; font-family: monospace; background: rgba(168, 85, 247, 0.1); color: var(--accent-purple); border: 1px solid var(--accent-purple); border-radius: 4px; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='var(--accent-purple)'; this.style.color='white';" onmouseout="this.style.background='rgba(168, 85, 247, 0.1)'; this.style.color='var(--accent-purple)';">[ Transmit Findings ]</a>
+    </div>
+
+    <div style="background: rgba(168, 85, 247, 0.05); border-left: 4px solid var(--accent-purple); padding: 1.5rem; margin-bottom: 2.5rem; text-align: left; font-size: 0.95rem; line-height: 1.6; border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+        <strong style="color: var(--accent-purple); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; display: block; margin-bottom: 0.5rem;">The Atlas Connection</strong>
+        Music theory is one of the most ancient and elegant manifestations of <strong>systems thinking and pattern recognition</strong>. The relationship between frequencies, scales, and physical instruments demonstrates how mathematical constraints give rise to creative expression. This tool bridges the gap between the physical breath required to play an instrument and the digital signal processing required to visualize pitch accuracy in real-time.
+    </div>
+
+    <div style="text-align: center; margin-bottom: 2.5rem;">
+      <a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20interactive%20Ocarina%20Practice%20Tool%20at%20Thoms%20Foolery.%20%F0%9F%8E%B6&url=https://thomsfoolery.com/tools/ocarina/" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; padding: 0.4rem 0.8rem; font-size: 0.85rem; text-decoration: none;">[ Share This Tool ]</a>
     </div>
 
     <!-- Tabs -->
@@ -172,8 +196,21 @@
       </div>
     </div>
 
+      <div style="text-align: left; max-width: 800px; margin: 4rem auto 2rem auto; line-height: 1.7; color: var(--text-main);">
+        <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--accent-cyan);">Methodology: How This Tool Works</h2>
+        
+        <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">The Autocorrelation Tuner</h3>
+        <p style="margin-bottom: 1.5rem;">
+            The live microphone tuner uses the Web Audio API and a mathematical algorithm called <strong>autocorrelation</strong> to detect pitch. By sampling the raw audio waveform in real-time and comparing it to delayed versions of itself, the algorithm identifies the fundamental frequency of the note being played. This is far more accurate for wind instruments than simple Fast Fourier Transforms (FFT), allowing the tuner to provide sub-cent accuracy even with the natural breathy timbre of an ocarina.
+        </p>
+        
+        <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Ocarina Fingering Architecture</h3>
+        <p style="margin-bottom: 1.5rem;">
+            The fingering charts are designed specifically for a 12-hole Alto or Tenor C Ocarina. Unlike linear instruments like a piano, the ocarina is a <em>vessel flute</em>. Pitch is determined primarily by the total surface area of the open holes relative to the internal volume of the chamber, rather than the specific placement of the holes. However, cross-fingerings and sub-holes (the two small holes used for accidentals) provide precise intonation adjustments.
+        </p>
+      </div>
+
     </div> <!-- end article-content -->
-    {{ad_sidebar}}
   </div>
 </div>
 
@@ -704,6 +741,36 @@ function nameToNoteNum(noteStr) {
   return (octave + 1) * 12 + index;
 }
 
+let synthCtx = null;
+function playSynthNote(noteStr) {
+  const noteNum = nameToNoteNum(noteStr);
+  if (noteNum === null) return;
+  
+  if (!synthCtx) {
+    synthCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (synthCtx.state === 'suspended') {
+    synthCtx.resume();
+  }
+  
+  const freq = 440 * Math.pow(2, (noteNum - 69) / 12);
+  const osc = synthCtx.createOscillator();
+  const gain = synthCtx.createGain();
+  
+  osc.type = 'sine'; // Ocarina-like pure tone
+  osc.frequency.setValueAtTime(freq, synthCtx.currentTime);
+  
+  gain.gain.setValueAtTime(0, synthCtx.currentTime);
+  gain.gain.linearRampToValueAtTime(0.5, synthCtx.currentTime + 0.05); // Attack
+  gain.gain.exponentialRampToValueAtTime(0.01, synthCtx.currentTime + 0.5); // Decay/Release
+  
+  osc.connect(gain);
+  gain.connect(synthCtx.destination);
+  
+  osc.start(synthCtx.currentTime);
+  osc.stop(synthCtx.currentTime + 0.5);
+}
+
 function startPracticeMode(type) {
   if (!audioCtx) startTuner(); // Initialize mic if not already running
   practiceType = type;
@@ -874,7 +941,7 @@ function generateNotesHtml(notes) {
       const svg = f ? renderHoleSVG(f.holes, f.thumbs) : `<div style="color:var(--text-muted);font-size:0.7rem;">(no chart)</div>`;
       const dur = beat.dur ? durLabel(beat.dur) : '&nbsp;';
       return `
-        <div class="note-beat">
+        <div class="note-beat" onclick="playSynthNote('${beat.n}')" style="cursor: pointer;" title="Click to hear ${beat.n}">
           <div class="note-name">${beat.n}</div>
           <div style="font-size:0.75rem;color:var(--text-muted);">${dur}</div>
           <div class="note-fingering">${svg}</div>

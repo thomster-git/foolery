@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         { id: 3, name: "Chicago Bears", division: "NFCN", conf: "NFC", color: "#C83803" },
         { id: 8, name: "Detroit Lions", division: "NFCN", conf: "NFC", color: "#0076B6" },
         { id: 9, name: "Green Bay Packers", division: "NFCN", conf: "NFC", color: "#203731" },
-        { id: 14, name: "Minnesota Vikings", division: "NFCN", conf: "NFC", color: "#4F2683" },
+        { id: 16, name: "Minnesota Vikings", division: "NFCN", conf: "NFC", color: "#4F2683" },
         { id: 1, name: "Atlanta Falcons", division: "NFCS", conf: "NFC", color: "#A71930" },
         { id: 29, name: "Carolina Panthers", division: "NFCS", conf: "NFC", color: "#0085CA" },
         { id: 18, name: "New Orleans Saints", division: "NFCS", conf: "NFC", color: "#D3BC8D" },
@@ -109,7 +109,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 };
             });
 
-            allTeamsData = await Promise.all(fetchPromises);
+            const results = await Promise.allSettled(fetchPromises);
+            allTeamsData = results.filter(r => r.status === 'fulfilled').map(r => r.value);
 
             // Populate Team Select
             allTeamsData.sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {

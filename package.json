@@ -1,6 +1,6 @@
 {
   "name": "project-atlas",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "An open, data-driven platform for building interconnected digital gardens (powering Thoms Foolery)",
   "type": "module",
   "main": "website/main.js",

@@ -116,7 +116,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 };
             });
 
-            allTeamsData = await Promise.all(fetchPromises);
+            const results = await Promise.allSettled(fetchPromises);
+            allTeamsData = results.filter(r => r.status === 'fulfilled').map(r => r.value);
 
             // Populate Team Select
             allTeamsData.sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {

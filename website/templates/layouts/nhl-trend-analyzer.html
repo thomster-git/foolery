@@ -2,19 +2,41 @@
     <div class="content-wrapper article-layout" style="text-align: center; margin: 4rem auto;">
         <div class="article-content">
         
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "NHL Momentum & Trend Analyzer",
+          "url": "https://thomsfoolery.com/tools/nhl-trend-analyzer.html",
+          "applicationCategory": "SportsApplication",
+          "operatingSystem": "Any",
+          "offers": {
+            "@type": "Offer",
+            "price": "0"
+          },
+          "description": "Interactive data visualization tool for NHL hockey team performance tracking, momentum, and goal differentials."
+        }
+        </script>
+
         <div class="breadcrumbs">
             <a href="/">Home</a> ›
-            <a href="/tools/">Developer Tools</a> ›
+            <a href="/tools/">Interactive Tools</a> ›
             <span>NHL Trend Analyzer</span>
         </div>
 
         <h1 style="font-size: 3rem; margin-bottom: 1rem;">NHL Trend Analyzer</h1>
-        <div style="margin-bottom: 2rem;">
-            <a href="https://twitter.com/intent/tweet?text=Everything%20is%20connected.%20I%20found%20the%20pattern%20at%20Thoms%20Foolery.%20Can%20you%20see%20it%3F%20%F0%9F%91%81%EF%B8%8F%F0%9F%95%B8%EF%B8%8F&url=https://thomsfoolery.com/tools/nhl-trend-analyzer.html" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.4rem 0.8rem; font-size: 0.85rem; font-family: monospace; background: rgba(168, 85, 247, 0.1); color: var(--accent-purple); border: 1px solid var(--accent-purple); border-radius: 4px; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='var(--accent-purple)'; this.style.color='white';" onmouseout="this.style.background='rgba(168, 85, 247, 0.1)'; this.style.color='var(--accent-purple)';">[ Transmit Findings ]</a>
+        
+        <div style="background: rgba(168, 85, 247, 0.05); border-left: 4px solid var(--accent-purple); padding: 1.5rem; margin-bottom: 2.5rem; text-align: left; font-size: 0.95rem; line-height: 1.6; border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+            <strong style="color: var(--accent-purple); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; display: block; margin-bottom: 0.5rem;">The Atlas Connection</strong>
+            At first glance, hockey stats might seem out of place in a digital garden. But sports seasons are ultimately sprawling datasets of <strong>variance, momentum, and statistical pattern recognition</strong>. By graphing trailing indicators like goal differentials, we can identify when a team's actual performance diverges from their raw win percentage—detecting systemic signal through the noise.
         </div>
 
-        <div style="background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); position: relative; overflow: hidden; margin-bottom: 2rem; text-align: left;">
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">Analyze NHL team performance and special teams efficiency over the season. Select a team to highlight their specific trendline.</p>
+        <div style="margin-bottom: 2rem;">
+            <a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20interactive%20NHL%20Trend%20Analyzer%20at%20Thoms%20Foolery.%20%F0%9F%8F%92%F0%9F%93%88&url=https://thomsfoolery.com/tools/nhl-trend-analyzer.html" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; padding: 0.4rem 0.8rem; font-size: 0.85rem; text-decoration: none;">[ Share This Tool ]</a>
+        </div>
+
+        <div style="background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); position: relative; overflow: hidden; margin-bottom: 3rem; text-align: left;">
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Analyze NHL team momentum and performance over the season. Select a team to highlight their specific trendline against the rest of the league.</p>
             
             <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
                 <div>
@@ -67,9 +89,26 @@
                 <p>Failed to load data from NHL stats API.</p>
             </div>
         </div>
+        
+        <div style="text-align: left; max-width: 800px; margin: 0 auto 4rem auto; line-height: 1.7; color: var(--text-main);">
+            <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--accent-cyan);">Methodology: Tracking Hockey Momentum</h2>
+            
+            <p style="margin-bottom: 1.5rem;">
+                The NHL Trend Analyzer visualizes team performance over the course of the 82-game regular season. Unlike traditional standings that only show the current state of a team's points, this tool reveals the <strong>trajectory and momentum</strong> of how they got there.
+            </p>
+            
+            <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Cumulative Goal Differential</h3>
+            <p style="margin-bottom: 1.5rem;">
+                A team's goal differential (goals scored minus goals allowed) is historically one of the strongest predictive indicators of future success. Teams that win many one-goal games but have a negative or flat goal differential are often statistical anomalies primed for regression. Conversely, teams that consistently outshoot and outscore opponents but suffer from poor luck in overtime shootouts will typically bounce back.
+            </p>
+            
+            <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Points Percentage Trajectory</h3>
+            <p style="margin-bottom: 1.5rem;">
+                The "Points Percentage" metric tracks the ratio of points earned versus total points available at any given game in the season. A perfectly average team will hover around 0.500 (colloquially the "NHL .500" mark, though the loser point inflates this). Monitoring this curve allows you to see distinct coaching changes, injury impacts, and momentum swings that raw standings conceal.
+            </p>
+        </div>
 
         </div> <!-- end article-content -->
-        {{ad_sidebar}}
     </div>
 </div>
 

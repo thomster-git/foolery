@@ -19,11 +19,13 @@ export default class RSSBuilder {
     </item>`).join("");
 
         const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Project Atlas — Thoms Foolery</title>
     <link>https://thomsfoolery.com/</link>
+    <atom:link href="https://thomsfoolery.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>An open, data-driven platform for building interconnected digital gardens.</description>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     ${xmlItems}
   </channel>
 </rss>`;

@@ -5,6 +5,16 @@ type: project
 status: active
 author: Jonathan Thoms
 summary: A self-hosted personal knowledge platform built from scratch in Node.js. It parses hundreds of markdown files, automatically builds entity relationships, generates a searchable knowledge graph, and compiles the entire site into static HTML — no CMS, no framework, no compromise.
+topics:
+  - technology
+themes:
+  - systems-thinking
+  - connection
+  - craftsmanship
+related:
+  - manifesto
+  - keel-systems
+  - my-story-with-everything-is-connected
 tags:
   - knowledge-graph
   - digital-garden

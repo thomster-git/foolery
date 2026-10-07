@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import config from "./config/atlas.config.js";
 
 import Loader from "./core/loader.js";
 import Parser from "./core/parser.js";
@@ -38,15 +39,24 @@ async function main() {
 
     const rawFiles = await loader.loadContent();
 
-    console.log(`✓ Loaded ${rawFiles.length} markdown files.`);
-
     //--------------------------------------------------
     // Parse Front Matter
     //--------------------------------------------------
 
-    const parsedFiles = parser.parse(rawFiles);
+const parsedFilesRaw = parser.parse(rawFiles);
 
-    console.log(`✓ Parsed ${parsedFiles.length} content objects.`);
+// Apply Release Phase Filter
+const phaseHierarchy = { "teaser": 1, "batch1": 2, "batch2": 3, "full": 4 };
+const currentPhaseIndex = phaseHierarchy[config.build.releasePhase || "full"] || 4;
+
+const parsedFiles = parsedFilesRaw.filter(file => {
+    // Treat files without a stage as "full" release (last phase)
+    const filePhase = file.metadata?.stage || "full";
+    const filePhaseIndex = phaseHierarchy[filePhase] || 4;
+    return filePhaseIndex <= currentPhaseIndex;
+});
+
+console.log(`✓ Parsed ${parsedFilesRaw.length} content objects. Filtered down to ${parsedFiles.length} objects for phase: ${config.build.releasePhase}.`);
 
     //--------------------------------------------------
     // Normalize Metadata

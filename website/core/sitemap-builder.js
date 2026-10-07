@@ -13,6 +13,16 @@ export default class SitemapBuilder {
             updated: page.metadata.updated || page.metadata.created || new Date().toISOString()
         }));
 
+        // Manually inject structural static pages
+        const now = new Date().toISOString();
+        pages.push({ url: "/", updated: now });
+        pages.push({ url: "/start/", updated: now });
+        pages.push({ url: "/tools/", updated: now });
+        pages.push({ url: "/tools/ocarina/", updated: now });
+        pages.push({ url: "/tools/nhl-trend-analyzer.html", updated: now });
+        pages.push({ url: "/tools/nfl-trend-analyzer.html", updated: now });
+        pages.push({ url: "/tools/dragonwilds-tracker.html", updated: now });
+
         const xmlUrls = pages.map(p => {
           let dateStr;
           try {

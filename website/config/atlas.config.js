@@ -25,6 +25,9 @@ export default {
 
     build: {
 
+        // Controls which content is compiled to the public site based on frontmatter stage
+        releasePhase: "teaser",
+
         output: "./dist",
 
         prettyUrls: true,

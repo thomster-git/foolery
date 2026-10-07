@@ -185,6 +185,7 @@ export default class PageBuilder {
                 projects: projects,
                 topics: topics,
                 ad_sidebar: adSidebarHtml,
+                newsletter: await this.loadPartial("newsletter.html"),
                 twitter_feed: "" // Hiding for now until spreadsheet is ready
 
             }),

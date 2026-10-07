@@ -2,19 +2,41 @@
     <div class="content-wrapper article-layout" style="text-align: center; margin: 4rem auto;">
         <div class="article-content">
         
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "NFL Point Differential & Trend Analyzer",
+          "url": "https://thomsfoolery.com/tools/nfl-trend-analyzer.html",
+          "applicationCategory": "SportsApplication",
+          "operatingSystem": "Any",
+          "offers": {
+            "@type": "Offer",
+            "price": "0"
+          },
+          "description": "Interactive data visualization tool for NFL team performance, win percentage, and point differentials."
+        }
+        </script>
+
         <div class="breadcrumbs">
             <a href="/">Home</a> ›
-            <a href="/tools/">Developer Tools</a> ›
+            <a href="/tools/">Interactive Tools</a> ›
             <span>NFL Trend Analyzer</span>
         </div>
 
         <h1 style="font-size: 3rem; margin-bottom: 1rem;">NFL Trend Analyzer</h1>
-        <div style="margin-bottom: 2rem;">
-            <a href="https://twitter.com/intent/tweet?text=Everything%20is%20connected.%20I%20found%20the%20pattern%20at%20Thoms%20Foolery.%20Can%20you%20see%20it%3F%20%F0%9F%91%81%EF%B8%8F%F0%9F%95%B8%EF%B8%8F&url=https://thomsfoolery.com/tools/nfl-trend-analyzer.html" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 0.4rem 0.8rem; font-size: 0.85rem; font-family: monospace; background: rgba(168, 85, 247, 0.1); color: var(--accent-purple); border: 1px solid var(--accent-purple); border-radius: 4px; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='var(--accent-purple)'; this.style.color='white';" onmouseout="this.style.background='rgba(168, 85, 247, 0.1)'; this.style.color='var(--accent-purple)';">[ Transmit Findings ]</a>
+        
+        <div style="background: rgba(168, 85, 247, 0.05); border-left: 4px solid var(--accent-purple); padding: 1.5rem; margin-bottom: 2.5rem; text-align: left; font-size: 0.95rem; line-height: 1.6; border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+            <strong style="color: var(--accent-purple); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; display: block; margin-bottom: 0.5rem;">The Atlas Connection</strong>
+            At first glance, football stats might seem out of place in a digital garden. But sports seasons are ultimately sprawling datasets of <strong>variance, momentum, and statistical pattern recognition</strong>. By graphing trailing indicators like point differentials, we can identify when a team's actual performance diverges from their raw win percentage—detecting systemic signal through the noise.
         </div>
 
-        <div style="background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); position: relative; overflow: hidden; margin-bottom: 2rem; text-align: left;">
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">Analyze NFL team performance over the season. Select a team to highlight their specific trendline.</p>
+        <div style="margin-bottom: 2rem;">
+            <a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20interactive%20NFL%20Trend%20Analyzer%20at%20Thoms%20Foolery.%20%F0%9F%8F%88%F0%9F%93%88&url=https://thomsfoolery.com/tools/nfl-trend-analyzer.html" target="_blank" rel="noopener noreferrer" class="btn" style="display: inline-block; padding: 0.4rem 0.8rem; font-size: 0.85rem; text-decoration: none;">[ Share This Tool ]</a>
+        </div>
+
+        <div style="background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); position: relative; overflow: hidden; margin-bottom: 3rem; text-align: left;">
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Analyze NFL team performance over the season. Select a team to highlight their specific trendline against the rest of the league.</p>
             
             <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
                 <div>
@@ -73,8 +95,25 @@
             </div>
         </div>
 
+        <div style="text-align: left; max-width: 800px; margin: 0 auto 4rem auto; line-height: 1.7; color: var(--text-main);">
+            <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--accent-cyan);">Methodology: Tracking NFL True Performance</h2>
+            
+            <p style="margin-bottom: 1.5rem;">
+                The NFL Trend Analyzer visualizes team performance over the 17-game regular season. Because the NFL season is so short compared to the MLB or NBA, single-game variance (turnovers, bad bounces, officiating) can drastically skew a team's win-loss record.
+            </p>
+            
+            <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Cumulative Point Differential</h3>
+            <p style="margin-bottom: 1.5rem;">
+                A team's point differential (points scored minus points allowed) is one of the most reliable indicators of how good they actually are. A team that is 9-3 but has a negative point differential has likely been exceptionally lucky in one-score games, and is a prime candidate for negative regression in the playoffs.
+            </p>
+            
+            <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Points Allowed vs Points Scored</h3>
+            <p style="margin-bottom: 1.5rem;">
+                By splitting the differential into its component parts, you can visualize the specific identity of a team. Are they winning shootouts, or grinding out defensive struggles? Tracking this on a weekly basis reveals momentum shifts triggered by injuries to key defensive personnel or changes in offensive play-calling.
+            </p>
+        </div>
+
         </div> <!-- end article-content -->
-        {{ad_sidebar}}
     </div>
 </div>
 
