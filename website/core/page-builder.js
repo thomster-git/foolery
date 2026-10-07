@@ -48,6 +48,8 @@ export default class PageBuilder {
         await this.buildResumePage();
         await this.buildFitnessPage();
         await this.build404Page();
+        await this.buildSubscribedPage();
+        await this.buildConfirmedPage();
         await this.buildGraphPage();
         await this.buildLabyrinthPage();
         await this.buildLabyrinth3dPage();
@@ -457,6 +459,46 @@ export default class PageBuilder {
 
         await fs.writeFile(
             path.join(this.output, "404.html"),
+            html
+        );
+    }
+
+    //--------------------------------------------------
+    // Buttondown Pages
+    //--------------------------------------------------
+
+    async buildSubscribedPage() {
+        const folder = path.join(this.output, "subscribed");
+        await fs.mkdir(folder, { recursive: true });
+
+        const template = await this.loadLayout("subscribed.html");
+
+        const html = await this.wrapPage(
+            this.renderer.render(template, {}),
+            "Check Your Inbox",
+            { description: "Please confirm your subscription to the Thoms Foolery newsletter.", path: "/subscribed/", ogType: "website" }
+        );
+
+        await fs.writeFile(
+            path.join(folder, "index.html"),
+            html
+        );
+    }
+
+    async buildConfirmedPage() {
+        const folder = path.join(this.output, "confirmed");
+        await fs.mkdir(folder, { recursive: true });
+
+        const template = await this.loadLayout("confirmed.html");
+
+        const html = await this.wrapPage(
+            this.renderer.render(template, {}),
+            "Subscription Confirmed",
+            { description: "You are officially subscribed to the Thoms Foolery newsletter.", path: "/confirmed/", ogType: "website" }
+        );
+
+        await fs.writeFile(
+            path.join(folder, "index.html"),
             html
         );
     }
