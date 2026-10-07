@@ -11,11 +11,6 @@ tags:
   - tools
   - ocarina
   - interactive
-topics:
-  - technology
-  - music
-themes:
-  - systems-thinking
 related:
   - project-atlas
 github_url: https://github.com/JonathanThoms/ocarina-practice-tool

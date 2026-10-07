@@ -42,25 +42,33 @@
 
         {{graph_html}}
 
+        {{#if topics}}
         <section>
             <h2>Topics</h2>
             {{topics}}
         </section>
+        {{/if}}
 
+        {{#if themes}}
         <section>
             <h2>Themes</h2>
             {{themes}}
         </section>
+        {{/if}}
 
+        {{#if related}}
         <section>
             <h2>Related Content</h2>
             {{related}}
         </section>
+        {{/if}}
 
+        {{#if tags}}
         <section>
             <h2>Tags</h2>
             <div class="tags-container">{{tags}}</div>
         </section>
+        {{/if}}
 
         <!-- SEO: Structured Data / JSON-LD -->
         <script type="application/ld+json">

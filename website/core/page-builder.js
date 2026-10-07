@@ -861,7 +861,7 @@ export default class PageBuilder {
         if (project.metadata.image) {
             projectImageHtml = `
             <div style="margin: 2.5rem 0; text-align: center;">
-              <img src="${project.metadata.image}" alt="Screenshot of ${project.metadata.title}" style="max-width: 100%; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+              <img src="${project.metadata.image}" alt="Screenshot of ${project.metadata.title}" fetchpriority="high" style="max-width: 100%; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
             </div>`;
         }
 
@@ -892,8 +892,7 @@ export default class PageBuilder {
                 project_actions_html: projectActionsHtml,
                 summary: project.metadata.summary,
                 body: this.markdown(project.body),
-                articles: "",
-                software: ""
+                related: this.linksArray(project.links?.related || [])
 
             }),
 
