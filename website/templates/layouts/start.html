@@ -9,58 +9,24 @@
 
   <div class="start-paths">
 
-    <!-- Path 1: I'm here professionally -->
-    <a href="/resume/" class="start-card start-card--professional" id="start-path-resume">
-      <div class="start-card-icon" aria-hidden="true">💼</div>
-      <div class="start-card-body">
-        <h2 class="start-card-title">Here professionally?</h2>
-        <p class="start-card-desc">Systems thinker. IT infrastructure specialist. Mechanical engineering background. View my resume and work history.</p>
-        <span class="start-card-cta">View Resume →</span>
-      </div>
-    </a>
-
-    <!-- Path 2: Know my way around -->
-    <a href="/" class="start-card start-card--home" id="start-path-home">
-      <div class="start-card-icon" aria-hidden="true">🏠</div>
-      <div class="start-card-body">
-        <h2 class="start-card-title">Know your way around?</h2>
-        <p class="start-card-desc">Jump straight into the digital garden. Articles, projects, library, and the full knowledge graph awaits.</p>
-        <span class="start-card-cta">Go to Homepage →</span>
-      </div>
-    </a>
-
-    <!-- Path 3: 3D Labyrinth Explorer -->
-    <a href="/labyrinth3d/" class="start-card start-card--labyrinth" id="start-path-labyrinth">
-      <div class="start-card-icon" aria-hidden="true">🌐</div>
-      <div class="start-card-body">
-        <h2 class="start-card-title">Want to explore in 3D?</h2>
-        <p class="start-card-desc">Navigate every idea, article, and connection as a living 3D knowledge graph. An experience you won't find anywhere else.</p>
-        <span class="start-card-cta">Enter the Labyrinth →</span>
-      </div>
-    </a>
-
-    <!-- Path 4: Fitness Journey -->
-    <a href="/fitness/" class="start-card start-card--fitness" id="start-path-fitness">
-      <div class="start-card-icon" aria-hidden="true">🏋️</div>
-      <div class="start-card-body">
-        <h2 class="start-card-title">Following my fitness journey?</h2>
-        <p class="start-card-desc">Live bodyweight, measurements, and training progress data. Fully transparent, updated regularly. No filters.</p>
-        <span class="start-card-cta">View Fitness Progress →</span>
-      </div>
-    </a>
-
-    
-    <!-- Path 5: What is this place? -->
-    <a href="/projects/project-atlas/" class="start-card start-card--atlas" id="start-path-atlas" style="border-top: 3px solid var(--accent-blue);">
+    <a href="/projects/project-atlas.html" class="start-card start-card--atlas" id="start-path-atlas" style="border-top: 3px solid var(--accent-blue);">
       <div class="start-card-icon" aria-hidden="true">🗺️</div>
       <div class="start-card-body">
         <h2 class="start-card-title">What is this place?</h2>
-        <p class="start-card-desc">Read the Project Atlas manifesto. Learn how this site works, why it exists, and the philosophy behind digital gardening.</p>
+        <p class="start-card-desc">Read the Project Atlas manifesto. Learn how this site works, why it exists, and the timeline for upcoming features (including the interactive 3D Knowledge Graph).</p>
         <span class="start-card-cta">Read the Manifesto &rarr;</span>
       </div>
     </a>
 
-    <!-- Path 6: Find me elsewhere -->
+    <a href="/tools/" class="start-card start-card--professional" id="start-path-tools">
+      <div class="start-card-icon" aria-hidden="true">⚙️</div>
+      <div class="start-card-body">
+        <h2 class="start-card-title">Explore Early Nodes</h2>
+        <p class="start-card-desc">Interact with data visualization and early systems tracking tools, mapping everything from musical pitch to hockey momentum.</p>
+        <span class="start-card-cta">Try the Tools &rarr;</span>
+      </div>
+    </a>
+
     <div class="start-card start-card--socials" id="start-path-socials">
       <div class="start-card-icon" aria-hidden="true">📡</div>
       <div class="start-card-body">
@@ -83,33 +49,18 @@
             <span class="start-social-icon">in</span>
             <span>LinkedIn</span>
           </a>
-          <a href="/rss.xml" target="_blank" rel="noopener noreferrer" class="start-social-btn start-social-btn--rss" id="start-social-rss">
-            <span class="start-social-icon">📡</span>
-            <span>RSS Feed</span>
-          </a>
           <a href="https://buttondown.com/thomsfoolery" target="_blank" rel="noopener noreferrer" class="start-social-btn start-social-btn--newsletter" id="start-social-newsletter">
             <span class="start-social-icon">✉️</span>
             <span>Newsletter</span>
+          </a>
+          <a href="/uses/" class="start-social-btn start-social-btn--donate" id="start-social-donate">
+            <span class="start-social-icon">🎒</span>
+            <span>What I Use</span>
           </a>
         </div>
       </div>
     </div>
 
-  </div>
-
-  <!-- Quick Links Bar -->
-  <div class="start-quicklinks">
-    <p class="start-quicklinks-label">Quick access:</p>
-    <div class="start-quicklinks-list">
-      <a href="/articles/" id="start-quick-articles">Articles</a>
-      <a href="/projects/" id="start-quick-projects">Projects</a>
-      <a href="/library/" id="start-quick-library">Library</a>
-      <a href="/topics/" id="start-quick-topics">Topics</a>
-      <a href="/graph/" id="start-quick-graph">Knowledge Graph</a>
-      <a href="/shit-list/" id="start-quick-shitlist">The Shit List</a>
-      <a href="/wishlist/" id="start-quick-wishlist">Wishlist</a>
-      <a href="/sponsors/" id="start-quick-sponsors">Partner With Me</a>
-    </div>
   </div>
 
 </main>
@@ -267,6 +218,7 @@
   .start-social-btn--linkedin:hover { background: #0A66C2; color: white; border-color: #0A66C2; }
   .start-social-btn--rss:hover      { background: #f26522; color: white; border-color: #f26522; }
   .start-social-btn--newsletter:hover { background: var(--accent-cyan); color: #000; border-color: var(--accent-cyan); }
+  .start-social-btn--donate:hover { background: #FF5E5B; color: white; border-color: #FF5E5B; }
 
   .start-social-icon {
     font-size: 1rem;
