@@ -22,12 +22,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const teamMap = {};
             teamsData.teams.forEach(t => teamMap[t.id] = t);
 
-            // Try 2026 first, if empty try 2025 (or current year)
-            let scheduleResponse = await fetch('https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=2026&gameType=P');
-            let scheduleData = await scheduleResponse.json();
-            if (!scheduleData.dates || scheduleData.dates.length === 0) {
-                scheduleResponse = await fetch('https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=2025&gameType=P');
-                scheduleData = await scheduleResponse.json();
+            // Try years starting from 2026 downwards
+            let scheduleData = { dates: [] };
+            for (let year = 2026; year >= 2023; year--) {
+                const response = await fetch(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=${year}&gameTypes=F,D,L,W`);
+                scheduleData = await response.json();
+                if (scheduleData.dates && scheduleData.dates.length > 0) {
+                    break; // Found data
+                }
             }
 
             // Group games by series
