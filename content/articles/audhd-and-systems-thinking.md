@@ -2,7 +2,7 @@
 stage: "teaser"
 id: audhd-and-systems-thinking
 type: article
-status: published
+status: draft
 created: 2026-09-14
 title: "AuDHD and Systems Thinking: Why I See Infrastructure Differently"
 date: "2026-08-24"

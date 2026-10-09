@@ -4,7 +4,7 @@ id: my-story-with-everything-is-connected
 title: Everything Is Connected: The Manifesto Behind Project Atlas
 type: article
 access: public
-status: published
+status: draft
 author: Jonathan Thoms
 summary: The central philosophy of Project Atlas — that the decisions you make today are the product of every circumstance that shaped you, and that things that appear unrelated from the outside are often more deeply connected than you'd ever give credit for.
 topics:

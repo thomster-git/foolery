@@ -3,7 +3,7 @@ stage: "teaser"
 id: building-a-comprehensive-discord-ecosystem
 title: "Case Study: The Thoms Foolery Discord Bot"
 type: article
-status: published
+status: draft
 created: 2026-09-14
 access: public
 summary: A comprehensive case study on how we transformed a standard Discord server into a self-sustaining ecosystem using a custom Python bot, virtual economies, real-time sports APIs, and Agentic AI.

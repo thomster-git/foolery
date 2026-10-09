@@ -2,7 +2,7 @@
 stage: "teaser"
 id: discord-vs-corporate-comms
 type: article
-status: published
+status: draft
 created: 2026-09-14
 title: "Rethinking Corporate Communication: Why Discord Beats Slack & Teams"
 date: "2026-08-24"
