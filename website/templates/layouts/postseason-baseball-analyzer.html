@@ -18,54 +18,11 @@
             <p style="color: var(--text-muted); margin-bottom: 1rem;">Analyze MLB team momentum during the 2026 Postseason. Select a team to highlight their specific trendline over the playoffs.</p>
 <div style="margin-bottom: 2rem;"><button class="share-btn" data-title="MLB Postseason Analyzer" data-text="Check out this interactive MLB Postseason Analyzer at Thoms Foolery. ⚾📈" data-url="https://thomsfoolery.com/tools/postseason-baseball-analyzer.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.8rem; font-size: 0.85rem; font-family: monospace; background: rgba(168, 85, 247, 0.1); color: var(--accent-purple); border: 1px solid var(--accent-purple); border-radius: 4px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--accent-purple)'; this.style.color='white';" onmouseout="this.style.background='rgba(168, 85, 247, 0.1)'; this.style.color='var(--accent-purple)';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Share Tool</button></div>
             
-            <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
-                <div>
-                    <label style="display: block; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.5rem; text-transform: uppercase;">Select Metric</label>
-                    <select id="metric-select" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: var(--radius-md);">
-                        <option value="runDiff">Cumulative Run Differential</option>
-                        <option value="streak">Current Win Streak</option>
-                        <option value="gamesAbove500">Games > .500</option>
-                        <option value="rollingWinPct">10-Game Rolling Win %</option>
-                        <option value="pythagorean">Pythagorean Expected Win %</option>
-                        <option value="oneRunWinPct">1-Run Game Win %</option>
-                        <option value="blowoutWinPct">Blowout (5+ Runs) Win %</option>
-                        <option value="rollingRunsScored">10-Game Rolling Runs Scored (Avg)</option>
-                        <option value="rollingRunsAllowed">10-Game Rolling Runs Allowed (Avg)</option>
-                        <option value="winPct">Classic Win %</option>
-                        <option value="playoffOdds">Estimated Playoff Odds (%)</option>
-                    </select>
-                </div>
-                <div>
-                    <label style="display: block; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.5rem; text-transform: uppercase;">Select League/Division</label>
-                    <select id="division-select" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: var(--radius-md);">
-                        <option value="all">All MLB</option>
-                        <option value="103">American League</option>
-                        <option value="104">National League</option>
-                        <option value="200">AL West</option>
-                        <option value="201">AL East</option>
-                        <option value="202">AL Central</option>
-                        <option value="203">NL West</option>
-                        <option value="204">NL East</option>
-                        <option value="205">NL Central</option>
-                    </select>
-                </div>
-                <div>
-                    <label style="display: block; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.5rem; text-transform: uppercase;">Highlight Team</label>
-                    <select id="team-select" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: var(--radius-md);">
-                        <option value="none">None</option>
-                        <!-- Populated by JS -->
-                    </select>
-                </div>
-                <div style="margin-left: auto; align-self: flex-end;">
-                    <button id="reset-zoom" style="background: var(--accent-cyan); color: #fff; border: none; padding: 0.6rem 1rem; border-radius: var(--radius-md); font-weight: bold; cursor: pointer;">Reset Zoom</button>
-                </div>
-            </div>
-
-            <div id="chart-container" style="position: relative; height: 500px; width: 100%;">
+            <div id="bracket-container" style="display: flex; gap: 2rem; overflow-x: auto; padding: 1rem 0; min-height: 500px;">
                 <div id="chart-loading" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); z-index: 10;">
-                    <p style="font-weight: bold;">Loading MLB Data...</p>
+                    <p style="font-weight: bold;">Loading MLB Postseason Data...</p>
                 </div>
-                <canvas id="trendChart"></canvas>
+                <!-- JS will inject the bracket columns here -->
             </div>
             
             <div id="chart-error" style="display: none; color: #ef4444; margin-top: 1rem;">

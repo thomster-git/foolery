@@ -74,10 +74,16 @@ export default class Exporter {
 
     async copyStaticAssets() {
         const staticDir = path.resolve(__dirname, "../static");
+        const publicDir = path.resolve(__dirname, "../public");
         try {
             await fs.cp(staticDir, this.outputDirectory, { recursive: true });
         } catch (err) {
             console.warn("Could not copy static assets:", err.message);
+        }
+        try {
+            await fs.cp(publicDir, this.outputDirectory, { recursive: true });
+        } catch (err) {
+            console.warn("Could not copy public assets:", err.message);
         }
     }
 
