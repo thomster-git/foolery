@@ -49,6 +49,10 @@ Social media forces us into silos. X is for fleeting thoughts. LinkedIn is for c
 
 Instead of fighting the chaos, I decided to build a digital garden to map it. Every article, every piece of software I've written, every book I've read, and every tool I use is a **node**. Every relationship between them is an **edge**. 
 
+- If I write an article about AI infrastructure, it connects directly to the Python projects I've built.
+- If I review a sci-fi book, it connects to the themes of futurism and the video games I play.
+- If you look at my Resume, you aren't just seeing a list of jobs—you are seeing the hub that connects to the actual open-source projects I shipped during those roles.
+
 ```mermaid
 graph TD
     A[Homelab Proxmox Server] -->|Hosted On| B(Docker Containers)
