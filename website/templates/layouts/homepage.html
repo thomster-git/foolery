@@ -16,7 +16,7 @@
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 1rem;">
         <a href="/tools/ocarina/" style="text-decoration: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; display: flex; align-items: center; gap: 0.75rem;" class="quick-link-card">
           <span style="font-size: 1.5rem;">🎵</span>
-          <div><div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">Pitch Intonation</div><div style="font-size: 0.8rem; color: var(--text-muted);">Ocarina Tuner</div></div>
+          <div><div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">Ocarina Practice</div><div style="font-size: 0.8rem; color: var(--text-muted);">Finger chart, songbook, and tuner</div></div>
         </a>
         <a href="/tools/nhl-trend-analyzer.html" style="text-decoration: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; display: flex; align-items: center; gap: 0.75rem;" class="quick-link-card">
           <span style="font-size: 1.5rem;">🏒</span>
@@ -27,8 +27,20 @@
           <div><div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">Point Differentials</div><div style="font-size: 0.8rem; color: var(--text-muted);">NFL Analyzer</div></div>
         </a>
         <a href="/tools/dragonwilds-tracker.html" style="text-decoration: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; display: flex; align-items: center; gap: 0.75rem;" class="quick-link-card">
-          <span style="display: inline-flex; align-items: center;"><img src="/images/website-assets/dragonwilds-logo.png" alt="Dragonwilds Logo" style="width: 1.5rem; height: 1.5rem;"></span>
+          <span style="display: inline-flex; align-items: center;"><img src="/images/website-assets/dragonwilds-logo.png" alt="" style="width: 24px; height: 24px; object-fit: contain; color: transparent;"></span>
           <div><div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">Game Progression</div><div style="font-size: 0.8rem; color: var(--text-muted);">Dragonwilds Guide</div></div>
+        </a>
+        <a href="/tools/ffx-tracker.html" style="text-decoration: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; display: flex; align-items: center; gap: 0.75rem;" class="quick-link-card">
+          <span style="font-size: 1.5rem;">⚔️</span>
+          <div><div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">100% Completion</div><div style="font-size: 0.8rem; color: var(--text-muted);">FFX Tracker</div></div>
+        </a>
+        <a href="/tools/baseball-trend-analyzer.html" style="text-decoration: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; display: flex; align-items: center; gap: 0.75rem;" class="quick-link-card">
+          <span style="font-size: 1.5rem;">⚾</span>
+          <div><div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">Trend Analyzer</div><div style="font-size: 0.8rem; color: var(--text-muted);">MLB Stats</div></div>
+        </a>
+        <a href="/tools/postseason-baseball-analyzer.html" style="text-decoration: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; display: flex; align-items: center; gap: 0.75rem;" class="quick-link-card">
+          <span style="font-size: 1.5rem;">🏆</span>
+          <div><div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">Postseason Momentum</div><div style="font-size: 0.8rem; color: var(--text-muted);">MLB Playoffs</div></div>
         </a>
       </div>
     </section>
@@ -58,7 +70,7 @@
     </section>
   </div>
 
-  <div class="homepage-newsletter-wrapper">
+  <div class="homepage-newsletter-wrapper" style="margin-top: 2rem;">
     {{newsletter}}
   </div>
 
@@ -68,6 +80,10 @@
   .graph-canvas canvas { display: block; width: 100%; height: 100%; cursor: pointer; }
   .quick-link-card { transition: border-color 0.2s, transform 0.2s; }
   .quick-link-card:hover { border-color: var(--accent-cyan) !important; transform: translateY(-3px); }
+  .homepage-newsletter-wrapper .newsletter-inner { display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+  .homepage-newsletter-wrapper .newsletter-text { flex: 1; min-width: 300px; text-align: left; }
+  .homepage-newsletter-wrapper .newsletter-form { flex: 1; min-width: 300px; }
+  .homepage-newsletter-wrapper .newsletter-icon { display: none; }
   @media (max-width: 900px) {
     .homepage-main-grid { grid-template-columns: 1fr !important; }
   }

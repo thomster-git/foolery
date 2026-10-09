@@ -68,4 +68,15 @@ There is no prescribed path. You might start by clicking on a node about basebal
 > **Don't read this site chronologically.**
 > Pick a node that interests you, open the side panel, and follow the **Connected Content** down the rabbit hole. 
 
+## Project Atlas Roadmap (Timeline Preview)
+
+While the vision for this graph is sprawling, the rollout is structured. Here is the current plan for bringing the full Atlas online:
+
+- **Phase 1: Interactive Tool Beta (Currently Live)**
+  Testing the static site generator, Web Audio APIs, and data visualization integrations. You can explore the early tools directly from the homepage.
+- **Phase 2: Building Project Atlas (Next Drop)**
+  The first major content release. This will include a batch of long-form articles detailing exactly how I built this digital garden from the ground up, including the AI-agent orchestration running behind the scenes.
+- **Phase 3: The Full Knowledge Graph (Future)**
+  Connecting the entire 66+ article backlog of systems thinking, tech tutorials, and neurodivergent mapping into a fully realized 3D interactive web.
+
 Welcome to the Atlas.

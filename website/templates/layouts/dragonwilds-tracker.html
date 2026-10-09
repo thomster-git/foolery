@@ -130,28 +130,29 @@
 
             <hr>
 
-            <h2>Chapter 5: The Northern Expanse</h2>
-            <p>Heading into the next area north by continuing the main quest line. This is where you prepare for mid-to-late game grinding.</p>
-            <ul>
-                <li class="task-item"><label for="dw-check-gear-set-3"><input type="checkbox" id="dw-check-gear-set-3" class="ffx-checkbox"> <span class="task-text"><strong>1. Craft Gear Set 3:</strong> Use your Armour Bench to craft the Iron/Paladin's platebody and platelegs. (Hybrid Strategy: Swap the helmet for the Dark mage hood or Dragonkin mage hood).</span></label></li>
-                <li class="task-item"><label for="dw-check-mount"><input type="checkbox" id="dw-check-mount" class="ffx-checkbox"> <span class="task-text"><strong>2. Obtain Your Mount:</strong> Complete the local quest line to acquire your first ridable mount, greatly improving overland travel speed.</span></label></li>
-                <li class="task-item"><label for="dw-check-gear-set-4"><input type="checkbox" id="dw-check-gear-set-4" class="ffx-checkbox"> <span class="task-text"><strong>3. Grind towards Gear Set 4:</strong> Upgrade to the Steel/Fallen Hoplite's armour. (Hybrid Strategy: Swap the helmet for the Splitbark helm or Necromancer's crown).</span></label></li>
-            </ul>
-
-            <hr>
-
-            <h2>Finale: General Velgar</h2>
+            <h2>Chapter 5: General Velgar</h2>
             <ul>
                 <li class="task-item"><label for="dw-check-42"><input type="checkbox" id="dw-check-42" class="ffx-checkbox"> <span class="task-text"><strong>1. Final Preparations:</strong> Empty your inventory of unnecessary tools. Stockpile food, clean water, Healing Potions, and your Weak Antipoison Potions.</span></label></li>
                 <li class="task-item"><label for="dw-check-43"><input type="checkbox" id="dw-check-43" class="ffx-checkbox"> <span class="task-text"><strong>2. Craft the Challenge Horn:</strong> The second Anvil replacement step. Using your upgraded crafting station (instead of the old Smithing Anvil), combine 5 Bronze Bars, the Dragon Tooth, and the Bloodwood Sap to assemble the horn.</span></label></li>
             </ul>
             <div class="critical-warning" style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 1rem; border-radius: 8px; margin: 1rem 0;">
-                <strong>⚠️ Crucial mechanic:</strong> Travel to Velgar's Tower in the center of the Fractured Plains. Drink an Antipoison Potion immediately before starting the fight. Place the horn in the center to summon him.
+                <strong>⚠️ Crucial mechanic:</strong> Travel to Velgar's Tower in the center of the Fractured Plains. Drink an Antipoison Potion immediately before starting the fight. Place the horn in the center to summon him.<br><br>
+                <strong>💡 Pro-tip:</strong> Ranged or magic is the best attack style for this boss battle, as the dragon fights along the tower ledges and is extremely hard to hit with melee.
             </div>
-            <ul>
+            <ul style="margin-top: 1rem;">
                 <li class="task-item"><label for="dw-check-44"><input type="checkbox" id="dw-check-44" class="ffx-checkbox"> <span class="task-text"><strong>3. Summon General Velgar:</strong> Initiate the final battle.</span></label></li>
                 <li class="task-item"><label for="dw-check-45"><input type="checkbox" id="dw-check-45" class="ffx-checkbox"> <span class="task-text"><strong>4. Defeat General Velgar:</strong> Because you drank the Antipoison, his poison mechanics will deal zero damage. Dodge his homing earth attacks. Attack from range with your Crystal Bow, or close the gap using the Abyssal Whip.</span></label></li>
                 <li class="task-item"><label for="dw-check-46"><input type="checkbox" id="dw-check-46" class="ffx-checkbox"> <span class="task-text"><strong>5. Claim Victory:</strong> Loot Velgar's corpse and return to the Wise Old Man in Temple Woods to complete the campaign.</span></label></li>
+            </ul>
+            
+            <hr>
+
+            <h2>Chapter 6: The Northern Expanse</h2>
+            <p>Heading into the next area north by continuing the main quest line. This is where you prepare for mid-to-late game grinding.</p>
+            <ul>
+                <li class="task-item"><label for="dw-check-gear-set-3"><input type="checkbox" id="dw-check-gear-set-3" class="ffx-checkbox"> <span class="task-text"><strong>1. Craft Gear Set 3:</strong> Use your Armour Bench to craft the Iron/Paladin's platebody and platelegs. (Hybrid Strategy: Swap the helmet for the Dark mage hood or Dragonkin mage hood).</span></label></li>
+                <li class="task-item"><label for="dw-check-mount"><input type="checkbox" id="dw-check-mount" class="ffx-checkbox"> <span class="task-text"><strong>2. Obtain Your Mount:</strong> Complete the local quest line to acquire your first ridable mount, greatly improving overland travel speed.</span></label></li>
+                <li class="task-item"><label for="dw-check-gear-set-4"><input type="checkbox" id="dw-check-gear-set-4" class="ffx-checkbox"> <span class="task-text"><strong>3. Grind towards Gear Set 4:</strong> Upgrade to the Steel/Fallen Hoplite's armour. (Hybrid Strategy: Swap the helmet for the Splitbark helm or Necromancer's crown).</span></label></li>
             </ul>
 
         </div>
@@ -349,18 +350,18 @@
             <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start;">
                 <!-- Inputs Section -->
                 <div style="flex: 1; min-width: 300px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-                    <div class="stat-input-group"><label for="stat-attack">⚔️ Attack</label><input type="number" id="stat-attack" data-skill="attack" min="1" max="99" value="1" class="stat-input"></div>
-                    <div class="stat-input-group"><label for="stat-magic">🔮 Magic</label><input type="number" id="stat-magic" data-skill="magic" min="1" max="99" value="1" class="stat-input"></div>
-                    <div class="stat-input-group"><label for="stat-ranged">🏹 Ranged</label><input type="number" id="stat-ranged" data-skill="ranged" min="1" max="99" value="1" class="stat-input"></div>
-                    <div class="stat-input-group"><label for="stat-mining">⛏️ Mining</label><input type="number" id="stat-mining" data-skill="mining" min="1" max="99" value="1" class="stat-input"></div>
-                    <div class="stat-input-group"><label for="stat-woodcutting">🪓 Woodcutting</label><input type="number" id="stat-woodcutting" data-skill="woodcutting" min="1" max="99" value="1" class="stat-input"></div>
-                    <div class="stat-input-group"><label for="stat-artisan">🔨 Artisan</label><input type="number" id="stat-artisan" data-skill="artisan" min="1" max="99" value="1" class="stat-input"></div>
-                    <div class="stat-input-group"><label for="stat-construction">🏗️ Construction</label><input type="number" id="stat-construction" data-skill="construction" min="1" max="99" value="1" class="stat-input"></div>
-                    <div class="stat-input-group"><label for="stat-cooking">🍳 Cooking</label><input type="number" id="stat-cooking" data-skill="cooking" min="1" max="99" value="1" class="stat-input"></div>
-                    <div class="stat-input-group"><label for="stat-runecrafting">🪨 Runecrafting</label><input type="number" id="stat-runecrafting" data-skill="runecrafting" min="1" max="99" value="1" class="stat-input"></div>
-                    <div class="stat-input-group"><label for="stat-farming">🌾 Farming</label><input type="number" id="stat-farming" data-skill="farming" min="1" max="99" value="1" class="stat-input"></div>
-                    <div class="stat-input-group"><label for="stat-fishing">🎣 Fishing</label><input type="number" id="stat-fishing" data-skill="fishing" min="1" max="99" value="1" class="stat-input"></div>
-                    <div class="stat-input-group"><label for="stat-agility">🏃 Agility</label><input type="number" id="stat-agility" data-skill="agility" min="1" max="99" value="1" class="stat-input"></div>
+                    <div class="stat-input-group"><label for="stat-attack"><img src="/images/skills/Attack.png" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 0.25rem;"> Attack</label><input type="number" id="stat-attack" data-skill="attack" min="1" max="99" value="1" class="stat-input"></div>
+                    <div class="stat-input-group"><label for="stat-magic"><img src="/images/skills/Magic.png" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 0.25rem;"> Magic</label><input type="number" id="stat-magic" data-skill="magic" min="1" max="99" value="1" class="stat-input"></div>
+                    <div class="stat-input-group"><label for="stat-ranged"><img src="/images/skills/Ranged.png" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 0.25rem;"> Ranged</label><input type="number" id="stat-ranged" data-skill="ranged" min="1" max="99" value="1" class="stat-input"></div>
+                    <div class="stat-input-group"><label for="stat-mining"><img src="/images/skills/Mining.png" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 0.25rem;"> Mining</label><input type="number" id="stat-mining" data-skill="mining" min="1" max="99" value="1" class="stat-input"></div>
+                    <div class="stat-input-group"><label for="stat-woodcutting"><img src="/images/skills/Woodcutting.png" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 0.25rem;"> Woodcutting</label><input type="number" id="stat-woodcutting" data-skill="woodcutting" min="1" max="99" value="1" class="stat-input"></div>
+                    <div class="stat-input-group"><label for="stat-artisan"><img src="/images/skills/Artisan.png" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 0.25rem;"> Artisan</label><input type="number" id="stat-artisan" data-skill="artisan" min="1" max="99" value="1" class="stat-input"></div>
+                    <div class="stat-input-group"><label for="stat-construction"><img src="/images/skills/Construction.png" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 0.25rem;"> Construction</label><input type="number" id="stat-construction" data-skill="construction" min="1" max="99" value="1" class="stat-input"></div>
+                    <div class="stat-input-group"><label for="stat-cooking"><img src="/images/skills/Cooking.png" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 0.25rem;"> Cooking</label><input type="number" id="stat-cooking" data-skill="cooking" min="1" max="99" value="1" class="stat-input"></div>
+                    <div class="stat-input-group"><label for="stat-runecrafting"><img src="/images/skills/Runecrafting.png" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 0.25rem;"> Runecrafting</label><input type="number" id="stat-runecrafting" data-skill="runecrafting" min="1" max="99" value="1" class="stat-input"></div>
+                    <div class="stat-input-group"><label for="stat-farming"><img src="/images/skills/Farming.png" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 0.25rem;"> Farming</label><input type="number" id="stat-farming" data-skill="farming" min="1" max="99" value="1" class="stat-input"></div>
+                    <div class="stat-input-group"><label for="stat-fishing"><img src="/images/skills/Fishing.png" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 0.25rem;"> Fishing</label><input type="number" id="stat-fishing" data-skill="fishing" min="1" max="99" value="1" class="stat-input"></div>
+                    <div class="stat-input-group"><label for="stat-agility"><img src="/images/skills/Agility.png" style="width: 1rem; height: 1rem; vertical-align: middle; margin-right: 0.25rem;"> Agility</label><input type="number" id="stat-agility" data-skill="agility" min="1" max="99" value="1" class="stat-input"></div>
                 </div>
                 
                 <!-- Preview Section -->
@@ -651,14 +652,14 @@
         let imagesLoaded = 0;
         skillMeta.forEach(skill => {
             const img = new Image();
-            img.src = skill.iconUrl;
             img.onload = () => {
                 skill.img = img;
-                imagesLoaded++;
-                if (imagesLoaded === skillMeta.length) {
-                    drawProfile();
-                }
+                drawProfile();
             };
+            img.onerror = () => {
+                drawProfile();
+            };
+            img.src = skill.iconUrl;
         });
 
         let savedStats = {};

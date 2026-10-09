@@ -241,9 +241,10 @@ export default class PageBuilder {
 
         const template = await this.loadLayout("ocarina.html");
         const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const suggestionsCta = await this.loadPartial("suggestions-cta.html");
 
         let html = await this.wrapPage(
-            this.renderer.render(template, { ad_sidebar: adSidebar }),
+            this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
             "Ocarina Practice Tool",
             { description: "12-hole ocarina fingering chart, live pitch tuner, and Zelda songbook", path: "/tools/ocarina/", ogType: "website" }
         );
@@ -329,9 +330,10 @@ export default class PageBuilder {
 
         const template = await this.loadLayout("ffx-tracker.html");
         const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
         let html = await this.wrapPage(
-            this.renderer.render(template, { ad_sidebar: adSidebar }),
+            this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
             "FFX 100% Completion Tracker",
             { description: "Comprehensive checklist for Final Fantasy X", path: "/tools/ffx-tracker.html", ogType: "website" }
         );
@@ -346,9 +348,10 @@ export default class PageBuilder {
 
         const template = await this.loadLayout("dragonwilds-tracker.html");
         const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
         let html = await this.wrapPage(
-            this.renderer.render(template, { ad_sidebar: adSidebar }),
+            this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
             "Runescape: Dragonwilds Guide",
             { description: "Interactive progression guide for Runescape: Dragonwilds", path: "/tools/dragonwilds-tracker.html", ogType: "website" }
         );
@@ -363,9 +366,10 @@ export default class PageBuilder {
 
         const template = await this.loadLayout("nhl-trend-analyzer.html");
         const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
         let html = await this.wrapPage(
-            this.renderer.render(template, { ad_sidebar: adSidebar }),
+            this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
             "NHL Trend Analyzer",
             { description: "NHL team performance and special teams efficiency tracker", path: "/tools/nhl-trend-analyzer.html", ogType: "website" }
         );
@@ -380,9 +384,10 @@ export default class PageBuilder {
 
         const template = await this.loadLayout("nfl-trend-analyzer.html");
         const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
         let html = await this.wrapPage(
-            this.renderer.render(template, { ad_sidebar: adSidebar }),
+            this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
             "NFL Trend Analyzer",
             { description: "NFL team performance trend analyzer", path: "/tools/nfl-trend-analyzer.html", ogType: "website" }
         );
@@ -397,9 +402,10 @@ export default class PageBuilder {
 
         const template = await this.loadLayout("baseball-trend-analyzer.html");
         const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
         let html = await this.wrapPage(
-            this.renderer.render(template, { ad_sidebar: adSidebar }),
+            this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
             "Baseball Trend Analyzer",
             { description: "MLB team performance trendline visualizer", path: "/tools/baseball-trend-analyzer.html", ogType: "website" }
         );
@@ -413,9 +419,10 @@ export default class PageBuilder {
 
         const template = await this.loadLayout("postseason-baseball-analyzer.html");
         const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
         let html = await this.wrapPage(
-            this.renderer.render(template, { ad_sidebar: adSidebar }),
+            this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
             "MLB Postseason Analyzer",
             { description: "MLB team performance trendline visualizer for the playoffs", path: "/tools/postseason-baseball-analyzer.html", ogType: "website" }
         );

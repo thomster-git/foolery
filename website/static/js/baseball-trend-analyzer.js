@@ -247,10 +247,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                             return;
                         }
                         
+                        let teamIndex = expectedStats.findIndex(s => s.id === stat.id);
                         if (stat.remaining <= 0) {
-                            t.playoffOdds.push({x: gameNum, y: stat.cumWins >= team6.cumWins ? 100 : 0});
+                            t.playoffOdds.push({x: gameNum, y: teamIndex < 6 ? 100 : 0});
                         } else {
-                            let targetTeam = (stat.expWins >= team6.expWins) ? team7 : team6;
+                            let targetTeam = teamIndex < 6 ? team7 : team6;
                             
                             let diffExp = stat.expWins - targetTeam.expWins;
                             // Multiply variance by 3.0 to account for empirical uncertainties (injuries, schedule, non-independence)

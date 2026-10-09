@@ -69,9 +69,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
 
             // Fetch schedule for the whole season (e.g. 2026) to calculate run differentials
-            // The API returns all games. 
-            const scheduleResponse = await fetch('https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=2026&gameType=P');
-            const scheduleData = await scheduleResponse.json();
+            // The API returns all games. If 2026 postseason hasn't started, fallback to 2025
+            let scheduleResponse = await fetch('https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=2026&gameType=P');
+            let scheduleData = await scheduleResponse.json();
+            
+            if (!scheduleData.dates || scheduleData.dates.length === 0) {
+                scheduleResponse = await fetch('https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=2025&gameType=P');
+                scheduleData = await scheduleResponse.json();
+            }
 
             // Process game data
             const teamPerformance = {};
