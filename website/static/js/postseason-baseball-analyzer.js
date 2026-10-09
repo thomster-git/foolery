@@ -25,9 +25,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Try years starting from 2026 downwards
             let scheduleData = { dates: [] };
             for (let year = 2026; year >= 2023; year--) {
-                const response = await fetch(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=${year}&gameType=F,D,L,W`);
-                scheduleData = await response.json();
-                if (scheduleData.dates && scheduleData.dates.length > 0) {
+                const types = ['F', 'D', 'L', 'W'];
+                const requests = types.map(t => 
+                    fetch(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=${year}&gameType=${t}`)
+                        .then(r => r.json())
+                );
+                const results = await Promise.all(requests);
+                
+                let allDates = [];
+                results.forEach(res => {
+                    if (res.dates) {
+                        allDates = allDates.concat(res.dates);
+                    }
+                });
+
+                if (allDates.length > 0) {
+                    scheduleData.dates = allDates;
                     break; // Found data
                 }
             }

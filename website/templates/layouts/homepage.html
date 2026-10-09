@@ -9,9 +9,9 @@
     
   </section>
 
-  <div style="display: flex; gap: 2.5rem; justify-content: space-between; flex-wrap: wrap; margin-bottom: 3rem;">
+  <div class="homepage-main-grid" style="display: grid; grid-template-columns: 1fr 350px; gap: 2.5rem; margin-bottom: 3rem;">
     <!-- Early Nodes -->
-    <section style="flex: 1; min-width: 300px;">
+    <section>
       <h2 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 1.5rem;">Early Access Tools</h2>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); gap: 1rem;">
         <a href="/tools/ocarina/" style="text-decoration: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; display: flex; align-items: center; gap: 0.75rem;" class="quick-link-card">
@@ -27,7 +27,7 @@
           <div><div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">Point Differentials</div><div style="font-size: 0.8rem; color: var(--text-muted);">NFL Analyzer</div></div>
         </a>
         <a href="/tools/dragonwilds-tracker.html" style="text-decoration: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; display: flex; align-items: center; gap: 0.75rem;" class="quick-link-card">
-          <img src="/images/website-assets/dragonwilds-logo.png" alt="Dragonwilds Logo" style="width: 1.5rem; height: 1.5rem; object-fit: contain;">
+          <span style="font-size: 1.5rem;">🐉</span>
           <div><div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">Game Progression</div><div style="font-size: 0.8rem; color: var(--text-muted);">Dragonwilds Guide</div></div>
         </a>
         <a href="/tools/ffx-tracker.html" style="text-decoration: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; display: flex; align-items: center; gap: 0.75rem;" class="quick-link-card">
@@ -46,7 +46,7 @@
     </section>
 
     <!-- Launch Schedule -->
-    <section style="flex: 0 0 350px;">
+    <section>
       <h2 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 1.5rem;">Upcoming Drop Schedule</h2>
       <div style="background: var(--bg-card); padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
         <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1.25rem;">
@@ -85,8 +85,8 @@
   .homepage-newsletter-wrapper .newsletter-form { flex: 1; min-width: 300px; }
   .homepage-newsletter-wrapper .newsletter-icon { display: none; }
   .homepage-newsletter-wrapper .newsletter-fields { align-items: stretch; }
-  .homepage-newsletter-wrapper .newsletter-btn { background: var(--accent-orange); color: #fff; border: 1px solid var(--accent-orange); transform: none; }
-  .homepage-newsletter-wrapper .newsletter-btn:hover { background: #ff7f3f; border-color: #ff7f3f; }
+  .homepage-newsletter-wrapper .newsletter-btn { background: var(--accent-cyan); color: #fff; border: 1px solid var(--accent-cyan); transform: none; }
+  .homepage-newsletter-wrapper .newsletter-btn:hover { opacity: 0.9; }
   @media (max-width: 900px) {
     .homepage-main-grid { grid-template-columns: 1fr !important; }
   }

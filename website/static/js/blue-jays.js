@@ -40,7 +40,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (!jays) {
-            throw new Error('Blue Jays not found in standings');
+            // Gracefully handle if they are removed from the wild card standings (e.g. out of contention or leading division)
+            jays = {
+                clinched: false,
+                wildCardRank: "N/A",
+                wildCardEliminationNumber: "E",
+                eliminationNumber: "E",
+                wildCardGamesBack: "-",
+                wins: 0,
+                losses: 0,
+            };
         }
 
         loadingEl.style.display = 'none';
