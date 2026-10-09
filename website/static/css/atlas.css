@@ -2193,3 +2193,33 @@ footer {
   90% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 1px); }
   100% { clip-path: inset(60% 0 20% 0); transform: translate(2px, -2px); }
 }
+
+/* Homepage Premium Newsletter CTA */
+.homepage-newsletter-wrapper {
+  margin: 4rem auto 2rem;
+  max-width: 800px;
+}
+
+.homepage-newsletter-wrapper .newsletter-signup {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.homepage-newsletter-wrapper .newsletter-fields {
+  display: flex;
+  gap: 0;
+}
+
+.homepage-newsletter-wrapper .newsletter-input {
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.homepage-newsletter-wrapper .newsletter-btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

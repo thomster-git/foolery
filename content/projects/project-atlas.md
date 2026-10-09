@@ -1,4 +1,5 @@
 ---
+stage: "teaser"
 id: project-atlas
 title: "Project Atlas"
 type: project
@@ -79,30 +80,3 @@ As of the latest build:
 - **8 interactive tools** across two deployment surfaces (public and internal)
 
 Atlas is as much a long-term record of how I think as it is a software project. Every article I write, every book I finish, every project I complete becomes part of it.
-
-## Launch & Rollout Strategy
-
-**Milestone 1: The "Teaser" Launch (Oct 20 - Oct 27, 2026)**
-- **Focus**: Bare-bones deployment to secure indexing and capture initial interest.
-- **Actions**: Deploy a minimalist landing page featuring a static preview of the knowledge graph and an email waitlist signup form. No deep content unlocked yet.
-- **Target KPI**: 100+ email list signups, initial Google Search Console indexing.
-
-**Milestone 2: Core Content Drip & SEO Seeding (Nov 15, 2026)**
-- **Focus**: Establishing the foundation of the digital garden.
-- **Actions**: Release the first structured batch of high-value content (e.g., top 10 foundational articles, core 20 library items). Enable basic site navigation, taxonomy (`/topics/`, `/themes/`), and RSS feeds.
-- **Target KPI**: 500 organic monthly visits, 5% email conversion rate.
-
-**Milestone 3: The Interactive Graph Unlock (Dec 10, 2026)**
-- **Focus**: Showcasing technical differentiation and driving engagement.
-- **Actions**: Activate the interactive 3D Labyrinth and live relationship graph navigation. All related edges between articles and library items go live.
-- **Target KPI**: 1,500 monthly visits, 3+ minutes average session duration.
-
-**Milestone 4: Tooling Expansion & Developer Outreach (Jan 20, 2027)**
-- **Focus**: Attracting the technical and creator niches.
-- **Actions**: Publish technical deep-dives on the custom Node.js architecture and release the "Content Creator" GUI and other interactive tools to the public.
-- **Target KPI**: 3,000 monthly visits, significant backlink generation from developer communities.
-
-**Milestone 5: Monetization & Premium Offerings (Mar 1, 2027)**
-- **Focus**: Converting audience engagement into revenue.
-- **Actions**: Introduce premium offerings—such as paid access to the full source code of the custom static site generator, an in-depth course on building personal knowledge graphs, or exclusive technical content.
-- **Target KPI**: First 50 paying customers, sustainable monthly recurring revenue (MRR) baseline.

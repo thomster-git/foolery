@@ -7,9 +7,6 @@
       I'm <strong style="color: var(--text-main);">Jonathan Thoms</strong>. I'm building a digital garden and interconnected knowledge graph. While the full site is under construction, sign up below to be notified when the first batch of articles drops, or try out some early interactive tools.
     </p>
     
-    <div style="margin-bottom: 3rem; display: flex; justify-content: center;">
-      {{newsletter}}
-    </div>
   </section>
 
   <div style="display: flex; gap: 2.5rem; justify-content: space-between; flex-wrap: wrap; margin-bottom: 3rem;">
@@ -30,7 +27,7 @@
           <div><div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">Point Differentials</div><div style="font-size: 0.8rem; color: var(--text-muted);">NFL Analyzer</div></div>
         </a>
         <a href="/tools/dragonwilds-tracker.html" style="text-decoration: none; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; display: flex; align-items: center; gap: 0.75rem;" class="quick-link-card">
-          <span style="font-size: 1.5rem;">🐉</span>
+          <span style="display: inline-flex; align-items: center;"><img src="/images/website-assets/dragonwilds-logo.png" alt="Dragonwilds Logo" style="width: 1.5rem; height: 1.5rem;"></span>
           <div><div style="font-weight: 600; color: var(--text-main); font-size: 0.95rem;">Game Progression</div><div style="font-size: 0.8rem; color: var(--text-muted);">Dragonwilds Guide</div></div>
         </a>
       </div>
@@ -48,8 +45,8 @@
           </li>
           <li style="border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">
             <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Next Drop</div>
-            <div style="font-weight: 600; color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.3rem;">Hardware & Systems</div>
-            <div style="color: var(--text-muted); font-size: 0.9rem;">The first batch of long-form articles focusing on homelab architecture, TrueNAS, and Docker.</div>
+            <div style="font-weight: 600; color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.3rem;">Building Project Atlas</div>
+            <div style="color: var(--text-muted); font-size: 0.9rem;">The first batch of long-form articles focusing on static site generation, building this digital garden from the ground up, and AI-agent orchestration.</div>
           </li>
           <li>
             <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Future</div>
@@ -59,6 +56,10 @@
         </ul>
       </div>
     </section>
+  </div>
+
+  <div class="homepage-newsletter-wrapper">
+    {{newsletter}}
   </div>
 
 </div>

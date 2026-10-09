@@ -4,14 +4,19 @@
         
         <div class="breadcrumbs">
             <a href="/">Home</a> ›
-            <a href="/tools/">Developer Tools</a> ›
+            <a href="/tools/">Interactive Tools</a> ›
             <span>Baseball Trend Analyzer</span>
         </div>
 
         <h1 style="font-size: 3rem; margin-bottom: 2rem;">Baseball Trend Analyzer</h1>
+        <div style="background: rgba(168, 85, 247, 0.05); border-left: 4px solid var(--accent-purple); padding: 1.5rem; margin-bottom: 2.5rem; text-align: left; font-size: 0.95rem; line-height: 1.6; border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+            <strong style="color: var(--accent-purple); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; display: block; margin-bottom: 0.5rem;">The Atlas Connection</strong>
+            At first glance, baseball stats might seem out of place in a digital garden. But sports seasons are ultimately sprawling datasets of <strong>variance, momentum, and statistical pattern recognition</strong>. By graphing trailing indicators, we can identify when a team's actual performance diverges from their raw win percentage—detecting systemic signal through the noise.
+        </div>
 
         <div style="background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); position: relative; overflow: hidden; margin-bottom: 2rem; text-align: left;">
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">Analyze MLB team momentum via cumulative run differential. Select a team to highlight their specific trendline over the 2026 season.</p>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Analyze MLB team momentum via cumulative run differential. Select a team to highlight their specific trendline over the 2026 season.</p>
+<div style="margin-bottom: 2rem;"><button class="share-btn" data-title="Baseball Trend Analyzer" data-text="Check out this interactive Baseball Trend Analyzer at Thoms Foolery. ⚾📈" data-url="https://thomsfoolery.com/tools/baseball-trend-analyzer.html" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.8rem; font-size: 0.85rem; font-family: monospace; background: rgba(168, 85, 247, 0.1); color: var(--accent-purple); border: 1px solid var(--accent-purple); border-radius: 4px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--accent-purple)'; this.style.color='white';" onmouseout="this.style.background='rgba(168, 85, 247, 0.1)'; this.style.color='var(--accent-purple)';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Share Tool</button></div>
             
             <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
                 <div>
@@ -56,6 +61,30 @@
                 </div>
             </div>
 
+            
+        <div id="awards-container" style="background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); margin-bottom: 3rem; text-align: left; display: none;">
+            <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--accent-cyan);">2026 Season Awards & Standings</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                <div>
+                    <h3 style="color: var(--text-main); font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1rem;">Top 10 Teams (Win %)</h3>
+                    <ol id="award-top10" style="padding-left: 1.2rem; color: var(--text-dim); line-height: 1.6;"></ol>
+                </div>
+                <div>
+                    <h3 style="color: var(--text-main); font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1rem;">Bottom 10 Teams (Win %)</h3>
+                    <ol id="award-bottom10" style="padding-left: 1.2rem; color: var(--text-dim); line-height: 1.6;"></ol>
+                </div>
+                <div>
+                    <h3 style="color: var(--text-main); font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1rem;">Notable Streaks</h3>
+                    <ul style="padding-left: 1.2rem; color: var(--text-dim); line-height: 1.6;">
+                        <li><strong>Longest Win Streak:</strong> <span id="award-winstreak"></span></li>
+                        <li><strong>Longest Losing Streak:</strong> <span id="award-lossstreak"></span></li>
+                        <li><strong>Best Run Differential:</strong> <span id="award-bestdiff"></span></li>
+                        <li><strong>Worst Run Differential:</strong> <span id="award-worstdiff"></span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
             <div id="chart-container" style="position: relative; height: 500px; width: 100%;">
                 <div id="chart-loading" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); z-index: 10;">
                     <p style="font-weight: bold;">Loading MLB Data...</p>
@@ -69,6 +98,7 @@
         </div>
 
         </div> <!-- end article-content -->
+        {{suggestions-cta}}
         {{ad_sidebar}}
     </div>
 </div>
