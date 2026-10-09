@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Try years starting from 2026 downwards
             let scheduleData = { dates: [] };
             for (let year = 2026; year >= 2023; year--) {
-                const response = await fetch(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=${year}&gameTypes=F,D,L,W`);
+                const response = await fetch(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=${year}&gameType=F,D,L,W`);
                 scheduleData = await response.json();
                 if (scheduleData.dates && scheduleData.dates.length > 0) {
                     break; // Found data
