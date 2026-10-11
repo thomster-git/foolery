@@ -60,7 +60,7 @@ export default class PageBuilder {
         await this.buildNFLAnalyzer();
         await this.buildSportsBettingTracker();
         await this.buildBaseballTrendAnalyzer();
-        await this.buildPostseasonBaseballAnalyzer();
+        await this.buildBaseballTrendAnalyzer();
         await this.buildTwitterDb();
         await this.buildOcarinaPage();
         await this.buildSponsorsPage();
@@ -325,7 +325,7 @@ export default class PageBuilder {
 
     // FFX Tracker
     async buildFFXTracker() {
-        const folder = path.join(this.output, "tools");
+        const folder = path.join(this.output, "tools", "ffx-tracker");
         await fs.mkdir(folder, { recursive: true });
 
         const template = await this.loadLayout("ffx-tracker.html");
@@ -335,15 +335,15 @@ export default class PageBuilder {
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
             "FFX 100% Completion Tracker",
-            { description: "Comprehensive checklist for Final Fantasy X", path: "/tools/ffx-tracker.html", ogType: "website" }
+            { description: "Comprehensive checklist for Final Fantasy X", path: "/tools/ffx-tracker/", ogType: "website" }
         );
 
-        await fs.writeFile(path.join(folder, "ffx-tracker.html"), html);
+        await fs.writeFile(path.join(folder, "index.html"), html);
     }
 
     // Dragonwilds Tracker
     async buildDragonwildsTracker() {
-        const folder = path.join(this.output, "tools");
+        const folder = path.join(this.output, "tools", "dragonwilds-tracker");
         await fs.mkdir(folder, { recursive: true });
 
         const template = await this.loadLayout("dragonwilds-tracker.html");
@@ -353,15 +353,15 @@ export default class PageBuilder {
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
             "Runescape: Dragonwilds Guide",
-            { description: "Interactive progression guide for Runescape: Dragonwilds", path: "/tools/dragonwilds-tracker.html", ogType: "website" }
+            { description: "Interactive progression guide for Runescape: Dragonwilds", path: "/tools/dragonwilds-tracker/", ogType: "website" }
         );
 
-        await fs.writeFile(path.join(folder, "dragonwilds-tracker.html"), html);
+        await fs.writeFile(path.join(folder, "index.html"), html);
     }
 
     // NHL Trend Analyzer
     async buildNHLAnalyzer() {
-        const folder = path.join(this.output, "tools");
+        const folder = path.join(this.output, "tools", "nhl-trend-analyzer");
         await fs.mkdir(folder, { recursive: true });
 
         const template = await this.loadLayout("nhl-trend-analyzer.html");
@@ -371,15 +371,15 @@ export default class PageBuilder {
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
             "NHL Trend Analyzer",
-            { description: "NHL team performance and special teams efficiency tracker", path: "/tools/nhl-trend-analyzer.html", ogType: "website" }
+            { description: "NHL team performance and special teams efficiency tracker", path: "/tools/nhl-trend-analyzer/", ogType: "website" }
         );
 
-        await fs.writeFile(path.join(folder, "nhl-trend-analyzer.html"), html);
+        await fs.writeFile(path.join(folder, "index.html"), html);
     }
 
     // NFL Trend Analyzer
     async buildNFLAnalyzer() {
-        const folder = path.join(this.output, "tools");
+        const folder = path.join(this.output, "tools", "nfl-trend-analyzer");
         await fs.mkdir(folder, { recursive: true });
 
         const template = await this.loadLayout("nfl-trend-analyzer.html");
@@ -389,15 +389,15 @@ export default class PageBuilder {
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
             "NFL Trend Analyzer",
-            { description: "NFL team performance trend analyzer", path: "/tools/nfl-trend-analyzer.html", ogType: "website" }
+            { description: "NFL team performance trend analyzer", path: "/tools/nfl-trend-analyzer/", ogType: "website" }
         );
 
-        await fs.writeFile(path.join(folder, "nfl-trend-analyzer.html"), html);
+        await fs.writeFile(path.join(folder, "index.html"), html);
     }
 
     // Baseball Trend Analyzer
     async buildBaseballTrendAnalyzer() {
-        const folder = path.join(this.output, "tools");
+        const folder = path.join(this.output, "tools", "baseball-trend-analyzer");
         await fs.mkdir(folder, { recursive: true });
 
         const template = await this.loadLayout("baseball-trend-analyzer.html");
@@ -407,27 +407,10 @@ export default class PageBuilder {
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
             "Baseball Trend Analyzer",
-            { description: "MLB team performance trendline visualizer", path: "/tools/baseball-trend-analyzer.html", ogType: "website" }
+            { description: "MLB team performance trendline visualizer", path: "/tools/baseball-trend-analyzer/", ogType: "website" }
         );
 
-        await fs.writeFile(path.join(folder, "baseball-trend-analyzer.html"), html);
-    }
-
-    async buildPostseasonBaseballAnalyzer() {
-        const folder = path.join(this.output, "tools");
-        await fs.mkdir(folder, { recursive: true });
-
-        const template = await this.loadLayout("postseason-baseball-analyzer.html");
-        const adSidebar = await this.loadPartial("ad-sidebar.html");
-        const suggestionsCta = await this.loadPartial("suggestions-cta.html");
-        
-        let html = await this.wrapPage(
-            this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "MLB Postseason Analyzer",
-            { description: "MLB team performance trendline visualizer for the playoffs", path: "/tools/postseason-baseball-analyzer.html", ogType: "website" }
-        );
-
-        await fs.writeFile(path.join(folder, "postseason-baseball-analyzer.html"), html);
+        await fs.writeFile(path.join(folder, "index.html"), html);
     }
 
     //--------------------------------------------------
