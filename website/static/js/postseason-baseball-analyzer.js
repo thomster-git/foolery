@@ -440,7 +440,17 @@ document.addEventListener('DOMContentLoaded', () => {
         bracketRibbon.innerHTML = '';
         if (seriesMatches.length === 0) return;
 
-        seriesMatches.forEach(series => {
+        const currentRound = roundSelect.value;
+        const filteredSeries = currentRound === 'all'
+            ? seriesMatches
+            : seriesMatches.filter(s => s.round === currentRound);
+
+        if (filteredSeries.length === 0) {
+            bracketRibbon.innerHTML = `<span style="font-size:0.8rem; color:var(--text-muted); font-family:monospace; padding:0.5rem 0;">No series matchups recorded for this round in the ${seasonSelect.value} postseason.</span>`;
+            return;
+        }
+
+        filteredSeries.forEach(series => {
             const chip = document.createElement('div');
             chip.className = 'bracket-chip';
             if (selectedSeriesId === series.id) chip.classList.add('active');
@@ -472,6 +482,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // High-contrast helper for KPI team names
+    function renderKpiTeamHtml(team, suffixText) {
+        if (!team) return '--';
+        const dot = `<span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:${team.color}; border:1.5px solid rgba(255,255,255,0.7); box-shadow:0 0 6px ${team.color}; flex-shrink:0;"></span>`;
+        return `<span style="display:inline-flex; align-items:center; gap:0.45rem; color:#ffffff; font-weight:700;">${dot}<span>${team.name}</span></span> <span style="color:#e2e8f0; font-weight:600; font-size:0.95em;">(${suffixText})</span>`;
+    }
+
     // Update Pulse Summary KPI Cards
     function updatePulseKPIs() {
         const teams = Object.values(parsedTeams);
@@ -480,28 +497,28 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Top Surge
         const surging = [...teams].sort((a, b) => b.finalPMI - a.finalPMI)[0];
         if (surging) {
-            document.getElementById('kpi-surge-team').innerHTML = `<span style="color:${surging.color};">${surging.name}</span> (${surging.finalPMI > 0 ? '+' : ''}${surging.finalPMI} PMI)`;
+            document.getElementById('kpi-surge-team').innerHTML = renderKpiTeamHtml(surging, `${surging.finalPMI > 0 ? '+' : ''}${surging.finalPMI} PMI`);
             document.getElementById('kpi-surge-desc').textContent = `Diff: ${surging.finalRunDiff > 0 ? '+' : ''}${surging.finalRunDiff} runs | ${surging.totalWins}-${surging.totalLosses} overall`;
         }
 
         // 2. Coldest / Fall-off Risk
         const coldest = [...teams].sort((a, b) => a.finalPMI - b.finalPMI)[0];
         if (coldest) {
-            document.getElementById('kpi-cold-team').innerHTML = `<span style="color:${coldest.color};">${coldest.name}</span> (${coldest.finalPMI} PMI)`;
+            document.getElementById('kpi-cold-team').innerHTML = renderKpiTeamHtml(coldest, `${coldest.finalPMI} PMI`);
             document.getElementById('kpi-cold-desc').textContent = `Diff: ${coldest.finalRunDiff} runs | ${coldest.totalLosses} losses`;
         }
 
         // 3. Game Control Leader
         const leadBoss = [...teams].sort((a, b) => b.finalLeadShare - a.finalLeadShare)[0];
         if (leadBoss) {
-            document.getElementById('kpi-lead-team').innerHTML = `<span style="color:${leadBoss.color};">${leadBoss.name}</span> (${leadBoss.finalLeadShare}% Inning Lead)`;
+            document.getElementById('kpi-lead-team').innerHTML = renderKpiTeamHtml(leadBoss, `${leadBoss.finalLeadShare}% Inning Lead`);
             document.getElementById('kpi-lead-desc').textContent = `Commanded the lead across ${leadBoss.leadInningsTotal} total innings`;
         }
 
         // 4. Cardiac Kids (Most 1-Run Game Wins)
         const cardiac = [...teams].sort((a, b) => b.oneRunWins - a.oneRunWins)[0];
         if (cardiac) {
-            document.getElementById('kpi-cardiac-team').innerHTML = `<span style="color:${cardiac.color};">${cardiac.name}</span> (${cardiac.oneRunWins} 1-Run Wins)`;
+            document.getElementById('kpi-cardiac-team').innerHTML = renderKpiTeamHtml(cardiac, `${cardiac.oneRunWins} 1-Run Wins`);
             document.getElementById('kpi-cardiac-desc').textContent = `Record in 1-run games: ${cardiac.oneRunWins}-${cardiac.oneRunLosses}`;
         }
     }
@@ -671,7 +688,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // MODE 2: Fire & Ice Quadrants (Offense Form vs Pitching Lockdown)
     function renderQuadrantView() {
-        const teams = Object.values(parsedTeams);
+        const selectedRound = roundSelect.value;
+        const selectedTeamId = teamSelect.value;
+        let teams = Object.values(parsedTeams);
+
+        if (selectedSeriesId) {
+            const series = seriesMatches.find(s => s.id === selectedSeriesId);
+            if (series) {
+                teams = teams.filter(t => t.id === series.team1.id || t.id === series.team2.id);
+            }
+        }
+        if (selectedTeamId !== 'all') {
+            const tid = parseInt(selectedTeamId);
+            teams = teams.filter(t => t.id === tid);
+        }
+        if (selectedRound !== 'all') {
+            teams = teams.filter(t => t.games.some(g => g.round === selectedRound));
+        }
+
         if (teams.length === 0) return;
 
         // X: Runs Scored per Game (Offense Form)
@@ -865,12 +899,56 @@ document.addEventListener('DOMContentLoaded', () => {
         telemetryDrawer.scrollIntoView({ behavior: 'smooth' });
     }
 
+    function updateSeriesRoundPills(round) {
+        document.querySelectorAll('.series-pill').forEach(btn => {
+            if (btn.dataset.round === round) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    function handleRoundChange() {
+        updateSeriesRoundPills(roundSelect.value);
+
+        // When selecting all tournament rounds, 2026 season should be the default that loads
+        if (roundSelect.value === 'all' && seasonSelect.value !== '2026') {
+            seasonSelect.value = '2026';
+            selectedSeriesId = null;
+            loadPostseasonData('2026');
+            return;
+        }
+
+        // Deselect active series if it is not in the newly selected round
+        if (selectedSeriesId) {
+            const activeSeries = seriesMatches.find(s => s.id === selectedSeriesId);
+            if (activeSeries && roundSelect.value !== 'all' && activeSeries.round !== roundSelect.value) {
+                selectedSeriesId = null;
+            }
+        }
+
+        populateBracketRibbon();
+        renderChart();
+    }
+
+    // Series round filter pills
+    document.querySelectorAll('.series-pill').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetRound = btn.dataset.round;
+            if (roundSelect.value === targetRound) return;
+            roundSelect.value = targetRound;
+            handleRoundChange();
+        });
+    });
+
     // Event Listeners
     seasonSelect.addEventListener('change', () => {
+        selectedSeriesId = null;
         loadPostseasonData(seasonSelect.value);
     });
 
-    roundSelect.addEventListener('change', renderChart);
+    roundSelect.addEventListener('change', handleRoundChange);
     metricSelect.addEventListener('change', renderChart);
     teamSelect.addEventListener('change', renderChart);
 
@@ -906,6 +984,6 @@ document.addEventListener('DOMContentLoaded', () => {
         telemetryDrawer.style.display = 'none';
     });
 
-    // Start with 2024 postseason (or 2026 if available)
-    loadPostseasonData('2024');
+    // Start with 2026 postseason as default
+    loadPostseasonData(seasonSelect.value || '2026');
 });

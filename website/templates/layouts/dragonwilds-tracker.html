@@ -400,23 +400,23 @@
                 <div style="flex: 1; min-width: 320px; background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
                     <!-- Character Name Input -->
                     <div style="margin-bottom: 1.5rem;">
-                        <label for="dw-char-name" style="display: block; font-weight: bold; color: var(--accent-cyan); margin-bottom: 0.4rem; font-size: 0.95rem; font-family: 'Space Grotesk', sans-serif;">Character Name</label>
-                        <input type="text" id="dw-char-name" placeholder="Enter Character Name (e.g. Iron Slayer)" maxlength="24" class="stat-input" style="width: 100%; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; padding: 0.6rem 0.8rem;">
+                        <label for="dw-char-name" style="display: block; font-weight: bold; color: var(--accent-cyan); margin-bottom: 0.4rem; font-size: 0.95rem; font-family: 'Space Grotesk', sans-serif;">Character Name <span style="font-weight: normal; color: var(--text-muted); font-size: 0.85rem;">(optional)</span></label>
+                        <input type="text" id="dw-char-name" placeholder="Enter Character Name (optional)" maxlength="24" class="stat-input" style="width: 100%; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; padding: 0.6rem 0.8rem;">
                     </div>
 
                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                        <div class="stat-input-group"><label for="stat-attack"><img src="/images/skills/Attack.svg" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem;"> Attack</label><input type="number" id="stat-attack" data-skill="attack" min="1" max="99" value="1" class="stat-input"></div>
-                        <div class="stat-input-group"><label for="stat-magic"><img src="/images/skills/Magic.svg" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem;"> Magic</label><input type="number" id="stat-magic" data-skill="magic" min="1" max="99" value="1" class="stat-input"></div>
-                        <div class="stat-input-group"><label for="stat-ranged"><img src="/images/skills/Ranged.svg" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem;"> Ranged</label><input type="number" id="stat-ranged" data-skill="ranged" min="1" max="99" value="1" class="stat-input"></div>
-                        <div class="stat-input-group"><label for="stat-mining"><img src="/images/skills/Mining.svg" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem;"> Mining</label><input type="number" id="stat-mining" data-skill="mining" min="1" max="99" value="1" class="stat-input"></div>
-                        <div class="stat-input-group"><label for="stat-woodcutting"><img src="/images/skills/Woodcutting.svg" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem;"> Woodcutting</label><input type="number" id="stat-woodcutting" data-skill="woodcutting" min="1" max="99" value="1" class="stat-input"></div>
-                        <div class="stat-input-group"><label for="stat-artisan"><img src="/images/skills/Artisan.svg" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem;"> Artisan</label><input type="number" id="stat-artisan" data-skill="artisan" min="1" max="99" value="1" class="stat-input"></div>
-                        <div class="stat-input-group"><label for="stat-construction"><img src="/images/skills/Construction.svg" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem;"> Construction</label><input type="number" id="stat-construction" data-skill="construction" min="1" max="99" value="1" class="stat-input"></div>
-                        <div class="stat-input-group"><label for="stat-cooking"><img src="/images/skills/Cooking.svg" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem;"> Cooking</label><input type="number" id="stat-cooking" data-skill="cooking" min="1" max="99" value="1" class="stat-input"></div>
-                        <div class="stat-input-group"><label for="stat-runecrafting"><img src="/images/skills/Runecrafting.svg" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem;"> Runecrafting</label><input type="number" id="stat-runecrafting" data-skill="runecrafting" min="1" max="99" value="1" class="stat-input"></div>
-                        <div class="stat-input-group"><label for="stat-farming"><img src="/images/skills/Farming.svg" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem;"> Farming</label><input type="number" id="stat-farming" data-skill="farming" min="1" max="99" value="1" class="stat-input"></div>
-                        <div class="stat-input-group"><label for="stat-fishing"><img src="/images/skills/Fishing.svg" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem;"> Fishing</label><input type="number" id="stat-fishing" data-skill="fishing" min="1" max="99" value="1" class="stat-input"></div>
-                        <div class="stat-input-group"><label for="stat-agility"><img src="/images/skills/Agility.svg" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem;"> Agility</label><input type="number" id="stat-agility" data-skill="agility" min="1" max="99" value="1" class="stat-input"></div>
+                        <div class="stat-input-group"><label for="stat-attack"><img src="/images/skills/Attack.png" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem; object-fit: contain;" alt="Attack"> Attack</label><input type="number" id="stat-attack" data-skill="attack" min="1" max="99" value="1" class="stat-input"></div>
+                        <div class="stat-input-group"><label for="stat-magic"><img src="/images/skills/Magic.png" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem; object-fit: contain;" alt="Magic"> Magic</label><input type="number" id="stat-magic" data-skill="magic" min="1" max="99" value="1" class="stat-input"></div>
+                        <div class="stat-input-group"><label for="stat-ranged"><img src="/images/skills/Ranged.png" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem; object-fit: contain;" alt="Ranged"> Ranged</label><input type="number" id="stat-ranged" data-skill="ranged" min="1" max="99" value="1" class="stat-input"></div>
+                        <div class="stat-input-group"><label for="stat-mining"><img src="/images/skills/Mining.png" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem; object-fit: contain;" alt="Mining"> Mining</label><input type="number" id="stat-mining" data-skill="mining" min="1" max="99" value="1" class="stat-input"></div>
+                        <div class="stat-input-group"><label for="stat-woodcutting"><img src="/images/skills/Woodcutting.png" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem; object-fit: contain;" alt="Woodcutting"> Woodcutting</label><input type="number" id="stat-woodcutting" data-skill="woodcutting" min="1" max="99" value="1" class="stat-input"></div>
+                        <div class="stat-input-group"><label for="stat-artisan"><img src="/images/skills/Artisan.png" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem; object-fit: contain;" alt="Artisan"> Artisan</label><input type="number" id="stat-artisan" data-skill="artisan" min="1" max="99" value="1" class="stat-input"></div>
+                        <div class="stat-input-group"><label for="stat-construction"><img src="/images/skills/Construction.png" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem; object-fit: contain;" alt="Construction"> Construction</label><input type="number" id="stat-construction" data-skill="construction" min="1" max="99" value="1" class="stat-input"></div>
+                        <div class="stat-input-group"><label for="stat-cooking"><img src="/images/skills/Cooking.png" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem; object-fit: contain;" alt="Cooking"> Cooking</label><input type="number" id="stat-cooking" data-skill="cooking" min="1" max="99" value="1" class="stat-input"></div>
+                        <div class="stat-input-group"><label for="stat-runecrafting"><img src="/images/skills/Runecrafting.png" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem; object-fit: contain;" alt="Runecrafting"> Runecrafting</label><input type="number" id="stat-runecrafting" data-skill="runecrafting" min="1" max="99" value="1" class="stat-input"></div>
+                        <div class="stat-input-group"><label for="stat-farming"><img src="/images/skills/Farming.png" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem; object-fit: contain;" alt="Farming"> Farming</label><input type="number" id="stat-farming" data-skill="farming" min="1" max="99" value="1" class="stat-input"></div>
+                        <div class="stat-input-group"><label for="stat-fishing"><img src="/images/skills/Fishing.png" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem; object-fit: contain;" alt="Fishing"> Fishing</label><input type="number" id="stat-fishing" data-skill="fishing" min="1" max="99" value="1" class="stat-input"></div>
+                        <div class="stat-input-group"><label for="stat-agility"><img src="/images/skills/Agility.png" style="width: 1.3rem; height: 1.3rem; vertical-align: middle; margin-right: 0.35rem; object-fit: contain;" alt="Agility"> Agility</label><input type="number" id="stat-agility" data-skill="agility" min="1" max="99" value="1" class="stat-input"></div>
                     </div>
 
                     <!-- Minimum Experience & Total Level Summary -->
@@ -439,8 +439,23 @@
                 <!-- Preview Section -->
                 <div style="flex: 1; min-width: 320px; display: flex; flex-direction: column; align-items: center; position: sticky; top: 2rem;">
                     <canvas id="stat-canvas" width="520" height="700" style="width: 100%; max-width: 440px; height: auto; border-radius: 12px; box-shadow: 0 12px 36px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);"></canvas>
-                    <button id="btn-copy-stats" style="margin-top: 1.5rem; background: var(--accent-cyan); color: #000; font-weight: bold; padding: 0.75rem 2rem; border: none; border-radius: 4px; cursor: pointer; transition: background 0.2s; font-size: 1.1rem; width: 100%; max-width: 440px;">📋 Copy Profile Image</button>
-                    <div id="copy-feedback" style="margin-top: 0.5rem; color: #10b981; opacity: 0; transition: opacity 0.3s; font-weight: bold;">Copied image to clipboard!</div>
+                    
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 0.5rem; width: 100%; max-width: 440px; margin-top: 1.25rem;">
+                        <button id="btn-copy-stats" type="button" style="flex: 1.2; background: var(--accent-cyan); color: #000; font-weight: bold; padding: 0.75rem 1rem; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem;">📋 Copy Image</button>
+                        <button id="btn-share-stats" type="button" style="flex: 1; background: rgba(168, 85, 247, 0.15); border: 1px solid var(--accent-purple); color: var(--accent-purple); font-weight: bold; padding: 0.75rem 1rem; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem;">🚀 Share Card</button>
+                        <button id="btn-download-stats" type="button" style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-main); font-weight: bold; padding: 0.75rem 1rem; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem;" title="Download PNG File">💾 Download</button>
+                    </div>
+                    <div id="copy-feedback" style="margin-top: 0.5rem; color: #10b981; opacity: 0; transition: opacity 0.3s; font-weight: bold; font-size: 0.85rem; text-align: center;">Copied image to clipboard!</div>
+
+                    <!-- Call To Action Share Box -->
+                    <div style="margin-top: 0.75rem; width: 100%; max-width: 440px; background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.85rem; box-sizing: border-box;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                            <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-cyan); font-family: monospace; font-weight: bold;">📢 Post / Tweet Caption</span>
+                            <button id="btn-copy-caption" type="button" style="background: rgba(6, 182, 212, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-size: 0.75rem; font-family: monospace; padding: 3px 8px; border-radius: 4px; cursor: pointer; transition: all 0.2s;">Copy Caption</button>
+                        </div>
+                        <div id="share-caption-preview" style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; font-family: 'JetBrains Mono', monospace; background: rgba(0,0,0,0.25); padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); user-select: all; white-space: pre-wrap; word-break: break-word;"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -676,31 +691,62 @@
             if (progressText) progressText.style.color = percentage === 100 ? '#10b981' : 'var(--accent-cyan)';
         }
 
-        // Tab switching
+        // Tab switching & URL deep-linking
         const tabBtns = document.querySelectorAll('.dw-tab-btn');
         const tabPanels = document.querySelectorAll('.dw-tab-panel');
+
+        function switchTab(tabKey, updateUrl = true) {
+            if (tabKey === 'profile') tabKey = 'stats';
+            if (tabKey === 'tracker') tabKey = 'guide';
+
+            const activeBtn = Array.from(tabBtns).find(b => b.dataset.tab === tabKey);
+            const targetPanel = document.getElementById('dw-tab-' + tabKey);
+            if (!activeBtn || !targetPanel) return;
+
+            tabBtns.forEach(b => {
+                b.classList.remove('active');
+                b.style.borderColor = 'transparent';
+                b.style.color = 'var(--text-muted)';
+            });
+            tabPanels.forEach(p => p.style.display = 'none');
+
+            activeBtn.classList.add('active');
+            activeBtn.style.borderColor = 'var(--accent-cyan)';
+            activeBtn.style.color = 'var(--accent-cyan)';
+            targetPanel.style.display = 'block';
+
+            if (tabKey === 'stats') {
+                updateSummary();
+                drawProfile();
+                updateCaptionPreview();
+            }
+
+            if (updateUrl && history.replaceState) {
+                const newHash = tabKey === 'guide' ? '' : '#' + tabKey;
+                history.replaceState(null, '', window.location.pathname + window.location.search + newHash);
+            }
+        }
+
         tabBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                tabBtns.forEach(b => {
-                    b.classList.remove('active');
-                    b.style.borderColor = 'transparent';
-                    b.style.color = 'var(--text-muted)';
-                });
-                tabPanels.forEach(p => p.style.display = 'none');
-                
-                btn.classList.add('active');
-                btn.style.borderColor = 'var(--accent-cyan)';
-                btn.style.color = 'var(--accent-cyan)';
-                
-                const target = document.getElementById('dw-tab-' + btn.dataset.tab);
-                if (target) target.style.display = 'block';
-                
-                if (btn.dataset.tab === 'stats') {
-                    updateSummary();
-                    drawProfile();
-                }
+                switchTab(btn.dataset.tab, true);
             });
         });
+
+        // Direct linking via hash (#stats, #profile) or query param (?tab=stats, ?tab=profile)
+        function checkUrlForTab() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryTab = urlParams.get('tab');
+            const hashTab = window.location.hash.replace('#', '').toLowerCase();
+            const requested = queryTab || hashTab;
+
+            if (requested) {
+                switchTab(requested, false);
+            }
+        }
+
+        checkUrlForTab();
+        window.addEventListener('hashchange', checkUrlForTab);
 
         // ==========================================
         // STATS PROFILE & EXPERIENCE LOGIC
@@ -732,18 +778,18 @@
         const ctx = canvas ? canvas.getContext('2d') : null;
 
         const skillMeta = [
-            { id: 'attack', iconUrl: '/images/skills/Attack.svg', name: 'Attack' },
-            { id: 'magic', iconUrl: '/images/skills/Magic.svg', name: 'Magic' },
-            { id: 'ranged', iconUrl: '/images/skills/Ranged.svg', name: 'Ranged' },
-            { id: 'mining', iconUrl: '/images/skills/Mining.svg', name: 'Mining' },
-            { id: 'woodcutting', iconUrl: '/images/skills/Woodcutting.svg', name: 'Woodcutting' },
-            { id: 'artisan', iconUrl: '/images/skills/Artisan.svg', name: 'Artisan' },
-            { id: 'construction', iconUrl: '/images/skills/Construction.svg', name: 'Construction' },
-            { id: 'cooking', iconUrl: '/images/skills/Cooking.svg', name: 'Cooking' },
-            { id: 'runecrafting', iconUrl: '/images/skills/Runecrafting.svg', name: 'Runecrafting' },
-            { id: 'farming', iconUrl: '/images/skills/Farming.svg', name: 'Farming' },
-            { id: 'fishing', iconUrl: '/images/skills/Fishing.svg', name: 'Fishing' },
-            { id: 'agility', iconUrl: '/images/skills/Agility.svg', name: 'Agility' }
+            { id: 'attack', iconUrl: '/images/skills/Attack.png', name: 'Attack' },
+            { id: 'magic', iconUrl: '/images/skills/Magic.png', name: 'Magic' },
+            { id: 'ranged', iconUrl: '/images/skills/Ranged.png', name: 'Ranged' },
+            { id: 'mining', iconUrl: '/images/skills/Mining.png', name: 'Mining' },
+            { id: 'woodcutting', iconUrl: '/images/skills/Woodcutting.png', name: 'Woodcutting' },
+            { id: 'artisan', iconUrl: '/images/skills/Artisan.png', name: 'Artisan' },
+            { id: 'construction', iconUrl: '/images/skills/Construction.png', name: 'Construction' },
+            { id: 'cooking', iconUrl: '/images/skills/Cooking.png', name: 'Cooking' },
+            { id: 'runecrafting', iconUrl: '/images/skills/Runecrafting.png', name: 'Runecrafting' },
+            { id: 'farming', iconUrl: '/images/skills/Farming.png', name: 'Farming' },
+            { id: 'fishing', iconUrl: '/images/skills/Fishing.png', name: 'Fishing' },
+            { id: 'agility', iconUrl: '/images/skills/Agility.png', name: 'Agility' }
         ];
 
         let savedStats = {};
@@ -769,6 +815,7 @@
                 savedCharName = charNameInput.value;
                 try { localStorage.setItem(NAME_KEY, savedCharName); } catch(e) {}
                 drawProfile();
+                updateCaptionPreview();
             });
         }
 
@@ -778,6 +825,7 @@
                 showExp = showExpCheckbox.checked;
                 try { localStorage.setItem(SHOW_EXP_KEY, showExp ? '1' : '0'); } catch(e) {}
                 drawProfile();
+                updateCaptionPreview();
             });
         }
 
@@ -794,6 +842,7 @@
                 try { localStorage.setItem(STATS_KEY, JSON.stringify(savedStats)); } catch(e) {}
                 updateSummary();
                 drawProfile();
+                updateCaptionPreview();
             });
         });
 
@@ -880,13 +929,15 @@
             ctx.fillStyle = '#f59e0b';
             ctx.fillText('RUNESCAPE • DRAGONWILDS', w / 2, 36);
 
-            // Character Name in Cinzel / Roman Serif font
-            const charName = (savedCharName || '').trim() || 'Dragonwilds Adventurer';
-            ctx.font = 'bold 24px "Cinzel", "Times New Roman", serif';
+            // Header Title: Character Name or dynamic "CHARACTER PROFILE"
+            const rawCharName = (savedCharName || '').trim();
+            const displayName = rawCharName || 'CHARACTER PROFILE';
+            const fontSize = rawCharName.length > 16 ? 19 : (rawCharName ? 24 : 22);
+            ctx.font = `bold ${fontSize}px "Cinzel", "Times New Roman", serif`;
             ctx.fillStyle = '#ffffff';
             ctx.shadowColor = 'rgba(6, 182, 212, 0.6)';
             ctx.shadowBlur = 8;
-            ctx.fillText(charName, w / 2, 64);
+            ctx.fillText(displayName, w / 2, 64);
             ctx.shadowBlur = 0;
 
             // Header divider line with center diamond
@@ -944,8 +995,10 @@
                 ctx.roundRect(x + 8, y + 10, 48, 48, 6);
                 ctx.fill();
 
-                // Draw 38x38 SVG skill icon
+                // Draw 38x38 authentic wiki skill icon
                 if (skill.img && skill.img.complete && skill.img.naturalWidth > 0) {
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
                     ctx.drawImage(skill.img, x + 13, y + 15, 38, 38);
                 } else {
                     ctx.font = '20px "Segoe UI Emoji", sans-serif';
@@ -1013,27 +1066,119 @@
                 ctx.fillText(`MIN. TOTAL EXP: ${totalExp.toLocaleString()} XP`, w / 2, 656);
             }
 
-            // Watermark footer
-            ctx.font = '10px monospace';
-            ctx.fillStyle = '#475569';
-            ctx.fillText('THOM\'S FOOLERY • DRAGONWILDS PROGRESSION', w / 2, 688);
+            // Call-To-Action Watermark footer
+            ctx.font = 'bold 11px "Space Grotesk", sans-serif';
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillText('⚡ Create your own at: thomsfoolery.com/tools/dragonwilds-tracker/#stats', w / 2, 687);
+        }
+
+        function getShareText() {
+            const { totalLvl, totalExp } = calculateStats();
+            const rawName = (savedCharName || '').trim();
+            const titleHeader = rawName ? `⚔️ Runescape: Dragonwilds Character Profile: ${rawName}` : `⚔️ Runescape: Dragonwilds Character Profile`;
+            const expPart = showExp ? ` (${totalExp.toLocaleString()} XP)` : '';
+            return `${titleHeader}\n📊 Total Level: ${totalLvl} / 1,188${expPart}\n\nCreate your own profile at: https://thomsfoolery.com/tools/dragonwilds-tracker/#stats`;
+        }
+
+        function updateCaptionPreview() {
+            const previewEl = document.getElementById('share-caption-preview');
+            if (previewEl) {
+                previewEl.textContent = getShareText();
+            }
         }
 
         const btnCopy = document.getElementById('btn-copy-stats');
+        const btnShare = document.getElementById('btn-share-stats');
+        const btnDownload = document.getElementById('btn-download-stats');
+        const btnCopyCaption = document.getElementById('btn-copy-caption');
         const feedback = document.getElementById('copy-feedback');
-        
+
+        function showFeedback(msg) {
+            if (!feedback) return;
+            feedback.textContent = msg;
+            feedback.style.opacity = '1';
+            setTimeout(() => { feedback.style.opacity = '0'; }, 3200);
+        }
+
         if (btnCopy) {
             btnCopy.addEventListener('click', () => {
                 canvas.toBlob((blob) => {
                     if (!blob) return;
                     const item = new ClipboardItem({ 'image/png': blob });
                     navigator.clipboard.write([item]).then(() => {
-                        feedback.style.opacity = '1';
-                        setTimeout(() => feedback.style.opacity = '0', 3000);
+                        showFeedback('✅ Copied profile image to clipboard!');
                     }).catch(err => {
                         console.error('Clipboard write failed:', err);
-                        alert('Could not copy image to clipboard. Your browser might require you to grant permission.');
+                        navigator.clipboard.writeText(getShareText()).then(() => {
+                            showFeedback('✅ Copied share caption & link to clipboard!');
+                        });
                     });
+                });
+            });
+        }
+
+        if (btnShare) {
+            btnShare.addEventListener('click', () => {
+                canvas.toBlob(async (blob) => {
+                    const rawName = (savedCharName || '').trim();
+                    const safeName = rawName ? rawName.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'dragonwilds';
+                    const shareTitle = rawName ? `${rawName}'s Dragonwilds Profile` : 'Dragonwilds Character Profile';
+                    const shareText = getShareText();
+                    const shareUrl = 'https://thomsfoolery.com/tools/dragonwilds-tracker/#stats';
+
+                    if (blob && navigator.canShare) {
+                        const file = new File([blob], `${safeName}-profile.png`, { type: 'image/png' });
+                        if (navigator.canShare({ files: [file] })) {
+                            try {
+                                await navigator.share({
+                                    title: shareTitle,
+                                    text: shareText,
+                                    url: shareUrl,
+                                    files: [file]
+                                });
+                                return;
+                            } catch (err) {
+                                if (err.name !== 'AbortError') console.warn('Share with file failed, falling back:', err);
+                            }
+                        }
+                    }
+
+                    if (navigator.share) {
+                        try {
+                            await navigator.share({
+                                title: shareTitle,
+                                text: shareText,
+                                url: shareUrl
+                            });
+                            return;
+                        } catch (err) {
+                            if (err.name === 'AbortError') return;
+                        }
+                    }
+
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        showFeedback('✅ Copied share caption & link to clipboard!');
+                    });
+                });
+            });
+        }
+
+        if (btnDownload) {
+            btnDownload.addEventListener('click', () => {
+                const rawName = (savedCharName || '').trim();
+                const safeName = rawName ? rawName.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'dragonwilds';
+                const link = document.createElement('a');
+                link.download = `${safeName}-profile.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                showFeedback('💾 Downloaded profile PNG image!');
+            });
+        }
+
+        if (btnCopyCaption) {
+            btnCopyCaption.addEventListener('click', () => {
+                navigator.clipboard.writeText(getShareText()).then(() => {
+                    showFeedback('📋 Copied social post caption!');
                 });
             });
         }
@@ -1041,6 +1186,7 @@
         updateProgress();
         updateSummary();
         drawProfile();
+        updateCaptionPreview();
 
         // Share logic
         const shareBtns = document.querySelectorAll('.share-btn');

@@ -38,9 +38,9 @@
                 <div>
                     <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.4rem; text-transform: uppercase; font-family: monospace;">Season</label>
                     <select id="season-select" style="width: 100%; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 6px;">
-                        <option value="2026">2026 Postseason</option>
+                        <option value="2026" selected>2026 Postseason</option>
                         <option value="2025">2025 Postseason</option>
-                        <option value="2024" selected>2024 Postseason</option>
+                        <option value="2024">2024 Postseason</option>
                         <option value="2023">2023 Postseason</option>
                     </select>
                 </div>
@@ -75,32 +75,41 @@
 
             <!-- Pulse KPI Cards -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;" id="pulse-container">
-                <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.02)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-md); padding: 1rem;">
-                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #10B981; font-family: monospace; margin-bottom: 0.25rem;">🔥 Highest Momentum Surge</div>
-                    <div id="kpi-surge-team" style="font-size: 1.25rem; font-weight: bold; color: var(--text-bright); margin-bottom: 0.2rem;">--</div>
-                    <div id="kpi-surge-desc" style="font-size: 0.85rem; color: var(--text-muted);">--</div>
+                <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(16, 185, 129, 0.03)); border: 1px solid rgba(16, 185, 129, 0.35); border-radius: var(--radius-md); padding: 1.1rem;">
+                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #10B981; font-family: monospace; font-weight: 700; margin-bottom: 0.4rem;">🔥 Highest Momentum Surge</div>
+                    <div id="kpi-surge-team" style="font-size: 1.15rem; font-weight: bold; color: #ffffff; margin-bottom: 0.35rem; line-height: 1.3;">--</div>
+                    <div id="kpi-surge-desc" style="font-size: 0.85rem; color: #cbd5e1; font-weight: 500;">--</div>
                 </div>
-                <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.02)); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: var(--radius-md); padding: 1rem;">
-                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #EF4444; font-family: monospace; margin-bottom: 0.25rem;">❄️ Critical Fall-Off Risk</div>
-                    <div id="kpi-cold-team" style="font-size: 1.25rem; font-weight: bold; color: var(--text-bright); margin-bottom: 0.2rem;">--</div>
-                    <div id="kpi-cold-desc" style="font-size: 0.85rem; color: var(--text-muted);">--</div>
+                <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(239, 68, 68, 0.03)); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: var(--radius-md); padding: 1.1rem;">
+                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #EF4444; font-family: monospace; font-weight: 700; margin-bottom: 0.4rem;">❄️ Critical Fall-Off Risk</div>
+                    <div id="kpi-cold-team" style="font-size: 1.15rem; font-weight: bold; color: #ffffff; margin-bottom: 0.35rem; line-height: 1.3;">--</div>
+                    <div id="kpi-cold-desc" style="font-size: 0.85rem; color: #cbd5e1; font-weight: 500;">--</div>
                 </div>
-                <div style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.02)); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: var(--radius-md); padding: 1rem;">
-                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #38BDF8; font-family: monospace; margin-bottom: 0.25rem;">👑 Game State Dominance</div>
-                    <div id="kpi-lead-team" style="font-size: 1.25rem; font-weight: bold; color: var(--text-bright); margin-bottom: 0.2rem;">--</div>
-                    <div id="kpi-lead-desc" style="font-size: 0.85rem; color: var(--text-muted);">--</div>
+                <div style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), rgba(56, 189, 248, 0.03)); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: var(--radius-md); padding: 1.1rem;">
+                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #38BDF8; font-family: monospace; font-weight: 700; margin-bottom: 0.4rem;">👑 Game State Dominance</div>
+                    <div id="kpi-lead-team" style="font-size: 1.15rem; font-weight: bold; color: #ffffff; margin-bottom: 0.35rem; line-height: 1.3;">--</div>
+                    <div id="kpi-lead-desc" style="font-size: 0.85rem; color: #cbd5e1; font-weight: 500;">--</div>
                 </div>
-                <div style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.1), rgba(234, 88, 12, 0.02)); border: 1px solid rgba(234, 88, 12, 0.3); border-radius: var(--radius-md); padding: 1rem;">
-                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #EA580C; font-family: monospace; margin-bottom: 0.25rem;">⚡ Cardiac Kids (1-Run Games)</div>
-                    <div id="kpi-cardiac-team" style="font-size: 1.25rem; font-weight: bold; color: var(--text-bright); margin-bottom: 0.2rem;">--</div>
-                    <div id="kpi-cardiac-desc" style="font-size: 0.85rem; color: var(--text-muted);">--</div>
+                <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(245, 158, 11, 0.03)); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: var(--radius-md); padding: 1.1rem;">
+                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #F59E0B; font-family: monospace; font-weight: 700; margin-bottom: 0.4rem;">⚡ Cardiac Kids (1-Run Games)</div>
+                    <div id="kpi-cardiac-team" style="font-size: 1.15rem; font-weight: bold; color: #ffffff; margin-bottom: 0.35rem; line-height: 1.3;">--</div>
+                    <div id="kpi-cardiac-desc" style="font-size: 0.85rem; color: #cbd5e1; font-weight: 500;">--</div>
                 </div>
             </div>
 
             <!-- Interactive Micro-Bracket Navigation Ribbon -->
             <div style="margin-bottom: 1.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                    <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Tournament Series Filter</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.75rem;">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Tournament Series Filter:</span>
+                        <div id="series-round-pills" style="display: inline-flex; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; padding: 2px;">
+                            <button type="button" class="series-pill active" data-round="all">All Rounds</button>
+                            <button type="button" class="series-pill" data-round="F">Wild Card</button>
+                            <button type="button" class="series-pill" data-round="D">Division Series</button>
+                            <button type="button" class="series-pill" data-round="L">League Championship</button>
+                            <button type="button" class="series-pill" data-round="W">World Series</button>
+                        </div>
+                    </div>
                     <span style="font-size: 0.75rem; color: var(--text-dim); font-family: monospace;">Click any series to isolate its trajectory</span>
                 </div>
                 <div id="bracket-ribbon" style="display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.5rem; scrollbar-width: thin;">
@@ -307,6 +316,27 @@
     border-color: var(--accent-cyan);
     color: var(--accent-cyan);
     font-weight: bold;
+}
+.series-pill {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.series-pill:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+}
+.series-pill.active {
+    background: var(--accent-cyan);
+    color: #0b0f19;
+    font-weight: 700;
 }
 </style>
 

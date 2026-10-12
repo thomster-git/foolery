@@ -371,6 +371,13 @@ export default class PageBuilder {
 
         await fs.writeFile(path.join(folder, "index.html"), html);
         await fs.writeFile(path.join(this.output, "tools", "dragonwilds-tracker.html"), html);
+
+        // Dedicated direct URL alias for the profile tool (/tools/dragonwilds-profile/)
+        const profileFolder = path.join(this.output, "tools", "dragonwilds-profile");
+        await fs.mkdir(profileFolder, { recursive: true });
+        const redirectHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Dragonwilds Profile Generator - Thoms Foolery</title><link rel="canonical" href="https://thomsfoolery.com/tools/dragonwilds-tracker/#stats"><meta http-equiv="refresh" content="0; url=/tools/dragonwilds-tracker/#stats"><script>window.location.replace('/tools/dragonwilds-tracker/#stats');</script></head><body><p>Redirecting to <a href="/tools/dragonwilds-tracker/#stats">Dragonwilds Profile Generator</a>...</p></body></html>`;
+        await fs.writeFile(path.join(profileFolder, "index.html"), redirectHtml);
+        await fs.writeFile(path.join(this.output, "tools", "dragonwilds-profile.html"), redirectHtml);
     }
 
     // NHL Trend Analyzer
