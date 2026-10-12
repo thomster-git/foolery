@@ -26,7 +26,6 @@ export default class SitemapBuilder {
         pages.push({ url: "/tools/nfl-trend-analyzer/", updated: now });
         pages.push({ url: "/tools/ocarina/", updated: now });
         pages.push({ url: "/tools/dragonwilds-tracker/", updated: now });
-        pages.push({ url: "/tools/tier-list/", updated: now });
         pages.push({ url: "/tools/ffx-tracker/", updated: now });
         pages.push({ url: "/sponsors/", updated: now });
         pages.push({ url: "/uses/", updated: now });
