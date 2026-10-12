@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="30" fill="#041b24" stroke="#06b6d4" stroke-width="2"/>
+  <!-- Fish -->
+  <path d="M18 32 C 26 22, 42 24, 48 32 C 42 40, 26 42, 18 32 Z" fill="#22d3ee" stroke="#0891b2" stroke-width="2"/>
+  <polygon points="18,32 12,24 12,40" fill="#06b6d4"/>
+  <circle cx="42" cy="30" r="2" fill="#083344"/>
+  <!-- Hook -->
+  <path d="M44 26 C 46 22, 50 26, 48 32" stroke="#f1f5f9" stroke-width="2" fill="none"/>
+</svg>

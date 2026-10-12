@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="30" fill="#230d07" stroke="#ea580c" stroke-width="2"/>
+  <!-- Anvil and Hammer -->
+  <path d="M16 38 L48 38 L44 48 L20 48 Z" fill="#64748b" stroke="#94a3b8" stroke-width="2"/>
+  <rect x="24" y="32" width="16" height="6" fill="#475569"/>
+  <!-- Hammer -->
+  <line x1="22" y1="18" x2="38" y2="30" stroke="#b45309" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="18,14 26,20 22,24 14,18" fill="#ea580c"/>
+  <circle cx="34" cy="34" r="2" fill="#fed7aa"/>
+</svg>

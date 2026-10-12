@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="30" fill="#170933" stroke="#8b5cf6" stroke-width="2"/>
+  <!-- Rune Stone -->
+  <circle cx="32" cy="32" r="18" fill="#475569" stroke="#94a3b8" stroke-width="2"/>
+  <!-- Arcane Rune Sigil -->
+  <path d="M32 20 L32 44 M24 28 L40 28 M26 38 L38 38" stroke="#c084fc" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="32" cy="32" r="4" fill="#e9d5ff"/>
+</svg>

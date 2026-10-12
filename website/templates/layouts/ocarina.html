@@ -188,6 +188,15 @@
         The short activation melodies used in Ocarina of Time. These are transposed specifically for a 12-hole Alto C Ocarina.
       </p>
 
+      <!-- Song Selector & Tab Display -->
+      <div id="oot-buttons-container" style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem;"></div>
+      <div id="oot-display" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; text-align: center; min-height: 250px; margin-bottom: 3rem;">
+        <div style="display: flex; justify-content: center; gap: 2rem; align-items: center; margin-bottom: 1.5rem; opacity: 0.4;">
+          <img src="/images/website-assets/royal-crest.svg" alt="Royal Crest" style="width: 110px;">
+        </div>
+        <p style="text-align:center; color:var(--text-muted);">Select a melody above to view its tabs.</p>
+      </div>
+
       <!-- ==================== INTERACTIVE N64 CONTROLLER PAD ==================== -->
       <div class="n64-controller-wrapper">
         <div class="n64-controller-header">
@@ -204,35 +213,26 @@
         </div>
 
         <div class="n64-pad-chassis">
-          <!-- Left Wing: A Button (D5) -->
-          <div class="n64-a-section">
-            <div class="n64-btn-label">A BUTTON</div>
-            <button class="n64-a-btn" id="n64-btn-a" data-note="D5" onclick="triggerN64Button('A', 'D5')" title="Play D5 (A Button / Keyboard: [A] or [Space])">
-              <span class="n64-a-letter">A</span>
-              <span class="n64-btn-pitch">D5</span>
-              <span class="n64-key-hint">[A]</span>
-            </button>
-          </div>
+          <div class="n64-face-cluster">
+            <!-- BA Button Diagonal Pill Groove -->
+            <div class="n64-ba-wing">
+              <div class="n64-ba-groove">
+                <!-- Green B Button -->
+                <button class="n64-b-btn" id="n64-btn-b" onclick="triggerN64BButton()" title="B Button (Clear / Put Away) [B] / [Esc]">
+                  <span class="n64-b-letter">B</span>
+                  <span class="n64-btn-sub">[B]</span>
+                </button>
 
-          <!-- Center Wing: Tuning Bridge -->
-          <div class="n64-center-bridge">
-            <div class="n64-ocarina-glyph">
-              <svg viewBox="0 0 40 40" width="36" height="36" fill="none" stroke="currentColor">
-                <path d="M8 20 C 8 12, 28 8, 34 16 C 38 22, 32 30, 24 30 C 14 30, 8 26, 8 20 Z" fill="rgba(56,189,248,0.2)" stroke="#38bdf8" stroke-width="2"/>
-                <circle cx="16" cy="18" r="2" fill="#38bdf8"/>
-                <circle cx="22" cy="18" r="2" fill="#38bdf8"/>
-                <circle cx="28" cy="20" r="2" fill="#38bdf8"/>
-                <circle cx="19" cy="24" r="1.5" fill="#38bdf8"/>
-                <circle cx="25" cy="25" r="1.5" fill="#38bdf8"/>
-              </svg>
+                <!-- Cobalt Blue A Button (D5) -->
+                <button class="n64-a-btn" id="n64-btn-a" data-note="D5" onclick="triggerN64Button('A', 'D5')" title="Play D5 (A Button / Keyboard: [A] or [Space])">
+                  <span class="n64-a-letter">A</span>
+                  <span class="n64-btn-pitch">D5</span>
+                  <span class="n64-key-hint">[A]</span>
+                </button>
+              </div>
             </div>
-            <div class="n64-tuning-badge">Alto C (12-Hole)</div>
-            <span style="font-size: 0.65rem; color: var(--text-dim); text-align: center;">Arrow Keys or [W/A/S/D]</span>
-          </div>
 
-          <!-- Right Wing: 4 C-Buttons Diamond Cluster -->
-          <div class="n64-c-section">
-            <div class="n64-btn-label">C-BUTTONS</div>
+            <!-- Yellow C-Buttons Diamond Pod -->
             <div class="n64-c-pod">
               <!-- C-Up: D6 -->
               <button class="n64-c-btn n64-c-up" id="n64-btn-cup" data-note="D6" onclick="triggerN64Button('C-Up', 'D6')" title="Play D6 (C-Up / Keyboard: [↑] or [W])">
@@ -268,6 +268,12 @@
               </button>
             </div>
           </div>
+
+          <div class="n64-tuning-ribbon" style="margin-top: 1.25rem; display: flex; align-items: center; justify-content: center; gap: 0.75rem; font-size: 0.75rem; color: var(--text-dim); flex-wrap: wrap;">
+            <span style="color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace; font-weight: bold;">Alto C (12-Hole Tuning)</span>
+            <span>•</span>
+            <span>Keyboard Controls: [A] plays D5 | Arrows / [W/A/S/D] play C-Buttons | [B] Reset</span>
+          </div>
         </div>
 
         <!-- History Tape & Song Unlocked Indicator -->
@@ -277,14 +283,6 @@
             <span style="color: var(--text-dim); font-size: 0.85rem;">(Play notes to see sequence)</span>
           </div>
         </div>
-      </div>
-
-      <div id="oot-buttons-container" style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem;"></div>
-      <div id="oot-display" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; text-align: center; min-height: 250px;">
-        <div style="display: flex; justify-content: center; gap: 2rem; align-items: center; margin-bottom: 1.5rem; opacity: 0.4;">
-          <img src="/images/website-assets/royal-crest.svg" alt="Royal Crest" style="width: 110px;">
-        </div>
-        <p style="text-align:center; color:var(--text-muted);">Select a melody above to view its tabs.</p>
       </div>
     </div>
 
@@ -301,6 +299,43 @@
             The fingering charts are designed specifically for a 12-hole Alto or Tenor C Ocarina. Unlike linear instruments like a piano, the ocarina is a <em>vessel flute</em>. Pitch is determined primarily by the total surface area of the open holes relative to the internal volume of the chamber, rather than the specific placement of the holes. However, cross-fingerings and sub-holes (the two small holes used for accidentals) provide precise intonation adjustments.
         </p>
       </div>
+
+      <!-- Recommended Hardware / Instrument Spotlight -->
+      <section class="ocarina-hardware-card" style="margin: 3.5rem auto 1rem auto; max-width: 800px; background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.85)); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: 0 8px 24px -4px rgba(0,0,0,0.25);">
+        <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--accent-cyan); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">
+          <span>🎶</span> Tested Instrument Recommendation
+        </div>
+        <h3 style="font-size: 1.4rem; font-weight: 800; color: var(--text-bright); margin-top: 0; margin-bottom: 0.75rem;">
+          OcarinaWind 12-Hole Alto C (Blue Ice-Crack)
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.25rem;">
+          When building this practice tool and programming the Web Audio pitch detection algorithms, I tested multiple instruments. 90% of decorative Zelda ocarinas on the internet are unplayable ceramic novelties with muffled breath curves and screechy high notes. The <strong>OcarinaWind 12-Hole Alto C</strong> is the exact instrument I play on stream and used to calibrate this practice suite.
+        </p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; background: rgba(15, 23, 42, 0.6); padding: 1rem; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.05);">
+          <div>
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); font-weight: 700;">Pitch Range</div>
+            <div style="font-size: 0.95rem; color: var(--text-bright); font-family: var(--font-mono); font-weight: 600;">A4 – F6 (13 Notes)</div>
+          </div>
+          <div>
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); font-weight: 700;">Material &amp; Finish</div>
+            <div style="font-size: 0.95rem; color: var(--text-bright); font-weight: 600;">Kiln-Fired Smoked Ice-Crack</div>
+          </div>
+          <div>
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); font-weight: 700;">Price Range</div>
+            <div style="font-size: 0.95rem; color: var(--accent-emerald); font-family: var(--font-mono); font-weight: 700;">~$35 – $40 CAD</div>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem;">
+          <a href="https://www.amazon.ca/dp/B00T0HVIY6" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent-cyan); color: #000; padding: 0.75rem 1.5rem; border-radius: 9999px; text-decoration: none; font-weight: 800; font-size: 0.95rem; transition: var(--transition-fast); box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);">
+            <span>🛒</span> View on Amazon Canada &rarr;
+          </a>
+          <span style="font-size: 0.8rem; color: var(--text-dim); font-style: italic;">
+            Non-affiliate link &bull; 100% merit-based recommendation
+          </span>
+        </div>
+      </section>
 
     </div> <!-- end article-content -->
   </div>
@@ -526,41 +561,63 @@
 
   .n64-pad-chassis {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     align-items: center;
-    background: rgba(10, 15, 26, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    padding: 1.5rem 1rem;
-    margin-bottom: 1.25rem;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    box-shadow: inset 0 3px 12px rgba(0, 0, 0, 0.6);
-  }
-  .n64-btn-label {
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    color: var(--text-muted);
-    text-align: center;
-    margin-bottom: 0.75rem;
-    text-transform: uppercase;
+    background: radial-gradient(circle at 50% 25%, #334155 0%, #1e293b 65%, #0f172a 100%);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 36px;
+    padding: 2.25rem 1.5rem 1.75rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: inset 0 3px 15px rgba(0, 0, 0, 0.8), 0 10px 25px rgba(0, 0, 0, 0.5);
+    position: relative;
   }
 
-  /* Blue A Button Section */
-  .n64-a-section {
+  /* Realistic Face Cluster arranging B/A and C buttons side-by-side */
+  .n64-face-cluster {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.75rem;
+    flex-wrap: wrap;
+    padding: 0.5rem 0;
+  }
+
+  /* B/A Diagonal Pill Well */
+  .n64-ba-wing {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 120px;
   }
-  .n64-a-btn {
-    width: 82px;
-    height: 82px;
+  .n64-ba-groove {
+    background: #0f172a;
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50px;
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.9), 0 2px 6px rgba(0, 0, 0, 0.4);
+    transform: rotate(-28deg);
+    margin-top: 18px;
+  }
+
+  /* Counter-rotate button contents so letters remain upright */
+  .n64-ba-groove button {
+    transform: rotate(28deg);
+  }
+  .n64-ba-groove button:active, .n64-ba-groove button.n64-active {
+    transform: rotate(28deg) translateY(3px) scale(0.95);
+  }
+
+  /* Green B Button */
+  .n64-b-btn {
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #3b82f6 0%, #1d4ed8 70%, #172554 100%);
-    border: 3px solid #60a5fa;
-    box-shadow: 0 6px 15px rgba(29, 78, 216, 0.45), 0 3px 0 #1e3a8a, inset 0 2px 4px rgba(255, 255, 255, 0.4);
+    background: radial-gradient(circle at 35% 35%, #22c55e 0%, #16a34a 65%, #14532d 100%);
+    border: 3px solid #4ade80;
+    box-shadow: 0 5px 12px rgba(22, 163, 74, 0.4), 0 3px 0 #14532d, inset 0 2px 4px rgba(255, 255, 255, 0.5);
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -569,92 +626,95 @@
     color: #ffffff;
     user-select: none;
     touch-action: manipulation;
-    transition: transform 0.08s ease, box-shadow 0.08s ease;
+    transition: box-shadow 0.08s ease;
   }
-  .n64-a-btn:active, .n64-a-btn.n64-active {
-    transform: translateY(4px) scale(0.96);
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.8), 0 0 20px #60a5fa, inset 0 2px 6px rgba(0, 0, 0, 0.5);
-    border-color: #93c5fd;
-  }
-  .n64-a-letter {
-    font-size: 2rem;
+  .n64-b-letter {
+    font-size: 1.7rem;
     font-weight: 900;
     font-family: system-ui, sans-serif;
     line-height: 1;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  }
+  .n64-btn-sub {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: #bbf7d0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Cobalt Blue A Button */
+  .n64-a-btn {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #3b82f6 0%, #1d4ed8 70%, #172554 100%);
+    border: 3px solid #60a5fa;
+    box-shadow: 0 6px 14px rgba(29, 78, 216, 0.5), 0 3px 0 #1e3a8a, inset 0 2px 4px rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    user-select: none;
+    touch-action: manipulation;
+    transition: box-shadow 0.08s ease;
+  }
+  .n64-a-letter {
+    font-size: 1.9rem;
+    font-weight: 900;
+    font-family: system-ui, sans-serif;
+    line-height: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
   }
   .n64-btn-pitch {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 800;
     color: #bfdbfe;
     font-family: 'JetBrains Mono', monospace;
   }
   .n64-key-hint {
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.6);
-    margin-top: 0.1rem;
-  }
-
-  /* Center Bridge */
-  .n64-center-bridge {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    opacity: 0.9;
-  }
-  .n64-tuning-badge {
-    font-size: 0.7rem;
-    color: var(--accent-cyan);
-    font-family: 'JetBrains Mono', monospace;
-    background: rgba(56, 189, 248, 0.08);
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    border: 1px solid rgba(56, 189, 248, 0.2);
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.7);
   }
 
   /* Yellow C-Buttons Diamond Pod */
-  .n64-c-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
   .n64-c-pod {
     position: relative;
-    width: 170px;
-    height: 170px;
-    background: radial-gradient(circle, #1e293b 0%, #0f172a 75%, #020617 100%);
+    width: 176px;
+    height: 176px;
+    background: radial-gradient(circle, #0f172a 0%, #090d16 100%);
     border-radius: 50%;
-    border: 2px solid rgba(250, 204, 21, 0.25);
-    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.7), 0 4px 12px rgba(0, 0, 0, 0.4);
+    border: 3px solid rgba(250, 204, 21, 0.28);
+    box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.85), 0 4px 12px rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .n64-c-hub {
     position: absolute;
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background: #0f172a;
-    border: 1px solid rgba(250, 204, 21, 0.3);
+    border: 1px solid rgba(250, 204, 21, 0.35);
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 900;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     color: #eab308;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
     pointer-events: none;
   }
   .n64-c-btn {
     position: absolute;
-    width: 48px;
-    height: 48px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     background: radial-gradient(circle at 35% 35%, #fde047 0%, #eab308 70%, #a16207 100%);
     border: 2px solid #fef08a;
-    box-shadow: 0 4px 10px rgba(202, 138, 4, 0.4), 0 2px 0 #713f12, inset 0 1px 2px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 10px rgba(202, 138, 4, 0.45), 0 2px 0 #713f12, inset 0 1px 2px rgba(255, 255, 255, 0.6);
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -670,10 +730,10 @@
     box-shadow: 0 1px 6px rgba(234, 179, 8, 0.8), 0 0 16px #facc15, inset 0 2px 5px rgba(0, 0, 0, 0.4);
     border-color: #ffffff;
   }
-  .n64-c-up    { top: 8px; left: 61px; }
-  .n64-c-down  { bottom: 8px; left: 61px; }
-  .n64-c-left  { top: 61px; left: 8px; }
-  .n64-c-right { top: 61px; right: 8px; }
+  .n64-c-up    { top: 8px; left: 63px; }
+  .n64-c-down  { bottom: 8px; left: 63px; }
+  .n64-c-left  { top: 63px; left: 8px; }
+  .n64-c-right { top: 63px; right: 8px; }
 
   .n64-arrow {
     font-size: 1.15rem;
@@ -1678,6 +1738,15 @@ function previewOotMelody(id) {
   });
 }
 
+function triggerN64BButton() {
+  const bElem = document.getElementById('n64-btn-b');
+  if (bElem) {
+    bElem.classList.add('n64-active');
+    setTimeout(() => bElem.classList.remove('n64-active'), 180);
+  }
+  clearN64Seq();
+}
+
 // Global Keyboard Handler for N64 Buttons
 window.addEventListener('keydown', (e) => {
   if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
@@ -1690,6 +1759,10 @@ window.addEventListener('keydown', (e) => {
 
   if (e.key === 'a' || e.key === 'A') {
     btn = 'A'; note = 'D5';
+  } else if (e.key === 'b' || e.key === 'B' || e.key === 'Escape') {
+    e.preventDefault();
+    triggerN64BButton();
+    return;
   } else if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
     btn = 'C-Up'; note = 'D6';
   } else if (e.key === 'ArrowLeft' || e.key === 'j' || e.key === 'J') {

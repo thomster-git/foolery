@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - master
+      - teaser-launch
   workflow_dispatch:
 
 permissions:
