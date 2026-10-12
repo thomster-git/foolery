@@ -736,9 +736,6 @@
             }
         }
 
-        checkUrlForTab();
-        window.addEventListener('hashchange', checkUrlForTab);
-
         // ==========================================
         // STATS PROFILE & EXPERIENCE LOGIC
         // ==========================================
@@ -767,6 +764,25 @@
         const totalExpDisplay = document.getElementById('stat-total-exp-display');
         const canvas = document.getElementById('stat-canvas');
         const ctx = canvas ? canvas.getContext('2d') : null;
+
+        if (ctx && !ctx.roundRect) {
+            ctx.roundRect = function(x, y, w, h, r) {
+                if (!r) r = 0;
+                if (typeof r === 'number') r = [r, r, r, r];
+                const [tl, tr, br, bl] = r;
+                this.beginPath();
+                this.moveTo(x + tl, y);
+                this.lineTo(x + w - tr, y);
+                this.quadraticCurveTo(x + w, y, x + w, y + tr);
+                this.lineTo(x + w, y + h - br);
+                this.quadraticCurveTo(x + w, y + h, x + w - br, y + h);
+                this.lineTo(x + bl, y + h);
+                this.quadraticCurveTo(x, y + h, x, y + h - bl);
+                this.lineTo(x, y + tl);
+                this.quadraticCurveTo(x, y, x + tl, y);
+                this.closePath();
+            };
+        }
 
         const skillMeta = [
             { id: 'attack', iconUrl: '/images/skills/Attack.png', name: 'Attack' },
@@ -1086,61 +1102,75 @@
             setTimeout(() => { feedback.style.opacity = '0'; }, 3200);
         }
 
-        if (btnCopy) {
-            btnCopy.addEventListener('click', () => {
-                canvas.toBlob((blob) => {
-                    if (!blob) return;
-                    const item = new ClipboardItem({ 'image/png': blob });
-                    navigator.clipboard.write([item]).then(() => {
-                        showFeedback('✅ Copied profile image to clipboard!');
-                    }).catch(err => {
-                        console.error('Clipboard write failed:', err);
-                        navigator.clipboard.writeText(getShareText()).then(() => {
-                            showFeedback('✅ Copied share caption & link to clipboard!');
-                        });
+        // Helper to copy canvas directly to clipboard using Promise-based ClipboardItem (preserves user gesture)
+        async function copyCanvasToClipboard() {
+            if (!canvas) return false;
+            if (navigator.clipboard && window.ClipboardItem) {
+                try {
+                    const item = new ClipboardItem({
+                        'image/png': new Promise((resolve) => {
+                            canvas.toBlob((blob) => resolve(blob), 'image/png');
+                        })
                     });
-                });
+                    await navigator.clipboard.write([item]);
+                    return true;
+                } catch (err) {
+                    console.warn('Promise ClipboardItem failed, falling back:', err);
+                }
+            }
+            return false;
+        }
+
+        if (btnCopy) {
+            btnCopy.addEventListener('click', async () => {
+                const copied = await copyCanvasToClipboard();
+                if (copied) {
+                    showFeedback('✅ Image copied! Paste (Ctrl+V) into Discord, X, or Reddit.');
+                } else {
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(getShareText()).then(() => {
+                            showFeedback('📋 Copied profile stats & link to clipboard!');
+                        });
+                    }
+                }
             });
         }
 
         if (btnShare) {
-            btnShare.addEventListener('click', () => {
+            btnShare.addEventListener('click', async () => {
+                const rawName = (savedCharName || '').trim();
+                const safeName = rawName ? rawName.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'dragonwilds';
+                const shareTitle = rawName ? `${rawName}'s Dragonwilds Profile` : 'Dragonwilds Character Profile';
+                const shareText = getShareText();
+                const shareUrl = 'https://thomsfoolery.com/tools/dragonwilds-tracker/#stats';
+
+                // 1. Immediately copy image to clipboard in parallel (preserves user gesture!)
+                const copied = await copyCanvasToClipboard();
+
+                // 2. Prepare file for native share
                 canvas.toBlob(async (blob) => {
                     if (!blob) return;
-                    const rawName = (savedCharName || '').trim();
-                    const safeName = rawName ? rawName.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'dragonwilds';
-                    const shareTitle = rawName ? `${rawName}'s Dragonwilds Profile` : 'Dragonwilds Character Profile';
-                    const shareText = getShareText();
-                    const shareUrl = 'https://thomsfoolery.com/tools/dragonwilds-tracker/#stats';
+                    const file = new File([blob], `${safeName}-profile.png`, { type: 'image/png' });
 
-                    // Also copy the image to the clipboard in parallel so it's ready to paste
-                    if (navigator.clipboard && navigator.clipboard.write) {
+                    // Check if browser can share files
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
                         try {
-                            const item = new ClipboardItem({ 'image/png': blob });
-                            await navigator.clipboard.write([item]);
-                            showFeedback('✅ Image copied to clipboard!');
-                        } catch (clipErr) {
-                            console.warn('Clipboard write during share failed:', clipErr);
+                            // CRITICAL: Do NOT pass separate url: parameter when sharing files!
+                            // Passing url causes OS share sheets to drop the image attachment and share only a link.
+                            await navigator.share({
+                                files: [file],
+                                title: shareTitle,
+                                text: `${shareText}\n\n${shareUrl}`
+                            });
+                            showFeedback('🚀 Shared image card!');
+                            return;
+                        } catch (err) {
+                            if (err.name === 'AbortError') return;
+                            console.warn('File share failed, falling back:', err);
                         }
                     }
 
-                    if (navigator.canShare) {
-                        const file = new File([blob], `${safeName}-profile.png`, { type: 'image/png' });
-                        if (navigator.canShare({ files: [file] })) {
-                            try {
-                                await navigator.share({
-                                    title: shareTitle,
-                                    text: shareText,
-                                    url: shareUrl,
-                                    files: [file]
-                                });
-                                return;
-                            } catch (err) {
-                                if (err.name !== 'AbortError') console.warn('Share with file failed, falling back:', err);
-                            }
-                        }
-                    }
-
+                    // Fallback: If native share only supports text/url (e.g. desktop)
                     if (navigator.share) {
                         try {
                             await navigator.share({
@@ -1148,16 +1178,22 @@
                                 text: shareText,
                                 url: shareUrl
                             });
+                            showFeedback(copied ? '✅ Image copied & link shared!' : '🚀 Shared link!');
                             return;
                         } catch (err) {
                             if (err.name === 'AbortError') return;
                         }
                     }
 
-                    navigator.clipboard.writeText(shareText).then(() => {
-                        showFeedback('✅ Copied share caption & link to clipboard!');
-                    });
-                });
+                    // If Web Share is not supported at all (standard desktop browsers)
+                    if (copied) {
+                        showFeedback('✅ Image copied to clipboard! Paste (Ctrl+V) directly.');
+                    } else if (navigator.clipboard) {
+                        navigator.clipboard.writeText(shareText).then(() => {
+                            showFeedback('📋 Copied share caption & link!');
+                        });
+                    }
+                }, 'image/png');
             });
         }
 
@@ -1177,6 +1213,10 @@
         updateSummary();
         drawProfile();
         updateCaptionPreview();
+
+        // Direct linking via hash (#stats, #profile) or query param (?tab=stats, ?tab=profile)
+        checkUrlForTab();
+        window.addEventListener('hashchange', checkUrlForTab);
 
         // Share logic
         const shareBtns = document.querySelectorAll('.share-btn');
