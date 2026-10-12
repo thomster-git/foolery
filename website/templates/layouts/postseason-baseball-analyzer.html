@@ -1,0 +1,201 @@
+<div class="page-container">
+    <div class="content-wrapper article-layout" style="text-align: center; margin: 4rem auto; max-width: 1200px;">
+        <div class="article-content">
+        
+        <div class="breadcrumbs">
+            <a href="/">Home</a> &gt;
+            <a href="/tools/">Tools</a> &gt;
+            <span>MLB Postseason Analyzer</span>
+        </div>
+
+        <h1 style="font-size: 3rem; margin-bottom: 1.5rem; color: var(--accent-cyan);">MLB Postseason Momentum Analyzer</h1>
+        
+        <div style="background: rgba(168, 85, 247, 0.05); border-left: 4px solid var(--accent-purple); padding: 1.5rem; margin-bottom: 2.5rem; text-align: left; font-size: 0.95rem; line-height: 1.6; border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+            <strong style="color: var(--accent-purple); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; display: block; margin-bottom: 0.5rem;">The Atlas Connection · High-Leverage Pattern Recognition</strong>
+            October baseball is the ultimate proving ground of statistical variance versus systemic signal. A 162-game season provides regression to the mean; the postseason is compressed volatility. By modeling rolling run differential velocity, Pythagorean regression gaps, and inning-by-inning leverage control, this dashboard isolates which teams are genuinely surging with sustainable dominance versus those precariously scraping by on borrowed time.
+        </div>
+
+        <div style="background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); position: relative; overflow: hidden; margin-bottom: 2.5rem; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+                <div>
+                    <p style="color: var(--text-muted); margin: 0 0 0.5rem 0; font-size: 1.05rem;">Track playoff momentum trajectories, acute velocity swings, and team form across tournament rounds.</p>
+                    <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.85rem; color: var(--text-dim); font-family: 'JetBrains Mono', monospace;">
+                        <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #10B981;"></span> Surging Hot (> +35 PMI)
+                        <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #EA580C; margin-left: 0.5rem;"></span> Stable Form (-15 to +35)
+                        <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #EF4444; margin-left: 0.5rem;"></span> Fall-off Risk (< -15)
+                    </div>
+                </div>
+                <div>
+                    <button class="share-btn" data-title="MLB Postseason Momentum Analyzer" data-text="Analyze MLB playoff momentum trajectories and surges at Thoms Foolery. ⚾🔥" data-url="https://thomsfoolery.com/tools/postseason-baseball-analyzer/" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.9rem; font-size: 0.85rem; font-family: monospace; background: rgba(234, 88, 12, 0.1); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); border-radius: 4px; cursor: pointer; transition: all 0.2s;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Share Tool</button>
+                </div>
+            </div>
+
+            <!-- Controls Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; background: var(--bg-main); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                <div>
+                    <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.4rem; text-transform: uppercase; font-family: monospace;">Season</label>
+                    <select id="season-select" style="width: 100%; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 6px;">
+                        <option value="2026">2026 Postseason</option>
+                        <option value="2025">2025 Postseason</option>
+                        <option value="2024" selected>2024 Postseason</option>
+                        <option value="2023">2023 Postseason</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.4rem; text-transform: uppercase; font-family: monospace;">Round Stage</label>
+                    <select id="round-select" style="width: 100%; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 6px;">
+                        <option value="all">All Tournament Rounds</option>
+                        <option value="F">Wild Card (WC)</option>
+                        <option value="D">Division Series (LDS)</option>
+                        <option value="L">League Championship (LCS)</option>
+                        <option value="W">World Series (WS)</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.4rem; text-transform: uppercase; font-family: monospace;">Momentum Metric</label>
+                    <select id="metric-select" style="width: 100%; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 6px;">
+                        <option value="pmi">Postseason Momentum Index (PMI)</option>
+                        <option value="cumRunDiff">Cumulative Run Differential</option>
+                        <option value="rolling3RunDiff">3-Game Rolling Run Diff</option>
+                        <option value="leadInningShare">Inning Control (Lead Share %)</option>
+                        <option value="luckGap">Pythagorean Regression Residual</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.4rem; text-transform: uppercase; font-family: monospace;">Focus Team</label>
+                    <select id="team-select" style="width: 100%; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 6px;">
+                        <option value="all">All Playoff Teams</option>
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+            </div>
+
+            <!-- Pulse KPI Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;" id="pulse-container">
+                <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.02)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-md); padding: 1rem;">
+                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #10B981; font-family: monospace; margin-bottom: 0.25rem;">🔥 Highest Momentum Surge</div>
+                    <div id="kpi-surge-team" style="font-size: 1.25rem; font-weight: bold; color: var(--text-bright); margin-bottom: 0.2rem;">--</div>
+                    <div id="kpi-surge-desc" style="font-size: 0.85rem; color: var(--text-muted);">--</div>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.02)); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: var(--radius-md); padding: 1rem;">
+                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #EF4444; font-family: monospace; margin-bottom: 0.25rem;">❄️ Critical Fall-Off Risk</div>
+                    <div id="kpi-cold-team" style="font-size: 1.25rem; font-weight: bold; color: var(--text-bright); margin-bottom: 0.2rem;">--</div>
+                    <div id="kpi-cold-desc" style="font-size: 0.85rem; color: var(--text-muted);">--</div>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(56, 189, 248, 0.02)); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: var(--radius-md); padding: 1rem;">
+                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #38BDF8; font-family: monospace; margin-bottom: 0.25rem;">👑 Game State Dominance</div>
+                    <div id="kpi-lead-team" style="font-size: 1.25rem; font-weight: bold; color: var(--text-bright); margin-bottom: 0.2rem;">--</div>
+                    <div id="kpi-lead-desc" style="font-size: 0.85rem; color: var(--text-muted);">--</div>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.1), rgba(234, 88, 12, 0.02)); border: 1px solid rgba(234, 88, 12, 0.3); border-radius: var(--radius-md); padding: 1rem;">
+                    <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #EA580C; font-family: monospace; margin-bottom: 0.25rem;">⚡ Cardiac Kids (1-Run Games)</div>
+                    <div id="kpi-cardiac-team" style="font-size: 1.25rem; font-weight: bold; color: var(--text-bright); margin-bottom: 0.2rem;">--</div>
+                    <div id="kpi-cardiac-desc" style="font-size: 0.85rem; color: var(--text-muted);">--</div>
+                </div>
+            </div>
+
+            <!-- Interactive Micro-Bracket Navigation Ribbon -->
+            <div style="margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Tournament Series Filter</span>
+                    <span style="font-size: 0.75rem; color: var(--text-dim); font-family: monospace;">Click any series to isolate its trajectory</span>
+                </div>
+                <div id="bracket-ribbon" style="display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.5rem; scrollbar-width: thin;">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Visual Metaphor Toggle & Action Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                <div style="display: inline-flex; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 4px;">
+                    <button id="btn-mode-trajectory" class="view-mode-btn active" style="background: var(--accent-cyan); color: #fff; border: none; padding: 0.5rem 1.2rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;">📈 Trajectory Stream</button>
+                    <button id="btn-mode-quadrant" class="view-mode-btn" style="background: transparent; color: var(--text-muted); border: none; padding: 0.5rem 1.2rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;">🎯 Fire & Ice Quadrants</button>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button id="btn-reset-view" style="background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.8rem; font-family: monospace; cursor: pointer;">↺ Reset Zoom</button>
+                </div>
+            </div>
+
+            <!-- Main ECharts Container -->
+            <div style="position: relative; width: 100%; height: 560px; background: #0B1120; border-radius: var(--radius-md); border: 1px solid var(--border-color); overflow: hidden;">
+                <div id="chart-loading" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(11, 17, 32, 0.85); backdrop-filter: blur(4px); z-index: 10;">
+                    <div style="width: 40px; height: 40px; border: 3px solid rgba(234, 88, 12, 0.2); border-top-color: var(--accent-cyan); border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                    <p style="font-weight: 600; color: var(--text-bright); margin-top: 1rem; font-family: monospace;">Loading MLB Postseason Telemetry...</p>
+                </div>
+                <div id="postseasonChart" style="width: 100%; height: 100%;"></div>
+            </div>
+
+            <!-- Team Game Log & Telemetry Drawer -->
+            <div id="telemetry-drawer" style="margin-top: 2rem; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                    <div>
+                        <h3 id="drawer-team-name" style="margin: 0; font-size: 1.3rem; color: var(--text-bright);">Team Telemetry</h3>
+                        <div id="drawer-team-meta" style="font-size: 0.85rem; color: var(--text-dim); font-family: monospace; margin-top: 0.25rem;">Detailed Postseason Game Breakdown</div>
+                    </div>
+                    <button id="drawer-close-btn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">&times;</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; text-align: left;">
+                        <thead>
+                            <tr style="color: var(--text-dim); border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <th style="padding: 0.6rem;">Round</th>
+                                <th style="padding: 0.6rem;">Game</th>
+                                <th style="padding: 0.6rem;">Opponent</th>
+                                <th style="padding: 0.6rem;">Result</th>
+                                <th style="padding: 0.6rem;">Score</th>
+                                <th style="padding: 0.6rem;">Margin</th>
+                                <th style="padding: 0.6rem;">Lead Innings</th>
+                                <th style="padding: 0.6rem;">Decision</th>
+                                <th style="padding: 0.6rem;">Momentum Δ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="drawer-table-body">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="chart-error" style="display: none; color: #ef4444; margin-top: 1rem; padding: 1rem; background: rgba(239, 68, 68, 0.1); border-radius: 6px; border: 1px solid rgba(239, 68, 68, 0.3);">
+                <p style="margin: 0;">Failed to load postseason data from MLB stats API. Please check network connectivity or choose an earlier season.</p>
+            </div>
+        </div>
+
+        </div> <!-- end article-content -->
+        {{suggestions-cta}}
+        {{ad_sidebar}}
+    </div>
+</div>
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+.view-mode-btn:hover { color: #fff !important; }
+.bracket-chip {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.bracket-chip:hover {
+    border-color: var(--accent-cyan);
+    transform: translateY(-2px);
+}
+.bracket-chip.active {
+    background: rgba(234, 88, 12, 0.15);
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
+    font-weight: bold;
+}
+</style>
+
+<!-- Apache ECharts 5.5 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script src="/js/postseason-baseball-analyzer.js"></script>

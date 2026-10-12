@@ -184,9 +184,101 @@
 
     <!-- ==================== OOT MELODIES TAB ==================== -->
     <div id="tab-oot" class="oc-panel" style="display: none; padding-top: 2rem;">
-      <p style="color: var(--text-muted); text-align: center; margin-bottom: 2rem;">
+      <p style="color: var(--text-muted); text-align: center; margin-bottom: 1.5rem;">
         The short activation melodies used in Ocarina of Time. These are transposed specifically for a 12-hole Alto C Ocarina.
       </p>
+
+      <!-- ==================== INTERACTIVE N64 CONTROLLER PAD ==================== -->
+      <div class="n64-controller-wrapper">
+        <div class="n64-controller-header">
+          <div class="n64-badge">
+            <span>🎮</span>
+            <span>N64 OCARINA CONTROLLER</span>
+          </div>
+          <div class="n64-status-lcd" id="n64-status-lcd">
+            <span class="n64-lcd-icon">♪</span>
+            <span id="n64-lcd-note" class="n64-lcd-note">READY</span>
+            <span id="n64-lcd-seq" class="n64-lcd-seq">Press A or C-Buttons to play</span>
+          </div>
+          <button class="n64-clear-btn" onclick="clearN64Seq()" title="Clear played sequence">Reset Tape</button>
+        </div>
+
+        <div class="n64-pad-chassis">
+          <!-- Left Wing: A Button (D5) -->
+          <div class="n64-a-section">
+            <div class="n64-btn-label">A BUTTON</div>
+            <button class="n64-a-btn" id="n64-btn-a" data-note="D5" onclick="triggerN64Button('A', 'D5')" title="Play D5 (A Button / Keyboard: [A] or [Space])">
+              <span class="n64-a-letter">A</span>
+              <span class="n64-btn-pitch">D5</span>
+              <span class="n64-key-hint">[A]</span>
+            </button>
+          </div>
+
+          <!-- Center Wing: Tuning Bridge -->
+          <div class="n64-center-bridge">
+            <div class="n64-ocarina-glyph">
+              <svg viewBox="0 0 40 40" width="36" height="36" fill="none" stroke="currentColor">
+                <path d="M8 20 C 8 12, 28 8, 34 16 C 38 22, 32 30, 24 30 C 14 30, 8 26, 8 20 Z" fill="rgba(56,189,248,0.2)" stroke="#38bdf8" stroke-width="2"/>
+                <circle cx="16" cy="18" r="2" fill="#38bdf8"/>
+                <circle cx="22" cy="18" r="2" fill="#38bdf8"/>
+                <circle cx="28" cy="20" r="2" fill="#38bdf8"/>
+                <circle cx="19" cy="24" r="1.5" fill="#38bdf8"/>
+                <circle cx="25" cy="25" r="1.5" fill="#38bdf8"/>
+              </svg>
+            </div>
+            <div class="n64-tuning-badge">Alto C (12-Hole)</div>
+            <span style="font-size: 0.65rem; color: var(--text-dim); text-align: center;">Arrow Keys or [W/A/S/D]</span>
+          </div>
+
+          <!-- Right Wing: 4 C-Buttons Diamond Cluster -->
+          <div class="n64-c-section">
+            <div class="n64-btn-label">C-BUTTONS</div>
+            <div class="n64-c-pod">
+              <!-- C-Up: D6 -->
+              <button class="n64-c-btn n64-c-up" id="n64-btn-cup" data-note="D6" onclick="triggerN64Button('C-Up', 'D6')" title="Play D6 (C-Up / Keyboard: [↑] or [W])">
+                <span class="n64-arrow">▲</span>
+                <span class="n64-c-pitch">D6</span>
+                <span class="n64-c-key">[↑]</span>
+              </button>
+
+              <!-- C-Left: B5 -->
+              <button class="n64-c-btn n64-c-left" id="n64-btn-cleft" data-note="B5" onclick="triggerN64Button('C-Left', 'B5')" title="Play B5 (C-Left / Keyboard: [←] or [J])">
+                <span class="n64-arrow">◀</span>
+                <span class="n64-c-pitch">B5</span>
+                <span class="n64-c-key">[←]</span>
+              </button>
+
+              <!-- C-Center Hub -->
+              <div class="n64-c-hub" aria-hidden="true">
+                <span>C</span>
+              </div>
+
+              <!-- C-Right: A5 -->
+              <button class="n64-c-btn n64-c-right" id="n64-btn-cright" data-note="A5" onclick="triggerN64Button('C-Right', 'A5')" title="Play A5 (C-Right / Keyboard: [→] or [L])">
+                <span class="n64-arrow">▶</span>
+                <span class="n64-c-pitch">A5</span>
+                <span class="n64-c-key">[→]</span>
+              </button>
+
+              <!-- C-Down: F5 -->
+              <button class="n64-c-btn n64-c-down" id="n64-btn-cdown" data-note="F5" onclick="triggerN64Button('C-Down', 'F5')" title="Play F5 (C-Down / Keyboard: [↓] or [S])">
+                <span class="n64-arrow">▼</span>
+                <span class="n64-c-pitch">F5</span>
+                <span class="n64-c-key">[↓]</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- History Tape & Song Unlocked Indicator -->
+        <div class="n64-tape-container">
+          <span class="n64-tape-label">Note Tape:</span>
+          <div id="n64-history-tape" class="n64-history-tape">
+            <span style="color: var(--text-dim); font-size: 0.85rem;">(Play notes to see sequence)</span>
+          </div>
+        </div>
+      </div>
+
       <div id="oot-buttons-container" style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem;"></div>
       <div id="oot-display" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; text-align: center; min-height: 250px;">
         <div style="display: flex; justify-content: center; gap: 2rem; align-items: center; margin-bottom: 1.5rem; opacity: 0.4;">
@@ -348,6 +440,318 @@
     background: rgba(16, 185, 129, 0.2); /* green tint */
     border-color: var(--accent-emerald);
     color: var(--accent-emerald);
+  }
+
+  /* ============================================================
+     N64 Interactive Controller Styles
+     ============================================================ */
+  .n64-controller-wrapper {
+    background: linear-gradient(145deg, #182234, #0b1120);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+  }
+  .n64-controller-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.5), transparent);
+  }
+  .n64-controller-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .n64-badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: var(--accent-cyan);
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .n64-status-lcd {
+    background: #021a14;
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    border-radius: 8px;
+    padding: 0.4rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.6);
+    transition: all 0.3s ease;
+  }
+  .n64-lcd-note {
+    color: #34d399;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    min-width: 55px;
+    text-shadow: 0 0 8px rgba(52, 211, 153, 0.5);
+  }
+  .n64-lcd-seq {
+    color: rgba(52, 211, 153, 0.85);
+    font-size: 0.8rem;
+  }
+  .n64-clear-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-dim);
+    padding: 0.3rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .n64-clear-btn:hover {
+    color: var(--text-main);
+    border-color: var(--accent-cyan);
+  }
+
+  .n64-pad-chassis {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(10, 15, 26, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.25rem;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    box-shadow: inset 0 3px 12px rgba(0, 0, 0, 0.6);
+  }
+  .n64-btn-label {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  /* Blue A Button Section */
+  .n64-a-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 120px;
+  }
+  .n64-a-btn {
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #3b82f6 0%, #1d4ed8 70%, #172554 100%);
+    border: 3px solid #60a5fa;
+    box-shadow: 0 6px 15px rgba(29, 78, 216, 0.45), 0 3px 0 #1e3a8a, inset 0 2px 4px rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    user-select: none;
+    touch-action: manipulation;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+  .n64-a-btn:active, .n64-a-btn.n64-active {
+    transform: translateY(4px) scale(0.96);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.8), 0 0 20px #60a5fa, inset 0 2px 6px rgba(0, 0, 0, 0.5);
+    border-color: #93c5fd;
+  }
+  .n64-a-letter {
+    font-size: 2rem;
+    font-weight: 900;
+    font-family: system-ui, sans-serif;
+    line-height: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  .n64-btn-pitch {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: #bfdbfe;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .n64-key-hint {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 0.1rem;
+  }
+
+  /* Center Bridge */
+  .n64-center-bridge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.9;
+  }
+  .n64-tuning-badge {
+    font-size: 0.7rem;
+    color: var(--accent-cyan);
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(56, 189, 248, 0.08);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+  }
+
+  /* Yellow C-Buttons Diamond Pod */
+  .n64-c-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .n64-c-pod {
+    position: relative;
+    width: 170px;
+    height: 170px;
+    background: radial-gradient(circle, #1e293b 0%, #0f172a 75%, #020617 100%);
+    border-radius: 50%;
+    border: 2px solid rgba(250, 204, 21, 0.25);
+    box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.7), 0 4px 12px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .n64-c-hub {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #0f172a;
+    border: 1px solid rgba(250, 204, 21, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 0.85rem;
+    color: #eab308;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+  }
+  .n64-c-btn {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fde047 0%, #eab308 70%, #a16207 100%);
+    border: 2px solid #fef08a;
+    box-shadow: 0 4px 10px rgba(202, 138, 4, 0.4), 0 2px 0 #713f12, inset 0 1px 2px rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #000000;
+    user-select: none;
+    touch-action: manipulation;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+  .n64-c-btn:active, .n64-c-btn.n64-active {
+    transform: translateY(3px) scale(0.94);
+    box-shadow: 0 1px 6px rgba(234, 179, 8, 0.8), 0 0 16px #facc15, inset 0 2px 5px rgba(0, 0, 0, 0.4);
+    border-color: #ffffff;
+  }
+  .n64-c-up    { top: 8px; left: 61px; }
+  .n64-c-down  { bottom: 8px; left: 61px; }
+  .n64-c-left  { top: 61px; left: 8px; }
+  .n64-c-right { top: 61px; right: 8px; }
+
+  .n64-arrow {
+    font-size: 1.15rem;
+    line-height: 1;
+    font-weight: 900;
+    color: #0f172a;
+  }
+  .n64-c-pitch {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #422006;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1;
+    margin-top: -1px;
+  }
+  .n64-c-key {
+    font-size: 0.55rem;
+    color: rgba(0, 0, 0, 0.5);
+    line-height: 1;
+  }
+
+  /* History Tape */
+  .n64-tape-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    overflow-x: auto;
+  }
+  .n64-tape-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .n64-history-tape {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    width: 100%;
+  }
+  .n64-tape-chip {
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    animation: n64Pop 0.15s ease-out;
+  }
+  .n64-tape-chip.chip-a {
+    background: rgba(59, 130, 246, 0.2);
+    border: 1px solid #3b82f6;
+    color: #93c5fd;
+  }
+  .n64-tape-chip.chip-c {
+    background: rgba(234, 179, 8, 0.2);
+    border: 1px solid #eab308;
+    color: #fde047;
+  }
+  @keyframes n64Pop {
+    0% { transform: scale(0.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .n64-melody-unlocked {
+    animation: n64GlowPulse 1.2s infinite alternate;
+  }
+  @keyframes n64GlowPulse {
+    0% { box-shadow: 0 0 10px rgba(52, 211, 153, 0.4); border-color: #34d399; }
+    100% { box-shadow: 0 0 25px rgba(250, 204, 21, 0.8); border-color: #facc15; }
   }
 </style>
 
@@ -1095,13 +1499,13 @@ let OOT_MELODIES = {
   'oot-sun': { title: "Sun's Song", info: "▶ ▼ ▲ ▶ ▼ ▲", notes: [{n:'A5'},{n:'F5'},{n:'D6'},{break:true},{n:'A5'},{n:'F5'},{n:'D6'}] },
   'oot-time': { title: "Song of Time", info: "▶ A ▼ ▶ A ▼", notes: [{n:'A5'},{n:'D5'},{n:'F5'},{break:true},{n:'A5'},{n:'D5'},{n:'F5'}] },
   'oot-storms': { title: "Song of Storms", info: "A ▼ ▲ A ▼ ▲", notes: [{n:'D5'},{n:'F5'},{n:'D6'},{break:true},{n:'D5'},{n:'F5'},{n:'D6'}] },
-  'oot-minuet': { title: "Minuet of Forest", info: "A ▲ ◀ ▶ ◀ ▶", notes: [{n:'D5'},{n:'D6'},{n:'B5'},{n:'A5'},{n:'B5'},{n:'A5'}] },
-  'oot-bolero': { title: "Bolero of Fire", info: "▼ A ▼ A ▶ ▼ ▶ ▼", notes: [{n:'F5'},{n:'D5'},{n:'F5'},{n:'D5'},{n:'A5'},{n:'F5'},{n:'A5'},{n:'F5'}] },
+  'oot-minuet': { title: "Minuet of Forest", info: "A ▲ ◀ | ▶ ◀ ▶", notes: [{n:'D5'},{n:'D6'},{n:'B5'},{break:true},{n:'A5'},{n:'B5'},{n:'A5'}] },
+  'oot-bolero': { title: "Bolero of Fire", info: "▼ A ▼ A | ▶ ▼ ▶ ▼", notes: [{n:'F5'},{n:'D5'},{n:'F5'},{n:'D5'},{break:true},{n:'A5'},{n:'F5'},{n:'A5'},{n:'F5'}] },
   'oot-serenade': { title: "Serenade of Water", info: "A ▼ ▶ ▶ ◀", notes: [{n:'D5'},{n:'F5'},{n:'A5'},{n:'A5'},{n:'B5'}] },
-  'oot-nocturne': { title: "Nocturne of Shadow", info: "◀ ▶ ▶ A ◀ ▶ ▼", notes: [{n:'B5'},{n:'A5'},{n:'A5'},{n:'D5'},{n:'B5'},{n:'A5'},{n:'F5'}] },
-  'oot-requiem': { title: "Requiem of Spirit", info: "A ▼ A ▶ ▼ A", notes: [{n:'D5'},{n:'F5'},{n:'D5'},{n:'A5'},{n:'F5'},{n:'D5'}] },
-  'oot-prelude': { title: "Prelude of Light", info: "▲ ▶ ▲ ▶ ◀ ▲", notes: [{n:'D6'},{n:'A5'},{n:'D6'},{n:'A5'},{n:'B5'},{n:'D6'}] },
-  'oot-scarecrow': { title: "Scarecrow's Song", info: "A ▼ A ▼ A ▼ A ▼ (Classic Speedrun/Lazy strat)", notes: [{n:'D5'},{n:'F5'},{n:'D5'},{n:'F5'},{n:'D5'},{n:'F5'},{n:'D5'},{n:'F5'}] }
+  'oot-nocturne': { title: "Nocturne of Shadow", info: "◀ ▶ ▶ | A ◀ ▶ ▼", notes: [{n:'B5'},{n:'A5'},{n:'A5'},{break:true},{n:'D5'},{n:'B5'},{n:'A5'},{n:'F5'}] },
+  'oot-requiem': { title: "Requiem of Spirit", info: "A ▼ A | ▶ ▼ A", notes: [{n:'D5'},{n:'F5'},{n:'D5'},{break:true},{n:'A5'},{n:'F5'},{n:'D5'}] },
+  'oot-prelude': { title: "Prelude of Light", info: "▲ ▶ | ▲ ▶ ◀ ▲", notes: [{n:'D6'},{n:'A5'},{break:true},{n:'D6'},{n:'A5'},{n:'B5'},{n:'D6'}] },
+  'oot-scarecrow': { title: "Scarecrow's Song", info: "A ▼ A ▼ | A ▼ A ▼ (Classic Speedrun/Lazy strat)", notes: [{n:'D5'},{n:'F5'},{n:'D5'},{n:'F5'},{break:true},{n:'D5'},{n:'F5'},{n:'D5'},{n:'F5'}] }
 };
 
 function renderOotButtons() {
@@ -1132,18 +1536,176 @@ function loadOotSong(id, btn) {
   else if (id === 'oot-saria') songSvg = '<img src="/images/website-assets/sarias-Song.svg" alt="Saria" style="width: 32px; opacity: 0.6;">';
 
   display.innerHTML = `
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem; flex-wrap: wrap; gap: 0.75rem;">
       <div style="display: flex; align-items: center; gap: 1rem;">
         <img src="/images/website-assets/triforce.svg" alt="Triforce" style="width: 24px; opacity: 0.6;">
         <h3 style="color: var(--text-main); margin: 0;">${song.title}</h3>
         ${songSvg}
       </div>
-      <button class="practice-btn" onclick="startPracticeMode('oot')" style="background: var(--accent-emerald); border: none; color: #000; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: background 0.2s;">🎙️ Practice Mode</button>
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <button class="preview-btn" onclick="previewOotMelody('${id}')" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: all 0.2s;">▶ Preview Melody</button>
+        <button class="practice-btn" onclick="startPracticeMode('oot')" style="background: var(--accent-emerald); border: none; color: #000; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: background 0.2s;">🎙️ Practice Mode</button>
+      </div>
     </div>
     <p style="color: var(--text-muted); font-size: 1.2rem; font-weight: bold; margin-bottom: 1.75rem;">N64: ${song.info}</p>
     <div class="song-notes">${notesHtml}</div>
   `;
 }
+
+// ============================================================
+// N64 Interactive Controller Engine
+// ============================================================
+let n64Sequence = [];
+let ootPreviewTimeouts = [];
+
+const N64_BUTTON_CONFIG = {
+  'A':       { note: 'D5', label: 'A', symbol: 'A', chipClass: 'chip-a' },
+  'C-Up':    { note: 'D6', label: 'C-Up', symbol: '▲', chipClass: 'chip-c' },
+  'C-Left':  { note: 'B5', label: 'C-Left', symbol: '◀', chipClass: 'chip-c' },
+  'C-Right': { note: 'A5', label: 'C-Right', symbol: '▶', chipClass: 'chip-c' },
+  'C-Down':  { note: 'F5', label: 'C-Down', symbol: '▼', chipClass: 'chip-c' }
+};
+
+function triggerN64Button(btnKey, noteStr) {
+  const conf = N64_BUTTON_CONFIG[btnKey];
+  if (!conf) return;
+
+  // Synthesize audio
+  playSynthNote(noteStr);
+
+  // Visual pulse on the button
+  const btnElemId = {
+    'A': 'n64-btn-a',
+    'C-Up': 'n64-btn-cup',
+    'C-Left': 'n64-btn-cleft',
+    'C-Right': 'n64-btn-cright',
+    'C-Down': 'n64-btn-cdown'
+  }[btnKey];
+  const elem = document.getElementById(btnElemId);
+  if (elem) {
+    elem.classList.add('n64-active');
+    setTimeout(() => elem.classList.remove('n64-active'), 180);
+  }
+
+  // Update LCD status bar
+  const noteElem = document.getElementById('n64-lcd-note');
+  const seqElem = document.getElementById('n64-lcd-seq');
+  if (noteElem) noteElem.textContent = `${conf.symbol} ${noteStr}`;
+
+  // Record into played sequence
+  n64Sequence.push({ key: btnKey, note: noteStr, symbol: conf.symbol, chipClass: conf.chipClass });
+  if (n64Sequence.length > 20) n64Sequence.shift();
+
+  renderN64History();
+  checkN64MelodyMatch();
+}
+
+function clearN64Seq() {
+  n64Sequence = [];
+  renderN64History();
+  const noteElem = document.getElementById('n64-lcd-note');
+  const seqElem = document.getElementById('n64-lcd-seq');
+  const lcd = document.getElementById('n64-status-lcd');
+  if (noteElem) noteElem.textContent = 'READY';
+  if (seqElem) seqElem.textContent = 'Press A or C-Buttons to play';
+  if (lcd) lcd.classList.remove('n64-melody-unlocked');
+}
+
+function renderN64History() {
+  const tape = document.getElementById('n64-history-tape');
+  if (!tape) return;
+  if (n64Sequence.length === 0) {
+    tape.innerHTML = '<span style="color: var(--text-dim); font-size: 0.85rem;">(Play notes to see sequence)</span>';
+    return;
+  }
+  tape.innerHTML = n64Sequence.map(item => `
+    <span class="n64-tape-chip ${item.chipClass}">${item.symbol} ${item.note}</span>
+  `).join('');
+  tape.scrollLeft = tape.scrollWidth;
+}
+
+function checkN64MelodyMatch() {
+  const currentNotes = n64Sequence.map(x => x.note);
+
+  for (const [id, song] of Object.entries(OOT_MELODIES)) {
+    const songNotes = song.notes.filter(b => !b.break && b.n).map(b => b.n);
+    if (songNotes.length === 0) continue;
+
+    if (currentNotes.length >= songNotes.length) {
+      const slice = currentNotes.slice(currentNotes.length - songNotes.length);
+      const isMatch = slice.every((n, i) => n === songNotes[i]);
+      if (isMatch) {
+        const lcd = document.getElementById('n64-status-lcd');
+        const seqElem = document.getElementById('n64-lcd-seq');
+        if (lcd) lcd.classList.add('n64-melody-unlocked');
+        if (seqElem) seqElem.innerHTML = `✨ <strong>${song.title}</strong> Activated! ✨`;
+
+        const songBtn = document.querySelector(`[data-oot="${id}"]`);
+        loadOotSong(id, songBtn);
+
+        setTimeout(() => {
+          if (lcd) lcd.classList.remove('n64-melody-unlocked');
+        }, 4000);
+        break;
+      }
+    }
+  }
+}
+
+function previewOotMelody(id) {
+  ootPreviewTimeouts.forEach(t => clearTimeout(t));
+  ootPreviewTimeouts = [];
+
+  const song = OOT_MELODIES[id];
+  if (!song) return;
+
+  clearN64Seq();
+  const notes = song.notes.filter(b => !b.break && b.n);
+
+  let delay = 0;
+  notes.forEach((beat) => {
+    const t = setTimeout(() => {
+      let btnKey = 'A';
+      if (beat.n === 'D6') btnKey = 'C-Up';
+      else if (beat.n === 'B5') btnKey = 'C-Left';
+      else if (beat.n === 'A5') btnKey = 'C-Right';
+      else if (beat.n === 'F5') btnKey = 'C-Down';
+      else if (beat.n === 'D5') btnKey = 'A';
+      triggerN64Button(btnKey, beat.n);
+    }, delay);
+    ootPreviewTimeouts.push(t);
+    delay += 380;
+  });
+}
+
+// Global Keyboard Handler for N64 Buttons
+window.addEventListener('keydown', (e) => {
+  if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+
+  const tabOot = document.getElementById('tab-oot');
+  if (!tabOot || tabOot.style.display === 'none') return;
+
+  let btn = null;
+  let note = null;
+
+  if (e.key === 'a' || e.key === 'A') {
+    btn = 'A'; note = 'D5';
+  } else if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+    btn = 'C-Up'; note = 'D6';
+  } else if (e.key === 'ArrowLeft' || e.key === 'j' || e.key === 'J') {
+    btn = 'C-Left'; note = 'B5';
+  } else if (e.key === 'ArrowRight' || e.key === 'l' || e.key === 'L') {
+    btn = 'C-Right'; note = 'A5';
+  } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S' || e.key === 'k' || e.key === 'K') {
+    btn = 'C-Down'; note = 'F5';
+  }
+
+  if (btn && note) {
+    e.preventDefault();
+    triggerN64Button(btn, note);
+  }
+});
+
 
 function renderSongButtons() {
   const container = document.getElementById('song-buttons-container');

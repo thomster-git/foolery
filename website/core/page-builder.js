@@ -60,7 +60,7 @@ export default class PageBuilder {
         await this.buildNFLAnalyzer();
         await this.buildSportsBettingTracker();
         await this.buildBaseballTrendAnalyzer();
-        await this.buildBaseballTrendAnalyzer();
+        await this.buildPostseasonAnalyzer();
         await this.buildTwitterDb();
         await this.buildOcarinaPage();
         await this.buildSponsorsPage();
@@ -428,6 +428,25 @@ export default class PageBuilder {
 
         await fs.writeFile(path.join(folder, "index.html"), html);
         await fs.writeFile(path.join(this.output, "tools", "baseball-trend-analyzer.html"), html);
+    }
+
+    // MLB Postseason Analyzer
+    async buildPostseasonAnalyzer() {
+        const folder = path.join(this.output, "tools", "postseason-baseball-analyzer");
+        await fs.mkdir(folder, { recursive: true });
+
+        const template = await this.loadLayout("postseason-baseball-analyzer.html");
+        const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const suggestionsCta = await this.loadPartial("suggestions-cta.html");
+        
+        let html = await this.wrapPage(
+            this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
+            "MLB Postseason Momentum Analyzer",
+            { description: "Interactive MLB Postseason momentum trajectories, velocity swings, and team form analysis", path: "/tools/postseason-baseball-analyzer/", ogType: "website" }
+        );
+
+        await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(path.join(this.output, "tools", "postseason-baseball-analyzer.html"), html);
     }
 
     //--------------------------------------------------

@@ -1,1 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="tf-cyan-indigo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#818cf8"/>
+    </linearGradient>
+    <linearGradient id="tf-indigo-amber" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <linearGradient id="tf-stem-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="tf-amber-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
 
+    <!-- Glow Filter -->
+    <filter id="tf-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="tf-soft-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3.5" result="softBlur"/>
+      <feMerge>
+        <feMergeNode in="softBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Ambient Micro Constellation Stars -->
+  <g opacity="0.35">
+    <circle cx="16" cy="20" r="1" fill="#38bdf8"/>
+    <circle cx="36" cy="14" r="1.2" fill="#38bdf8"/>
+    <circle cx="88" cy="16" r="1" fill="#fbbf24"/>
+    <circle cx="106" cy="34" r="1.2" fill="#fbbf24"/>
+    <circle cx="104" cy="62" r="1" fill="#fbbf24"/>
+    <circle cx="94" cy="84" r="1.2" fill="#fbbf24"/>
+    <circle cx="76" cy="104" r="1" fill="#38bdf8"/>
+    <circle cx="42" cy="108" r="1.2" fill="#38bdf8"/>
+    <circle cx="18" cy="74" r="1" fill="#38bdf8"/>
+  </g>
+
+  <!-- Background Network Web Lines (Subtle) -->
+  <g stroke="#38bdf8" stroke-width="0.8" opacity="0.25">
+    <line x1="22" y1="28" x2="54" y2="48"/>
+    <line x1="54" y1="48" x2="98" y2="28"/>
+    <line x1="54" y1="48" x2="88" y2="58"/>
+    <line x1="60" y1="74" x2="82" y2="70"/>
+    <line x1="48" y1="92" x2="60" y2="74"/>
+  </g>
+
+  <!-- Main Structural Ligature Network -->
+  <g stroke-linecap="round" stroke-linejoin="round" filter="url(#tf-glow)">
+    <!-- T Top Bar Left -->
+    <line x1="22" y1="28" x2="42" y2="28" stroke="#38bdf8" stroke-width="3"/>
+    <line x1="42" y1="28" x2="60" y2="28" stroke="#38bdf8" stroke-width="3"/>
+    <!-- T Top Bar Facets -->
+    <line x1="22" y1="28" x2="22" y2="40" stroke="#38bdf8" stroke-width="2.2"/>
+    <line x1="22" y1="40" x2="42" y2="28" stroke="#38bdf8" stroke-width="1.8"/>
+    <line x1="22" y1="40" x2="48" y2="44" stroke="#38bdf8" stroke-width="2"/>
+    <line x1="42" y1="28" x2="48" y2="44" stroke="#38bdf8" stroke-width="2"/>
+
+    <!-- F Top Bar Right (Cyan to Amber Transition) -->
+    <line x1="60" y1="28" x2="78" y2="28" stroke="url(#tf-indigo-amber)" stroke-width="3"/>
+    <line x1="78" y1="28" x2="98" y2="28" stroke="#fbbf24" stroke-width="3"/>
+    <line x1="98" y1="28" x2="98" y2="40" stroke="#fbbf24" stroke-width="2.2"/>
+    <line x1="98" y1="40" x2="78" y2="28" stroke="#fbbf24" stroke-width="2"/>
+    <line x1="78" y1="28" x2="74" y2="42" stroke="url(#tf-indigo-amber)" stroke-width="1.8"/>
+    <line x1="98" y1="40" x2="74" y2="42" stroke="#fbbf24" stroke-width="1.8"/>
+
+    <!-- Central Vertical Spine (T Stem / F Spine) -->
+    <line x1="60" y1="28" x2="48" y2="44" stroke="#38bdf8" stroke-width="2.4"/>
+    <line x1="60" y1="28" x2="60" y2="48" stroke="#818cf8" stroke-width="3"/>
+    <line x1="48" y1="44" x2="60" y2="48" stroke="#818cf8" stroke-width="2"/>
+    <line x1="60" y1="28" x2="74" y2="42" stroke="#818cf8" stroke-width="2"/>
+    <line x1="60" y1="48" x2="74" y2="42" stroke="#818cf8" stroke-width="2"/>
+
+    <!-- Middle Vertical Section -->
+    <line x1="48" y1="44" x2="48" y2="68" stroke="#38bdf8" stroke-width="2.6"/>
+    <line x1="60" y1="48" x2="60" y2="74" stroke="#818cf8" stroke-width="3"/>
+    <line x1="48" y1="68" x2="60" y2="74" stroke="#818cf8" stroke-width="2"/>
+    <line x1="48" y1="44" x2="60" y2="74" stroke="#818cf8" stroke-width="1.6"/>
+
+    <!-- F Middle Horizontal Crossbar (Warm Amber) -->
+    <line x1="60" y1="48" x2="76" y2="58" stroke="url(#tf-indigo-amber)" stroke-width="2.4"/>
+    <line x1="76" y1="58" x2="92" y2="58" stroke="#fbbf24" stroke-width="3"/>
+    <line x1="74" y1="42" x2="76" y2="58" stroke="url(#tf-indigo-amber)" stroke-width="1.8"/>
+    <line x1="92" y1="58" x2="84" y2="70" stroke="#fbbf24" stroke-width="2.2"/>
+    <line x1="76" y1="58" x2="84" y2="70" stroke="#f59e0b" stroke-width="2"/>
+    <line x1="60" y1="74" x2="76" y2="58" stroke="url(#tf-indigo-amber)" stroke-width="1.8"/>
+    <line x1="60" y1="74" x2="84" y2="70" stroke="url(#tf-indigo-amber)" stroke-width="1.8"/>
+
+    <!-- Lower Stem / Terminal Spines -->
+    <line x1="48" y1="68" x2="48" y2="92" stroke="#38bdf8" stroke-width="2.4"/>
+    <line x1="60" y1="74" x2="60" y2="98" stroke="#38bdf8" stroke-width="3"/>
+    <line x1="48" y1="92" x2="60" y2="98" stroke="#38bdf8" stroke-width="2.2"/>
+    <line x1="48" y1="68" x2="60" y2="98" stroke="#38bdf8" stroke-width="1.6"/>
+  </g>
+
+  <!-- Luminous Constellation Nodes -->
+  <g filter="url(#tf-soft-glow)">
+    <!-- T Top Left Nodes (Electric Cyan) -->
+    <circle cx="22" cy="28" r="3.6" fill="#38bdf8"/>
+    <circle cx="22" cy="28" r="1.8" fill="#ffffff"/>
+    <circle cx="42" cy="28" r="3" fill="#38bdf8"/>
+    <circle cx="42" cy="28" r="1.5" fill="#ffffff"/>
+    <circle cx="22" cy="40" r="2.8" fill="#38bdf8"/>
+    <circle cx="48" cy="44" r="3.2" fill="#38bdf8"/>
+
+    <!-- Central Nexus Nodes (Cyan / Indigo) -->
+    <circle cx="60" cy="28" r="4.2" fill="#38bdf8"/>
+    <circle cx="60" cy="28" r="2" fill="#ffffff"/>
+    <circle cx="60" cy="48" r="3.6" fill="#818cf8"/>
+    <circle cx="60" cy="48" r="1.6" fill="#ffffff"/>
+    <circle cx="48" cy="68" r="3" fill="#38bdf8"/>
+    <circle cx="60" cy="74" r="3.8" fill="#818cf8"/>
+    <circle cx="60" cy="74" r="1.8" fill="#ffffff"/>
+
+    <!-- F Top Right Nodes (Amber / Gold) -->
+    <circle cx="78" cy="28" r="3.4" fill="#c084fc"/>
+    <circle cx="74" cy="42" r="2.6" fill="#818cf8"/>
+    <circle cx="98" cy="28" r="4" fill="#fbbf24"/>
+    <circle cx="98" cy="28" r="2" fill="#ffffff"/>
+    <circle cx="98" cy="40" r="2.8" fill="#fbbf24"/>
+
+    <!-- F Mid Crossbar Nodes (Amber / Gold) -->
+    <circle cx="76" cy="58" r="3.4" fill="#f59e0b"/>
+    <circle cx="92" cy="58" r="4" fill="#fbbf24"/>
+    <circle cx="92" cy="58" r="2" fill="#ffffff"/>
+    <circle cx="84" cy="70" r="3" fill="#fbbf24"/>
+
+    <!-- Bottom Stem Terminus Nodes (Cyan / Ice) -->
+    <circle cx="48" cy="92" r="3" fill="#38bdf8"/>
+    <circle cx="60" cy="98" r="4.2" fill="#38bdf8"/>
+    <circle cx="60" cy="98" r="2" fill="#ffffff"/>
+  </g>
+</svg>
