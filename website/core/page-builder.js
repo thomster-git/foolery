@@ -63,6 +63,7 @@ export default class PageBuilder {
         await this.buildPostseasonAnalyzer();
         await this.buildTwitterDb();
         await this.buildOcarinaPage();
+        await this.buildTierList();
         await this.buildSponsorsPage();
         
         await this.buildWishlistPage(content.filter(x => x.metadata.type === "wishlist"));
@@ -378,6 +379,25 @@ export default class PageBuilder {
         const redirectHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Dragonwilds Profile Generator - Thoms Foolery</title><link rel="canonical" href="https://thomsfoolery.com/tools/dragonwilds-tracker/#stats"><meta http-equiv="refresh" content="0; url=/tools/dragonwilds-tracker/#stats"><script>window.location.replace('/tools/dragonwilds-tracker/#stats');</script></head><body><p>Redirecting to <a href="/tools/dragonwilds-tracker/#stats">Dragonwilds Profile Generator</a>...</p></body></html>`;
         await fs.writeFile(path.join(profileFolder, "index.html"), redirectHtml);
         await fs.writeFile(path.join(this.output, "tools", "dragonwilds-profile.html"), redirectHtml);
+    }
+
+    // Tier List Creator
+    async buildTierList() {
+        const folder = path.join(this.output, "tools", "tier-list");
+        await fs.mkdir(folder, { recursive: true });
+
+        const template = await this.loadLayout("tier-list.html");
+        const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const suggestionsCta = await this.loadPartial("suggestions-cta.html");
+        
+        let html = await this.wrapPage(
+            this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
+            "Tier List Creator",
+            { description: "Interactive Tier List Creator with instant screenshot clipboard pasting, multi-image upload, and snapping drag-and-drop.", path: "/tools/tier-list/", ogType: "website" }
+        );
+
+        await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(path.join(this.output, "tools", "tier-list.html"), html);
     }
 
     // NHL Trend Analyzer

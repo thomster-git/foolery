@@ -1,0 +1,1058 @@
+<div class="page-container">
+    <div class="content-wrapper article-layout" style="max-width: 1100px; margin: 2.5rem auto;">
+        <div class="article-content" style="max-width: 100%;">
+
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "Interactive Tier List Creator",
+          "url": "https://thomsfoolery.com/tools/tier-list/",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Any",
+          "offers": {
+            "@type": "Offer",
+            "price": "0"
+          },
+          "description": "Zero-friction Tier List Creator with instant screenshot clipboard pasting, multi-image upload, snapping drag-and-drop, and high-resolution PNG image export."
+        }
+        </script>
+
+        <div class="breadcrumbs" style="margin-bottom: 1.5rem;">
+            <a href="/">Home</a> &gt;
+            <a href="/tools/">Tools</a> &gt;
+            <span>Tier List Creator</span>
+        </div>
+
+        <!-- Top Header & Editable Title -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: 2rem;">
+            <div style="flex: 1; min-width: 280px;">
+                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem;">
+                    <span style="font-size: 1.8rem;">🏆</span>
+                    <input type="text" id="tierlist-title" value="My Tier List" maxlength="60" style="background: transparent; border: none; border-bottom: 2px dashed rgba(6, 182, 212, 0.4); color: var(--accent-cyan); font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; font-weight: 800; width: 100%; max-width: 580px; padding: 0.2rem 0.4rem; outline: none; transition: border-color 0.2s;" title="Click to edit title">
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0;">Rank anything. Paste screenshots directly with <kbd style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-family: monospace; border: 1px solid rgba(255,255,255,0.2);">Ctrl+V</kbd>, drag &amp; drop to organize, and export a clean graphic.</p>
+            </div>
+
+            <!-- Toolbar Actions -->
+            <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center;">
+                <button id="btn-export-png" class="btn" style="background: var(--accent-cyan); color: #000; font-weight: 800; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1rem; border-radius: 6px; border: none; cursor: pointer; transition: all 0.2s;">
+                    <span>📸</span> Export PNG
+                </button>
+                <button id="btn-copy-board" class="btn" style="background: rgba(6, 182, 212, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 0.9rem; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+                    <span>📋</span> Copy Image
+                </button>
+                <button id="btn-add-tier" class="btn" style="background: rgba(168, 85, 247, 0.15); border: 1px solid var(--accent-purple); color: var(--accent-purple); font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 0.9rem; border-radius: 6px; cursor: pointer; transition: all 0.2s;">
+                    <span>➕</span> Add Tier
+                </button>
+                <div style="position: relative; display: inline-block;">
+                    <button id="btn-presets" class="btn" style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 0.9rem; border-radius: 6px; cursor: pointer;">
+                        <span>⚡</span> Presets
+                    </button>
+                    <div id="presets-menu" style="display: none; position: absolute; right: 0; top: 110%; background: #0f172a; border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 50; width: 200px; padding: 0.4rem 0;">
+                        <button class="preset-opt" data-preset="skills" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 0.88rem;">🐉 Dragonwilds Skills</button>
+                        <button class="preset-opt" data-preset="baseball" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 0.88rem;">⚾ Baseball Positions</button>
+                        <button class="preset-opt" data-preset="blank" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.88rem; border-top: 1px solid rgba(255,255,255,0.08);">🗑️ Clear to Blank</button>
+                    </div>
+                </div>
+                <button id="btn-reset-board" class="btn" style="background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; font-weight: 600; padding: 0.55rem 0.8rem; border-radius: 6px; cursor: pointer;" title="Reset all rows and items to default">
+                    <span>🔄</span> Reset
+                </button>
+            </div>
+        </div>
+
+        <div id="tier-toast" style="position: fixed; bottom: 2rem; right: 2rem; background: #06b6d4; color: #000; font-weight: bold; padding: 0.75rem 1.25rem; border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 100; opacity: 0; transform: translateY(10px); transition: all 0.25s ease; pointer-events: none;">
+            Notification
+        </div>
+
+        <!-- Tier List Canvas Container (Board) -->
+        <div id="tier-board-wrapper" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 2rem; box-shadow: 0 12px 36px rgba(0,0,0,0.35);">
+            <div id="tier-board" style="display: flex; flex-direction: column; gap: 8px;">
+                <!-- Tier rows will be rendered here dynamically -->
+            </div>
+        </div>
+
+        <!-- Unranked Options Pool ("Stash") -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 2.5rem; box-shadow: 0 8px 24px rgba(0,0,0,0.25);">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.85rem;">
+                <div style="display: flex; align-items: center; gap: 0.6rem;">
+                    <h2 style="font-size: 1.3rem; margin: 0; color: var(--text-bright);">Options Stash</h2>
+                    <span id="stash-counter" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); font-family: monospace; font-size: 0.85rem; font-weight: bold; padding: 2px 8px; border-radius: 9999px;">0 items</span>
+                </div>
+
+                <!-- Input Controls: Paste Hint, File Upload, Text Add -->
+                <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center;">
+                    <span style="font-size: 0.82rem; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.35rem; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.06);">
+                        <span>💡</span> Paste screenshots with <kbd style="color: var(--accent-cyan); font-family: monospace;">Ctrl+V</kbd>
+                    </span>
+
+                    <label for="image-file-input" style="background: rgba(255,255,255,0.08); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 600; font-size: 0.85rem; padding: 0.45rem 0.85rem; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; transition: background 0.2s;">
+                        <span>📁</span> Upload Images
+                    </label>
+                    <input type="file" id="image-file-input" multiple accept="image/*" style="display: none;">
+
+                    <!-- Quick Text Option Form -->
+                    <div style="display: flex; align-items: center; gap: 0.3rem;">
+                        <input type="text" id="quick-text-input" placeholder="Or type a label..." maxlength="30" style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.85rem; padding: 0.45rem 0.7rem; border-radius: 6px; width: 140px; outline: none;">
+                        <button id="btn-add-text" style="background: rgba(6, 182, 212, 0.2); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-weight: bold; padding: 0.45rem 0.75rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">+ Add</button>
+                    </div>
+
+                    <button id="btn-clear-stash" style="background: none; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-size: 0.8rem; padding: 0.45rem 0.7rem; border-radius: 6px; cursor: pointer; transition: color 0.2s;" title="Clear unranked pool">
+                        Clear Stash
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stash Dropzone (Accepts pasted items, file drops, or dragged-back items) -->
+            <div id="stash-dropzone" class="tier-dropzone" data-tier="stash" style="min-height: 110px; background: rgba(10, 15, 30, 0.5); border: 2px dashed rgba(255, 255, 255, 0.12); border-radius: var(--radius-md); padding: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; align-items: center; transition: border-color 0.2s, background 0.2s;">
+                <div id="stash-empty-msg" style="width: 100%; text-align: center; color: var(--text-muted); font-size: 0.9rem; padding: 2rem 1rem; pointer-events: none; user-select: none;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.6;">📸</div>
+                    <div><strong>Drop images here or press <kbd style="color: var(--accent-cyan);">Ctrl+V</kbd> to paste a screenshot</strong></div>
+                    <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.3rem;">Capture any game, movie, or song option and paste directly into the stash.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info / Features Callout -->
+        <div style="background: rgba(168, 85, 247, 0.05); border-left: 4px solid var(--accent-purple); padding: 1.5rem; margin-bottom: 3rem; text-align: left; font-size: 0.95rem; line-height: 1.6; border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+            <strong style="color: var(--accent-purple); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; display: block; margin-bottom: 0.5rem;">How It Works</strong>
+            <ul style="margin: 0; padding-left: 1.25rem; color: var(--text-main);">
+                <li><strong>Clipboard Pasting:</strong> Take a screenshot using your OS shortcut (<kbd>Win+Shift+S</kbd> on Windows or <kbd>Cmd+Shift+4</kbd> on Mac), click anywhere on this page, and press <kbd>Ctrl+V</kbd>. The screenshot is immediately clipped into an option tile in the stash.</li>
+                <li><strong>Dynamic Natural Expansion:</strong> Drop as many items as you want into any tier. Rows expand downward automatically to accommodate growing categories without clipping or cramped scrollbars.</li>
+                <li><strong>Customization:</strong> Click any tier label to rename it, or use the row menu to change colors, reorder rows up/down, or insert new tiers.</li>
+                <li><strong>Instant Export:</strong> Click <em>Export PNG</em> to download a high-res branded graphic, or <em>Copy Image</em> to paste directly into Discord, Reddit, or Twitter.</li>
+            </ul>
+        </div>
+
+        {{suggestions-cta}}
+
+        </div> <!-- end article-content -->
+    </div>
+</div>
+
+<!-- ==================== TIER LIST COMPONENT STYLES ==================== -->
+<style>
+.tier-row {
+    display: flex;
+    min-height: 84px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.tier-row:hover {
+    border-color: rgba(6, 182, 212, 0.4);
+}
+
+.tier-badge-col {
+    width: 90px;
+    min-width: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    position: relative;
+    user-select: none;
+    cursor: pointer;
+}
+
+.tier-label-text {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #000;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.4);
+    font-family: 'Space Grotesk', sans-serif;
+    outline: none;
+    text-align: center;
+    width: 100%;
+    word-break: break-word;
+}
+
+.tier-row-controls {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+    opacity: 0.35;
+    transition: opacity 0.2s;
+}
+
+.tier-row:hover .tier-row-controls {
+    opacity: 1;
+}
+
+.tier-btn-mini {
+    background: rgba(0, 0, 0, 0.35);
+    border: none;
+    color: #fff;
+    width: 18px;
+    height: 18px;
+    border-radius: 3px;
+    font-size: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+}
+
+.tier-btn-mini:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.tier-dropzone {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    min-height: 84px;
+    transition: background 0.15s, outline 0.15s;
+}
+
+.tier-dropzone.drag-hover {
+    background: rgba(6, 182, 212, 0.12) !important;
+    outline: 2px dashed var(--accent-cyan);
+    outline-offset: -2px;
+}
+
+/* Tier Item Tiles */
+.tier-item {
+    width: 72px;
+    height: 72px;
+    border-radius: 6px;
+    position: relative;
+    cursor: grab;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #090d16;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.15s;
+    flex-shrink: 0;
+}
+
+.tier-item:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 6px 16px rgba(6, 182, 212, 0.3);
+    border-color: var(--accent-cyan);
+    z-index: 5;
+}
+
+.tier-item.dragging {
+    opacity: 0.35;
+    transform: scale(0.95);
+}
+
+.tier-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    display: block;
+}
+
+.tier-item .item-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    padding: 4px;
+    word-break: break-word;
+    pointer-events: none;
+}
+
+.tier-item .btn-remove-item {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 18px;
+    height: 18px;
+    background: rgba(239, 68, 68, 0.85);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.tier-item:hover .btn-remove-item {
+    opacity: 1;
+}
+
+.color-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid #fff;
+    cursor: pointer;
+    display: inline-block;
+}
+
+@media (max-width: 640px) {
+    .tier-badge-col {
+        width: 70px;
+        min-width: 70px;
+    }
+    .tier-label-text {
+        font-size: 1.2rem;
+    }
+    .tier-item {
+        width: 60px;
+        height: 60px;
+    }
+}
+</style>
+
+<!-- ==================== TIER LIST LOGIC SCRIPT ==================== -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const STORAGE_KEY = 'atlas_tierlist_v1';
+    
+    // Default tier rows S through F
+    const DEFAULT_TIERS = [
+        { id: 'tier-s', label: 'S', color: '#ff4655' }, // Vibrant Red
+        { id: 'tier-a', label: 'A', color: '#ff7f50' }, // Coral Orange
+        { id: 'tier-b', label: 'B', color: '#f59e0b' }, // Amber Gold
+        { id: 'tier-c', label: 'C', color: '#10b981' }, // Emerald Green
+        { id: 'tier-d', label: 'D', color: '#06b6d4' }, // Cyan Blue
+        { id: 'tier-f', label: 'F', color: '#a855f7' }  // Purple
+    ];
+
+    const PALETTE = ['#ff4655', '#ff7f50', '#f59e0b', '#10b981', '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899', '#64748b'];
+
+    let state = {
+        title: 'My Tier List',
+        tiers: JSON.parse(JSON.stringify(DEFAULT_TIERS)),
+        items: [] // { id, tierId: 'tier-s' | 'stash', type: 'image'|'text', content: 'dataUrl'|'text' }
+    };
+
+    const boardEl = document.getElementById('tier-board');
+    const stashDropzone = document.getElementById('stash-dropzone');
+    const stashCounter = document.getElementById('stash-counter');
+    const stashEmptyMsg = document.getElementById('stash-empty-msg');
+    const titleInput = document.getElementById('tierlist-title');
+    const toastEl = document.getElementById('tier-toast');
+
+    function showToast(msg) {
+        if (!toastEl) return;
+        toastEl.textContent = msg;
+        toastEl.style.opacity = '1';
+        toastEl.style.transform = 'translateY(0)';
+        setTimeout(() => {
+            toastEl.style.opacity = '0';
+            toastEl.style.transform = 'translateY(10px)';
+        }, 2600);
+    }
+
+    function saveState() {
+        try {
+            state.title = titleInput.value || 'My Tier List';
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) {
+            console.warn('LocalStorage save failed:', e);
+        }
+    }
+
+    function loadState() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed.tiers && parsed.tiers.length > 0) {
+                    state = parsed;
+                    if (titleInput) titleInput.value = state.title || 'My Tier List';
+                }
+            }
+        } catch (e) {
+            console.warn('LocalStorage load failed, using defaults:', e);
+        }
+    }
+
+    // Render Board Rows
+    function renderBoard() {
+        boardEl.innerHTML = '';
+        state.tiers.forEach((tier, index) => {
+            const row = document.createElement('div');
+            row.className = 'tier-row';
+            row.id = `row-${tier.id}`;
+
+            // Left Header Badge Column
+            const badgeCol = document.createElement('div');
+            badgeCol.className = 'tier-badge-col';
+            badgeCol.style.backgroundColor = tier.color;
+
+            const labelInput = document.createElement('div');
+            labelInput.className = 'tier-label-text';
+            labelInput.contentEditable = 'true';
+            labelInput.spellcheck = false;
+            labelInput.textContent = tier.label;
+            labelInput.addEventListener('blur', () => {
+                tier.label = labelInput.textContent.trim() || 'Tier';
+                saveState();
+            });
+            labelInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    labelInput.blur();
+                }
+            });
+
+            // Mini Controls (Up, Down, Color, Delete, Clear)
+            const controls = document.createElement('div');
+            controls.className = 'tier-row-controls';
+
+            // Up button
+            if (index > 0) {
+                const btnUp = document.createElement('button');
+                btnUp.className = 'tier-btn-mini';
+                btnUp.innerHTML = '▲';
+                btnUp.title = 'Move Tier Up';
+                btnUp.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const prev = state.tiers[index - 1];
+                    state.tiers[index - 1] = tier;
+                    state.tiers[index] = prev;
+                    saveState();
+                    renderBoard();
+                });
+                controls.appendChild(btnUp);
+            }
+
+            // Down button
+            if (index < state.tiers.length - 1) {
+                const btnDown = document.createElement('button');
+                btnDown.className = 'tier-btn-mini';
+                btnDown.innerHTML = '▼';
+                btnDown.title = 'Move Tier Down';
+                btnDown.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const next = state.tiers[index + 1];
+                    state.tiers[index + 1] = tier;
+                    state.tiers[index] = next;
+                    saveState();
+                    renderBoard();
+                });
+                controls.appendChild(btnDown);
+            }
+
+            // Cycle Color
+            const btnColor = document.createElement('button');
+            btnColor.className = 'tier-btn-mini';
+            btnColor.innerHTML = '🎨';
+            btnColor.title = 'Cycle Color';
+            btnColor.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const curIdx = PALETTE.indexOf(tier.color);
+                const nextIdx = (curIdx + 1) % PALETTE.length;
+                tier.color = PALETTE[nextIdx];
+                badgeCol.style.backgroundColor = tier.color;
+                saveState();
+            });
+            controls.appendChild(btnColor);
+
+            // Delete Tier
+            const btnDel = document.createElement('button');
+            btnDel.className = 'tier-btn-mini';
+            btnDel.innerHTML = '×';
+            btnDel.title = 'Delete Tier';
+            btnDel.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (state.tiers.length <= 1) {
+                    showToast('Cannot delete the last tier!');
+                    return;
+                }
+                // Move items back to stash
+                state.items.forEach(it => {
+                    if (it.tierId === tier.id) it.tierId = 'stash';
+                });
+                state.tiers.splice(index, 1);
+                saveState();
+                renderBoard();
+                renderItems();
+            });
+            controls.appendChild(btnDel);
+
+            badgeCol.appendChild(labelInput);
+            badgeCol.appendChild(controls);
+
+            // Right Dropzone (Snapping droppable area)
+            const dropzone = document.createElement('div');
+            dropzone.className = 'tier-dropzone';
+            dropzone.dataset.tier = tier.id;
+            setupDropzone(dropzone);
+
+            row.appendChild(badgeCol);
+            row.appendChild(dropzone);
+            boardEl.appendChild(row);
+        });
+
+        renderItems();
+    }
+
+    // Render Items into their respective dropzones
+    function renderItems() {
+        // Clear all dropzones
+        document.querySelectorAll('.tier-dropzone').forEach(dz => {
+            const items = dz.querySelectorAll('.tier-item');
+            items.forEach(it => it.remove());
+        });
+
+        let stashCount = 0;
+
+        state.items.forEach(item => {
+            const targetZone = document.querySelector(`.tier-dropzone[data-tier="${item.tierId}"]`) || stashDropzone;
+            if (targetZone === stashDropzone) stashCount++;
+
+            const itemEl = createItemElement(item);
+            targetZone.appendChild(itemEl);
+        });
+
+        // Update stash UI
+        if (stashCounter) stashCounter.textContent = `${stashCount} item${stashCount === 1 ? '' : 's'}`;
+        if (stashEmptyMsg) {
+            stashEmptyMsg.style.display = stashCount === 0 ? 'block' : 'none';
+        }
+    }
+
+    function createItemElement(item) {
+        const el = document.createElement('div');
+        el.className = 'tier-item';
+        el.id = `item-${item.id}`;
+        el.draggable = true;
+
+        if (item.type === 'image') {
+            const img = document.createElement('img');
+            img.src = item.content;
+            img.alt = 'Option item';
+            el.appendChild(img);
+        } else {
+            const txt = document.createElement('span');
+            txt.className = 'item-text';
+            txt.textContent = item.content;
+            el.appendChild(txt);
+        }
+
+        // Delete button on hover
+        const btnRemove = document.createElement('button');
+        btnRemove.className = 'btn-remove-item';
+        btnRemove.innerHTML = '&times;';
+        btnRemove.title = 'Remove Option';
+        btnRemove.addEventListener('click', (e) => {
+            e.stopPropagation();
+            state.items = state.items.filter(it => it.id !== item.id);
+            saveState();
+            renderItems();
+        });
+        el.appendChild(btnRemove);
+
+        // Drag Events
+        el.addEventListener('dragstart', (e) => {
+            el.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', item.id);
+            e.dataTransfer.effectAllowed = 'move';
+        });
+
+        el.addEventListener('dragend', () => {
+            el.classList.remove('dragging');
+            document.querySelectorAll('.tier-dropzone').forEach(dz => dz.classList.remove('drag-hover'));
+        });
+
+        return el;
+    }
+
+    // Setup Droppable Zone with snapping
+    function setupDropzone(zone) {
+        zone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            zone.classList.add('drag-hover');
+
+            // Find closest sibling for snappy reordering
+            const draggingEl = document.querySelector('.tier-item.dragging');
+            if (!draggingEl) return;
+
+            const afterElement = getDragAfterElement(zone, e.clientX, e.clientY);
+            if (afterElement == null) {
+                zone.appendChild(draggingEl);
+            } else {
+                zone.insertBefore(draggingEl, afterElement);
+            }
+        });
+
+        zone.addEventListener('dragleave', (e) => {
+            if (!zone.contains(e.relatedTarget)) {
+                zone.classList.remove('drag-hover');
+            }
+        });
+
+        zone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            zone.classList.remove('drag-hover');
+            const itemId = e.dataTransfer.getData('text/plain');
+            const targetTierId = zone.dataset.tier;
+
+            const itemObj = state.items.find(it => it.id === itemId);
+            if (itemObj) {
+                itemObj.tierId = targetTierId;
+
+                // Sync new order in state from DOM order
+                const newItemsOrder = [];
+                // Collect ordered items from all zones
+                document.querySelectorAll('.tier-dropzone').forEach(dz => {
+                    const zTier = dz.dataset.tier;
+                    dz.querySelectorAll('.tier-item').forEach(itEl => {
+                        const itId = itEl.id.replace('item-', '');
+                        const found = state.items.find(i => i.id === itId);
+                        if (found) {
+                            found.tierId = zTier;
+                            newItemsOrder.push(found);
+                        }
+                    });
+                });
+
+                state.items = newItemsOrder;
+                saveState();
+                renderItems();
+            }
+        });
+    }
+
+    function getDragAfterElement(container, x, y) {
+        const draggableElements = [...container.querySelectorAll('.tier-item:not(.dragging)')];
+
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            // In a wrapping flexbox, check spatial distance
+            const distance = Math.hypot((box.left + box.width / 2) - x, (box.top + box.height / 2) - y);
+            if (distance < closest.distance) {
+                return { distance: distance, element: child };
+            } else {
+                return closest;
+            }
+        }, { distance: Number.POSITIVE_INFINITY }).element;
+    }
+
+    setupDropzone(stashDropzone);
+
+    // ==========================================
+    // ADDING OPTIONS: CLIPBOARD SCREENSHOT & FILES
+    // ==========================================
+
+    function addImageItem(dataUrl) {
+        const newItem = {
+            id: 'item_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+            tierId: 'stash',
+            type: 'image',
+            content: dataUrl
+        };
+        state.items.push(newItem);
+        saveState();
+        renderItems();
+    }
+
+    // 1. Instant Clipboard Paste Listener anywhere on window
+    window.addEventListener('paste', (e) => {
+        const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+        let foundImage = false;
+
+        for (let index in items) {
+            const item = items[index];
+            if (item.kind === 'file' && item.type.startsWith('image/')) {
+                foundImage = true;
+                const blob = item.getAsFile();
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    addImageItem(event.target.result);
+                    showToast('📸 Screenshot added to options stash!');
+                };
+                reader.readAsDataURL(blob);
+            }
+        }
+    });
+
+    // 2. File Upload Input
+    const fileInput = document.getElementById('image-file-input');
+    if (fileInput) {
+        fileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+
+            let loaded = 0;
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        addImageItem(event.target.result);
+                        loaded++;
+                        if (loaded === files.length) {
+                            showToast(`📁 Added ${loaded} image${loaded > 1 ? 's' : ''} to stash!`);
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            fileInput.value = '';
+        });
+    }
+
+    // 3. Quick Text Label Option
+    const textInput = document.getElementById('quick-text-input');
+    const btnAddText = document.getElementById('btn-add-text');
+    function addTextOption() {
+        const val = (textInput.value || '').trim();
+        if (!val) return;
+        state.items.push({
+            id: 'item_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+            tierId: 'stash',
+            type: 'text',
+            content: val
+        });
+        textInput.value = '';
+        saveState();
+        renderItems();
+        showToast(`Added "${val}" to stash!`);
+    }
+
+    if (btnAddText && textInput) {
+        btnAddText.addEventListener('click', addTextOption);
+        textInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') addTextOption();
+        });
+    }
+
+    // Clear Stash Button
+    const btnClearStash = document.getElementById('btn-clear-stash');
+    if (btnClearStash) {
+        btnClearStash.addEventListener('click', () => {
+            state.items = state.items.filter(it => it.tierId !== 'stash');
+            saveState();
+            renderItems();
+            showToast('Cleared stash!');
+        });
+    }
+
+    // Add New Tier Row
+    const btnAddTier = document.getElementById('btn-add-tier');
+    if (btnAddTier) {
+        btnAddTier.addEventListener('click', () => {
+            const nextColor = PALETTE[state.tiers.length % PALETTE.length];
+            const newTier = {
+                id: 'tier-' + Date.now(),
+                label: 'NEW',
+                color: nextColor
+            };
+            state.tiers.push(newTier);
+            saveState();
+            renderBoard();
+            showToast('Added new tier row!');
+        });
+    }
+
+    // Presets Dropdown
+    const btnPresets = document.getElementById('btn-presets');
+    const presetsMenu = document.getElementById('presets-menu');
+    if (btnPresets && presetsMenu) {
+        btnPresets.addEventListener('click', (e) => {
+            e.stopPropagation();
+            presetsMenu.style.display = presetsMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', () => {
+            presetsMenu.style.display = 'none';
+        });
+
+        document.querySelectorAll('.preset-opt').forEach(opt => {
+            opt.addEventListener('click', (e) => {
+                e.stopPropagation();
+                presetsMenu.style.display = 'none';
+                const p = opt.dataset.preset;
+                loadPreset(p);
+            });
+        });
+    }
+
+    function loadPreset(presetName) {
+        if (presetName === 'blank') {
+            state.items = [];
+            state.tiers = JSON.parse(JSON.stringify(DEFAULT_TIERS));
+            saveState();
+            renderBoard();
+            showToast('Reset board to blank!');
+            return;
+        }
+
+        if (presetName === 'skills') {
+            state.title = 'Dragonwilds Skills Tier List';
+            titleInput.value = state.title;
+            state.tiers = JSON.parse(JSON.stringify(DEFAULT_TIERS));
+            const skills = [
+                { name: 'Attack', src: '/images/skills/Attack.png' },
+                { name: 'Magic', src: '/images/skills/Magic.png' },
+                { name: 'Ranged', src: '/images/skills/Ranged.png' },
+                { name: 'Mining', src: '/images/skills/Mining.png' },
+                { name: 'Woodcutting', src: '/images/skills/Woodcutting.png' },
+                { name: 'Artisan', src: '/images/skills/Artisan.png' },
+                { name: 'Construction', src: '/images/skills/Construction.png' },
+                { name: 'Cooking', src: '/images/skills/Cooking.png' },
+                { name: 'Runecrafting', src: '/images/skills/Runecrafting.png' },
+                { name: 'Farming', src: '/images/skills/Farming.png' },
+                { name: 'Fishing', src: '/images/skills/Fishing.png' },
+                { name: 'Agility', src: '/images/skills/Agility.png' }
+            ];
+
+            state.items = skills.map((s, idx) => ({
+                id: 'skill_' + idx,
+                tierId: 'stash',
+                type: 'image',
+                content: s.src
+            }));
+
+            saveState();
+            renderBoard();
+            showToast('Loaded 12 Dragonwilds Skills into stash!');
+            return;
+        }
+
+        if (presetName === 'baseball') {
+            state.title = 'Baseball Positions Tier List';
+            titleInput.value = state.title;
+            state.tiers = JSON.parse(JSON.stringify(DEFAULT_TIERS));
+            const positions = ['DH', 'Starting Pitcher', 'Relief Pitcher', 'Catcher', 'First Base', 'Second Base', 'Third Base', 'Shortstop', 'Left Field', 'Center Field', 'Right Field'];
+            state.items = positions.map((p, idx) => ({
+                id: 'pos_' + idx,
+                tierId: 'stash',
+                type: 'text',
+                content: p
+            }));
+            saveState();
+            renderBoard();
+            showToast('Loaded Baseball positions into stash!');
+        }
+    }
+
+    // Reset Board
+    const btnResetBoard = document.getElementById('btn-reset-board');
+    if (btnResetBoard) {
+        btnResetBoard.addEventListener('click', () => {
+            if (confirm('Reset entire tier list to default?')) {
+                state = {
+                    title: 'My Tier List',
+                    tiers: JSON.parse(JSON.stringify(DEFAULT_TIERS)),
+                    items: []
+                };
+                titleInput.value = state.title;
+                saveState();
+                renderBoard();
+                showToast('Reset board to default!');
+            }
+        });
+    }
+
+    // Title Input Event
+    if (titleInput) {
+        titleInput.addEventListener('input', () => {
+            state.title = titleInput.value || 'My Tier List';
+            saveState();
+        });
+    }
+
+    // ==========================================
+    // HIGH-RES CANVAS EXPORTER (PNG & CLIPBOARD)
+    // ==========================================
+
+    async function generateBoardCanvas() {
+        // Preload any image assets in state.items
+        const imageElements = new Map();
+        for (const item of state.items) {
+            if (item.type === 'image' && item.content) {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                await new Promise((resolve) => {
+                    img.onload = resolve;
+                    img.onerror = resolve;
+                    img.src = item.content;
+                });
+                imageElements.set(item.id, img);
+            }
+        }
+
+        const width = 1000;
+        const headerH = 80;
+        const footerH = 50;
+        const rowGap = 8;
+        const cardSize = 72;
+        const cardGap = 8;
+        const badgeWidth = 110;
+        const margin = 20;
+        const contentWidth = width - (margin * 2);
+        const dropzoneWidth = contentWidth - badgeWidth;
+
+        // Calculate height of each row based on number of items (natural expansion)
+        const rowHeights = state.tiers.map(tier => {
+            const tierItems = state.items.filter(it => it.tierId === tier.id);
+            if (tierItems.length === 0) return 84;
+            const itemsPerRow = Math.max(1, Math.floor((dropzoneWidth - 16) / (cardSize + cardGap)));
+            const numRows = Math.ceil(tierItems.length / itemsPerRow);
+            return Math.max(84, 16 + (numRows * cardSize) + ((numRows - 1) * cardGap));
+        });
+
+        const totalBoardHeight = rowHeights.reduce((sum, h) => sum + h + rowGap, 0);
+        const totalHeight = margin + headerH + totalBoardHeight + footerH + margin;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = totalHeight;
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingQuality = 'high';
+
+        // Dark obsidian background gradient
+        const bgGrad = ctx.createLinearGradient(0, 0, 0, totalHeight);
+        bgGrad.addColorStop(0, '#0a0d17');
+        bgGrad.addColorStop(0.5, '#05070e');
+        bgGrad.addColorStop(1, '#020408');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, width, totalHeight);
+
+        // Frame
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(10, 10, width - 20, totalHeight - 20);
+
+        // Header Title
+        ctx.font = 'bold 30px "Space Grotesk", sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(state.title || 'My Tier List', width / 2, margin + (headerH / 2));
+
+        // Draw Tier Rows
+        let curY = margin + headerH;
+        state.tiers.forEach((tier, index) => {
+            const rowH = rowHeights[index];
+            const tierItems = state.items.filter(it => it.tierId === tier.id);
+
+            // Row Container
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
+            ctx.beginPath();
+            ctx.roundRect(margin, curY, contentWidth, rowH, 8);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.stroke();
+
+            // Left Badge
+            ctx.fillStyle = tier.color;
+            ctx.beginPath();
+            ctx.roundRect(margin, curY, badgeWidth, rowH, [8, 0, 0, 8]);
+            ctx.fill();
+
+            // Badge Label
+            ctx.font = 'bold 32px "Space Grotesk", sans-serif';
+            ctx.fillStyle = '#000000';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(tier.label, margin + (badgeWidth / 2), curY + (rowH / 2));
+
+            // Render Cards in this Tier
+            const startX = margin + badgeWidth + 12;
+            const startY = curY + 8;
+            const itemsPerRow = Math.max(1, Math.floor((dropzoneWidth - 24) / (cardSize + cardGap)));
+
+            tierItems.forEach((it, itIdx) => {
+                const col = itIdx % itemsPerRow;
+                const row = Math.floor(itIdx / itemsPerRow);
+                const x = startX + (col * (cardSize + cardGap));
+                const y = startY + (row * (cardSize + cardGap));
+
+                // Card background
+                ctx.fillStyle = '#090d16';
+                ctx.beginPath();
+                ctx.roundRect(x, y, cardSize, cardSize, 6);
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+                ctx.stroke();
+
+                if (it.type === 'image' && imageElements.has(it.id)) {
+                    const img = imageElements.get(it.id);
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.roundRect(x, y, cardSize, cardSize, 6);
+                    ctx.clip();
+                    ctx.drawImage(img, x, y, cardSize, cardSize);
+                    ctx.restore();
+                } else {
+                    ctx.font = 'bold 11px "Space Grotesk", sans-serif';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(it.content, x + (cardSize / 2), y + (cardSize / 2), cardSize - 8);
+                }
+            });
+
+            curY += rowH + rowGap;
+        });
+
+        // Watermark Footer
+        ctx.font = 'bold 12px "Space Grotesk", sans-serif';
+        ctx.fillStyle = '#38bdf8';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('⚡ Created with Thoms Foolery Tier List Maker • thomsfoolery.com/tools/tier-list/', width / 2, totalHeight - margin - 15);
+
+        return canvas;
+    }
+
+    // Export PNG Button
+    const btnExportPng = document.getElementById('btn-export-png');
+    if (btnExportPng) {
+        btnExportPng.addEventListener('click', async () => {
+            showToast('Generating high-res PNG...');
+            const canvas = await generateBoardCanvas();
+            const safeTitle = (state.title || 'tier-list').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            const link = document.createElement('a');
+            link.download = `${safeTitle}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showToast('💾 Downloaded Tier List image!');
+        });
+    }
+
+    // Copy Board Image to Clipboard
+    const btnCopyBoard = document.getElementById('btn-copy-board');
+    if (btnCopyBoard) {
+        btnCopyBoard.addEventListener('click', async () => {
+            showToast('Rendering image for clipboard...');
+            const canvas = await generateBoardCanvas();
+            canvas.toBlob(async (blob) => {
+                if (blob && navigator.clipboard && navigator.clipboard.write) {
+                    try {
+                        const item = new ClipboardItem({ 'image/png': blob });
+                        await navigator.clipboard.write([item]);
+                        showToast('✅ Copied Tier List image to clipboard!');
+                    } catch (e) {
+                        console.error('Clipboard copy failed:', e);
+                        showToast('Clipboard copy failed. Use Export PNG instead.');
+                    }
+                }
+            });
+        });
+    }
+
+    // Initialization
+    loadState();
+    renderBoard();
+});
+</script>

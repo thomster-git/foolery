@@ -438,7 +438,7 @@
                 
                 <!-- Preview Section -->
                 <div style="flex: 1; min-width: 320px; display: flex; flex-direction: column; align-items: center; position: sticky; top: 2rem;">
-                    <canvas id="stat-canvas" width="520" height="700" style="width: 100%; max-width: 440px; height: auto; border-radius: 12px; box-shadow: 0 12px 36px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);"></canvas>
+                    <canvas id="stat-canvas" width="520" height="730" style="width: 100%; max-width: 440px; height: auto; border-radius: 12px; box-shadow: 0 12px 36px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);"></canvas>
                     
                     <!-- Action Buttons -->
                     <div style="display: flex; gap: 0.5rem; width: 100%; max-width: 440px; margin-top: 1.25rem;">
@@ -447,15 +447,6 @@
                         <button id="btn-download-stats" type="button" style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-main); font-weight: bold; padding: 0.75rem 1rem; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-size: 0.95rem;" title="Download PNG File">💾 Download</button>
                     </div>
                     <div id="copy-feedback" style="margin-top: 0.5rem; color: #10b981; opacity: 0; transition: opacity 0.3s; font-weight: bold; font-size: 0.85rem; text-align: center;">Copied image to clipboard!</div>
-
-                    <!-- Call To Action Share Box -->
-                    <div style="margin-top: 0.75rem; width: 100%; max-width: 440px; background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.85rem; box-sizing: border-box;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-                            <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-cyan); font-family: monospace; font-weight: bold;">📢 Post / Tweet Caption</span>
-                            <button id="btn-copy-caption" type="button" style="background: rgba(6, 182, 212, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-size: 0.75rem; font-family: monospace; padding: 3px 8px; border-radius: 4px; cursor: pointer; transition: all 0.2s;">Copy Caption</button>
-                        </div>
-                        <div id="share-caption-preview" style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; font-family: 'JetBrains Mono', monospace; background: rgba(0,0,0,0.25); padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.05); user-select: all; white-space: pre-wrap; word-break: break-word;"></div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1066,10 +1057,11 @@
                 ctx.fillText(`MIN. TOTAL EXP: ${totalExp.toLocaleString()} XP`, w / 2, 656);
             }
 
-            // Call-To-Action Watermark footer
+            // Call-To-Action Watermark footer (generous margin above border and below stats box)
             ctx.font = 'bold 11px "Space Grotesk", sans-serif';
             ctx.fillStyle = '#38bdf8';
-            ctx.fillText('⚡ Create your own at: thomsfoolery.com/tools/dragonwilds-tracker/#stats', w / 2, 687);
+            ctx.textBaseline = 'middle';
+            ctx.fillText('⚡ Create your own at: thomsfoolery.com/tools/dragonwilds-tracker/#stats', w / 2, 696);
         }
 
         function getShareText() {
@@ -1080,17 +1072,11 @@
             return `${titleHeader}\n📊 Total Level: ${totalLvl} / 1,188${expPart}\n\nCreate your own profile at: https://thomsfoolery.com/tools/dragonwilds-tracker/#stats`;
         }
 
-        function updateCaptionPreview() {
-            const previewEl = document.getElementById('share-caption-preview');
-            if (previewEl) {
-                previewEl.textContent = getShareText();
-            }
-        }
+        function updateCaptionPreview() {}
 
         const btnCopy = document.getElementById('btn-copy-stats');
         const btnShare = document.getElementById('btn-share-stats');
         const btnDownload = document.getElementById('btn-download-stats');
-        const btnCopyCaption = document.getElementById('btn-copy-caption');
         const feedback = document.getElementById('copy-feedback');
 
         function showFeedback(msg) {
@@ -1120,13 +1106,25 @@
         if (btnShare) {
             btnShare.addEventListener('click', () => {
                 canvas.toBlob(async (blob) => {
+                    if (!blob) return;
                     const rawName = (savedCharName || '').trim();
                     const safeName = rawName ? rawName.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'dragonwilds';
                     const shareTitle = rawName ? `${rawName}'s Dragonwilds Profile` : 'Dragonwilds Character Profile';
                     const shareText = getShareText();
                     const shareUrl = 'https://thomsfoolery.com/tools/dragonwilds-tracker/#stats';
 
-                    if (blob && navigator.canShare) {
+                    // Also copy the image to the clipboard in parallel so it's ready to paste
+                    if (navigator.clipboard && navigator.clipboard.write) {
+                        try {
+                            const item = new ClipboardItem({ 'image/png': blob });
+                            await navigator.clipboard.write([item]);
+                            showFeedback('✅ Image copied to clipboard!');
+                        } catch (clipErr) {
+                            console.warn('Clipboard write during share failed:', clipErr);
+                        }
+                    }
+
+                    if (navigator.canShare) {
                         const file = new File([blob], `${safeName}-profile.png`, { type: 'image/png' });
                         if (navigator.canShare({ files: [file] })) {
                             try {
@@ -1172,14 +1170,6 @@
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 showFeedback('💾 Downloaded profile PNG image!');
-            });
-        }
-
-        if (btnCopyCaption) {
-            btnCopyCaption.addEventListener('click', () => {
-                navigator.clipboard.writeText(getShareText()).then(() => {
-                    showFeedback('📋 Copied social post caption!');
-                });
             });
         }
 
