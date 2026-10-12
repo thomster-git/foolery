@@ -1,12 +1,13 @@
 ---
-stage: "teaser"
+stage: "full"
 id: building-a-comprehensive-discord-ecosystem
-title: "Case Study: The Thoms Foolery Discord Bot"
+title: "The Architecture of an Autonomous Community Operating System"
 type: article
-status: draft
+status: published
 created: 2026-09-14
+updated: 2026-10-12
 access: public
-summary: A comprehensive case study on how we transformed a standard Discord server into a self-sustaining ecosystem using a custom Python bot, virtual economies, real-time sports APIs, and Agentic AI.
+summary: A deep technical breakdown of the Thoms Foolery Discord Ecosystem — a custom Python bot built with discord.py, SQLite3, Google Antigravity SDK, Pillow, and reverse-engineered sports APIs. This is the story of how a standard Discord server was re-engineered into a self-sustaining, proactive community operating system.
 topics:
   - technology
 themes:
@@ -15,9 +16,10 @@ themes:
 tags:
   - discord-bot
   - python
-  - automation
-  - baseball
-  - ai
+  - ai-agents
+  - system-architecture
+  - community-engineering
+  - sports-analytics
 related:
   - discord-ai-bot
   - keel-systems
@@ -26,83 +28,233 @@ related:
   - technology
 ---
 
-# 🤖 Case Study: The Thoms Foolery Discord Bot
+# 🌿 The Architecture of an Autonomous Community Operating System
 
-## Executive Summary
-Thoms Foolery is a masterclass in community engineering. Originally a standard, quiet Discord server, it was transformed into a self-sustaining, highly-automated ecosystem through the deployment of a custom Python-based Discord bot. By seamlessly weaving together a robust virtual economy, real-time sports data integrations, and state-of-the-art AI agents (powered by the Google Antigravity SDK), the bot solved the ultimate community problem: user retention and engagement.
+**Project:** Thoms Foolery Discord Ecosystem  
+**Author:** Keel / Thom  
+**Platform:** Digital Garden (Thoms Foolery)  
+**Tech Stack:** Python 3.14, discord.py, SQLite3, Google Antigravity / Gemini SDK, Pillow, aiohttp  
+**Status:** Production / Final Release  
+**Tags:** `#discord-bot` `#python` `#ai-agents` `#system-architecture` `#community-engineering` `#sports-analytics`
 
-This case study breaks down the initial spark, the underlying technical architecture, the undocumented APIs we utilized, and the final state of this living ecosystem.
+---
 
-## 1. The Problem Statement & The Spark
-Most Discord communities suffer from the same lifecycle: an initial burst of excitement followed by a slow decline into a quiet `#general` chat. Users lack incentives to participate, and niche channels (like `#⚾-baseball` or `#🏒-hockey`) become ghost towns because only a fraction of the server cares to check them.
+## 1. Executive Overview & The Genesis
 
-The "spark" for this project was to gamify the server experience. We needed a system that passively rewarded users for hanging out, gave them exciting ways to risk those rewards, and actively generated "FOMO" (Fear Of Missing Out) to drive traffic into those quiet, niche channels.
+Online communities live or die by momentum. The typical trajectory of a private Discord server is familiar: an enthusiastic initial launch, a few weeks of bustling activity, and then an inevitable slide into dormancy. Sub-channels dedicated to niche interests (like `#⚾-baseball` or `#🏒-hockey`) become ghost towns because only a fraction of the server cares to check in daily.
 
-## 2. Technical Architecture & State Management
-The bot is built using Python 3.14 and the asynchronous `discord.py` wrapper.
+The question this project set out to answer was this: **What if the server itself was the engine of engagement?** Not a passive chat room, but an active, living system that generated content, rewarded participation, and manufactured FOMO — all without requiring constant manual effort from administrators.
 
-### Modular Design via Cogs
-To handle the massive scope of the project, we utilized a strict Cogs architecture. The codebase is broken down into highly specialized modules (e.g., `economy.py`, `football.py`, `agent_content.py`, `baseball.py`). This allows us to load, unload, and hot-reload specific features without taking the bot offline.
+The Thoms Foolery Discord bot is the answer. It is not a moderation tool. It is not a simple music bot. It is a **Community Operating System** — 22+ specialized subsystems running in concert, woven together with a virtual economy, real-time sports data, and autonomous AI agents that give the server a heartbeat, a personality, and a memory.
 
-### State Persistence & Safety
-Under the hood, a lightweight SQLite3 database (`db.py`) acts as the source of truth. It tracks:
-- **The Economy:** User XP, Levels, and Server Points balances.
-- **The Betting Engine:** Open/closed betting pools, payout odds, and individual user wagers.
-- **Redemption Logs:** Tracking who purchased custom emojis (`/buy_emoji`) and flex roles (`/buy_role`).
-- **Bot State:** A key-value store that tracks timestamps for daily automated messages (ensuring the bot never double-posts the Daily Chess Puzzle or the Weekly Review) and saves AI conversation IDs for continuous memory.
+This document is the full technical breakdown of how it was built, why each decision was made, and what the final system looks like in production.
 
-**Technical Highlight:** To ensure no data is ever lost, a background asynchronous task (`@tasks.loop(hours=24)`) fires daily at midnight, zipping the entire `bot_data.db` and AI memory folders, and saving them to a local `/backups/` directory.
+---
 
-## 3. The Custom Economy & Betting Loop
-The server operates on a brilliant, closed-loop virtual economy.
+## 2. The Core Philosophy: Proactive Over Reactive
 
-### Generating Wealth (The Faucets)
-Users earn "Server Points" organically. The bot listens to `on_message` and `on_reaction_add` events, silently awarding points to users who chat, reply to others, or solve the automated Daily Chess Puzzle. To prevent spamming, in-memory dictionaries track cooldowns for XP and point gains.
+The most important architectural decision made in this project was also the simplest: **the bot should talk first.**
 
-### Risking Wealth (The Gambles)
-Points have real weight because they can be gambled.
-- **The Sportsbook:** Using `/bet_place`, users can wager their points on real-world sports games or custom meta-bets created by admins (e.g., "Will Joey answer Ryan today?").
-- **The Casino:** Users can play `/roulette` for an instant 2x or 14x payout. All spins are transparently logged to a public `#betting-log` channel, letting the community watch the wins and losses in real-time.
+Most Discord bots are purely reactive. A user types a `/command`, the bot responds, and then it goes silent. This model creates no engagement on its own — it just offloads work from humans to machines. The Thoms Foolery bot is fundamentally different. The vast majority of its value is delivered through **automated, scheduled broadcasts** that happen without any user prompt. The sports alerts, the AI-written weekly highlights, the daily chess puzzles, the economy leaderboards — all of these fire on timers and push content into the server, generating reactions and replies that then feed back into the engagement loop.
 
-### Spending Wealth (The Sinks)
-To prevent "point inflation", the bot offers highly desirable, expensive point sinks. Users can purchase the ability to upload custom server stickers, emojis, or even buy a temporary, brightly colored "High Roller" role to flex their wealth in chat.
+The slash commands and interactive features exist, but they are secondary. The bot generates its own reasons to be seen.
 
-## 4. API Deep Dive: Real-Time Sports Integration
-A core pillar of the server is its real-time sports utility. We bypassed standard web scraping in favor of direct API integrations.
+---
 
-### The Undocumented ESPN API
-To provide instant, rich data for the Blue Jays (MLB), Bills and Eagles (NFL), and Canadiens and Maple Leafs (NHL), we reverse-engineered the hidden `site.api.espn.com` endpoints.
-- **Live Scoreboards** (`/bills_live`, `/leafs_live`): The bot parses massive JSON payloads to extract live quarter/period times, current scores, and network broadcasts.
-- **The Baseball Engine** (`/jays_live`): For MLB, the bot goes a step further. It parses the API for live base-runner situations (e.g., runners on 1st and 3rd, 2 outs) and dynamically maps these states to custom, visually appealing base-graphic emojis we generated and uploaded to the server.
-- **Bullpen Tracking** (`/jays_lineup`): The bot actively parses recent box scores to calculate the pitch counts of Blue Jays relievers over the last 3 days, providing a custom "Bullpen Availability" metric for hardcore fans.
+## 3. Technical Architecture & State Management
 
-### Automated Memes & Hype Alerts
-We've programmed highly specific, data-driven triggers for beloved players. For example, if Alejandro Kirk hits a home run, or beats out an infield single, the bot instantly drops custom "wait i'm goated" reaction images into the community's baseball channel. Similarly, it tracks end-of-game pitching decisions and fires off celebratory images if Louis Varland secures a Win or a Save.
+The bot is built on **Python 3.14** using the asynchronous `discord.py` wrapper. Every feature is built around the `asyncio` event loop, ensuring that long-running API calls (e.g., fetching live baseball data or generating an AI summary) never block the main thread and cause the bot to become unresponsive.
 
-### OpenF1 & MLB Stats
-- **OpenF1:** Drives the `/f1` schedule commands and the automated 24-hour Grand Prix weekend reminders, providing track details and live timing results.
-- **MLB Stats API:** Integrated specifically as a "Tool" for the AI Mascot, allowing the AI to fetch historical, seasonal data for MLB players directly from the league without wasting resources on generic web searches.
+### 3.1 Modular Design via Cogs
 
-## 5. Agentic AI & Community Management
-The most revolutionary aspect of the bot is its intelligence, powered by the Google Antigravity SDK. We deployed autonomous agents that handle community management.
+The codebase is organized into **22+ specialized Cog modules**, each responsible for a single domain:
 
-### The AI Mascot (`cogs/mascot.py`)
-This is a stateful, memory-retaining AI configured via `LocalAgentConfig`.
-- **Dynamic Persona:** The Mascot reads the channel context. If mentioned in `#chat-with-bot`, it is programmed to match the user's energy—if a user is rude, the bot ruthlessly roasts them back. However, if tagged in `#⚾-baseball` or `#🏒-hockey`, the bot dynamically injects a system override to drop the snark and strictly provide polite, helpful sports stats.
-- **Tool Calling:** The Mascot is equipped with `CapabilitiesConfig`. If asked a general question, it uses `BuiltinTools.SEARCH_WEB`. If asked about Vladimir Guerrero Jr.'s stats, it autonomously routes the query through our custom `get_mlb_player_season_stats` Python function.
+| Cog File | Responsibility |
+|---|---|
+| `economy.py` | XP, levels, Server Points balance, leaderboards |
+| `betting.py` | Sportsbook pool creation, wagering, payouts |
+| `baseball.py` | Live Blue Jays score, lineup, bullpen, automation |
+| `football.py` | Bills & Eagles live score alerts, weekly matchup previews |
+| `hockey.py` | Leafs & Canadiens live score alerts, playoff tracking |
+| `f1.py` | F1 schedule, race weekend reminders, live timing |
+| `mascot.py` | Stateful AI mascot agent with memory and tool-calling |
+| `agent_content.py` | Automated AI weekly highlight reel generator |
+| `chess.py` | Daily chess puzzle fetcher and posting |
+| `media.py` | Pillow-based image optimizer for emojis and stickers |
+| `moderation.py` | AutoMod rule enforcement, warning system, audit logs |
+| `roles.py` | Reaction-based role selection, purchasable flex roles |
+| `welcome.py` | New member onboarding embeds |
+| `reminders.py` | User-set personal reminders via slash command |
+| `fun.py` | Roulette, coin flip, misc. entertainment commands |
+| `admin.py` | Owner-only commands: reload cogs, force triggers, diagnostics |
+| `events.py` | Custom scheduled community events and announcements |
+| `polls.py` | Structured polls with real-time vote tallying |
+| `stats.py` | Server-wide stats dashboards and historical charts |
+| `highlights.py` | Sports clip and media aggregation |
+| `config.py` | Dynamic server config management without restarts |
 
-### The Weekly Highlight Reel (`cogs/agent_content.py`)
-To solve the problem of dead niche channels, a background AI agent wakes up every Monday.
-- It sweeps through all the opt-in channels (baseball, tech, overwatch) and scrapes the last 500 messages.
-- It processes this data through an LLM (gemini-3.5-flash-lite for token efficiency) with strict instructions to focus purely on the chat banter and economy stats (who won big bets).
-- It generates a beautifully formatted, FOMO-inducing "Highlight Reel" and posts it to `#general`.
+This strict separation means a bug in the F1 module cannot crash the betting engine. Each cog is loaded independently and can be hot-reloaded at runtime via `/admin reload <cog>` without taking the bot offline.
 
-The result? Users in `#general` see the fun arguments happening in `#⚾-baseball` and immediately click over to join the channel.
+### 3.2 State Persistence & The Safety Layer
 
-## 6. Quality of Life & Media Processing
-Discord imposes strict file size limits on custom server emojis (256KB) and stickers (512KB). To bypass this friction, the bot features a custom image processor using Pillow (`PIL`). It intercepts user-submitted files that are too large, runs an optimization loop in an asynchronous thread to compress and scale down the image, and uploads it to the server seamlessly. Users no longer have to manually fight with photo editing software to add emotes.
+Persistence is handled by a lightweight **SQLite3 database** (`bot_data.db`), managed through a centralized `db.py` module. This module is the single source of truth for all stateful data:
 
-## 7. The Final Form
-The Thoms Foolery bot is no longer just a moderation tool—it is the heartbeat of the community. When a new user joins, an elegant `on_member_join` event immediately sends a Welcome Embed explaining the economy and role selection. From there, they are pulled into a world of automated daily chess puzzles, live sports tracking, high-stakes point betting, and witty AI interactions.
+- **The Economy**: User XP, level thresholds, Server Points balances
+- **The Betting Engine**: Open pool metadata, individual wager records, payout odds calculations
+- **Redemption Logs**: Purchase records for custom emojis, stickers, and purchasable roles
+- **Bot State**: A key-value configuration store that tracks:
+  - Timestamps of last automated message per channel (prevents double-posting)
+  - AI conversation IDs for continuous mascot memory between sessions
+  - Scheduled job completion flags
+  - Feature flags for A/B testing new functionality
 
-By identifying exactly why Discord servers stagnate and solving those issues with flawless automation and gamification, the bot has achieved its ultimate goal: a 10/10 living, breathing ecosystem.
+**Backup Strategy**: A background `@tasks.loop(hours=24)` task fires every night at midnight. It zips the entire `bot_data.db` file along with all AI memory session folders into a timestamped archive and writes it to a local `/backups/` directory. This creates a rolling 30-day recovery window with zero external dependencies.
+
+---
+
+## 4. The Virtual Economy & Behavioural Loop
+
+The economy is the emotional core of the server. It gives actions weight, creates social hierarchies worth aspiring to, and provides a reason to show up every day. It is designed as a **closed-loop system** with carefully tuned faucets (points in) and sinks (points out).
+
+### 4.1 Earning Wealth (The Faucets)
+
+The bot listens to `on_message` and `on_reaction_add` events for passive earning. All point generation uses **in-memory cooldown dictionaries** (per user, per channel) to prevent farming:
+
+- **Chatting** in any non-bot channel: `+5-15 XP` (randomized to feel organic)
+- **Reacting to others' messages**: `+2 XP`
+- **Solving the Daily Chess Puzzle**: `+50 XP + 200 Server Points` — the biggest single-day passive payout
+- **Participating in Sports Predictions**: Correct pick on a weekly matchup poll = `+100 SP`
+- **Daily Login Streak Bonus**: Consecutive days with at least one message = escalating bonus up to `+500 SP` at 30-day streaks
+
+### 4.2 Risking Wealth (The Gambles)
+
+The economy only has weight if it can be lost. Two systems provide the gambling:
+
+**The Sportsbook (`betting.py`)**
+Admins create betting pools for any real-world game or custom meta-event (e.g., "Will the Jays score in the 1st inning?"). Users wager their Server Points via `/bet_place`. When an admin closes the pool and declares a winner, the bot automatically calculates payouts using a parimutuel model — the total losing pool is redistributed proportionally to winners. A 5% "house vig" is burned from every pool to create long-term deflation. Every bet and payout is broadcast to a `#betting-log` channel in real-time, creating a public spectacle.
+
+**The Casino (`fun.py`)**
+`/roulette` is an instant, simple gamble. A user stakes any amount of their Server Points. The outcome is a 47% chance of a 2x payout, a 3% chance of a 14x jackpot, and a 50% wipe. Every spin is announced publicly in the betting log channel.
+
+### 4.3 Spending Wealth (The Sinks)
+
+Hoarding points is discouraged. The high-value sinks are designed to be genuinely desirable:
+
+- **Custom Server Emojis**: Users can commission a custom emoji upload (subject to admin approval) for `5,000 SP`
+- **Custom Server Stickers**: `10,000 SP` — the most prestigious vanity item
+- **The "High Roller" Role**: `2,500 SP` for a temporary 7-day role with a bright gold name color, visible to the whole server as a status symbol
+- **Personalized Nickname**: `1,000 SP` — lets users set a custom nickname persisted by the bot
+- **The Economy Leaderboard Boost**: `500 SP` to get a featured shoutout in the weekly highlight reel
+
+---
+
+## 5. API Architecture: Real-Time Sports Without Scraping
+
+A foundational principle of this project was **zero reliance on third-party aggregator websites**. No Sportradar subscriptions. No SportsDataIO. Every piece of live sports data is pulled directly from the source using reverse-engineered private endpoints, giving us faster data, richer payloads, and no rate-limiting from a middleman.
+
+### 5.1 The Undocumented ESPN API (`site.api.espn.com`)
+
+The ESPN API is the backbone of our multi-sport coverage. The endpoints are not publicly documented, but are stable and rich. We query these endpoints via `aiohttp` sessions with retry logic and caching.
+
+**Baseball (`baseball.py` — Blue Jays)**
+The `/jays_live` command is the most technically complex feature in the bot. The bot doesn't just display a score — it reconstructs the live game state from the raw JSON:
+
+- **Live Base Runners**: The API provides a binary `onBase` flag for each base. The bot maps all 8 possible combinations (empty, runner on 1st, runners on 1st and 3rd, bases loaded, etc.) to a set of **custom Discord emojis** we designed and uploaded to the server. The resulting display is a visual baseball diamond that updates in real-time.
+- **Pitch Count & Inning State**: Current pitcher, pitch count, outs, inning, and batting order position are all parsed.
+- **Automated Hype Triggers**: The bot watches for specific box score events (a Kirk home run, a Guerrero Jr. RBI, a Varland save) and fires custom meme images into `#⚾-baseball` when they occur. These triggers are pre-programmed and require no human intervention.
+
+**Bullpen Availability (`/jays_lineup`)**
+This feature pulls the last **3 days of box scores** and parses every Blue Jays pitching appearance. It calculates each reliever's cumulative pitch count over that window and displays a color-coded "availability" tier (Ready / Day-to-Day / Unavailable) — a level of granularity typically only available to paid baseball analytics platforms.
+
+**Multi-Sport Coverage**
+The same ESPN endpoint pattern is used for:
+- **NFL**: Bills and Eagles weekly previews, live quarter-by-quarter score alerts
+- **NHL**: Leafs and Canadiens live period-by-period alerts, playoff bracket tracking
+- **College Football**: Configurable team tracking for members with NCAA interests
+
+### 5.2 OpenF1 API
+
+The official OpenF1 API (`api.openf1.org`) provides structured Formula 1 session data. The bot uses this to:
+
+- Power the `/f1` command, displaying the full season schedule with track details, time zone conversions, and TV broadcast info
+- Schedule automated 24-hour and 1-hour pre-race reminders for Grand Prix weekends
+- Display live session timing data (Q1/Q2/Q3 qualifying gaps, race intervals) when a session is active
+
+### 5.3 MLB Stats API (for the AI Mascot)
+
+The official `statsapi.mlb.com` API is integrated not as a standalone command, but as a **Python function exposed as a Tool to the AI Mascot**. When a user asks the mascot about Vladimir Guerrero Jr.'s career stats or the Jays' 2026 rotation ERA, the AI autonomously calls `get_mlb_player_season_stats(player_name, season)`, which hits the MLB Stats API and returns structured data. The AI then formats this data naturally in its response — no rigid `/command` interface required.
+
+---
+
+## 6. Agentic AI & The Intelligence Layer
+
+This is where the project crosses into territory most Discord bots never enter. We didn't deploy a chatbot. We deployed **autonomous agents** — systems that make independent decisions about what to do, when to do it, and how to do it.
+
+### 6.1 The AI Mascot (`cogs/mascot.py`)
+
+The Mascot is a **stateful, memory-retaining agent** built on the Google Antigravity SDK using `LocalAgentConfig`. It maintains a persistent conversation ID in the SQLite3 bot state, meaning it remembers past interactions across server restarts and hours of downtime.
+
+**Context-Aware Persona System**
+The Mascot reads the channel it's being addressed in and dynamically adjusts its system prompt:
+
+- **`#chat-with-bot` (General Chat)**: The default persona is irreverent, sarcastic, and unfiltered. It matches user energy. If a user is hostile, the bot roasts them. If a user is playful, the bot is playful. This is intentional — it creates entertaining spectacles that other server members want to watch.
+- **`#⚾-baseball` or `#🏒-hockey` (Niche Sport Channels)**: A system prompt override activates, instructing the mascot to drop the personality and become a focused, polite sports reference tool. The same underlying model, but a completely different face.
+
+**Tool-Calling Capabilities**
+The Mascot has `CapabilitiesConfig` configured with:
+- `BuiltinTools.SEARCH_WEB`: For general knowledge questions, current events, and anything outside its training data
+- `get_mlb_player_season_stats()`: Custom Python function for MLB data via the Stats API
+- `get_server_economy_standings()`: Exposes the leaderboard data so the bot can answer "Who has the most points right now?" in natural language
+
+### 6.2 The Weekly Highlight Reel (`cogs/agent_content.py`)
+
+This is the single most impactful anti-stagnation feature in the system. Every Monday at 9:00 AM, an autonomous agent wakes up and executes the following pipeline with zero human input:
+
+1. **Data Collection**: The agent sweeps through all opt-in niche channels (`#⚾-baseball`, `#🏒-hockey`, `#overwatch-2`, `#technology`) and fetches the last 500 messages from each
+2. **Processing**: This raw message data is passed to `gemini-3.5-flash-lite` (chosen for token efficiency — 500 messages × 4-5 channels is substantial) with a strict system prompt: *"Summarize the most entertaining moments, biggest bets won/lost, sports reactions, and general banter from the last week. Focus on things that would make someone in #general wish they had been in those channels. Format as a punchy, FOMO-inducing highlight reel."*
+3. **Publication**: The AI-generated highlight reel is published to `#general` as a rich embed with formatted sections, emoji headers, and a link to each source channel
+
+The result is measurable: after each weekly highlight post, cross-channel traffic increases for 24-48 hours as `#general` users click into the niche channels they'd been ignoring.
+
+---
+
+## 7. Quality of Life & The Media Pipeline
+
+Discord's file size limits for custom content are punishingly small:
+- Custom server emojis: **256KB maximum**
+- Custom server stickers: **512KB maximum**
+
+Any image larger than these limits fails silently at the upload stage. Before this system was built, users who wanted to contribute custom emotes would have to manually fight with photo editing software to compress their files — a friction point that killed participation.
+
+The `media.py` cog solves this completely. When a user uploads an image to the dedicated `#emoji-submissions` channel:
+
+1. The bot intercepts the file via `on_message`
+2. If the file is within limits, it proceeds directly to the approval queue
+3. If the file exceeds limits, the bot immediately processes it in an **asyncio thread executor** (keeping the main bot loop non-blocking) using Pillow (`PIL`):
+   - Iteratively scales the image down by 10% increments
+   - Re-encodes with progressive JPEG compression at decreasing quality levels
+   - Stops as soon as the file falls below the size threshold
+4. The optimized image is uploaded directly to the server and a confirmation embed is sent to the submitter
+
+Users experience this as magic — their oversized image just works.
+
+---
+
+## 8. The Final Form: A Living Ecosystem
+
+The Thoms Foolery bot, in its final production state, is no longer a tool that the community uses. It is a member of the community — one that shows up every day, generates content, rewards participation, and keeps the energy moving even when no humans are around.
+
+When a new user joins:
+1. A rich `on_member_join` embed greets them in `#welcome`, explaining the economy, how to earn points, and how to claim interest roles via the role-selection menu
+2. They are immediately enrolled in the XP system — their first message earns their first points
+3. The Daily Chess Puzzle is waiting for them in `#daily-challenges`
+
+From that moment forward, the system works to retain them:
+
+- **Streak rewards** incentivize daily logins
+- **The betting log** creates ambient drama to observe
+- **The weekly highlight reel** shows them what they're missing in niche channels
+- **The AI mascot** gives them something genuinely entertaining to interact with
+- **Real-time sports alerts** give the sports channels a pulse, even on quiet days
+
+By precisely identifying why Discord communities stagnate — no passive content, no economy, no social signaling, no cross-channel discovery — and systematically engineering solutions for each failure mode, the Thoms Foolery ecosystem has achieved its goal: **a server that grows on its own.**
