@@ -232,6 +232,10 @@ export default class PageBuilder {
             path.join(folder, "index.html"),
             html
         );
+        await fs.writeFile(
+            path.join(this.output, "tools", "twitter-db.html"),
+            html
+        );
     }
 
     // Ocarina Practice Tool
@@ -250,6 +254,7 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(path.join(this.output, "tools", "ocarina.html"), html);
     }
 
     //--------------------------------------------------
@@ -288,6 +293,7 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(path.join(this.output, "tools.html"), html);
     }
 
     // Sports Betting Tracker
@@ -304,6 +310,9 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "sports-betting.html"), html);
+        const cleanFolder = path.join(folder, "sports-betting");
+        await fs.mkdir(cleanFolder, { recursive: true });
+        await fs.writeFile(path.join(cleanFolder, "index.html"), html);
     }
 
     // Jays Tracker
@@ -321,6 +330,9 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "blue-jays.html"), html);
+        const cleanFolder = path.join(folder, "blue-jays");
+        await fs.mkdir(cleanFolder, { recursive: true });
+        await fs.writeFile(path.join(cleanFolder, "index.html"), html);
     }
 
     // FFX Tracker
@@ -339,6 +351,7 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(path.join(this.output, "tools", "ffx-tracker.html"), html);
     }
 
     // Dragonwilds Tracker
@@ -357,6 +370,7 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(path.join(this.output, "tools", "dragonwilds-tracker.html"), html);
     }
 
     // NHL Trend Analyzer
@@ -375,6 +389,7 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(path.join(this.output, "tools", "nhl-trend-analyzer.html"), html);
     }
 
     // NFL Trend Analyzer
@@ -393,6 +408,7 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(path.join(this.output, "tools", "nfl-trend-analyzer.html"), html);
     }
 
     // Baseball Trend Analyzer
@@ -411,6 +427,7 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(path.join(this.output, "tools", "baseball-trend-analyzer.html"), html);
     }
 
     //--------------------------------------------------

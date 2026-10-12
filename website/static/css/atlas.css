@@ -1383,10 +1383,13 @@ kbd {
   display: flex;
   gap: 0.5rem;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .newsletter-input {
-  flex-grow: 1;
+  flex: 1 1 0;
+  min-width: 0;
+  box-sizing: border-box;
   padding: 0.75rem 1rem;
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
@@ -1413,6 +1416,8 @@ kbd {
   cursor: pointer;
   transition: var(--transition-fast);
   white-space: nowrap;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .newsletter-btn:hover {
@@ -1441,8 +1446,8 @@ kbd {
   
   .newsletter-form {
     flex-shrink: 1;
-    margin-left: 2rem;
-    max-width: 100%;
+    margin-left: 0;
+    max-width: 440px;
   }
 }
 
@@ -2206,8 +2211,10 @@ footer {
 
 /* Homepage Premium Newsletter CTA */
 .homepage-newsletter-wrapper {
-  margin: 4rem auto 2rem;
+  margin: 3rem auto 2rem;
   max-width: 800px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .homepage-newsletter-wrapper .newsletter-signup {
@@ -2216,21 +2223,35 @@ footer {
   border-radius: 12px;
   padding: 2.5rem;
   box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .homepage-newsletter-wrapper .newsletter-fields {
   display: flex;
   gap: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .homepage-newsletter-wrapper .newsletter-input {
+  flex: 1 1 0;
+  min-width: 0;
+  box-sizing: border-box;
   border-right: none;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  height: 48px;
 }
 
 .homepage-newsletter-wrapper .newsletter-btn {
+  flex-shrink: 0;
+  box-sizing: border-box;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
