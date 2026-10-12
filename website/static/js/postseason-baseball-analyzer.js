@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnQuadrant = document.getElementById('btn-mode-quadrant');
     const btnResetView = document.getElementById('btn-reset-view');
     const bracketRibbon = document.getElementById('bracket-ribbon');
+    const bracketHelper = document.getElementById('bracket-helper');
     const telemetryDrawer = document.getElementById('telemetry-drawer');
     const drawerTeamName = document.getElementById('drawer-team-name');
     const drawerTeamMeta = document.getElementById('drawer-team-meta');
@@ -91,8 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (chartInstance) chartInstance.resize();
             });
             chartInstance.on('click', (params) => {
-                if (params.seriesName && parsedTeams[params.seriesId || params.data?.teamId]) {
-                    openTelemetry(params.seriesId || params.data?.teamId);
+                const targetTeamId = params.data?.[2]?.teamId || params.data?.[1]?.[2]?.teamId || params.seriesId || params.data?.team?.id;
+                if (targetTeamId && parsedTeams[targetTeamId]) {
+                    openTelemetry(targetTeamId);
                 }
             });
         }
@@ -438,15 +440,66 @@ document.addEventListener('DOMContentLoaded', () => {
     // Populate Micro-Bracket Ribbon
     function populateBracketRibbon() {
         bracketRibbon.innerHTML = '';
-        if (seriesMatches.length === 0) return;
+        if (seriesMatches.length === 0) {
+            if (bracketHelper) {
+                bracketHelper.innerHTML = '<span style="color:var(--text-dim); font-family:monospace;">No series telemetry loaded</span>';
+            }
+            return;
+        }
 
         const currentRound = roundSelect.value;
         const filteredSeries = currentRound === 'all'
             ? seriesMatches
             : seriesMatches.filter(s => s.round === currentRound);
 
+        // Update Dynamic Trajectory Isolation Helper / Badge
+        if (bracketHelper) {
+            if (selectedSeriesId) {
+                const activeSeries = seriesMatches.find(s => s.id === selectedSeriesId);
+                if (activeSeries) {
+                    const t1 = activeSeries.team1.abbreviation || activeSeries.team1.name.split(' ').pop();
+                    const t2 = activeSeries.team2.abbreviation || activeSeries.team2.name.split(' ').pop();
+                    const rName = ROUND_NAMES[activeSeries.round] || activeSeries.seriesDescription;
+                    bracketHelper.innerHTML = `
+                        <span style="display:inline-flex; align-items:center; gap:0.5rem; background:rgba(56, 189, 248, 0.12); border:1px solid rgba(56, 189, 248, 0.4); padding:3px 10px; border-radius:6px; color:var(--accent-cyan); font-weight:600;">
+                            <span>⚡ Isolating: <strong>${t1}</strong> vs <strong>${t2}</strong> (${activeSeries.games.length} Games · ${rName})</span>
+                            <button id="btn-clear-series" type="button" style="background:rgba(239, 68, 68, 0.15); border:1px solid rgba(239, 68, 68, 0.4); color:#fca5a5; cursor:pointer; font-weight:700; font-size:0.75rem; padding:1px 6px; border-radius:4px; margin-left:4px; font-family:monospace;" title="Reset series isolation">✕ Show All</button>
+                        </span>
+                    `;
+                    const clearBtn = document.getElementById('btn-clear-series');
+                    if (clearBtn) {
+                        clearBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            selectedSeriesId = null;
+                            populateBracketRibbon();
+                            renderChart();
+                        });
+                    }
+                } else {
+                    bracketHelper.innerHTML = '<span style="color:var(--text-dim); font-family:monospace;">Click any series to isolate its trajectory</span>';
+                }
+            } else {
+                bracketHelper.innerHTML = '<span style="color:var(--text-dim); font-family:monospace;">Click any series to isolate its trajectory</span>';
+            }
+        }
+
         if (filteredSeries.length === 0) {
-            bracketRibbon.innerHTML = `<span style="font-size:0.8rem; color:var(--text-muted); font-family:monospace; padding:0.5rem 0;">No series matchups recorded for this round in the ${seasonSelect.value} postseason.</span>`;
+            const roundLabel = ROUND_NAMES[currentRound] || currentRound;
+            bracketRibbon.innerHTML = `
+                <div style="font-size:0.8rem; color:var(--text-muted); font-family:monospace; padding:0.6rem 0; display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+                    <span>No series matchups recorded for ${roundLabel} in the ${seasonSelect.value} postseason.</span>
+                    <button type="button" class="switch-season-pill" data-season="2025" style="background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); color:var(--accent-cyan); padding:2px 8px; border-radius:4px; font-size:0.75rem; cursor:pointer;">View 2025</button>
+                    <button type="button" class="switch-season-pill" data-season="2024" style="background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); color:var(--accent-cyan); padding:2px 8px; border-radius:4px; font-size:0.75rem; cursor:pointer;">View 2024</button>
+                </div>
+            `;
+            bracketRibbon.querySelectorAll('.switch-season-pill').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    seasonSelect.value = btn.dataset.season;
+                    selectedSeriesId = null;
+                    userChangedSeason = true;
+                    loadPostseasonData(btn.dataset.season);
+                });
+            });
             return;
         }
 
@@ -469,12 +522,10 @@ document.addEventListener('DOMContentLoaded', () => {
             chip.addEventListener('click', () => {
                 if (selectedSeriesId === series.id) {
                     selectedSeriesId = null;
-                    chip.classList.remove('active');
                 } else {
                     selectedSeriesId = series.id;
-                    document.querySelectorAll('.bracket-chip').forEach(c => c.classList.remove('active'));
-                    chip.classList.add('active');
                 }
+                populateBracketRibbon();
                 renderChart();
             });
 
@@ -542,12 +593,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedTeamId = teamSelect.value;
 
         let filteredTeams = Object.values(parsedTeams);
+        let isolatedSeries = null;
 
         // Filter by series if bracket chip is active
         if (selectedSeriesId) {
-            const series = seriesMatches.find(s => s.id === selectedSeriesId);
-            if (series) {
-                filteredTeams = filteredTeams.filter(t => t.id === series.team1.id || t.id === series.team2.id);
+            isolatedSeries = seriesMatches.find(s => s.id === selectedSeriesId);
+            if (isolatedSeries) {
+                const seriesTeamIds = [isolatedSeries.team1.id, isolatedSeries.team2.id];
+                filteredTeams = filteredTeams.filter(t => seriesTeamIds.includes(t.id));
             }
         }
 
@@ -563,10 +616,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
         filteredTeams.forEach(team => {
             let pts = [];
-            team.trajectory.forEach(pt => {
-                if (selectedRound !== 'all' && pt.round !== selectedRound) return;
-                pts.push([pt.gameNum, pt[selectedMetric], pt]);
-            });
+
+            if (isolatedSeries) {
+                // When isolating a series: isolate ONLY games played in this exact head-to-head series!
+                const seriesGamePks = new Set(isolatedSeries.games.map(g => g.gamePk));
+                const teamSeriesGames = team.games.filter(g => seriesGamePks.has(g.gamePk));
+                
+                teamSeriesGames.forEach((g, sIdx) => {
+                    const gIdx = team.games.indexOf(g);
+                    const pt = team.trajectory[gIdx];
+                    if (pt) {
+                        pts.push([sIdx + 1, pt[selectedMetric], pt, g]);
+                    }
+                });
+            } else if (selectedRound !== 'all') {
+                // When filtering by a round: normalize game numbers to round game number (Game 1, 2, 3... of this round)
+                const teamRoundGames = team.games.filter(g => g.round === selectedRound);
+                
+                teamRoundGames.forEach((g, rIdx) => {
+                    const gIdx = team.games.indexOf(g);
+                    const pt = team.trajectory[gIdx];
+                    if (pt) {
+                        pts.push([rIdx + 1, pt[selectedMetric], pt, g]);
+                    }
+                });
+            } else {
+                // Full tournament view: cumulative postseason game numbers
+                team.trajectory.forEach((pt, idx) => {
+                    pts.push([pt.gameNum, pt[selectedMetric], pt, team.games[idx]]);
+                });
+            }
 
             if (pts.length > maxGames) maxGames = pts.length;
             if (pts.length === 0) return;
@@ -574,12 +653,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const isHighlighted = (selectedTeamId !== 'all' && team.id === parseInt(selectedTeamId)) || (selectedSeriesId !== null);
 
             seriesData.push({
+                id: String(team.id),
+                teamId: team.id,
                 name: team.name,
                 type: 'line',
-                data: pts.map(p => [p[0], p[1]]),
+                data: pts.map(p => [p[0], p[1], { teamId: team.id, gameNum: p[0], pt: p[2], rawGame: p[3] }]),
                 smooth: 0.25,
                 symbol: 'circle',
-                symbolSize: isHighlighted ? 8 : 6,
+                symbolSize: isHighlighted ? 9 : 6,
                 showSymbol: true,
                 lineStyle: {
                     color: team.color,
@@ -595,8 +676,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 emphasis: {
                     focus: 'series',
                     lineStyle: { width: 5 }
-                },
-                teamId: team.id
+                }
             });
         });
 
@@ -608,6 +688,13 @@ document.addEventListener('DOMContentLoaded', () => {
             'luckGap': 'Pythagorean Luck Gap'
         };
 
+        let xAxisTitle = 'Postseason Games Played';
+        if (isolatedSeries) {
+            xAxisTitle = `Series Game Number (${isolatedSeries.seriesDescription || 'Matchup'})`;
+        } else if (selectedRound !== 'all') {
+            xAxisTitle = `${ROUND_NAMES[selectedRound] || 'Round'} Game Number`;
+        }
+
         const option = {
             backgroundColor: 'transparent',
             tooltip: {
@@ -618,21 +705,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 padding: [12, 16],
                 textStyle: { color: '#F1F5F9', fontFamily: 'Outfit, sans-serif' },
                 formatter: (params) => {
-                    const pt = params.data;
-                    const team = parsedTeams[params.seriesIndex !== undefined ? seriesData[params.seriesIndex]?.teamId : null];
-                    const gameObj = team?.trajectory?.[pt[0] - 1];
-                    const rawGame = team?.games?.[pt[0] - 1];
+                    const dataItem = params.data;
+                    const teamId = dataItem?.[2]?.teamId || seriesData[params.seriesIndex]?.teamId;
+                    const team = parsedTeams[teamId];
+                    const rawGame = dataItem?.[2]?.rawGame;
+                    const pt = dataItem?.[2]?.pt;
+                    const gameNumLabel = isolatedSeries ? `Series Game ${dataItem[0]}` : (selectedRound !== 'all' ? `Round Game ${dataItem[0]}` : `Game ${dataItem[0]}`);
 
                     return `
                         <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
                             <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.3rem;">
                                 <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:${team?.color || '#38BDF8'};"></span>
                                 <strong style="font-size:0.95rem; color:#fff;">${team?.name || params.seriesName}</strong>
-                                <span style="color:var(--text-dim); margin-left:auto;">Game ${pt[0]}</span>
+                                <span style="color:var(--text-dim); margin-left:auto;">${gameNumLabel}</span>
                             </div>
                             <div style="color:var(--text-muted); margin-bottom: 0.2rem;">Round: <strong>${ROUND_NAMES[rawGame?.round] || 'Postseason'}</strong></div>
                             <div style="color:var(--text-muted); margin-bottom: 0.2rem;">Score: <strong style="color:#fff;">${rawGame ? `${rawGame.isWin ? 'W' : 'L'} ${rawGame.teamScore}-${rawGame.oppScore} vs ${rawGame.opponentName}` : '--'}</strong></div>
-                            <div style="color:var(--text-muted); margin-bottom: 0.2rem;">${metricLabels[selectedMetric]}: <strong style="color:${pt[1] >= 0 ? '#10B981' : '#EF4444'}; font-size:1rem;">${pt[1] > 0 ? '+' : ''}${pt[1]}</strong></div>
+                            <div style="color:var(--text-muted); margin-bottom: 0.2rem;">${metricLabels[selectedMetric]}: <strong style="color:${dataItem[1] >= 0 ? '#10B981' : '#EF4444'}; font-size:1rem;">${dataItem[1] > 0 ? '+' : ''}${dataItem[1]}</strong></div>
                             ${rawGame ? `<div style="font-size:0.75rem; color:var(--text-dim); margin-top:0.4rem;">${rawGame.decision}</div>` : ''}
                             <div style="margin-top:0.5rem; font-size:0.75rem; color:#EA580C; text-align:right;">Click node for game telemetry &rarr;</div>
                         </div>
@@ -648,15 +737,19 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             xAxis: {
                 type: 'value',
-                name: 'Postseason Games Played',
+                name: xAxisTitle,
                 nameLocation: 'middle',
                 nameGap: 30,
                 nameTextStyle: { color: '#94A3B8', fontFamily: 'JetBrains Mono, monospace' },
                 min: 1,
-                max: Math.max(8, maxGames + 1),
+                max: Math.max(isolatedSeries ? (isolatedSeries.games.length + 1) : 4, maxGames + 1),
                 interval: 1,
                 splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
-                axisLabel: { color: '#94A3B8', fontFamily: 'JetBrains Mono, monospace' }
+                axisLabel: {
+                    color: '#94A3B8',
+                    fontFamily: 'JetBrains Mono, monospace',
+                    formatter: (val) => `G${val}`
+                }
             },
             yAxis: {
                 type: 'value',
@@ -680,7 +773,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     textStyle: { color: '#94A3B8', fontFamily: 'JetBrains Mono' }
                 }
             ],
-            series: seriesData
+            series: seriesData,
+            graphic: seriesData.length === 0 ? [{
+                type: 'text',
+                left: 'center',
+                top: 'center',
+                style: {
+                    text: `No completed games for ${ROUND_NAMES[selectedRound] || 'this round'} in ${seasonSelect.value}`,
+                    fill: '#94A3B8',
+                    font: '14px monospace'
+                }
+            }] : []
         };
 
         chartInstance.setOption(option, true);
@@ -873,7 +976,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         drawerTeamName.textContent = team.name;
         drawerTeamName.style.color = team.color;
-        drawerTeamMeta.textContent = `2026 Postseason Record: ${team.totalWins}-${team.totalLosses} | Net Run Diff: ${team.finalRunDiff > 0 ? '+' : ''}${team.finalRunDiff} | PMI: ${team.finalPMI > 0 ? '+' : ''}${team.finalPMI}`;
+        drawerTeamMeta.textContent = `${seasonSelect.value || '2026'} Postseason Record: ${team.totalWins}-${team.totalLosses} | Net Run Diff: ${team.finalRunDiff > 0 ? '+' : ''}${team.finalRunDiff} | PMI: ${team.finalPMI > 0 ? '+' : ''}${team.finalPMI}`;
 
         drawerTableBody.innerHTML = '';
         team.games.forEach((g, idx) => {
@@ -909,11 +1012,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function handleRoundChange() {
-        updateSeriesRoundPills(roundSelect.value);
+    let userChangedSeason = false;
 
-        // When selecting all tournament rounds, 2026 season should be the default that loads
-        if (roundSelect.value === 'all' && seasonSelect.value !== '2026') {
+    function handleRoundChange() {
+        const currentRound = roundSelect.value;
+        updateSeriesRoundPills(currentRound);
+
+        // When selecting all tournament rounds, 2026 season should be the default that loads unless user explicitly selected another season
+        if (currentRound === 'all' && seasonSelect.value !== '2026' && !userChangedSeason) {
             seasonSelect.value = '2026';
             selectedSeriesId = null;
             loadPostseasonData('2026');
@@ -923,7 +1029,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Deselect active series if it is not in the newly selected round
         if (selectedSeriesId) {
             const activeSeries = seriesMatches.find(s => s.id === selectedSeriesId);
-            if (activeSeries && roundSelect.value !== 'all' && activeSeries.round !== roundSelect.value) {
+            if (activeSeries && currentRound !== 'all' && activeSeries.round !== currentRound) {
                 selectedSeriesId = null;
             }
         }
@@ -934,21 +1040,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Series round filter pills
     document.querySelectorAll('.series-pill').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
             const targetRound = btn.dataset.round;
-            if (roundSelect.value === targetRound) return;
+            if (roundSelect.value === targetRound) {
+                // If user re-clicks the active round pill, clear any series isolation and refresh view
+                if (selectedSeriesId) {
+                    selectedSeriesId = null;
+                    populateBracketRibbon();
+                    renderChart();
+                }
+                return;
+            }
             roundSelect.value = targetRound;
+            selectedSeriesId = null;
             handleRoundChange();
         });
     });
 
     // Event Listeners
     seasonSelect.addEventListener('change', () => {
+        userChangedSeason = true;
         selectedSeriesId = null;
         loadPostseasonData(seasonSelect.value);
     });
 
-    roundSelect.addEventListener('change', handleRoundChange);
+    roundSelect.addEventListener('change', () => {
+        selectedSeriesId = null;
+        handleRoundChange();
+    });
     metricSelect.addEventListener('change', renderChart);
     teamSelect.addEventListener('change', renderChart);
 

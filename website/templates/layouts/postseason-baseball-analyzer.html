@@ -110,7 +110,7 @@
                             <button type="button" class="series-pill" data-round="W">World Series</button>
                         </div>
                     </div>
-                    <span style="font-size: 0.75rem; color: var(--text-dim); font-family: monospace;">Click any series to isolate its trajectory</span>
+                    <span id="bracket-helper" style="font-size: 0.75rem; color: var(--text-dim); font-family: monospace;">Click any series to isolate its trajectory</span>
                 </div>
                 <div id="bracket-ribbon" style="display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.5rem; scrollbar-width: thin;">
                     <!-- Populated by JS -->
@@ -347,4 +347,4 @@ if (typeof echarts === 'undefined') {
     document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"><\/script>');
 }
 </script>
-<script src="/js/postseason-baseball-analyzer.js"></script>
+<script src="/js/postseason-baseball-analyzer.js?v=1.2.4"></script>
