@@ -450,16 +450,16 @@
 
                     <!-- Share Platform Panel (shown when Web Share API not available, i.e. desktop) -->
                     <div id="share-platform-panel" style="display: none; width: 100%; max-width: 440px; margin-top: 0.75rem; background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.35); border-radius: 10px; padding: 1rem; box-sizing: border-box;">
-                        <div style="font-size: 0.8rem; color: var(--text-dim); font-family: monospace; margin-bottom: 0.75rem; text-align: center;">📎 Image downloaded — paste it into your post!</div>
+                        <div id="share-panel-hint" style="font-size: 0.8rem; color: var(--text-dim); font-family: monospace; margin-bottom: 0.75rem; text-align: center;">🖼️ Image copied — click a platform, then paste (Ctrl+V)</div>
                         <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
-                            <a id="share-link-twitter" href="#" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(0,0,0,0.6); border: 1px solid #1d9bf0; color: #1d9bf0; font-weight: 700; font-size: 0.8rem; padding: 0.45rem 0.9rem; border-radius: 6px; text-decoration: none; font-family: monospace; transition: all 0.2s;">
+                            <button id="share-btn-twitter" type="button" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(0,0,0,0.6); border: 1px solid #1d9bf0; color: #1d9bf0; font-weight: 700; font-size: 0.8rem; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; font-family: monospace; transition: all 0.2s;">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="#1d9bf0"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.402 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.261 5.638L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                                 Post on X
-                            </a>
-                            <a id="share-link-reddit" href="#" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(0,0,0,0.6); border: 1px solid #ff4500; color: #ff4500; font-weight: 700; font-size: 0.8rem; padding: 0.45rem 0.9rem; border-radius: 6px; text-decoration: none; font-family: monospace; transition: all 0.2s;">
+                            </button>
+                            <button id="share-btn-reddit" type="button" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(0,0,0,0.6); border: 1px solid #ff4500; color: #ff4500; font-weight: 700; font-size: 0.8rem; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; font-family: monospace; transition: all 0.2s;">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="#ff4500"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
                                 Post on Reddit
-                            </a>
+                            </button>
                             <button id="share-copy-caption" type="button" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-weight: 700; font-size: 0.8rem; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; font-family: monospace; transition: all 0.2s;">📋 Copy Caption</button>
                         </div>
                     </div>
@@ -1182,13 +1182,24 @@
                         }
                     }
 
-                    // === DESKTOP: Download image + show platform share panel ===
-                    // Auto-download the image so they can attach it to the post
-                    const downloadLink = document.createElement('a');
-                    downloadLink.download = `${safeName}-profile.png`;
-                    downloadLink.href = URL.createObjectURL(blob);
-                    downloadLink.click();
-                    setTimeout(() => URL.revokeObjectURL(downloadLink.href), 60000);
+                    // === DESKTOP: Copy image to clipboard + show platform share panel ===
+                    // Helper: copy image blob to clipboard (called on both initial Share Card click AND platform button clicks)
+                    async function copyBlobToClipboard() {
+                        if (navigator.clipboard && window.ClipboardItem) {
+                            try {
+                                await navigator.clipboard.write([
+                                    new ClipboardItem({ 'image/png': blob })
+                                ]);
+                                return true;
+                            } catch (e) {
+                                console.warn('Clipboard write failed:', e);
+                            }
+                        }
+                        return false;
+                    }
+
+                    // Copy image to clipboard immediately on Share Card click
+                    const initialCopied = await copyBlobToClipboard();
 
                     // Build deep-link URLs for Twitter/X and Reddit with prefilled text
                     const encodedCaption = encodeURIComponent(fullCaption);
@@ -1196,12 +1207,26 @@
                     const redditUrl = `https://www.reddit.com/submit?title=${encodeURIComponent(shareTitle)}&text=${encodedCaption}`;
 
                     const panel = document.getElementById('share-platform-panel');
-                    const twitterLink = document.getElementById('share-link-twitter');
-                    const redditLink = document.getElementById('share-link-reddit');
+                    const panelHint = document.getElementById('share-panel-hint');
+                    const twitterBtn = document.getElementById('share-btn-twitter');
+                    const redditBtn = document.getElementById('share-btn-reddit');
                     const copyCaption = document.getElementById('share-copy-caption');
 
-                    if (twitterLink) twitterLink.href = twitterUrl;
-                    if (redditLink) redditLink.href = redditUrl;
+                    // Wire up platform buttons: re-copy image to clipboard then open URL
+                    // (Re-copy because opening a new tab can flush the clipboard on some browsers)
+                    async function openPlatform(url) {
+                        await copyBlobToClipboard();
+                        window.open(url, '_blank', 'noopener');
+                        if (panelHint) {
+                            panelHint.textContent = '✅ Image copied! Paste it into your post (Ctrl+V)';
+                            setTimeout(() => {
+                                if (panelHint) panelHint.textContent = '🖼️ Image copied — click a platform, then paste (Ctrl+V)';
+                            }, 4000);
+                        }
+                    }
+
+                    if (twitterBtn) twitterBtn.onclick = () => openPlatform(twitterUrl);
+                    if (redditBtn) redditBtn.onclick = () => openPlatform(redditUrl);
 
                     if (copyCaption) {
                         copyCaption.onclick = () => {
@@ -1217,7 +1242,7 @@
                         panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     }
 
-                    showFeedback('💾 Image saved! Pick where to share it ↓');
+                    showFeedback(initialCopied ? '🖼️ Image copied! Pick where to share it ↓' : '🚀 Pick where to share your card ↓');
                 }, 'image/png');
             });
         }
