@@ -460,6 +460,14 @@
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="#ff4500"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
                                 Post on Reddit
                             </button>
+                            <button id="share-btn-bluesky" type="button" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(0,0,0,0.6); border: 1px solid #0085ff; color: #0085ff; font-weight: 700; font-size: 0.8rem; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; font-family: monospace; transition: all 0.2s;">
+                                <svg width="14" height="14" viewBox="0 0 568 501" fill="#0085ff"><path d="M123.121 33.664C188.241 82.553 258.281 181.68 284 234.873c25.719-53.192 95.759-152.32 160.879-201.21C491.866-1.611 568-28.906 568 57.947c0 17.346-9.945 145.713-15.778 166.555-20.275 72.453-94.155 90.933-159.875 79.748C507.222 323.8 536.444 388.56 473.333 453.32c-119.86 122.992-172.272-30.859-185.702-70.281-2.462-7.227-3.614-10.608-3.631-7.733-.017-2.875-1.169.506-3.631 7.733-13.43 39.422-65.842 193.273-185.702 70.281-63.111-64.76-33.889-129.52 80.653-149.07-65.72 11.185-139.6-7.295-159.875-79.748C9.945 203.66 0 75.293 0 57.947 0-28.906 76.135-1.612 123.121 33.664Z"/></svg>
+                                Post on Bluesky
+                            </button>
+                            <button id="share-btn-facebook" type="button" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(0,0,0,0.6); border: 1px solid #1877f2; color: #1877f2; font-weight: 700; font-size: 0.8rem; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; font-family: monospace; transition: all 0.2s;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="#1877f2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                Post on Facebook
+                            </button>
                             <button id="share-copy-caption" type="button" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-weight: 700; font-size: 0.8rem; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; font-family: monospace; transition: all 0.2s;">📋 Copy Caption</button>
                         </div>
                     </div>
@@ -1201,15 +1209,21 @@
                     // Copy image to clipboard immediately on Share Card click
                     const initialCopied = await copyBlobToClipboard();
 
-                    // Build deep-link URLs for Twitter/X and Reddit with prefilled text
+                    // Build deep-link URLs for each platform with prefilled text
                     const encodedCaption = encodeURIComponent(fullCaption);
+                    const sharePageUrl = 'https://thomsfoolery.com/tools/dragonwilds-tracker/#stats';
                     const twitterUrl = `https://x.com/intent/tweet?text=${encodedCaption}`;
                     const redditUrl = `https://www.reddit.com/submit?title=${encodeURIComponent(shareTitle)}&text=${encodedCaption}`;
+                    const blueskyUrl = `https://bsky.app/intent/compose?text=${encodedCaption}`;
+                    // Facebook sharer: quote= prefills the post caption alongside the shared URL
+                    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(sharePageUrl)}&quote=${encodedCaption}`;
 
                     const panel = document.getElementById('share-platform-panel');
                     const panelHint = document.getElementById('share-panel-hint');
                     const twitterBtn = document.getElementById('share-btn-twitter');
                     const redditBtn = document.getElementById('share-btn-reddit');
+                    const blueskyBtn = document.getElementById('share-btn-bluesky');
+                    const facebookBtn = document.getElementById('share-btn-facebook');
                     const copyCaption = document.getElementById('share-copy-caption');
 
                     // Wire up platform buttons: re-copy image to clipboard then open URL
@@ -1227,6 +1241,8 @@
 
                     if (twitterBtn) twitterBtn.onclick = () => openPlatform(twitterUrl);
                     if (redditBtn) redditBtn.onclick = () => openPlatform(redditUrl);
+                    if (blueskyBtn) blueskyBtn.onclick = () => openPlatform(blueskyUrl);
+                    if (facebookBtn) facebookBtn.onclick = () => openPlatform(facebookUrl);
 
                     if (copyCaption) {
                         copyCaption.onclick = () => {
