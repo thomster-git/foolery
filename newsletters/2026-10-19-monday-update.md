@@ -65,7 +65,19 @@ Starting this week, we're testing a low-friction, privacy-friendly way to suppor
 
 ---
 
-## 5. [DRAFT: Personal Notes & Community Announcements] ✍️
+## 5. Beyond the Resume: The Interactive Interests Taxonomy 🧭
+
+Ever wondered what fuels the engineering behind the tools? We've just launched our dedicated **Interests Taxonomy** ([thomsfoolery.com/interests/](https://thomsfoolery.com/interests/)), giving visitors a multi-tier, progressive deep-dive beyond standard CV bullet points:
+* **Sports Analytics & Modeling:** High-leverage win-probability swings, bullpen fatigue telemetry, and streak regression modeling.
+* **Video Games & Mechanics:** Zelda retro sound synthesis, FFX Sphere Grid route optimization, Dragonwilds dedicated server mechanics, and Overwatch 2.
+* **Music & Acoustic Engineering:** 12-hole Alto C vessel flute acoustics, Web Audio autocorrelation pitch detection, and custom song tablatures.
+* **Electronics & Homelabs:** EtchCentric laser CNC engraving, Proxmox hypervisor clusters, ZFS raidz2 storage topologies, and enterprise networking.
+* **Digital Tools & Architecture:** Project Atlas SSG architecture, 3D interactive force knowledge graphs, and Google Antigravity autonomous AI agents.
+* **Entertainment & Community:** Daily automated chess challenges, parimutuel prediction markets, and closed-loop virtual economies.
+
+---
+
+## 6. [DRAFT: Personal Notes & Community Announcements] ✍️
 
 <!-- 
 NOTE: Add any personal reflections, song additions (e.g. Saria's Song, Title Theme), 
@@ -77,12 +89,14 @@ or community highlights here before sending.
 
 ---
 
-## 6. What’s Coming Next 🗺️
+## 7. What’s Coming Next 🗺️
 
-With the sports analyzers, sharing pipeline, and initial monetization wiring stabilized on `teaser-launch`, our focus moves toward:
-1. **Interactive Tier List Tool Rollout:** Bringing our standalone Tier List creator out of internal testing and into the public `/tools/` catalog.
-2. **Career & Industrial Engineering Chronicles:** Publishing our technical deep dives on remote fluorspar mine telemetry and zero-ransom disaster recovery.
-3. **The Project Atlas Starter Kit:** Packaging the clean static-generator codebase for developers who want to grow their own obsidian-dark knowledge garden.
+With the sports analyzers, sharing pipeline, monetization blueprint, and interests taxonomy stabilized on `teaser-launch`, our focus moves toward:
+1. **Dragonwilds Vault Timers & Fishing Guide:** Dedicated server 72-minute (3 in-game days) vault core respawn countdowns, law rune siphoning paths, interactive fishing maps, and shareable collection goals.
+2. **Ocarina of Time Remake Progression Guide:** Step-by-step notes, custom screenshots, and mechanics breakdowns for the November 5 release.
+3. **Interactive Tier List Tool Rollout:** Bringing our standalone Tier List creator out of internal testing and into the public `/tools/` catalog.
+4. **Career & Industrial Engineering Chronicles:** Publishing our technical deep dives on remote fluorspar mine telemetry and zero-ransom disaster recovery.
+5. **The Project Atlas Starter Kit:** Packaging the clean static-generator codebase for developers who want to grow their own obsidian-dark knowledge garden.
 
 Until next Monday,  
 **Jonathan Thoms**  
