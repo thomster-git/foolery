@@ -46,6 +46,7 @@ export default class PageBuilder {
         await this.buildToolsPage();
         await this.buildDevToolsPage();
         await this.buildResumePage();
+        await this.buildInterestsPage();
         await this.buildFitnessPage();
         await this.build404Page();
         await this.buildSubscribedPage();
@@ -655,6 +656,32 @@ export default class PageBuilder {
 
         await fs.writeFile(
             path.join(folder, "index.html"),
+            html
+        );
+    }
+
+    //--------------------------------------------------
+    // Interests & Obsessions Page
+    //--------------------------------------------------
+
+    async buildInterestsPage() {
+        const folder = path.join(this.output, "interests");
+        await fs.mkdir(folder, { recursive: true });
+
+        const template = await this.loadLayout("interests.html");
+
+        const html = await this.wrapPage(
+            this.renderer.render(template, {}),
+            "Interests & Obsessions - Jonathan Thoms",
+            { description: "Jonathan Thoms - Broad interests, deep technical curiosities, and personal obsessions.", path: "/interests/", ogType: "website" }
+        );
+
+        await fs.writeFile(
+            path.join(folder, "index.html"),
+            html
+        );
+        await fs.writeFile(
+            path.join(this.output, "interests.html"),
             html
         );
     }
