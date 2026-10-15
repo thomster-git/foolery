@@ -53,24 +53,36 @@ Our dynamic SVG-to-canvas image exporter now has an upgraded, frictionless workf
 
 ---
 
-## 4. [DRAFT: Additional Work & Announcements] ✍️
+## 4. Digital Companions & Working Together 💡
 
-<!-- 
-NOTE: Add any additional features, songbook additions (e.g. Saria's Song, Title Theme), 
-or community updates here before sending.
--->
+Starting this week, we're testing a low-friction, privacy-friendly way to support the site without paywalls or tracking:
 
-* *[Add notes on new song tabs or Ocarina practice additions]*
-* *[Add notes on upcoming sponsorship opportunities or garden updates]*
+* **Companion PWYW PDFs:** We're rolling out printable, offline companions for our live tools via Lemon Squeezy slide-over checkout overlays:
+  * **The Ocarina of Time 12-Hole Practice Companion:** Printable fingering charts, tab sheets, and phrasing guides ($0+ Pay-What-You-Want).
+  * **FFX 100% Tracker Reference:** Offline checklists, celestial weapon requirements, and monster arena capture routes.
+* **1-on-1 Architecture & Advisory Calls:** Readers interested in digital gardens, static site architecture, or sports data telemetry can now book 45-minute advisory sessions directly.
+* **Productized 1-Week Micro-Builds:** If your company or project needs a custom interactive tool, calculator, or dashboard built in 5 weekdays, check our new "Work With Me" details.
 
 ---
 
-## 5. What’s Coming Next 🗺️
+## 5. [DRAFT: Personal Notes & Community Announcements] ✍️
 
-With the sports analyzers and sharing pipeline stabilized on `teaser-launch`, we are shifting focus toward:
+<!-- 
+NOTE: Add any personal reflections, song additions (e.g. Saria's Song, Title Theme), 
+or community highlights here before sending.
+-->
+
+* *[Add notes on new song tabs or Ocarina practice additions]*
+* *[Add notes on Discord community milestones or upcoming garden nodes]*
+
+---
+
+## 6. What’s Coming Next 🗺️
+
+With the sports analyzers, sharing pipeline, and initial monetization wiring stabilized on `teaser-launch`, our focus moves toward:
 1. **Interactive Tier List Tool Rollout:** Bringing our standalone Tier List creator out of internal testing and into the public `/tools/` catalog.
-2. **Career & Industrial Engineering Chronicles:** Writing up our deep dives on remote fluorspar mine telemetry and zero-ransom disaster recovery.
-3. **Monetization Foundations:** Preparing the sponsorship slots and affiliate integrations outlined in our launch roadmap.
+2. **Career & Industrial Engineering Chronicles:** Publishing our technical deep dives on remote fluorspar mine telemetry and zero-ransom disaster recovery.
+3. **The Project Atlas Starter Kit:** Packaging the clean static-generator codebase for developers who want to grow their own obsidian-dark knowledge garden.
 
 Until next Monday,  
 **Jonathan Thoms**  
