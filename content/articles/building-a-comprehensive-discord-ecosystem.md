@@ -1,5 +1,5 @@
 ---
-stage: "full"
+stage: "teaser"
 id: building-a-comprehensive-discord-ecosystem
 title: "The Architecture of an Autonomous Community Operating System"
 type: article
@@ -258,3 +258,16 @@ From that moment forward, the system works to retain them:
 - **Real-time sports alerts** give the sports channels a pulse, even on quiet days
 
 By precisely identifying why Discord communities stagnate — no passive content, no economy, no social signaling, no cross-channel discovery — and systematically engineering solutions for each failure mode, the Thoms Foolery ecosystem has achieved its goal: **a server that grows on its own.**
+
+---
+
+## 🛠️ Build Something Like This
+
+Looking to build a custom autonomous Discord bot, stateful AI agents, or real-time sports telemetry for your own community? 
+
+I design and build productized bots, interactive web tools, and data dashboards for teams and creators:
+- **Autonomous Community Bots:** Cogs architecture, SQLite3 state persistence, automated backups, and closed-loop virtual economies.
+- **AI Agent Integration:** Google Antigravity SDK & Gemini agents with channel-aware personas and live tool-calling.
+- **Live Sports & API Pipelines:** Reverse-engineered endpoints for MLB, NFL, NHL, and F1.
+
+👉 **Let's talk about your project:** [Book an advisory session or explore sponsorships](/sponsors/) or reach out directly at **jonathan@thoms.email**.

@@ -15,9 +15,28 @@ This file contains manual tasks you need to complete when deploying the site to 
 - [ ] **Verify OG Card:** We generated a placeholder PNG for social sharing (`website/static/images/og-card.png`). If you have a custom logo or design you prefer, overwrite that file.
 - [ ] **Test Links:** Paste your URL into Discord or Twitter to ensure the preview card looks correct.
 
-## Content (Post-Launch)
+## Content & Guides Roadmap (Post-Launch)
 - [ ] Write missing expansions for articles.
 - [ ] Continue linking new thoughts using the `[[wikilink]]` syntax to expand the Knowledge Graph.
+- [ ] **Ocarina of Time Remake Progression Guide (Target: Nov 5):**
+  - [ ] Playthrough notes, dungeon pathing, and authentic in-game screenshots along the journey.
+  - [ ] Melody tab integration with our interactive N64 web player and printable PDF companion.
+- [ ] **Dragonwilds Compendium Expansion:**
+  - [ ] **Vault Timer Tool:** Countdown timer tracking the 3 in-game days (1h 12m / 72 mins) vault core respawn cycle for dedicated server players.
+  - [ ] **Skill Guide #1 — Comprehensive Fishing Guide:** Embedded regional fishing spots map, rod tiers, bait harvesting & pairing, and cooking/alchemy recipe crossover.
+  - [ ] **Sharable Collection Goal / Supply Log:** Input required crafting materials -> generate greyed-out checklist -> shareable sync URL (overwrites `localStorage` via hash, matching profile card mechanics).
+  - [ ] **Missing-Step Discovery Log:** Select discovered materials/recipes to grey out unobtained nodes and instantly reveal missed progression (e.g. Fractured Planes fishing before Fellhollow, blurite ore, missed recipes).
+  - [ ] **Area-Based Quest Regrouping:** Re-organize all quests by physical area, with prerequisite gating warnings (e.g. quests started in early zones that require later-game unlocks).
+  - [ ] **ADHD/Autistic-Friendly Lore Summaries:** Clear, executive-summary breakdowns of the opening lore and the first two core questlines (Valgar and Imaru).
+  - [ ] **Vault Revisit Guides:** Optimal routing and checklists for efficient vault core collection and law rune siphoning.
+- [ ] **Resume & Profile Polish:**
+  - [ ] **Interests Taxonomy & Progressive Dropdowns:** Add hierarchical, multi-level dropdown accordion under Resume or dedicated tab:
+    - *Sports:* Baseball / MLB Sabermetrics, NFL, NHL, Formula 1
+    - *Video Games:* Zelda (OoT), Final Fantasy X, Dragonwilds, Retro / N64
+    - *Music:* Ocarina practice, ear training, phrase transcription, Web Audio synth
+    - *Electronics:* EtchCentric laser engraving, homelab rack, Proxmox, custom white-box builds
+    - *Digital Tools:* Project Atlas static generator, Obsidian graphs, Antigravity AI agents, automation
+    - *Entertainment:* Chess puzzles, community gamification, trivia engineering
 
 ## Hosting & Deployment Strategy
 - [ ] **Choose a Hosting Provider:** Decide between Cloudflare Pages, AWS (S3 + CloudFront), a rented VPS (DigitalOcean/Linode), or a combination.
