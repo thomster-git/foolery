@@ -9,6 +9,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     let chartInstance = null;
     let allTeamsData = []; 
 
+    // localStorage persistence keys
+    const STORAGE_KEY_METRIC = 'atlas_nfl_metric';
+    const STORAGE_KEY_DIVISION = 'atlas_nfl_division';
+    const STORAGE_KEY_TEAM = 'atlas_nfl_team';
+    const STORAGE_KEY_TEAM2 = 'atlas_nfl_team2';
+
+    if (metricSelect && localStorage.getItem(STORAGE_KEY_METRIC)) {
+        metricSelect.value = localStorage.getItem(STORAGE_KEY_METRIC);
+    }
+    if (divisionSelect && localStorage.getItem(STORAGE_KEY_DIVISION)) {
+        divisionSelect.value = localStorage.getItem(STORAGE_KEY_DIVISION);
+    }
+
     const nflTeams = [
         { id: 2, name: "Buffalo Bills", division: "AFCE", conf: "AFC", color: "#00338D" },
         { id: 15, name: "Miami Dolphins", division: "AFCE", conf: "AFC", color: "#008E97" },
@@ -125,6 +138,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 teamSelect2.appendChild(option2);
             });
 
+            const savedTeam = localStorage.getItem(STORAGE_KEY_TEAM);
+            if (savedTeam && Array.from(teamSelect.options).some(o => o.value === savedTeam)) {
+                teamSelect.value = savedTeam;
+            }
+            const savedTeam2 = localStorage.getItem(STORAGE_KEY_TEAM2);
+            if (savedTeam2 && Array.from(teamSelect2.options).some(o => o.value === savedTeam2)) {
+                teamSelect2.value = savedTeam2;
+            }
+
             loading.style.display = 'none';
             renderChart();
         } catch (error) {
@@ -222,10 +244,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    metricSelect.addEventListener('change', renderChart);
-    divisionSelect.addEventListener('change', renderChart);
-    teamSelect.addEventListener('change', renderChart);
-    teamSelect2.addEventListener('change', renderChart);
+    metricSelect.addEventListener('change', () => {
+        localStorage.setItem(STORAGE_KEY_METRIC, metricSelect.value);
+        renderChart();
+    });
+    divisionSelect.addEventListener('change', () => {
+        localStorage.setItem(STORAGE_KEY_DIVISION, divisionSelect.value);
+        renderChart();
+    });
+    teamSelect.addEventListener('change', () => {
+        localStorage.setItem(STORAGE_KEY_TEAM, teamSelect.value);
+        renderChart();
+    });
+    teamSelect2.addEventListener('change', () => {
+        localStorage.setItem(STORAGE_KEY_TEAM2, teamSelect2.value);
+        renderChart();
+    });
     
     document.getElementById('reset-zoom').addEventListener('click', () => {
         if (chartInstance) chartInstance.resetZoom();

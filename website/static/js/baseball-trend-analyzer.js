@@ -8,6 +8,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     let chartInstance = null;
     let allTeamsData = []; // Store parsed team data
 
+    // localStorage persistence keys
+    const STORAGE_KEY_METRIC = 'atlas_baseball_metric';
+    const STORAGE_KEY_DIVISION = 'atlas_baseball_division';
+    const STORAGE_KEY_TEAM = 'atlas_baseball_team';
+
+    if (metricSelect && localStorage.getItem(STORAGE_KEY_METRIC)) {
+        metricSelect.value = localStorage.getItem(STORAGE_KEY_METRIC);
+    }
+    if (divisionSelect && localStorage.getItem(STORAGE_KEY_DIVISION)) {
+        divisionSelect.value = localStorage.getItem(STORAGE_KEY_DIVISION);
+    }
+
     function normalCDF(x) {
         var t = 1 / (1 + 0.2316419 * Math.abs(x));
         var d = 0.3989423 * Math.exp(-x * x / 2);
@@ -273,6 +285,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 teamSelect.appendChild(option);
             });
 
+            const savedTeam = localStorage.getItem(STORAGE_KEY_TEAM);
+            if (savedTeam && Array.from(teamSelect.options).some(o => o.value === savedTeam)) {
+                teamSelect.value = savedTeam;
+            }
+
             loading.style.display = 'none';
             renderChart();
 
@@ -403,9 +420,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    if (metricSelect) metricSelect.addEventListener('change', renderChart);
-    divisionSelect.addEventListener('change', renderChart);
-    teamSelect.addEventListener('change', renderChart);
+    if (metricSelect) {
+        metricSelect.addEventListener('change', () => {
+            localStorage.setItem(STORAGE_KEY_METRIC, metricSelect.value);
+            renderChart();
+        });
+    }
+    divisionSelect.addEventListener('change', () => {
+        localStorage.setItem(STORAGE_KEY_DIVISION, divisionSelect.value);
+        renderChart();
+    });
+    teamSelect.addEventListener('change', () => {
+        localStorage.setItem(STORAGE_KEY_TEAM, teamSelect.value);
+        renderChart();
+    });
     
     const resetZoomBtn = document.getElementById('reset-zoom');
     if (resetZoomBtn) {

@@ -26,6 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawerTableBody = document.getElementById('drawer-table-body');
     const drawerCloseBtn = document.getElementById('drawer-close-btn');
 
+    // localStorage persistence keys
+    const STORAGE_KEY_SEASON = 'atlas_postseason_season';
+    const STORAGE_KEY_ROUND = 'atlas_postseason_round';
+    const STORAGE_KEY_METRIC = 'atlas_postseason_metric';
+    const STORAGE_KEY_TEAM = 'atlas_postseason_team';
+    const STORAGE_KEY_MODE = 'atlas_postseason_mode';
+
     // MLB Team Official Colors
     const TEAM_COLORS = {
         108: '#BA0021', // LAA
@@ -185,6 +192,10 @@ document.addEventListener('DOMContentLoaded', () => {
             rawPostseasonData = data;
             processData(data);
             populateTeamSelect();
+            const savedTeam = localStorage.getItem(STORAGE_KEY_TEAM);
+            if (savedTeam && teamSelect && Array.from(teamSelect.options).some(o => o.value === savedTeam)) {
+                teamSelect.value = savedTeam;
+            }
             populateBracketRibbon();
             updatePulseKPIs();
             await renderChart();
@@ -495,6 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bracketRibbon.querySelectorAll('.switch-season-pill').forEach(btn => {
                 btn.addEventListener('click', () => {
                     seasonSelect.value = btn.dataset.season;
+                    localStorage.setItem(STORAGE_KEY_SEASON, btn.dataset.season);
                     selectedSeriesId = null;
                     userChangedSeason = true;
                     loadPostseasonData(btn.dataset.season);
@@ -1014,6 +1026,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let userChangedSeason = false;
 
+    // Restore saved selections on load
+    const savedSeason = localStorage.getItem(STORAGE_KEY_SEASON);
+    if (savedSeason && seasonSelect) {
+        seasonSelect.value = savedSeason;
+        userChangedSeason = true;
+    }
+    const savedRound = localStorage.getItem(STORAGE_KEY_ROUND);
+    if (savedRound && roundSelect) {
+        roundSelect.value = savedRound;
+        updateSeriesRoundPills(savedRound);
+    }
+    const savedMetric = localStorage.getItem(STORAGE_KEY_METRIC);
+    if (savedMetric && metricSelect) {
+        metricSelect.value = savedMetric;
+    }
+    const savedMode = localStorage.getItem(STORAGE_KEY_MODE);
+    if (savedMode === 'quadrant') {
+        currentMode = 'quadrant';
+        btnQuadrant.classList.add('active');
+        btnQuadrant.style.background = 'var(--accent-cyan)';
+        btnQuadrant.style.color = '#fff';
+        btnTrajectory.classList.remove('active');
+        btnTrajectory.style.background = 'transparent';
+        btnTrajectory.style.color = 'var(--text-muted)';
+    }
+
     function handleRoundChange() {
         const currentRound = roundSelect.value;
         updateSeriesRoundPills(currentRound);
@@ -1053,6 +1091,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             roundSelect.value = targetRound;
+            localStorage.setItem(STORAGE_KEY_ROUND, targetRound);
             selectedSeriesId = null;
             handleRoundChange();
         });
@@ -1062,15 +1101,23 @@ document.addEventListener('DOMContentLoaded', () => {
     seasonSelect.addEventListener('change', () => {
         userChangedSeason = true;
         selectedSeriesId = null;
+        localStorage.setItem(STORAGE_KEY_SEASON, seasonSelect.value);
         loadPostseasonData(seasonSelect.value);
     });
 
     roundSelect.addEventListener('change', () => {
         selectedSeriesId = null;
+        localStorage.setItem(STORAGE_KEY_ROUND, roundSelect.value);
         handleRoundChange();
     });
-    metricSelect.addEventListener('change', renderChart);
-    teamSelect.addEventListener('change', renderChart);
+    metricSelect.addEventListener('change', () => {
+        localStorage.setItem(STORAGE_KEY_METRIC, metricSelect.value);
+        renderChart();
+    });
+    teamSelect.addEventListener('change', () => {
+        localStorage.setItem(STORAGE_KEY_TEAM, teamSelect.value);
+        renderChart();
+    });
 
     btnTrajectory.addEventListener('click', () => {
         currentMode = 'trajectory';
@@ -1080,6 +1127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnQuadrant.classList.remove('active');
         btnQuadrant.style.background = 'transparent';
         btnQuadrant.style.color = 'var(--text-muted)';
+        localStorage.setItem(STORAGE_KEY_MODE, 'trajectory');
         renderChart();
     });
 
@@ -1091,6 +1139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnTrajectory.classList.remove('active');
         btnTrajectory.style.background = 'transparent';
         btnTrajectory.style.color = 'var(--text-muted)';
+        localStorage.setItem(STORAGE_KEY_MODE, 'quadrant');
         renderChart();
     });
 
