@@ -21,6 +21,7 @@ export default class SitemapBuilder {
         pages.push({ url: "/start/", updated: now });
         pages.push({ url: "/resume/", updated: now });
         pages.push({ url: "/interests/", updated: now });
+        pages.push({ url: "/hire/", updated: now });
         pages.push({ url: "/tools/", updated: now });
         pages.push({ url: "/tools/tier-list/", updated: now });
         pages.push({ url: "/tools/postseason-baseball-analyzer/", updated: now });

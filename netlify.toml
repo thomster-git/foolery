@@ -16,6 +16,12 @@
   status = 301
   force = true
 
+# API Routes for Netlify Functions
+[[redirects]]
+  from = "/api/submit-inquiry"
+  to = "/.netlify/functions/submit-inquiry"
+  status = 200
+
 # Custom 404 page for missing pages
 [[redirects]]
   from = "/*"

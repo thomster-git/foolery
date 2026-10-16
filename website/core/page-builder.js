@@ -47,6 +47,7 @@ export default class PageBuilder {
         await this.buildDevToolsPage();
         await this.buildResumePage();
         await this.buildInterestsPage();
+        await this.buildHirePage();
         await this.buildFitnessPage();
         await this.build404Page();
         await this.buildSubscribedPage();
@@ -682,6 +683,32 @@ export default class PageBuilder {
         );
         await fs.writeFile(
             path.join(this.output, "interests.html"),
+            html
+        );
+    }
+
+    //--------------------------------------------------
+    // Hire / Work With Me Page
+    //--------------------------------------------------
+
+    async buildHirePage() {
+        const folder = path.join(this.output, "hire");
+        await fs.mkdir(folder, { recursive: true });
+
+        const template = await this.loadLayout("hire.html");
+
+        const html = await this.wrapPage(
+            this.renderer.render(template, {}),
+            "Work With Jonathan Thoms - Pragmatic Systems & Rapid Micro-Builds",
+            { description: "Hire Jonathan Thoms for high-density 1-on-1 systems architecture reviews, 5-day custom web tool micro-builds, and autonomous community automation bots.", path: "/hire/", ogType: "website" }
+        );
+
+        await fs.writeFile(
+            path.join(folder, "index.html"),
+            html
+        );
+        await fs.writeFile(
+            path.join(this.output, "hire.html"),
             html
         );
     }
