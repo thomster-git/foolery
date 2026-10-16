@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         { id: 30, name: "Minnesota Wild", abbrev: "MIN", division: "C", conf: "W", color: "#154734" },
         { id: 27, name: "Nashville Predators", abbrev: "NSH", division: "C", conf: "W", color: "#FFB81C" },
         { id: 19, name: "St. Louis Blues", abbrev: "STL", division: "C", conf: "W", color: "#002F87" },
-        { id: 129764, name: "Utah Mammoth", abbrev: "UTAH", division: "C", conf: "W", color: "#542E91" },
+        { id: 129764, name: "Utah Hockey Club", abbrev: "UTA", division: "C", conf: "W", color: "#7BA4D9" },
         { id: 28, name: "Winnipeg Jets", abbrev: "WPG", division: "C", conf: "W", color: "#041E42" },
 
         { id: 25, name: "Anaheim Ducks", abbrev: "ANA", division: "P", conf: "W", color: "#F47A38" },
@@ -64,73 +64,88 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             const fetchPromises = nhlTeams.map(async t => {
                 const url = `https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/teams/${t.id}/schedule`;
-                const res = await fetch(url);
-                if (!res.ok) throw new Error(`Failed to fetch ${t.id}`);
-                const data = await res.json();
-                
-                let cumGF = 0, cumGA = 0;
-                let cumPoints = 0;
-                let currentStreak = 0;
-                
-                const goalDiffData = [{x:0, y:0}];
-                const winPctData = [{x:0, y:0}];
-                const streakData = [{x:0, y:0}];
-
-                let gamesPlayed = 0;
-
-                // Filter for regular season (gameType: 2) and completed
-                const regularSeasonGames = data.events.filter(e => {
-                    return e.seasonType.id === "2" && e.competitions[0].status.type.completed;
-                });
-
-                regularSeasonGames.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-                for (let i = 0; i < regularSeasonGames.length; i++) {
-                    const game = regularSeasonGames[i];
-                    gamesPlayed++;
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
+                try {
+                    const res = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    if (!res.ok) throw new Error(`Failed to fetch ${t.id}: ${res.statusText}`);
+                    const data = await res.json();
                     
-                    const competitors = game.competitions[0].competitors;
-                    const teamData = competitors.find(c => c.id == t.id);
-                    const oppData = competitors.find(c => c.id != t.id);
+                    let cumGF = 0, cumGA = 0;
+                    let cumPoints = 0;
+                    let currentStreak = 0;
+                    
+                    const goalDiffData = [{x:0, y:0}];
+                    const winPctData = [{x:0, y:0}];
+                    const streakData = [{x:0, y:0}];
 
-                    if (teamData && oppData && teamData.score) {
-                        let gf = parseInt(teamData.score.value) || 0;
-                        let ga = parseInt(oppData.score.value) || 0;
+                    let gamesPlayed = 0;
+
+                    // Filter for regular season (gameType: 2) and completed
+                    const regularSeasonGames = (data.events || []).filter(e => {
+                        return e.seasonType && e.seasonType.id === "2" && e.competitions && e.competitions[0] && e.competitions[0].status && e.competitions[0].status.type && e.competitions[0].status.type.completed;
+                    });
+
+                    regularSeasonGames.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                    for (let i = 0; i < regularSeasonGames.length; i++) {
+                        const game = regularSeasonGames[i];
+                        gamesPlayed++;
                         
-                        cumGF += gf;
-                        cumGA += ga;
+                        const competitors = game.competitions[0].competitors;
+                        const teamData = competitors.find(c => c.id == t.id);
+                        const oppData = competitors.find(c => c.id != t.id);
 
-                        if (gf > ga) {
-                            cumPoints += 2;
-                            currentStreak = currentStreak > 0 ? currentStreak + 1 : 1;
-                        } else if (game.competitions[0].status.period > 3) {
-                            cumPoints += 1;
-                            currentStreak = currentStreak < 0 ? currentStreak - 1 : -1;
-                        } else {
-                            currentStreak = currentStreak < 0 ? currentStreak - 1 : -1;
+                        if (teamData && oppData && teamData.score) {
+                            let gf = parseInt(teamData.score.value) || 0;
+                            let ga = parseInt(oppData.score.value) || 0;
+                            
+                            cumGF += gf;
+                            cumGA += ga;
+
+                            if (gf > ga) {
+                                cumPoints += 2;
+                                currentStreak = currentStreak > 0 ? currentStreak + 1 : 1;
+                            } else if (game.competitions[0].status.period > 3) {
+                                cumPoints += 1;
+                                currentStreak = currentStreak < 0 ? currentStreak - 1 : -1;
+                            } else {
+                                currentStreak = currentStreak < 0 ? currentStreak - 1 : -1;
+                            }
+
+                            goalDiffData.push({x: gamesPlayed, y: cumGF - cumGA});
+                            winPctData.push({x: gamesPlayed, y: (cumPoints / (gamesPlayed * 2)) * 100});
+                            streakData.push({x: gamesPlayed, y: currentStreak});
                         }
-
-                        goalDiffData.push({x: gamesPlayed, y: cumGF - cumGA});
-                        winPctData.push({x: gamesPlayed, y: (cumPoints / (gamesPlayed * 2)) * 100});
-                        streakData.push({x: gamesPlayed, y: currentStreak});
                     }
-                }
 
-                return {
-                    id: t.id,
-                    name: t.name,
-                    abbrev: t.abbrev,
-                    divisionId: t.division,
-                    leagueId: t.conf,
-                    color: t.color,
-                    goalDiff: goalDiffData,
-                    winPct: winPctData,
-                    streak: streakData
-                };
+                    return {
+                        id: t.id,
+                        name: t.name,
+                        abbrev: t.abbrev,
+                        divisionId: t.division,
+                        leagueId: t.conf,
+                        color: t.color,
+                        goalDiff: goalDiffData,
+                        winPct: winPctData,
+                        streak: streakData
+                    };
+                } catch (err) {
+                    clearTimeout(timeoutId);
+                    console.warn(`Could not load schedule for ${t.name}:`, err);
+                    return null;
+                }
             });
 
             const results = await Promise.allSettled(fetchPromises);
-            allTeamsData = results.filter(r => r.status === 'fulfilled').map(r => r.value);
+            allTeamsData = results
+                .filter(r => r.status === 'fulfilled' && r.value)
+                .map(r => r.value);
+
+            if (allTeamsData.length === 0) {
+                throw new Error("No NHL team data could be retrieved from ESPN API");
+            }
 
             // Populate Team Select
             allTeamsData.sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {

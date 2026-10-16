@@ -62,68 +62,83 @@ document.addEventListener('DOMContentLoaded', async () => {
         try {
             const fetchPromises = nflTeams.map(async t => {
                 const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${t.id}/schedule`;
-                const res = await fetch(url);
-                if (!res.ok) throw new Error(`Failed to fetch ${t.id}`);
-                const data = await res.json();
-                
-                let cumPF = 0, cumPA = 0;
-                let wins = 0;
-                
-                const pointDiffData = [{x:0, y:0}];
-                const pointsScoredData = [{x:0, y:0}];
-                const pointsAllowedData = [{x:0, y:0}];
-                const winPctData = [{x:0, y:0}];
-
-                let gamesPlayed = 0;
-
-                // Filter for regular season events (seasonType.id == 2) that are completed (status.type.completed)
-                const regularSeasonGames = data.events.filter(e => {
-                    return e.seasonType.id === "2" && e.competitions[0].status.type.completed;
-                });
-
-                // Sort by date just in case
-                regularSeasonGames.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-                for (let i = 0; i < regularSeasonGames.length; i++) {
-                    const game = regularSeasonGames[i];
-                    gamesPlayed++;
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
+                try {
+                    const res = await fetch(url, { signal: controller.signal });
+                    clearTimeout(timeoutId);
+                    if (!res.ok) throw new Error(`Failed to fetch ${t.id}: ${res.statusText}`);
+                    const data = await res.json();
                     
-                    const competitors = game.competitions[0].competitors;
-                    const teamData = competitors.find(c => c.id == t.id);
-                    const oppData = competitors.find(c => c.id != t.id);
+                    let cumPF = 0, cumPA = 0;
+                    let wins = 0;
                     
-                    if (teamData && oppData && teamData.score) {
-                        let pf = parseInt(teamData.score.value) || 0;
-                        let pa = parseInt(oppData.score.value) || 0;
+                    const pointDiffData = [{x:0, y:0}];
+                    const pointsScoredData = [{x:0, y:0}];
+                    const pointsAllowedData = [{x:0, y:0}];
+                    const winPctData = [{x:0, y:0}];
+
+                    let gamesPlayed = 0;
+
+                    // Filter for regular season events (seasonType.id == 2) that are completed (status.type.completed)
+                    const regularSeasonGames = (data.events || []).filter(e => {
+                        return e.seasonType && e.seasonType.id === "2" && e.competitions && e.competitions[0] && e.competitions[0].status && e.competitions[0].status.type && e.competitions[0].status.type.completed;
+                    });
+
+                    // Sort by date just in case
+                    regularSeasonGames.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                    for (let i = 0; i < regularSeasonGames.length; i++) {
+                        const game = regularSeasonGames[i];
+                        gamesPlayed++;
                         
-                        cumPF += pf;
-                        cumPA += pa;
+                        const competitors = game.competitions[0].competitors;
+                        const teamData = competitors.find(c => c.id == t.id);
+                        const oppData = competitors.find(c => c.id != t.id);
+                        
+                        if (teamData && oppData && teamData.score) {
+                            let pf = parseInt(teamData.score.value) || 0;
+                            let pa = parseInt(oppData.score.value) || 0;
+                            
+                            cumPF += pf;
+                            cumPA += pa;
 
-                        if (pf > pa) wins++;
-                        else if (pf === pa) wins += 0.5; // Tie
+                            if (pf > pa) wins++;
+                            else if (pf === pa) wins += 0.5; // Tie
 
-                        pointDiffData.push({x: gamesPlayed, y: cumPF - cumPA});
-                        pointsScoredData.push({x: gamesPlayed, y: cumPF / gamesPlayed});
-                        pointsAllowedData.push({x: gamesPlayed, y: cumPA / gamesPlayed});
-                        winPctData.push({x: gamesPlayed, y: (wins / gamesPlayed) * 100});
+                            pointDiffData.push({x: gamesPlayed, y: cumPF - cumPA});
+                            pointsScoredData.push({x: gamesPlayed, y: cumPF / gamesPlayed});
+                            pointsAllowedData.push({x: gamesPlayed, y: cumPA / gamesPlayed});
+                            winPctData.push({x: gamesPlayed, y: (wins / gamesPlayed) * 100});
+                        }
                     }
-                }
 
-                return {
-                    id: t.id,
-                    name: t.name,
-                    divisionId: t.division,
-                    leagueId: t.conf,
-                    color: t.color,
-                    pointDiff: pointDiffData,
-                    pointsScored: pointsScoredData,
-                    pointsAllowed: pointsAllowedData,
-                    winPct: winPctData
-                };
+                    return {
+                        id: t.id,
+                        name: t.name,
+                        divisionId: t.division,
+                        leagueId: t.conf,
+                        color: t.color,
+                        pointDiff: pointDiffData,
+                        pointsScored: pointsScoredData,
+                        pointsAllowed: pointsAllowedData,
+                        winPct: winPctData
+                    };
+                } catch (err) {
+                    clearTimeout(timeoutId);
+                    console.warn(`Could not load schedule for ${t.name}:`, err);
+                    return null;
+                }
             });
 
             const results = await Promise.allSettled(fetchPromises);
-            allTeamsData = results.filter(r => r.status === 'fulfilled').map(r => r.value);
+            allTeamsData = results
+                .filter(r => r.status === 'fulfilled' && r.value)
+                .map(r => r.value);
+
+            if (allTeamsData.length === 0) {
+                throw new Error("No NFL team data could be retrieved from ESPN API");
+            }
 
             // Populate Team Select
             allTeamsData.sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {

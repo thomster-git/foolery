@@ -22,7 +22,9 @@ export default class SearchBuilder {
 
     build(content) {
 
-        return content.map(item => ({
+        return content
+            .filter(item => item.metadata?.status !== "draft")
+            .map(item => ({
 
             id: item.metadata.id,
 

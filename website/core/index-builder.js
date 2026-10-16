@@ -45,7 +45,7 @@ export default class IndexBuilder {
 
     async buildArticles(content) {
 
-        const articles = content.filter(x => x.metadata.type === "article");
+        const articles = content.filter(x => x.metadata.type === "article" && x.metadata.status !== "draft");
         const topics = content.filter(x => x.metadata.type === "topic");
 
         let cardsHtml = "";
@@ -593,6 +593,7 @@ export default class IndexBuilder {
         const tagMap = new Map();
 
         content.forEach(item => {
+            if (item.metadata?.status === "draft") return;
             const tags = item.metadata.tags || [];
             tags.forEach(tag => {
                 const slug = tag.toLowerCase().trim();

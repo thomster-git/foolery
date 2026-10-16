@@ -14,7 +14,6 @@ themes:
   - creativity
 related:
   - building-a-comprehensive-discord-ecosystem
-  - discord-vs-corporate-comms
   - discord
   - project-atlas
 tags:

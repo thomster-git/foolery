@@ -22,9 +22,8 @@ tags:
   - sports-analytics
 related:
   - discord-ai-bot
-  - keel-systems
-  - discord-vs-corporate-comms
-  - my-story-with-keel-systems-and-honest-kpis
+  - project-atlas
+  - manifesto
   - technology
 ---
 

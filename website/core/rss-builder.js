@@ -5,7 +5,7 @@ export default class RSSBuilder {
         console.log("  Building RSS Feed...");
 
         const items = content
-            .filter(x => x.metadata.type === "article")
+            .filter(x => x.metadata.type === "article" && x.metadata.status !== "draft")
             .sort((a,b) => new Date(b.metadata.created || 0) - new Date(a.metadata.created || 0))
             .slice(0, 20);
 

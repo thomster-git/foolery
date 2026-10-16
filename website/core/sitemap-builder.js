@@ -8,10 +8,12 @@ export default class SitemapBuilder {
 
         const siteUrl = config.site.url.replace(/\/$/, "");
 
-        const pages = content.map(page => ({
-            url: page.url || `/${page.metadata.type}s/${page.metadata.id}.html`,
-            updated: page.metadata.updated || page.metadata.created || new Date().toISOString()
-        }));
+        const pages = content
+            .filter(page => page.metadata?.status !== "draft")
+            .map(page => ({
+                url: page.url || `/${page.metadata.type}s/${page.metadata.id}.html`,
+                updated: page.metadata.updated || page.metadata.created || new Date().toISOString()
+            }));
 
         // Manually inject structural static pages
         const now = new Date().toISOString();
@@ -20,9 +22,10 @@ export default class SitemapBuilder {
         pages.push({ url: "/resume/", updated: now });
         pages.push({ url: "/interests/", updated: now });
         pages.push({ url: "/tools/", updated: now });
+        pages.push({ url: "/tools/tier-list/", updated: now });
         pages.push({ url: "/tools/postseason-baseball-analyzer/", updated: now });
         pages.push({ url: "/tools/baseball-trend-analyzer/", updated: now });
-        pages.push({ url: "/tools/sports-betting-tracker/", updated: now });
+        pages.push({ url: "/tools/sports-betting/", updated: now });
         pages.push({ url: "/tools/nhl-trend-analyzer/", updated: now });
         pages.push({ url: "/tools/nfl-trend-analyzer/", updated: now });
         pages.push({ url: "/tools/ocarina/", updated: now });

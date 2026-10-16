@@ -302,6 +302,13 @@
     display: inline-block;
 }
 
+.tier-item.item-selected {
+    outline: 3px solid var(--accent-cyan) !important;
+    box-shadow: 0 0 14px rgba(6, 182, 212, 0.9) !important;
+    transform: scale(1.08);
+    z-index: 10;
+}
+
 @media (max-width: 640px) {
     .tier-badge-col {
         width: 70px;
@@ -321,6 +328,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const STORAGE_KEY = 'atlas_tierlist_v1';
+    let activeSelectedItemId = null;
     
     // Default tier rows S through F
     const DEFAULT_TIERS = [
@@ -571,11 +579,40 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.tier-dropzone').forEach(dz => dz.classList.remove('drag-hover'));
         });
 
+        // Tap-to-select for mobile & keyboardless click placement
+        el.addEventListener('click', (e) => {
+            if (e.target === btnRemove) return;
+            if (activeSelectedItemId === item.id) {
+                activeSelectedItemId = null;
+                el.classList.remove('item-selected');
+            } else {
+                activeSelectedItemId = item.id;
+                document.querySelectorAll('.tier-item').forEach(it => it.classList.remove('item-selected'));
+                el.classList.add('item-selected');
+                showToast('Item selected! Tap a tier row to move it.');
+            }
+        });
+
         return el;
     }
 
-    // Setup Droppable Zone with snapping
+    // Setup Droppable Zone with snapping & tap-to-place
     function setupDropzone(zone) {
+        zone.addEventListener('click', (e) => {
+            if (e.target.closest('.btn-remove-item')) return;
+            if (activeSelectedItemId) {
+                const targetTierId = zone.dataset.tier;
+                const itemObj = state.items.find(it => it.id === activeSelectedItemId);
+                if (itemObj) {
+                    itemObj.tierId = targetTierId;
+                    saveState();
+                    activeSelectedItemId = null;
+                    renderItems();
+                    showToast('Moved item to tier!');
+                }
+            }
+        });
+
         zone.addEventListener('dragover', (e) => {
             e.preventDefault();
             e.dataTransfer.dropEffect = 'move';
@@ -738,6 +775,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnClearStash = document.getElementById('btn-clear-stash');
     if (btnClearStash) {
         btnClearStash.addEventListener('click', () => {
+            if (!confirm('Clear all unranked items from the stash?')) return;
             state.items = state.items.filter(it => it.tierId !== 'stash');
             saveState();
             renderItems();

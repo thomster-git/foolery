@@ -151,7 +151,7 @@ export default class PageBuilder {
         const template = await this.loadLayout("homepage.html");
 
         const recentArticles = content
-            .filter(x => x.metadata.type === "article")
+            .filter(x => x.metadata.type === "article" && x.metadata.status !== "draft")
             .slice(0, 6)
             .map(article => this.components.articleCard(article))
             .join("\n");
@@ -926,6 +926,7 @@ export default class PageBuilder {
         const articleCards = content
 
             .filter(article =>
+                article.metadata.status !== "draft" &&
                 article.metadata.topics?.includes(topic.metadata.id)
             )
 
@@ -1052,7 +1053,7 @@ export default class PageBuilder {
         const template = await this.loadLayout("theme.html");
 
         const articleCards = content
-            .filter(article => article.metadata.themes?.includes(theme.metadata.id))
+            .filter(article => article.metadata.status !== "draft" && article.metadata.themes?.includes(theme.metadata.id))
             .map(article => this.components.articleCard(article))
             .join("\n");
 

@@ -15,7 +15,14 @@ export default class ComponentBuilder {
     // Generic Card
     //--------------------------------------------------
 
+    getPlural(type) {
+        if (type === "company") return "companies";
+        if (["hardware", "software", "music", "documentation"].includes(type)) return type;
+        return `${type}s`;
+    }
+
     getUrl(object) {
+        if (object.url) return object.url;
         const type = object.metadata?.type || "article";
         const id = object.metadata?.id || object.slug || "unknown";
         if (type === "shit-list") return `/shit-list/${id}.html`;
@@ -23,9 +30,10 @@ export default class ComponentBuilder {
         if (type === "tv-show")   return `/tv-shows/${id}.html`;
         const libraryTypes = ["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "music"];
         if (libraryTypes.includes(type)) {
-            return `/library/${type}s/${id}.html`;
+            const plural = this.getPlural(type);
+            return `/library/${plural}/${id}.html`;
         }
-        return `/${type}s/${id}.html`;
+        return `/${this.getPlural(type)}/${id}.html`;
     }
 
     card(object, cssClass = "") {

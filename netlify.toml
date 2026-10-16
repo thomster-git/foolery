@@ -3,16 +3,21 @@
   publish = "website/dist"
   functions = "netlify/functions"
 
-# Custom 404 page — must come BEFORE the SPA fallback
+# 301 Redirects for legacy indexed URLs (clears Google Search Console errors)
+[[redirects]]
+  from = "/watch-parties.html"
+  to = "/tools/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/vods.html"
+  to = "/"
+  status = 301
+  force = true
+
+# Custom 404 page for missing pages
 [[redirects]]
   from = "/*"
   to = "/404.html"
   status = 404
-  conditions = {Role = ["404"]}
-
-# SPA-style fallback for client-side navigation (if needed)
-# Remove or comment this out if you want hard 404s for all missing pages
-# [[redirects]]
-#   from = "/*"
-#   to = "/index.html"
-#   status = 200
