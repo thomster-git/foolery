@@ -1,6 +1,6 @@
-<div class="page-container">
-    <div class="content-wrapper article-layout" style="max-width: 1100px; margin: 2.5rem auto;">
-        <div class="article-content" style="max-width: 100%;">
+<div class="page-container" style="width: 100%;">
+    <div class="content-wrapper tool-layout" style="width: 100%; max-width: 100%; margin: 1.5rem auto;">
+        <div class="article-content" style="width: 100%; max-width: 100%;">
 
         <script type="application/ld+json">
         {
@@ -36,6 +36,10 @@
 
             <!-- Toolbar Actions -->
             <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 0.45rem; background: rgba(0,0,0,0.35); border: 1px solid var(--border-color); padding: 0.35rem 0.65rem; border-radius: 6px;">
+                    <label for="export-image-title" style="color: var(--text-muted); font-size: 0.82rem; font-weight: 700; white-space: nowrap; cursor: pointer;">🖼️ Export Title:</label>
+                    <input type="text" id="export-image-title" value="My Tier List" maxlength="60" placeholder="Title on exported PNG..." style="background: transparent; border: none; color: var(--accent-cyan); font-family: 'Space Grotesk', sans-serif; font-size: 0.92rem; font-weight: 700; outline: none; min-width: 160px; max-width: 250px;" title="This title will be drawn at the top of your exported image">
+                </div>
                 <button id="btn-export-png" class="btn" style="background: var(--accent-cyan); color: #000; font-weight: 800; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1rem; border-radius: 6px; border: none; cursor: pointer; transition: all 0.2s;">
                     <span>📸</span> Export PNG
                 </button>
@@ -353,6 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const stashCounter = document.getElementById('stash-counter');
     const stashEmptyMsg = document.getElementById('stash-empty-msg');
     const titleInput = document.getElementById('tierlist-title');
+    const exportTitleInput = document.getElementById('export-image-title');
     const toastEl = document.getElementById('tier-toast');
 
     function showToast(msg) {
@@ -368,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function saveState() {
         try {
-            state.title = titleInput.value || 'My Tier List';
+            state.title = (exportTitleInput && exportTitleInput.value.trim()) ? exportTitleInput.value.trim() : (titleInput ? titleInput.value.trim() : 'My Tier List') || 'My Tier List';
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         } catch (e) {
             console.warn('LocalStorage save failed:', e);
@@ -383,6 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (parsed.tiers && parsed.tiers.length > 0) {
                     state = parsed;
                     if (titleInput) titleInput.value = state.title || 'My Tier List';
+                    if (exportTitleInput) exportTitleInput.value = state.title || 'My Tier List';
                 }
             }
         } catch (e) {
@@ -835,7 +841,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (presetName === 'skills') {
             state.title = 'Dragonwilds Skills Tier List';
-            titleInput.value = state.title;
+            if (titleInput) titleInput.value = state.title;
+            if (exportTitleInput) exportTitleInput.value = state.title;
             state.tiers = JSON.parse(JSON.stringify(DEFAULT_TIERS));
             const skills = [
                 { name: 'Attack', src: '/images/skills/Attack.png' },
@@ -867,7 +874,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (presetName === 'baseball') {
             state.title = 'Baseball Positions Tier List';
-            titleInput.value = state.title;
+            if (titleInput) titleInput.value = state.title;
+            if (exportTitleInput) exportTitleInput.value = state.title;
             state.tiers = JSON.parse(JSON.stringify(DEFAULT_TIERS));
             const positions = ['DH', 'Starting Pitcher', 'Relief Pitcher', 'Catcher', 'First Base', 'Second Base', 'Third Base', 'Shortstop', 'Left Field', 'Center Field', 'Right Field'];
             state.items = positions.map((p, idx) => ({
@@ -892,7 +900,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     tiers: JSON.parse(JSON.stringify(DEFAULT_TIERS)),
                     items: []
                 };
-                titleInput.value = state.title;
+                if (titleInput) titleInput.value = state.title;
+                if (exportTitleInput) exportTitleInput.value = state.title;
                 saveState();
                 renderBoard();
                 showToast('Reset board to default!');
@@ -900,10 +909,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Title Input Event
+    // Title Input Events (Two-Way Sync)
+    if (exportTitleInput) {
+        exportTitleInput.addEventListener('input', () => {
+            state.title = exportTitleInput.value || 'My Tier List';
+            if (titleInput) titleInput.value = state.title;
+            saveState();
+        });
+    }
+
     if (titleInput) {
         titleInput.addEventListener('input', () => {
             state.title = titleInput.value || 'My Tier List';
+            if (exportTitleInput) exportTitleInput.value = state.title;
             saveState();
         });
     }
@@ -975,7 +993,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle = '#ffffff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(state.title || 'My Tier List', width / 2, margin + (headerH / 2));
+        const finalTitle = (exportTitleInput && exportTitleInput.value.trim()) ? exportTitleInput.value.trim() : (state.title || 'My Tier List');
+        ctx.fillText(finalTitle, width / 2, margin + (headerH / 2));
 
         // Draw Tier Rows
         let curY = margin + headerH;
@@ -1059,7 +1078,8 @@ document.addEventListener('DOMContentLoaded', () => {
         btnExportPng.addEventListener('click', async () => {
             showToast('Generating high-res PNG...');
             const canvas = await generateBoardCanvas();
-            const safeTitle = (state.title || 'tier-list').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            const currentTitle = (exportTitleInput && exportTitleInput.value.trim()) ? exportTitleInput.value.trim() : (state.title || 'tier-list');
+            const safeTitle = currentTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-');
             const link = document.createElement('a');
             link.download = `${safeTitle}.png`;
             link.href = canvas.toDataURL('image/png');

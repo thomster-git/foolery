@@ -1,6 +1,6 @@
-<div class="page-container">
-    <div class="content-wrapper article-layout" style="margin: 4rem auto;">
-        <div class="article-content">
+<div class="page-container" style="width: 100%;">
+    <div class="content-wrapper tool-layout" style="margin: 1.5rem auto; width: 100%;">
+        <div class="article-content" style="width: 100%; max-width: 100%;">
         
         <div class="breadcrumbs">
             <a href="/">Home</a> &gt;
@@ -670,218 +670,306 @@
 
         <!-- Tab: Fishing Guide -->
         <div id="dw-tab-fishing" class="dw-tab-panel" style="display: none;">
-            <h2 style="color: var(--accent-cyan); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">🎣 Comprehensive Fishing & Bait Progression Guide</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
-                Fishing is the most overlooked skill progression branch in Dragonwilds. Beyond providing immediate sustenance, fish supply vital cooking buffs (endurance stamina regen, max HP boosts, damage reduction) and high-tier alchemy extracts required for endgame bossing.
-            </p>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                <div>
+                    <h2 style="color: var(--accent-cyan); margin: 0 0 0.5rem 0; border: none; padding: 0;">🎣 Fishing Skill &amp; Bait Progression Guide</h2>
+                    <p style="color: var(--text-muted); margin: 0; max-width: 780px; font-size: 0.95rem; line-height: 1.5;">
+                        Official guide for <strong>RuneScape: Dragonwilds</strong>. Fishing features two distinct systems: <strong>Net Trawling</strong> for baseline catches and <strong>Rod Fishing</strong> (casting, strafe-tiring, and reeling). Leveling unlocks vital cooking recipes, base trophies, and game-changing spells like <em>Infernal Rod</em> and <em>Fishnado</em>.
+                    </p>
+                </div>
+                <a href="https://dragonwilds.runescape.wiki/w/Fishing" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(6,182,212,0.12); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.82rem; font-family: monospace; text-decoration: none;">
+                    📖 Official Wiki Article &rarr;
+                </a>
+            </div>
 
-            <!-- Crucial Warning Callout -->
-            <div class="critical-warning" style="background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; padding: 1.25rem; border-radius: 8px; margin-bottom: 2rem;">
-                <strong style="color: #ef4444; font-size: 1.05rem;">⚠️ The "Fractured Plains" Trap:</strong><br>
+            <!-- Getting Started Callout -->
+            <div class="critical-warning" style="background: rgba(6, 182, 212, 0.08); border: 1px solid var(--accent-cyan); padding: 1.25rem; border-radius: 8px; margin-bottom: 2rem;">
+                <strong style="color: var(--accent-cyan); font-size: 1.05rem;">💡 Getting Started — Shrimp Catcher Quest:</strong><br>
                 <span style="color: var(--text-muted); line-height: 1.6; display: inline-block; margin-top: 0.4rem;">
-                    Many players rush straight from Whispering Swamp into Fellhollow without fishing the alpine tarns of Fractured Plains. By doing so, you miss out on <strong>Glacial Char</strong> and <strong>Blurite-tier Fish Oil</strong>—the sole ingredients for cold-resistance stews and extended sprint potions. Without these, your stamina in Fellhollow will be permanently penalized. Follow the step-by-step rod and water matrix below!
+                    To begin training Fishing, craft your first <strong>Coarse Net</strong> at a Spinning Wheel using Coarse Thread (Flax) and initiate the <strong>Shrimp Catcher</strong> quest. Net fishing requires no bait and costs 10 stamina per trawl at net fishing nodes. At Level 3, you unlock the ability to craft your first fishing rod!
                 </span>
             </div>
 
-            <!-- Section 1: Rod & Tackle Tiers -->
-            <h3 style="color: var(--text-main); margin-bottom: 1rem;">1. Rod & Tackle Progression Tiers</h3>
-            <div style="overflow-x: auto; margin-bottom: 2rem;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
-                    <thead>
-                        <tr style="background: rgba(255,255,255,0.05); color: var(--accent-cyan); border-bottom: 1px solid var(--border-color);">
-                            <th style="padding: 0.75rem 1rem;">Tier</th>
-                            <th style="padding: 0.75rem 1rem;">Rod Name</th>
-                            <th style="padding: 0.75rem 1rem;">Req Level</th>
-                            <th style="padding: 0.75rem 1rem;">Crafting Recipe</th>
-                            <th style="padding: 0.75rem 1rem;">Target Water Types</th>
-                            <th style="padding: 0.75rem 1rem;">Key Feature</th>
-                        </tr>
-                    </thead>
-                    <tbody style="color: var(--text-muted);">
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; font-weight: bold; color: var(--text-main);">Tier 1</td>
-                            <td style="padding: 0.75rem 1rem; color: var(--accent-cyan);">Coarse Handline & Net</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">Lvl 1</td>
-                            <td style="padding: 0.75rem 1rem;">15x Coarse Thread (Flax)</td>
-                            <td style="padding: 0.75rem 1rem;">Shallow Brooks, Mill Ponds</td>
-                            <td style="padding: 0.75rem 1rem;">Catches small bait minnows & river perch</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; font-weight: bold; color: var(--text-main);">Tier 2</td>
-                            <td style="padding: 0.75rem 1rem; color: var(--accent-cyan);">Willow Casting Rod</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">Lvl 10</td>
-                            <td style="padding: 0.75rem 1rem;">2x Willow Planks, 4x Coarse Thread</td>
-                            <td style="padding: 0.75rem 1rem;">Temple Woods Rivers, Bramble Lake</td>
-                            <td style="padding: 0.75rem 1rem;">+25% casting range; hooks Silverfin Dace</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; font-weight: bold; color: var(--text-main);">Tier 3</td>
-                            <td style="padding: 0.75rem 1rem; color: var(--accent-cyan);">Oak Heavy Rod</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">Lvl 25</td>
-                            <td style="padding: 0.75rem 1rem;">3x Oak Planks, 2x Bronze Wire, 4x Fine Thread</td>
-                            <td style="padding: 0.75rem 1rem;">Whispering Swamp Murk, Mire Pools</td>
-                            <td style="padding: 0.75rem 1rem;">Acid-resistant line; catches Mire Catfish & Eels</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; font-weight: bold; color: var(--text-main);">Tier 4</td>
-                            <td style="padding: 0.75rem 1rem; color: var(--accent-cyan);">Yew Deepcaster</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">Lvl 45</td>
-                            <td style="padding: 0.75rem 1rem;">3x Yew Planks, 2x Iron Wire, 4x Silk Line</td>
-                            <td style="padding: 0.75rem 1rem;">Fractured Plains Alpine Tarns, Glacial Rapids</td>
-                            <td style="padding: 0.75rem 1rem;">Sub-zero sinker; uncovers Glacial Char & Trout</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 0.75rem 1rem; font-weight: bold; color: var(--text-main);">Tier 5</td>
-                            <td style="padding: 0.75rem 1rem; color: var(--accent-purple);">Starlight Void Rod</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">Lvl 70</td>
-                            <td style="padding: 0.75rem 1rem;">3x Magic Logs, 2x Mithril Wire, 4x Moonthread</td>
-                            <td style="padding: 0.75rem 1rem;">Fellhollow Rift Springs, Nether Chasms</td>
-                            <td style="padding: 0.75rem 1rem;">Astral tether; catches Void Eels & Leviathans</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- Section 1: Fishing Mechanics Breakdown -->
+            <h3 style="color: var(--text-main); margin-bottom: 1rem;">1. Core Mechanics: Net vs. Rod Fishing</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem;">
+                    <div style="font-size: 0.75rem; font-family: monospace; color: var(--accent-cyan); margin-bottom: 0.35rem;">METHOD A • TRAWLING</div>
+                    <h4 style="margin: 0 0 0.5rem 0; color: var(--text-main); font-size: 1.15rem;">🕸️ Net Fishing</h4>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin: 0 0 0.75rem 0;">
+                        Stand directly near a <em>Net Fishing Spot</em> with any net equipped. Press <strong>LMB (Trawl)</strong>. Each attempt consumes <strong>10 stamina</strong>.
+                    </p>
+                    <ul style="color: var(--text-muted); font-size: 0.84rem; line-height: 1.5; padding-left: 1.2rem; margin: 0;">
+                        <li><strong>No bait required</strong>: Trawls baseline fish (Shrimp, Anchovies, Lobster, Giant Krill, Monkfish).</li>
+                        <li><strong>Nets</strong>: Coarse Net, Wool Net, Fine Net, Mystic Net, Desert Net.</li>
+                        <li>Can catch junk (weeds/stones); level 49 increases catch chance to 75%.</li>
+                    </ul>
+                </div>
+
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem;">
+                    <div style="font-size: 0.75rem; font-family: monospace; color: var(--accent-purple); margin-bottom: 0.35rem;">METHOD B • ANGLING</div>
+                    <h4 style="margin: 0 0 0.5rem 0; color: var(--text-main); font-size: 1.15rem;">🎣 Rod Fishing (Mini-Game)</h4>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin: 0 0 0.75rem 0;">
+                        Stand back from a <em>Rod Fishing Spot</em>. Hold <strong>LMB (Cast)</strong> to charge distance. Once hooked:
+                    </p>
+                    <ul style="color: var(--text-muted); font-size: 0.84rem; line-height: 1.5; padding-left: 1.2rem; margin: 0;">
+                        <li><strong>Tire Out (A / D)</strong>: Strafe in the opposite direction the fish swims. When fish changes direction, the bar turns red—quickly switch strafe direction!</li>
+                        <li><strong>Reel In (Hold LMB)</strong>: When tired, hold LMB to rapidly deplete the fish bar.</li>
+                        <li>Higher tier rods reduce stamina drain; matching regional rod drastically lowers junk catch rates.</li>
+                    </ul>
+                </div>
             </div>
 
-            <!-- Section 2: Bait Progression Pipeline -->
-            <h3 style="color: var(--text-main); margin-bottom: 1rem;">2. The Bait & Lure Chain</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1rem;">
-                Higher-tier fish will completely ignore basic bait. You must process lower-tier catches or harvest specialized ecosystem baits to progress up the food chain:
+            <!-- Section 2: Best-in-Slot Fishing Rods by Region -->
+            <h3 style="color: var(--text-main); margin-bottom: 1rem;">2. Best-in-Slot Fishing Rods by Region</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+                Using the rod corresponding to each region minimizes junk catches so you don't waste node charges:
             </p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
-                    <div style="font-size: 0.75rem; font-family: monospace; color: var(--accent-cyan); margin-bottom: 0.25rem;">STAGE 1 • STARTER</div>
-                    <h4 style="margin: 0 0 0.5rem 0; color: var(--text-main);">🪱 Earthworms</h4>
-                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0;">
-                        Dug from moist farmland or riverbanks with a Hoe. Catches <strong>Minnows</strong>, <strong>Chub</strong>, and <strong>River Perch</strong>.
-                    </p>
-                </div>
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
-                    <div style="font-size: 0.75rem; font-family: monospace; color: #10b981; margin-bottom: 0.25rem;">STAGE 2 • PREDATOR</div>
-                    <h4 style="margin: 0 0 0.5rem 0; color: var(--text-main);">🐟 Minnows & Cut Bait</h4>
-                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0;">
-                        Processed at Campfire/Cutting Block from starter fish. Attracts <strong>Pike</strong>, <strong>Bramble Bass</strong>, and <strong>Mire Catfish</strong>.
-                    </p>
-                </div>
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
-                    <div style="font-size: 0.75rem; font-family: monospace; color: #f59e0b; margin-bottom: 0.25rem;">STAGE 3 • SWAMP</div>
-                    <h4 style="margin: 0 0 0.5rem 0; color: var(--text-main);">🦟 Murk Leeches</h4>
-                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0;">
-                        Gathered from reed beds in Whispering Swamp during rainfall. Lures <strong>Toxic Eels</strong> and <strong>Mudskippers</strong>.
-                    </p>
-                </div>
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
-                    <div style="font-size: 0.75rem; font-family: monospace; color: var(--accent-purple); margin-bottom: 0.25rem;">STAGE 4 • ALPINE</div>
-                    <h4 style="margin: 0 0 0.5rem 0; color: var(--text-main);">✨ Cavern Glowworms</h4>
-                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0;">
-                        Harvested off crystal walls in Fractured Plains caves. Only bait capable of hooking <strong>Glacial Char</strong> and <strong>Prismatic Trout</strong>.
-                    </p>
-                </div>
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
-                    <div style="font-size: 0.75rem; font-family: monospace; color: #ef4444; margin-bottom: 0.25rem;">STAGE 5 • ENDGAME</div>
-                    <h4 style="margin: 0 0 0.5rem 0; color: var(--text-main);">🔮 Void Siphon Chum</h4>
-                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0;">
-                        Crafted at Alchemy Bench (Void Dust + Minnow Oil). Essential for tempting <strong>Void Eels</strong> and <strong>Abyssal Leviathans</strong>.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Section 3: Regional Water Matrix & Cooking Buffs -->
-            <h3 style="color: var(--text-main); margin-bottom: 1rem;">3. Regional Water Catch Matrix & Cooking Buffs</h3>
             <div style="overflow-x: auto; margin-bottom: 2rem;">
                 <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
                     <thead>
                         <tr style="background: rgba(255,255,255,0.05); color: var(--accent-cyan); border-bottom: 1px solid var(--border-color);">
-                            <th style="padding: 0.75rem 1rem;">Region & Water</th>
-                            <th style="padding: 0.75rem 1rem;">Fish Species</th>
-                            <th style="padding: 0.75rem 1rem;">Best Bait</th>
-                            <th style="padding: 0.75rem 1rem;">Lvl</th>
-                            <th style="padding: 0.75rem 1rem;">Cooking / Alchemy Buff</th>
+                            <th style="padding: 0.75rem 1rem;">Region</th>
+                            <th style="padding: 0.75rem 1rem;">Best-in-Slot Rod</th>
+                            <th style="padding: 0.75rem 1rem;">Crafting Material</th>
+                            <th style="padding: 0.75rem 1rem;">Recommended Target Fish</th>
                         </tr>
                     </thead>
                     <tbody style="color: var(--text-muted);">
                         <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; color: var(--text-main);"><strong>Bramblemead</strong> (Quiet Brook)</td>
-                            <td style="padding: 0.75rem 1rem;">Common River Perch</td>
-                            <td style="padding: 0.75rem 1rem;">Earthworm</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">1</td>
-                            <td style="padding: 0.75rem 1rem;">+15 Max HP, basic hunger recovery</td>
+                            <td style="padding: 0.75rem 1rem; font-weight: bold; color: var(--text-main);">Brynmoor</td>
+                            <td style="padding: 0.75rem 1rem; color: var(--accent-cyan); font-weight: 700;">Ash Rod</td>
+                            <td style="padding: 0.75rem 1rem;">Ash Wood</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Sardine, Raw Trout</td>
                         </tr>
                         <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; color: var(--text-main);"><strong>Temple Woods</strong> (Whispering Rapids)</td>
-                            <td style="padding: 0.75rem 1rem;">Silverfin Dace</td>
-                            <td style="padding: 0.75rem 1rem;">Earthworm / Net</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">12</td>
-                            <td style="padding: 0.75rem 1rem;">+25 Max Stamina (10 min duration)</td>
+                            <td style="padding: 0.75rem 1rem; font-weight: bold; color: var(--text-main);">Ghornfell</td>
+                            <td style="padding: 0.75rem 1rem; color: var(--accent-cyan); font-weight: 700;">Oak Rod</td>
+                            <td style="padding: 0.75rem 1rem;">Oak Wood</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Herring, Raw Salmon</td>
                         </tr>
                         <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; color: var(--text-main);"><strong>Bramble Lake</strong> (Deep Center)</td>
-                            <td style="padding: 0.75rem 1rem;">Bramblemead Trout</td>
-                            <td style="padding: 0.75rem 1rem;">Cut Bait</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">18</td>
-                            <td style="padding: 0.75rem 1rem;">+35 Max HP & +15% Health Regen</td>
+                            <td style="padding: 0.75rem 1rem; font-weight: bold; color: var(--text-main);">Fellhollow</td>
+                            <td style="padding: 0.75rem 1rem; color: var(--accent-cyan); font-weight: 700;">Willow Rod</td>
+                            <td style="padding: 0.75rem 1rem;">Willow Wood</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Undead Eel, Raw Undead Bass</td>
                         </tr>
                         <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; color: var(--text-main);"><strong>Whispering Swamp</strong> (Murk Pools)</td>
-                            <td style="padding: 0.75rem 1rem;">Mire Catfish</td>
-                            <td style="padding: 0.75rem 1rem;">Minnows</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">28</td>
-                            <td style="padding: 0.75rem 1rem;">+40 Max HP & +25 Poison Resistance</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; color: var(--text-main);"><strong>Whispering Swamp</strong> (Toxic Sump)</td>
-                            <td style="padding: 0.75rem 1rem; color: #10b981;">Toxic Swamp Eel</td>
-                            <td style="padding: 0.75rem 1rem;">Murk Leeches</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">35</td>
-                            <td style="padding: 0.75rem 1rem;">Alchemy: Lethal Blade Oil (+20% Poison Crit)</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; color: var(--text-main);"><strong>Fractured Plains</strong> (Glacial Tarn)</td>
-                            <td style="padding: 0.75rem 1rem; color: var(--accent-cyan);">Glacial Char</td>
-                            <td style="padding: 0.75rem 1rem;">Glowworms</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">48</td>
-                            <td style="padding: 0.75rem 1rem;">+35 Cold Resistance & -25% Sprint Stamina Cost</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; color: var(--text-main);"><strong>Fractured Plains</strong> (Skyfall Rapids)</td>
-                            <td style="padding: 0.75rem 1rem; color: var(--accent-cyan);">Prismatic Alpine Trout</td>
-                            <td style="padding: 0.75rem 1rem;">Glowworms</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">55</td>
-                            <td style="padding: 0.75rem 1rem;">+60 Max HP & +12% Movement Speed</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; color: var(--text-main);"><strong>Fellhollow</strong> (Nether Trench)</td>
-                            <td style="padding: 0.75rem 1rem; color: var(--accent-purple);">Void Eel</td>
-                            <td style="padding: 0.75rem 1rem;">Void Chum</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">72</td>
-                            <td style="padding: 0.75rem 1rem;">+80 Max HP & +20% Shadow/Magic Resist</td>
+                            <td style="padding: 0.75rem 1rem; font-weight: bold; color: var(--text-main);">Dowdun Reach</td>
+                            <td style="padding: 0.75rem 1rem; color: var(--accent-cyan); font-weight: 700;">Maple Rod</td>
+                            <td style="padding: 0.75rem 1rem;">Maple Wood</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Infernal Eel, Raw Armoured Catfish</td>
                         </tr>
                         <tr>
-                            <td style="padding: 0.75rem 1rem; color: var(--text-main);"><strong>Fellhollow</strong> (Astral Basin)</td>
-                            <td style="padding: 0.75rem 1rem; color: #ef4444; font-weight: bold;">Abyssal Leviathan</td>
-                            <td style="padding: 0.75rem 1rem;">Void Siphon Chum</td>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace;">85</td>
-                            <td style="padding: 0.75rem 1rem;">Legendary Feast: +120 HP, +20% to ALL Attributes</td>
+                            <td style="padding: 0.75rem 1rem; font-weight: bold; color: var(--text-main);">Umbral Sands</td>
+                            <td style="padding: 0.75rem 1rem; color: var(--accent-purple); font-weight: 700;">Yew Rod</td>
+                            <td style="padding: 0.75rem 1rem;">Yew Wood</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Desert Sole, Raw Beltfish</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Section 4: Fishing Completionist Checklist -->
-            <h3 style="color: var(--text-main); margin-bottom: 1rem;">4. Species Discovery & Progression Checklist</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">Check off each species as you catch and log it in your regional journal:</p>
+            <!-- Section 3: Authentic Fish & Bait Hierarchy Table -->
+            <h3 style="color: var(--text-main); margin-bottom: 1rem;">3. Dragonwilds Fish &amp; Bait Hierarchy</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+                All 15 official species in RuneScape: Dragonwilds. Net catches provide food and serve as components to craft specialized baits for rod fish:
+            </p>
+            <div style="overflow-x: auto; margin-bottom: 2rem;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left; background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                    <thead>
+                        <tr style="background: rgba(255,255,255,0.05); color: var(--accent-cyan); border-bottom: 1px solid var(--border-color);">
+                            <th style="padding: 0.7rem 0.9rem;">Fish Species</th>
+                            <th style="padding: 0.7rem 0.9rem;">Power Level</th>
+                            <th style="padding: 0.7rem 0.9rem;">Base XP</th>
+                            <th style="padding: 0.7rem 0.9rem;">Weight</th>
+                            <th style="padding: 0.7rem 0.9rem;">Required Bait / Tool</th>
+                            <th style="padding: 0.7rem 0.9rem;">Pristine Variant</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: var(--text-muted);">
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw shrimp</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">2</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">8 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">0.2</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #10b981;">Net (No Bait)</td>
+                            <td style="padding: 0.7rem 0.9rem; color: var(--text-dim);">&mdash;</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw sardine</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">2</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">20 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">1.5</td>
+                            <td style="padding: 0.7rem 0.9rem;">Shrimp Bait</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #f59e0b;">✨ Pristine Sardine</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw trout</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">2</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">25 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">2.1</td>
+                            <td style="padding: 0.7rem 0.9rem;">Feather Bait</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #f59e0b;">✨ Pristine Trout</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw anchovies</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">3</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">12 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">1.0</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #10b981;">Net (No Bait)</td>
+                            <td style="padding: 0.7rem 0.9rem; color: var(--text-dim);">&mdash;</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw herring</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">3</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">30 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">1.8</td>
+                            <td style="padding: 0.7rem 0.9rem;">Anchovy Bait</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #f59e0b;">✨ Pristine Herring</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw salmon</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">3</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">35 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">1.8</td>
+                            <td style="padding: 0.7rem 0.9rem;">Feathered Lure</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #f59e0b;">✨ Pristine Salmon</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw lobster</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">4</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">16 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">2.4</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #10b981;">Net (No Bait)</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #f59e0b;">✨ Pristine Lobster</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw undead eel</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">4</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">45 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">3.4</td>
+                            <td style="padding: 0.7rem 0.9rem;">Lobster Bait</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #f59e0b;">✨ Pristine Undead Eel</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw undead bass</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">4</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">45 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">3.0</td>
+                            <td style="padding: 0.7rem 0.9rem;">Spooky Bait</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #f59e0b;">✨ Pristine Undead Bass</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw giant krill</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">4</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">20 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">2.9</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #10b981;">Net (No Bait)</td>
+                            <td style="padding: 0.7rem 0.9rem; color: var(--text-dim);">&mdash;</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw infernal eel</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">4</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">55 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">3.1</td>
+                            <td style="padding: 0.7rem 0.9rem;">Giant Krill Bait</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #f59e0b;">✨ Pristine Infernal Eel</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw armoured catfish</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">4</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">60 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">4.5</td>
+                            <td style="padding: 0.7rem 0.9rem;">Animated Feather</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #f59e0b;">✨ Pristine Armoured Catfish</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw monkfish</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">7</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">35 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">2.5</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #10b981;">Net (No Bait)</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #f59e0b;">✨ Pristine Monkfish</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw desert sole</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">7</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">65 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">2.5</td>
+                            <td style="padding: 0.7rem 0.9rem;">Monkfish Bait</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #f59e0b;">✨ Pristine Desert Sole</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.7rem 0.9rem; font-weight: 700; color: var(--text-main);">Raw beltfish</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">7</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace; color: var(--accent-cyan);">60 XP</td>
+                            <td style="padding: 0.7rem 0.9rem; font-family: monospace;">2.5</td>
+                            <td style="padding: 0.7rem 0.9rem;">Kalphite Bait</td>
+                            <td style="padding: 0.7rem 0.9rem; color: #f59e0b;">✨ Pristine Beltfish</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 4: Key Spells & Milestone Unlocks -->
+            <h3 style="color: var(--text-main); margin-bottom: 1rem;">4. Key Spells &amp; Milestone Unlocks</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+                    <div style="font-size: 0.75rem; font-family: monospace; color: var(--accent-cyan); font-weight: 700;">LEVEL 10 • SPELL</div>
+                    <h4 style="margin: 0.25rem 0 0.5rem 0; color: var(--text-main);">✨ Fishing Frenzy</h4>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0;">
+                        Enchants a fishing node. Each successful catch grants an additional duplicate fish while active! Upgraded at Lvl 43 with <em>Troubled Waters</em> (-15% fish stamina).
+                    </p>
+                </div>
+
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+                    <div style="font-size: 0.75rem; font-family: monospace; color: #f97316; font-weight: 700;">LEVEL 30 • SPELL</div>
+                    <h4 style="margin: 0.25rem 0 0.5rem 0; color: var(--text-main);">🔥 Infernal Rod</h4>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0;">
+                        Enchants your equipped rod with fire for 2 minutes. All fish caught during the spell effect are <strong>instantly cooked</strong> upon reeling in!
+                    </p>
+                </div>
+
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+                    <div style="font-size: 0.75rem; font-family: monospace; color: var(--accent-purple); font-weight: 700;">LEVEL 55 • SPELL</div>
+                    <h4 style="margin: 0.25rem 0 0.5rem 0; color: var(--text-main);">🌪️ Fishnado</h4>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0;">
+                        Conjures a magical water tornado that instantly pulls out up to 5 fish from a node at once. Cooldown reduced at Lvl 60 with <em>Greater Fishnado</em>.
+                    </p>
+                </div>
+
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+                    <div style="font-size: 0.75rem; font-family: monospace; color: #10b981; font-weight: 700;">LEVEL 70 &amp; 99 • GEAR</div>
+                    <h4 style="margin: 0.25rem 0 0.5rem 0; color: var(--text-main);">👑 Angler's Hat &amp; Cape</h4>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0;">
+                        <strong>Angler's Hat (Lvl 70)</strong>: 10% chance per catch not to deplete the node.<br>
+                        <strong>Fishing Skillcape (Lvl 99)</strong>: Unlocks mastery perks and trimmed cape.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Section 5: Authentic Species Checklist -->
+            <h3 style="color: var(--text-main); margin-bottom: 1rem;">5. Dragonwilds Species Log (Interactive Checklist)</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+                Check off each discovered species as you catch them across Dragonwilds. Progress automatically saves in your browser:
+            </p>
             <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="dw-fish-1"><input type="checkbox" id="dw-fish-1" class="ffx-checkbox"> <span class="task-text"><strong>Common River Perch (Lvl 1):</strong> Bramblemead brooks. Caught with Coarse Net & Earthworm.</span></label></li>
-                <li class="task-item"><label for="dw-fish-2"><input type="checkbox" id="dw-fish-2" class="ffx-checkbox"> <span class="task-text"><strong>Silverfin Dace (Lvl 12):</strong> Temple Woods rapids. Unlocks first stamina regen meal.</span></label></li>
-                <li class="task-item"><label for="dw-fish-3"><input type="checkbox" id="dw-fish-3" class="ffx-checkbox"> <span class="task-text"><strong>Bramblemead Trout (Lvl 18):</strong> Deep Bramble Lake. Requires Willow Casting Rod & Cut Bait.</span></label></li>
-                <li class="task-item"><label for="dw-fish-4"><input type="checkbox" id="dw-fish-4" class="ffx-checkbox"> <span class="task-text"><strong>Mire Catfish (Lvl 28):</strong> Whispering Swamp murk pools. Resists mud and silt.</span></label></li>
-                <li class="task-item"><label for="dw-fish-5"><input type="checkbox" id="dw-fish-5" class="ffx-checkbox"> <span class="task-text"><strong>Toxic Swamp Eel (Lvl 35):</strong> Whispering Swamp sumps. Needed for weapon venom coating.</span></label></li>
-                <li class="task-item"><label for="dw-fish-6"><input type="checkbox" id="dw-fish-6" class="ffx-checkbox"> <span class="task-text"><strong>Bog Mudskipper (Lvl 40):</strong> Whispering Swamp roots. Alchemy catalyst for stamina flasks.</span></label></li>
-                <li class="task-item"><label for="dw-fish-7"><input type="checkbox" id="dw-fish-7" class="ffx-checkbox"> <span class="task-text"><strong>Glacial Char (Lvl 48):</strong> Fractured Plains tarns. CRUCIAL: Cook into Cold-Resist Stew.</span></label></li>
-                <li class="task-item"><label for="dw-fish-8"><input type="checkbox" id="dw-fish-8" class="ffx-checkbox"> <span class="task-text"><strong>Prismatic Alpine Trout (Lvl 55):</strong> Fractured Plains rapids. Speeds up sprinting.</span></label></li>
-                <li class="task-item"><label for="dw-fish-9"><input type="checkbox" id="dw-fish-9" class="ffx-checkbox"> <span class="task-text"><strong>Skyfin Flounder (Lvl 62):</strong> Fractured Plains floating islets. Glider access only.</span></label></li>
-                <li class="task-item"><label for="dw-fish-10"><input type="checkbox" id="dw-fish-10" class="ffx-checkbox"> <span class="task-text"><strong>Void Eel (Lvl 72):</strong> Fellhollow Nether Trenches. Shadow damage mitigation buff.</span></label></li>
-                <li class="task-item"><label for="dw-fish-11"><input type="checkbox" id="dw-fish-11" class="ffx-checkbox"> <span class="task-text"><strong>Starlight Ray (Lvl 78):</strong> Fellhollow Astral Basin. Grants night-vision & mana haste.</span></label></li>
-                <li class="task-item"><label for="dw-fish-12"><input type="checkbox" id="dw-fish-12" class="ffx-checkbox"> <span class="task-text"><strong>Abyssal Leviathan (Lvl 85):</strong> Deep Fellhollow Astral Trench. King of the waters (+120 HP Banquet).</span></label></li>
+                <li class="task-item"><label for="dw-fish-1"><input type="checkbox" id="dw-fish-1" class="ffx-checkbox"> <span class="task-text"><strong>Raw shrimp (PL 2):</strong> Trawled with Coarse Net in starter streams. Used to craft Shrimp Bait.</span></label></li>
+                <li class="task-item"><label for="dw-fish-2"><input type="checkbox" id="dw-fish-2" class="ffx-checkbox"> <span class="task-text"><strong>Raw sardine (PL 2):</strong> Caught with Ash Rod + Shrimp Bait in Brynmoor. Pristine variant unlocks wall trophy.</span></label></li>
+                <li class="task-item"><label for="dw-fish-3"><input type="checkbox" id="dw-fish-3" class="ffx-checkbox"> <span class="task-text"><strong>Raw trout (PL 2):</strong> Caught with Ash Rod + Feather Bait in Brynmoor rivers.</span></label></li>
+                <li class="task-item"><label for="dw-fish-4"><input type="checkbox" id="dw-fish-4" class="ffx-checkbox"> <span class="task-text"><strong>Raw anchovies (PL 3):</strong> Trawled with Net. Processed into Anchovy Bait.</span></label></li>
+                <li class="task-item"><label for="dw-fish-5"><input type="checkbox" id="dw-fish-5" class="ffx-checkbox"> <span class="task-text"><strong>Raw herring (PL 3):</strong> Caught with Oak Rod + Anchovy Bait in Ghornfell.</span></label></li>
+                <li class="task-item"><label for="dw-fish-6"><input type="checkbox" id="dw-fish-6" class="ffx-checkbox"> <span class="task-text"><strong>Raw salmon (PL 3):</strong> Caught with Oak Rod + Feathered Lure in Ghornfell rapids.</span></label></li>
+                <li class="task-item"><label for="dw-fish-7"><input type="checkbox" id="dw-fish-7" class="ffx-checkbox"> <span class="task-text"><strong>Raw lobster (PL 4):</strong> Trawled with Net. High sustenance food and used for Lobster Bait.</span></label></li>
+                <li class="task-item"><label for="dw-fish-8"><input type="checkbox" id="dw-fish-8" class="ffx-checkbox"> <span class="task-text"><strong>Raw undead eel (PL 4):</strong> Caught with Willow Rod + Lobster Bait in Fellhollow.</span></label></li>
+                <li class="task-item"><label for="dw-fish-9"><input type="checkbox" id="dw-fish-9" class="ffx-checkbox"> <span class="task-text"><strong>Raw undead bass (PL 4):</strong> Caught with Willow Rod + Spooky Bait in Fellhollow rot waters.</span></label></li>
+                <li class="task-item"><label for="dw-fish-10"><input type="checkbox" id="dw-fish-10" class="ffx-checkbox"> <span class="task-text"><strong>Raw giant krill (PL 4):</strong> Trawled with Net in Dowdun Reach. Component for Giant Krill Bait.</span></label></li>
+                <li class="task-item"><label for="dw-fish-11"><input type="checkbox" id="dw-fish-11" class="ffx-checkbox"> <span class="task-text"><strong>Raw infernal eel (PL 4):</strong> Caught with Maple Rod + Giant Krill Bait in Dowdun Reach.</span></label></li>
+                <li class="task-item"><label for="dw-fish-12"><input type="checkbox" id="dw-fish-12" class="ffx-checkbox"> <span class="task-text"><strong>Raw armoured catfish (PL 4):</strong> Caught with Maple Rod + Animated Feather in Dowdun Reach.</span></label></li>
+                <li class="task-item"><label for="dw-fish-13"><input type="checkbox" id="dw-fish-13" class="ffx-checkbox"> <span class="task-text"><strong>Raw monkfish (PL 7):</strong> Trawled with Net in Umbral Sands coastal flats.</span></label></li>
+                <li class="task-item"><label for="dw-fish-14"><input type="checkbox" id="dw-fish-14" class="ffx-checkbox"> <span class="task-text"><strong>Raw desert sole (PL 7):</strong> Caught with Yew Rod + Monkfish Bait in Umbral Sands oasis.</span></label></li>
+                <li class="task-item"><label for="dw-fish-15"><input type="checkbox" id="dw-fish-15" class="ffx-checkbox"> <span class="task-text"><strong>Raw beltfish (PL 7):</strong> Caught with Yew Rod + Kalphite Bait in Umbral Sands depths.</span></label></li>
             </ul>
         </div>
         <!-- End Fishing Guide Tab -->
