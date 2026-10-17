@@ -53,9 +53,11 @@
                     <button id="btn-presets" class="btn" style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 600; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 0.9rem; border-radius: 6px; cursor: pointer;">
                         <span>⚡</span> Presets
                     </button>
-                    <div id="presets-menu" style="display: none; position: absolute; right: 0; top: 110%; background: #0f172a; border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 50; width: 200px; padding: 0.4rem 0;">
+                    <div id="presets-menu" style="display: none; position: absolute; right: 0; top: 110%; background: #0f172a; border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 50; width: 220px; padding: 0.4rem 0;">
                         <button class="preset-opt" data-preset="skills" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 0.88rem;">🐉 Dragonwilds Skills</button>
                         <button class="preset-opt" data-preset="baseball" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 0.88rem;">⚾ Baseball Positions</button>
+                        <button class="preset-opt" data-preset="f1-drivers" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 0.88rem;">🏎️ Formula 1 Drivers</button>
+                        <button class="preset-opt" data-preset="f1-teams" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 0.88rem;">🏁 Formula 1 Teams</button>
                         <button class="preset-opt" data-preset="blank" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.88rem; border-top: 1px solid rgba(255,255,255,0.08);">🗑️ Clear to Blank</button>
                     </div>
                 </div>
@@ -373,7 +375,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function saveState() {
         try {
-            state.title = (exportTitleInput && exportTitleInput.value.trim()) ? exportTitleInput.value.trim() : (titleInput ? titleInput.value.trim() : 'My Tier List') || 'My Tier List';
             localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         } catch (e) {
             console.warn('LocalStorage save failed:', e);
@@ -387,13 +388,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const parsed = JSON.parse(raw);
                 if (parsed.tiers && parsed.tiers.length > 0) {
                     state = parsed;
-                    if (titleInput) titleInput.value = state.title || 'My Tier List';
-                    if (exportTitleInput) exportTitleInput.value = state.title || 'My Tier List';
                 }
             }
         } catch (e) {
             console.warn('LocalStorage load failed, using defaults:', e);
         }
+        // Always reset Export Title after every page refresh as requested
+        state.title = 'My Tier List';
+        if (titleInput) titleInput.value = 'My Tier List';
+        if (exportTitleInput) exportTitleInput.value = 'My Tier List';
     }
 
     // Render Board Rows
@@ -887,6 +890,53 @@ document.addEventListener('DOMContentLoaded', () => {
             saveState();
             renderBoard();
             showToast('Loaded Baseball positions into stash!');
+            return;
+        }
+
+        if (presetName === 'f1-drivers') {
+            state.title = 'Formula 1 Drivers Tier List';
+            if (titleInput) titleInput.value = state.title;
+            if (exportTitleInput) exportTitleInput.value = state.title;
+            state.tiers = JSON.parse(JSON.stringify(DEFAULT_TIERS));
+            const drivers = [
+                'Max Verstappen', 'Lewis Hamilton', 'Charles Leclerc', 'Lando Norris',
+                'Fernando Alonso', 'George Russell', 'Carlos Sainz', 'Oscar Piastri',
+                'Sergio Perez', 'Pierre Gasly', 'Esteban Ocon', 'Alexander Albon',
+                'Yuki Tsunoda', 'Lance Stroll', 'Nico Hülkenberg', 'Valtteri Bottas',
+                'Kevin Magnussen', 'Daniel Ricciardo', 'Liam Lawson', 'Franco Colapinto'
+            ];
+            state.items = drivers.map((d, idx) => ({
+                id: 'driver_' + idx,
+                tierId: 'stash',
+                type: 'text',
+                content: d
+            }));
+            saveState();
+            renderBoard();
+            showToast('Loaded 20 Formula 1 Drivers into stash!');
+            return;
+        }
+
+        if (presetName === 'f1-teams') {
+            state.title = 'Formula 1 Teams Tier List';
+            if (titleInput) titleInput.value = state.title;
+            if (exportTitleInput) exportTitleInput.value = state.title;
+            state.tiers = JSON.parse(JSON.stringify(DEFAULT_TIERS));
+            const teams = [
+                'Red Bull Racing', 'Ferrari', 'McLaren', 'Mercedes',
+                'Aston Martin', 'Alpine', 'Williams', 'Visa Cash App RB',
+                'Kick Sauber', 'Haas'
+            ];
+            state.items = teams.map((t, idx) => ({
+                id: 'team_' + idx,
+                tierId: 'stash',
+                type: 'text',
+                content: t
+            }));
+            saveState();
+            renderBoard();
+            showToast('Loaded 10 Formula 1 Teams into stash!');
+            return;
         }
     }
 

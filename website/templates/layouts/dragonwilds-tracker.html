@@ -31,6 +31,7 @@
         <div style="display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0; overflow-x: auto;">
             <button class="dw-tab-btn active" data-tab="guide" style="background: none; border: none; border-bottom: 3px solid var(--accent-cyan); color: var(--accent-cyan); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">📋 Progression Guide</button>
             <button class="dw-tab-btn" data-tab="quests" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">⚔️ Quests</button>
+            <button class="dw-tab-btn" data-tab="urns" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">🏺 Sanguine Urns</button>
             <button class="dw-tab-btn" data-tab="gear" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">🛡️ Gear</button>
             <button class="dw-tab-btn" data-tab="stats" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">📊 Stats Profile</button>
             <button class="dw-tab-btn" data-tab="timers" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">⏱️ Vault Timers</button>
@@ -211,8 +212,17 @@
         <!-- Tab: Quests -->
         <div id="dw-tab-quests" class="dw-tab-panel" style="display: none;">
 
-            <h2 style="color: var(--accent-cyan); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Primary Quests</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1rem;">Primary quests tell the main narrative and unlock new regions. Each quest requires the previous one to be completed first.</p>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                <div>
+                    <h2 style="color: var(--accent-cyan); margin: 0 0 0.5rem 0; border: none; padding: 0;">⚔️ Quest Progression by Area</h2>
+                    <p style="color: var(--text-muted); margin: 0; max-width: 780px; font-size: 0.95rem; line-height: 1.5;">
+                        Track all primary and secondary quests grouped by region progression order. As you advance through Ashenfall, complete primary milestones to unlock gates and secondary quests to earn key gear and lore rewards.
+                    </p>
+                </div>
+                <a href="https://dragonwilds.runescape.wiki/w/Quests" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(6,182,212,0.12); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.82rem; font-family: monospace; text-decoration: none;">
+                    📖 Official Quests Wiki &rarr;
+                </a>
+            </div>
 
             <h3 style="color: var(--text-main); margin-top: 1.5rem;">Tutorial — Temple Woods</h3>
             <ul style="list-style: none; padding-left: 0;">
@@ -222,50 +232,25 @@
                 <li class="task-item"><label for="qp-4"><input type="checkbox" id="qp-4" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Rune_Mysteries" target="_blank" style="color: var(--accent-cyan);">Rune Mysteries</a> — <em>Temple Woods</em> — Speak to Zanik on the path leading to Bramblemead Valley.</span></label></li>
             </ul>
 
-            <h3 style="color: var(--text-main); margin-top: 1.5rem;">Primary — Brynmoor / Ghornfell</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qp-5"><input type="checkbox" id="qp-5" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Dragon_Slayer" target="_blank" style="color: var(--accent-cyan);">Dragon Slayer</a> — <em>Brynmoor / Ghornfell</em> — Speak to the Wise Old Man in Bramblemead Village.</span></label></li>
-            </ul>
-
-            <h3 style="color: var(--text-main); margin-top: 1.5rem;">Primary — Fellhollow</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qp-6"><input type="checkbox" id="qp-6" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Withering_Heights" target="_blank" style="color: var(--accent-cyan);">Withering Heights</a> — <em>Fellhollow</em> — Speak to the Wise Old Man near Ashien's Watch.</span></label></li>
-            </ul>
-
-            <h3 style="color: var(--text-main); margin-top: 1.5rem;">Primary — Dowdun Reach</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qp-7"><input type="checkbox" id="qp-7" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Black_Knight%27s_Fortress" target="_blank" style="color: var(--accent-cyan);">Black Knight's Fortress</a> — <em>Dowdun Reach</em> — Speak to Death in the Forgotten Temple.</span></label></li>
-            </ul>
-
-            <h3 style="color: var(--text-main); margin-top: 1.5rem;">Primary — Umbral Sands</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qp-8"><input type="checkbox" id="qp-8" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Icthlarin%27s_Little_Helper" target="_blank" style="color: var(--accent-cyan);">Icthlarin's Little Helper</a> — <em>Umbral Sands</em> — Interact with the door to the Umbral Sands.</span></label></li>
-            </ul>
-
-            <h3 style="color: var(--text-main); margin-top: 1.5rem;">Primary — Scorned Wilderness</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qp-9"><input type="checkbox" id="qp-9" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Regicide" target="_blank" style="color: var(--accent-cyan);">Regicide</a> — <em>Scorned Wilderness</em> — Interact with the Dragon Gate north-west of Velgar's Rise.</span></label></li>
-            </ul>
-
-            <hr style="margin: 2rem 0; border-color: var(--border-color);">
-
-            <h2 style="color: var(--accent-cyan); border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Secondary Quests</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1rem;">Secondary quests tell side stories, unlock new mechanics, or grant recipes. Some become available only after completing a region's primary quest.</p>
-
-            <h3 style="color: var(--text-main); margin-top: 1.5rem;">Tutorial — Brynmoor</h3>
+            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Tutorial — Brynmoor</h3>
             <ul style="list-style: none; padding-left: 0;">
                 <li class="task-item"><label for="qs-1"><input type="checkbox" id="qs-1" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Growing_Pains" target="_blank" style="color: var(--accent-cyan);">Growing Pains</a> — <em>Brynmoor</em> — Speak to the Wise Old Man in Bramblemead Village.</span></label></li>
                 <li class="task-item"><label for="qs-2"><input type="checkbox" id="qs-2" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Shrimp_Catcher" target="_blank" style="color: var(--accent-cyan);">Shrimp Catcher</a> — <em>Brynmoor</em> — Speak to the Wise Old Man in Bramblemead Village.</span></label></li>
             </ul>
 
-            <h3 style="color: var(--text-main); margin-top: 1.5rem;">Secondary — Brynmoor</h3>
+            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Primary — Brynmoor / Ghornfell</h3>
+            <ul style="list-style: none; padding-left: 0;">
+                <li class="task-item"><label for="qp-5"><input type="checkbox" id="qp-5" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Dragon_Slayer" target="_blank" style="color: var(--accent-cyan);">Dragon Slayer</a> — <em>Brynmoor / Ghornfell</em> — Speak to the Wise Old Man in Bramblemead Village.</span></label></li>
+            </ul>
+
+            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Secondary — Brynmoor</h3>
             <ul style="list-style: none; padding-left: 0;">
                 <li class="task-item"><label for="qs-3"><input type="checkbox" id="qs-3" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Restless_Ghosts" target="_blank" style="color: var(--accent-cyan);">Restless Ghosts</a> — <em>Brynmoor</em> — Interact with the crumbling well in Bramblemead Village.</span></label></li>
                 <li class="task-item"><label for="qs-4"><input type="checkbox" id="qs-4" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Goblin_Diplomacy" target="_blank" style="color: var(--accent-cyan);">Goblin Diplomacy</a> — <em>Brynmoor</em> — Speak to Zanik in Bramblemead Valley.</span></label></li>
                 <li class="task-item"><label for="qs-5"><input type="checkbox" id="qs-5" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Highlighting_the_Problem" target="_blank" style="color: var(--accent-cyan);">Highlighting the Problem</a> — <em>Brynmoor</em> — Interact with the statue of a wizard in the Runecrafting Guild in Bramblemead Valley.</span></label></li>
             </ul>
 
-            <h3 style="color: var(--text-main); margin-top: 1.5rem;">Secondary — Ghornfell</h3>
+            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Secondary — Ghornfell</h3>
             <ul style="list-style: none; padding-left: 0;">
                 <li class="task-item"><label for="qs-6"><input type="checkbox" id="qs-6" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Granite_Mauled" target="_blank" style="color: var(--accent-cyan);">Granite Mauled</a> — <em>Ghornfell</em> — Speak to Doric in the Fractured Plains.</span></label></li>
                 <li class="task-item"><label for="qs-7"><input type="checkbox" id="qs-7" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Heartstrings" target="_blank" style="color: var(--accent-cyan);">Heartstrings</a> — <em>Ghornfell</em> — Interact with the memorial on top of the hill in the Fractured Plains.</span></label></li>
@@ -277,7 +262,12 @@
                 <li class="task-item"><label for="qs-13"><input type="checkbox" id="qs-13" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/The_Great_Body_Robbery" target="_blank" style="color: var(--accent-cyan);">The Great Body Robbery</a> — <em>Ghornfell (Bloodblight Swamp)</em> — Speak to Doctor Fenkenstrain in the Bloodblight Swamp.</span></label></li>
             </ul>
 
-            <h3 style="color: var(--text-main); margin-top: 1.5rem;">Secondary — Fellhollow</h3>
+            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Primary — Fellhollow</h3>
+            <ul style="list-style: none; padding-left: 0;">
+                <li class="task-item"><label for="qp-6"><input type="checkbox" id="qp-6" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Withering_Heights" target="_blank" style="color: var(--accent-cyan);">Withering Heights</a> — <em>Fellhollow</em> — Speak to the Wise Old Man near Ashien's Watch.</span></label></li>
+            </ul>
+
+            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Secondary — Fellhollow</h3>
             <ul style="list-style: none; padding-left: 0;">
                 <li class="task-item"><label for="qs-14"><input type="checkbox" id="qs-14" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Even_More_Restless_Ghosts" target="_blank" style="color: var(--accent-cyan);">Even More Restless Ghosts</a> — <em>Fellhollow</em> — Speak to Zanik in Fellhollow.</span></label></li>
                 <li class="task-item"><label for="qs-15"><input type="checkbox" id="qs-15" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/The_Wild_Hunt" target="_blank" style="color: var(--accent-cyan);">The Wild Hunt</a> — <em>Fellhollow</em> — Speak to Vannaka in Bleaksfield Valley.</span></label></li>
@@ -289,14 +279,24 @@
                 <li class="task-item"><label for="qs-21"><input type="checkbox" id="qs-21" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Mirror,_Mirror" target="_blank" style="color: var(--accent-cyan);">Mirror, Mirror</a> — <em>Fellhollow</em> — Interact with the mirror west of the Guthix shrine near Emberwood.</span></label></li>
             </ul>
 
-            <h3 style="color: var(--text-main); margin-top: 1.5rem;">Secondary — Dowdun Reach</h3>
+            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Primary — Dowdun Reach</h3>
+            <ul style="list-style: none; padding-left: 0;">
+                <li class="task-item"><label for="qp-7"><input type="checkbox" id="qp-7" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Black_Knight%27s_Fortress" target="_blank" style="color: var(--accent-cyan);">Black Knight's Fortress</a> — <em>Dowdun Reach</em> — Speak to Death in the Forgotten Temple.</span></label></li>
+            </ul>
+
+            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Secondary — Dowdun Reach</h3>
             <ul style="list-style: none; padding-left: 0;">
                 <li class="task-item"><label for="qs-22"><input type="checkbox" id="qs-22" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Biohazard" target="_blank" style="color: var(--accent-cyan);">Biohazard</a> — <em>Dowdun Reach</em> — Attack and pick up the lootdrop of the corrupted raven in The Courtyard.</span></label></li>
                 <li class="task-item"><label for="qs-23"><input type="checkbox" id="qs-23" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Wanted!" target="_blank" style="color: var(--accent-cyan);">Wanted!</a> — <em>Dowdun Reach</em> — Speak to Vannaka in The Courtyard.</span></label></li>
                 <li class="task-item"><label for="qs-24"><input type="checkbox" id="qs-24" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/What%27s_Theirs_is_Mine!" target="_blank" style="color: var(--accent-cyan);">What's Theirs is Mine!</a> — <em>Dowdun Reach</em> — Speak to Doric next to the Dreaming Stone in The Nexus.</span></label></li>
             </ul>
 
-            <h3 style="color: var(--text-main); margin-top: 1.5rem;">Secondary — Umbral Sands</h3>
+            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Primary — Umbral Sands</h3>
+            <ul style="list-style: none; padding-left: 0;">
+                <li class="task-item"><label for="qp-8"><input type="checkbox" id="qp-8" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Icthlarin%27s_Little_Helper" target="_blank" style="color: var(--accent-cyan);">Icthlarin's Little Helper</a> — <em>Umbral Sands</em> — Interact with the door to the Umbral Sands.</span></label></li>
+            </ul>
+
+            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Secondary — Umbral Sands</h3>
             <ul style="list-style: none; padding-left: 0;">
                 <li class="task-item"><label for="qs-25"><input type="checkbox" id="qs-25" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Contact!" target="_blank" style="color: var(--accent-cyan);">Contact!</a> — <em>Umbral Sands</em> — Speak to Avisk Crystal in Dunes of Uzzer.</span></label></li>
                 <li class="task-item"><label for="qs-26"><input type="checkbox" id="qs-26" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Brink_of_Extinction" target="_blank" style="color: var(--accent-cyan);">Brink of Extinction</a> — <em>Umbral Sands</em> — Speak to Zi at The Burning Spire, south of the Sinking Pyramid.</span></label></li>
@@ -304,8 +304,151 @@
                 <li class="task-item"><label for="qs-28"><input type="checkbox" id="qs-28" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Mapping_The_Sands_II" target="_blank" style="color: var(--accent-cyan);">Mapping The Sands II</a> — <em>Umbral Sands</em> — Speak to Anamcara in Alcarrid Camp.</span></label></li>
             </ul>
 
+            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Primary — Scorned Wilderness</h3>
+            <ul style="list-style: none; padding-left: 0;">
+                <li class="task-item"><label for="qp-9"><input type="checkbox" id="qp-9" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Regicide" target="_blank" style="color: var(--accent-cyan);">Regicide</a> — <em>Scorned Wilderness</em> — Interact with the Dragon Gate north-west of Velgar's Rise.</span></label></li>
+            </ul>
+
         </div>
         <!-- End Quests Tab -->
+
+        <!-- Tab: Sanguine Urns -->
+        <div id="dw-tab-urns" class="dw-tab-panel" style="display: none;">
+
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                <div>
+                    <h2 style="color: var(--accent-cyan); margin: 0 0 0.5rem 0; border: none; padding: 0;">🏺 Sanguine Urns Checklist Tracker</h2>
+                    <p style="color: var(--text-muted); margin: 0; max-width: 780px; font-size: 0.95rem; line-height: 1.5;">
+                        Sanguine urns are interactable ancient vessels across Ashenfall containing the preserved blood of the moon deity Lougrim. Each urn permanently grants <strong>+10 Health</strong> to your total health pool (increasing max health from 100 up to <strong>310 HP</strong>). Health increases persist after death and across dedicated server worlds.
+                    </p>
+                </div>
+                <a href="https://dragonwilds.runescape.wiki/w/Sanguine_Urn" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(6,182,212,0.12); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.82rem; font-family: monospace; text-decoration: none;">
+                    📖 Official Sanguine Urn Wiki &rarr;
+                </a>
+            </div>
+
+            <!-- Health & Progress Overview Card -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem;">
+                    <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 0.35rem;">Urns Discovered</div>
+                    <div id="urns-collected-count" style="font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: var(--accent-cyan);">0 / 21</div>
+                    <div id="urns-percentage" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem;">0% Complete</div>
+                </div>
+
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem;">
+                    <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 0.35rem;">Permanent HP Bonus</div>
+                    <div id="urns-hp-bonus" style="font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: #ef4444;">+0 HP</div>
+                    <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem;">+10 HP per urn found</div>
+                </div>
+
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem;">
+                    <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; margin-bottom: 0.35rem;">Effective Max Health</div>
+                    <div id="urns-total-hp" style="font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: #10b981;">100 HP</div>
+                    <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem;">Base: 100 • Potential Max: 310 HP</div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; margin-bottom: 1.5rem;">
+                <div id="urns-progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #ef4444, #10b981); transition: width 0.3s ease;"></div>
+            </div>
+
+            <!-- Compass Tracking Pro-Tip -->
+            <div class="critical-warning" style="background: rgba(239, 68, 68, 0.08); border: 1px solid #ef4444; padding: 1.25rem; border-radius: 8px; margin-bottom: 2rem;">
+                <strong style="color: #ef4444; font-size: 1.05rem;">🧭 Compass &amp; Radar Detection Tip:</strong><br>
+                <span style="color: var(--text-muted); line-height: 1.6; display: inline-block; margin-top: 0.4rem;">
+                    Sanguine urns display a visible urn marker on your top-screen compass whenever you approach within <strong>50–60 meters</strong>. Urns emit a distinctive faint crimson pulse. Some urns are concealed inside caves, behind crumbling rock faces, or down subterranean tunnels, but <strong>they NEVER spawn inside Dragonkin Vaults</strong>.
+                </span>
+            </div>
+
+            <!-- Urns Checklist By Region -->
+            <div style="margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <h3 style="color: var(--accent-cyan); margin: 0;">1. Brynmoor (6 Urns)</h3>
+                    <span style="font-size: 0.85rem; font-family: monospace; color: var(--text-dim);">+60 HP Total</span>
+                </div>
+                
+                <h4 style="color: var(--text-main); margin: 1rem 0 0.5rem 0; font-size: 0.95rem;">Bramblemead Valley (3 Urns)</h4>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li class="task-item"><label for="dw-urn-1"><input type="checkbox" id="dw-urn-1" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Bramblemead Urn #1:</strong> Valley overlook rocky ledge, northeast of the starter village.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-2"><input type="checkbox" id="dw-urn-2" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Bramblemead Urn #2:</strong> Hidden alcove behind the waterfall ravine near the Old Mill.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-3"><input type="checkbox" id="dw-urn-3" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Bramblemead Urn #3:</strong> Southern boundary ridge cave near the Goblin Castle outskirts.</span></label></li>
+                </ul>
+
+                <h4 style="color: var(--text-main); margin: 1rem 0 0.5rem 0; font-size: 0.95rem;">Whispering Swamp (3 Urns)</h4>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li class="task-item"><label for="dw-urn-4"><input type="checkbox" id="dw-urn-4" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Whispering Swamp Urn #1:</strong> Submerged root island in the northern marsh delta.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-5"><input type="checkbox" id="dw-urn-5" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Whispering Swamp Urn #2:</strong> Ancient mossy ruin foundation near the Spitfoot bog trail.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-6"><input type="checkbox" id="dw-urn-6" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Whispering Swamp Urn #3:</strong> Grotto nook beneath the towering mangrove canopy (east of the swamp vault).</span></label></li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <h3 style="color: var(--accent-cyan); margin: 0;">2. Ghornfell (3 Urns)</h3>
+                    <span style="font-size: 0.85rem; font-family: monospace; color: var(--text-dim);">+30 HP Total</span>
+                </div>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li class="task-item"><label for="dw-urn-7"><input type="checkbox" id="dw-urn-7" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Fractured Plains (1 Urn):</strong> Jagged crag crevice near the copper and tin mining bluffs.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-8"><input type="checkbox" id="dw-urn-8" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Stormtouched Highlands (1 Urn):</strong> Wind-swept plateau cliff edge overlooking the valley.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-9"><input type="checkbox" id="dw-urn-9" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Bloodblight Swamp (1 Urn):</strong> Rotten peat hollow adjacent to Dr. Fenkenstrain's research camp.</span></label></li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <h3 style="color: var(--accent-cyan); margin: 0;">3. Fellhollow (3 Urns)</h3>
+                    <span style="font-size: 0.85rem; font-family: monospace; color: var(--text-dim);">+30 HP Total</span>
+                </div>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li class="task-item"><label for="dw-urn-10"><input type="checkbox" id="dw-urn-10" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Emberwood (1 Urn):</strong> Charcoal grove clearing west of the Guthixian stone shrine.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-11"><input type="checkbox" id="dw-urn-11" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Hope's Fall (1 Urn):</strong> Misty cavern shelf at the foot of the cascading soul falls.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-12"><input type="checkbox" id="dw-urn-12" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Silverthorn Keep (1 Urn):</strong> Outer bastion rampart ruins overlooking the wither river.</span></label></li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <h3 style="color: var(--accent-cyan); margin: 0;">4. Dowdun Reach (3 Urns)</h3>
+                    <span style="font-size: 0.85rem; font-family: monospace; color: var(--text-dim);">+30 HP Total</span>
+                </div>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li class="task-item"><label for="dw-urn-13"><input type="checkbox" id="dw-urn-13" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>The Grand Hall (1 Urn):</strong> Dilapidated royal courtyard gallery, hidden behind collapsed arches.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-14"><input type="checkbox" id="dw-urn-14" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>The Garrison (1 Urn):</strong> Former armory guard tower basement stairwell.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-15"><input type="checkbox" id="dw-urn-15" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>The Menagerie (1 Urn):</strong> Overgrown enclosure pavilion near the corrupted beast pens.</span></label></li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <h3 style="color: var(--accent-cyan); margin: 0;">5. Umbral Sands (3 Urns)</h3>
+                    <span style="font-size: 0.85rem; font-family: monospace; color: var(--text-dim);">+30 HP Total</span>
+                </div>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li class="task-item"><label for="dw-urn-16"><input type="checkbox" id="dw-urn-16" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Alcarrid Oasis (1 Urn):</strong> Palm spring embankment nestled against the sandstone cliffs.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-17"><input type="checkbox" id="dw-urn-17" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>The Burning Spire (1 Urn):</strong> Scorched altar pedestal south of the Sinking Pyramid.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-18"><input type="checkbox" id="dw-urn-18" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Manafem Plains (1 Urn):</strong> Desolate dune outcrop sheltered from the shifting sand winds.</span></label></li>
+                </ul>
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <h3 style="color: var(--accent-cyan); margin: 0;">6. Scorned Wilderness (3 Urns)</h3>
+                    <span style="font-size: 0.85rem; font-family: monospace; color: var(--text-dim);">+30 HP Total</span>
+                </div>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li class="task-item"><label for="dw-urn-19"><input type="checkbox" id="dw-urn-19" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Fragments of Ghornfell Urn #1:</strong> Shattered floating landmass crag reachable via wind traversal.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-20"><input type="checkbox" id="dw-urn-20" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Fragments of Ghornfell Urn #2:</strong> Deep obsidian ravine crevice on the northern perimeter edge.</span></label></li>
+                    <li class="task-item"><label for="dw-urn-21"><input type="checkbox" id="dw-urn-21" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Cataclysm Keep (1 Urn):</strong> Final stronghold inner sanctum platform near the core gate.</span></label></li>
+                </ul>
+            </div>
+
+            <div style="text-align: right; margin-top: 1.5rem;">
+                <button type="button" id="reset-urns-btn" style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">↺ Reset Urns Progress</button>
+            </div>
+
+        </div>
+        <!-- End Sanguine Urns Tab -->
 
         <!-- Tab: Gear Progression -->
         <div id="dw-tab-gear" class="dw-tab-panel" style="display: none;">
@@ -497,160 +640,316 @@
                 </div>
             </div>
 
-            <!-- Vault Timers Grid -->
+            <!-- Vault Timers Grid (Standard Progression Order) -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
                 
-                <!-- Vault 1: South Temple Woods -->
-                <div class="timer-card" id="vault-card-temple" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
+                <!-- Vault 1: Crasorak Kara -->
+                <div class="timer-card" id="vault-card-crasorak" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
                     <div>
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
                             <div>
-                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(6,182,212,0.15); color: var(--accent-cyan); padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">TIER 1 • STARTER</span>
-                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);">South Temple Woods Vault</h3>
+                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(6,182,212,0.15); color: var(--accent-cyan); padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">VAULT #1 • POWER LEVEL 2</span>
+                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);"><a href="https://dragonwilds.runescape.wiki/w/Crasorak_Kara" target="_blank" style="color: var(--text-main); text-decoration: none;">Crasorak Kara</a></h3>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Temple Woods</span>
                             </div>
-                            <span class="timer-badge" id="timer-badge-temple" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
+                            <span class="timer-badge" id="timer-badge-crasorak" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
                         </div>
-                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">Yields up to <strong>3 Vault Cores</strong> (use Bone Club + Windsweep jump for the hidden ceiling core). Cycle: 72 min.</p>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">Starter vault in Temple Woods. Use Bone Club + Windsweep for hidden ceiling core. Cycle: 72 min.</p>
                         
                         <div style="text-align: center; margin: 1.25rem 0 0.75rem 0;">
-                            <div class="vault-digits" id="timer-digits-temple" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
-                            <div class="vault-meta" id="timer-meta-temple" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
+                            <div class="vault-digits" id="timer-digits-crasorak" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
+                            <div class="vault-meta" id="timer-meta-crasorak" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
                         </div>
 
                         <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-bottom: 1.25rem;">
-                            <div id="timer-bar-temple" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
+                            <div id="timer-bar-crasorak" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
                         </div>
                     </div>
 
                     <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
-                        <button type="button" class="btn-timer-loot" data-vault="temple" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
-                        <button type="button" class="btn-timer-adj" data-vault="temple" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
-                        <button type="button" class="btn-timer-adj" data-vault="temple" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
-                        <button type="button" class="btn-timer-reset" data-vault="temple" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
+                        <button type="button" class="btn-timer-loot" data-vault="crasorak" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
+                        <button type="button" class="btn-timer-adj" data-vault="crasorak" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
+                        <button type="button" class="btn-timer-adj" data-vault="crasorak" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
+                        <button type="button" class="btn-timer-reset" data-vault="crasorak" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
                     </div>
                 </div>
 
-                <!-- Vault 2: Whispering Swamp -->
-                <div class="timer-card" id="vault-card-swamp" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
+                <!-- Vault 2: Thishepen Kara -->
+                <div class="timer-card" id="vault-card-thishepen" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
                     <div>
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
                             <div>
-                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(16,185,129,0.15); color: #10b981; padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">TIER 2 • ACIDIC</span>
-                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);">Whispering Swamp Vault</h3>
+                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(6,182,212,0.15); color: var(--accent-cyan); padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">VAULT #2 • POWER LEVEL 2</span>
+                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);"><a href="https://dragonwilds.runescape.wiki/w/Thishepen_Kara" target="_blank" style="color: var(--text-main); text-decoration: none;">Thishepen Kara</a></h3>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Bramblemead Valley</span>
                             </div>
-                            <span class="timer-badge" id="timer-badge-swamp" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
+                            <span class="timer-badge" id="timer-badge-thishepen" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
                         </div>
-                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">Vekchenven Kara depths. Requires antipoison potions and nature protection gear. Cycle: 72 min.</p>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">Valley fortress vault. Provides essential cores for first lodestone construction. Cycle: 72 min.</p>
                         
                         <div style="text-align: center; margin: 1.25rem 0 0.75rem 0;">
-                            <div class="vault-digits" id="timer-digits-swamp" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
-                            <div class="vault-meta" id="timer-meta-swamp" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
+                            <div class="vault-digits" id="timer-digits-thishepen" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
+                            <div class="vault-meta" id="timer-meta-thishepen" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
                         </div>
 
                         <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-bottom: 1.25rem;">
-                            <div id="timer-bar-swamp" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
+                            <div id="timer-bar-thishepen" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
                         </div>
                     </div>
 
                     <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
-                        <button type="button" class="btn-timer-loot" data-vault="swamp" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
-                        <button type="button" class="btn-timer-adj" data-vault="swamp" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
-                        <button type="button" class="btn-timer-adj" data-vault="swamp" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
-                        <button type="button" class="btn-timer-reset" data-vault="swamp" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
+                        <button type="button" class="btn-timer-loot" data-vault="thishepen" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
+                        <button type="button" class="btn-timer-adj" data-vault="thishepen" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
+                        <button type="button" class="btn-timer-adj" data-vault="thishepen" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
+                        <button type="button" class="btn-timer-reset" data-vault="thishepen" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
                     </div>
                 </div>
 
-                <!-- Vault 3: Fractured Plains -->
-                <div class="timer-card" id="vault-card-plains" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
+                <!-- Vault 3: Vertentis Kara -->
+                <div class="timer-card" id="vault-card-vertentis" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
                     <div>
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
                             <div>
-                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(168,85,247,0.15); color: var(--accent-purple); padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">TIER 3 • BLURITE</span>
-                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);">Fractured Plains Vault</h3>
+                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(16,185,129,0.15); color: #10b981; padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">VAULT #3 • POWER LEVEL 2</span>
+                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);"><a href="https://dragonwilds.runescape.wiki/w/Vertentis_Kara" target="_blank" style="color: var(--text-main); text-decoration: none;">Vertentis Kara</a></h3>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Whispering Swamp</span>
                             </div>
-                            <span class="timer-badge" id="timer-badge-plains" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
+                            <span class="timer-badge" id="timer-badge-vertentis" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
                         </div>
-                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">Deep alpine caverns. Grants Blurite ore & Sky Cores. High agility / glider jump helpful. Cycle: 72 min.</p>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">Whispering Swamp depths. Part of Dragon Slayer questline; Spitfoot encounter. Cycle: 72 min.</p>
                         
                         <div style="text-align: center; margin: 1.25rem 0 0.75rem 0;">
-                            <div class="vault-digits" id="timer-digits-plains" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
-                            <div class="vault-meta" id="timer-meta-plains" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
+                            <div class="vault-digits" id="timer-digits-vertentis" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
+                            <div class="vault-meta" id="timer-meta-vertentis" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
                         </div>
 
                         <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-bottom: 1.25rem;">
-                            <div id="timer-bar-plains" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
+                            <div id="timer-bar-vertentis" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
                         </div>
                     </div>
 
                     <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
-                        <button type="button" class="btn-timer-loot" data-vault="plains" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
-                        <button type="button" class="btn-timer-adj" data-vault="plains" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
-                        <button type="button" class="btn-timer-adj" data-vault="plains" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
-                        <button type="button" class="btn-timer-reset" data-vault="plains" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
+                        <button type="button" class="btn-timer-loot" data-vault="vertentis" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
+                        <button type="button" class="btn-timer-adj" data-vault="vertentis" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
+                        <button type="button" class="btn-timer-adj" data-vault="vertentis" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
+                        <button type="button" class="btn-timer-reset" data-vault="vertentis" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
                     </div>
                 </div>
 
-                <!-- Vault 4: Fellhollow -->
-                <div class="timer-card" id="vault-card-fellhollow" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
+                <!-- Vault 4: Takla Kara -->
+                <div class="timer-card" id="vault-card-takla" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
                     <div>
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
                             <div>
-                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(239,68,68,0.15); color: #ef4444; padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">TIER 4 • VOID / NETHER</span>
-                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);">Fellhollow Citadel Vault</h3>
+                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(168,85,247,0.15); color: var(--accent-purple); padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">VAULT #4 • POWER LEVEL 3</span>
+                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);"><a href="https://dragonwilds.runescape.wiki/w/Takla_Kara" target="_blank" style="color: var(--text-main); text-decoration: none;">Takla Kara</a></h3>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Fractured Plains</span>
                             </div>
-                            <span class="timer-badge" id="timer-badge-fellhollow" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
+                            <span class="timer-badge" id="timer-badge-takla" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
                         </div>
-                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">Shadow-tainted citadel. High magic resistance and anti-rot gear essential. Law rune siphons. Cycle: 72 min.</p>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">Western Fractured Plains. Copper/Tin farming perimeter; provides core components for Bronze tier. Cycle: 72 min.</p>
                         
                         <div style="text-align: center; margin: 1.25rem 0 0.75rem 0;">
-                            <div class="vault-digits" id="timer-digits-fellhollow" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
-                            <div class="vault-meta" id="timer-meta-fellhollow" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
+                            <div class="vault-digits" id="timer-digits-takla" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
+                            <div class="vault-meta" id="timer-meta-takla" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
                         </div>
 
                         <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-bottom: 1.25rem;">
-                            <div id="timer-bar-fellhollow" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
+                            <div id="timer-bar-takla" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
                         </div>
                     </div>
 
                     <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
-                        <button type="button" class="btn-timer-loot" data-vault="fellhollow" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
-                        <button type="button" class="btn-timer-adj" data-vault="fellhollow" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
-                        <button type="button" class="btn-timer-adj" data-vault="fellhollow" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
-                        <button type="button" class="btn-timer-reset" data-vault="fellhollow" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
+                        <button type="button" class="btn-timer-loot" data-vault="takla" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
+                        <button type="button" class="btn-timer-adj" data-vault="takla" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
+                        <button type="button" class="btn-timer-adj" data-vault="takla" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
+                        <button type="button" class="btn-timer-reset" data-vault="takla" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
                     </div>
                 </div>
 
-                <!-- Vault 5: Custom / Squad Timer -->
-                <div class="timer-card" id="vault-card-custom" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
+                <!-- Vault 5: Skeklac Kara -->
+                <div class="timer-card" id="vault-card-skeklac" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
                     <div>
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                            <div style="flex: 1; margin-right: 0.5rem;">
-                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(255,255,255,0.1); color: var(--text-main); padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">CUSTOM TIMER</span>
-                                <input type="text" id="custom-vault-label" value="Squad Raid / World Boss" style="width: 100%; background: transparent; border: none; border-bottom: 1px dashed var(--border-color); color: var(--text-main); font-size: 1.15rem; font-weight: bold; font-family: inherit; padding: 0.1rem 0; outline: none;" placeholder="Timer Label...">
+                            <div>
+                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(168,85,247,0.15); color: var(--accent-purple); padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">VAULT #5 • POWER LEVEL 4</span>
+                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);"><a href="https://dragonwilds.runescape.wiki/w/Skeklac_Kara" target="_blank" style="color: var(--text-main); text-decoration: none;">Skeklac Kara</a></h3>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Fractured Plains</span>
                             </div>
-                            <span class="timer-badge" id="timer-badge-custom" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
+                            <span class="timer-badge" id="timer-badge-skeklac" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
-                            <label style="color: var(--text-muted); font-size: 0.8rem;">Respawn Duration:</label>
-                            <input type="number" id="custom-vault-duration" value="72" min="1" max="1440" style="width: 60px; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-main); padding: 0.2rem 0.4rem; font-family: monospace; font-size: 0.85rem; text-align: center;">
-                            <span style="color: var(--text-muted); font-size: 0.8rem;">min</span>
-                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">High plateau Fractured Plains. Yields Iron, Paladin shards, and advanced craft schematics. Cycle: 72 min.</p>
                         
                         <div style="text-align: center; margin: 1.25rem 0 0.75rem 0;">
-                            <div class="vault-digits" id="timer-digits-custom" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
-                            <div class="vault-meta" id="timer-meta-custom" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Timer ready</div>
+                            <div class="vault-digits" id="timer-digits-skeklac" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
+                            <div class="vault-meta" id="timer-meta-skeklac" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
                         </div>
 
                         <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-bottom: 1.25rem;">
-                            <div id="timer-bar-custom" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
+                            <div id="timer-bar-skeklac" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
                         </div>
                     </div>
 
                     <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
-                        <button type="button" class="btn-timer-loot" data-vault="custom" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Start Timer</button>
-                        <button type="button" class="btn-timer-adj" data-vault="custom" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
-                        <button type="button" class="btn-timer-adj" data-vault="custom" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
-                        <button type="button" class="btn-timer-reset" data-vault="custom" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
+                        <button type="button" class="btn-timer-loot" data-vault="skeklac" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
+                        <button type="button" class="btn-timer-adj" data-vault="skeklac" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
+                        <button type="button" class="btn-timer-adj" data-vault="skeklac" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
+                        <button type="button" class="btn-timer-reset" data-vault="skeklac" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
+                    </div>
+                </div>
+
+                <!-- Vault 6: Kletterbuja Kara -->
+                <div class="timer-card" id="vault-card-kletterbuja" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                            <div>
+                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(239,68,68,0.15); color: #ef4444; padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">VAULT #6 • POWER LEVEL 3</span>
+                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);"><a href="https://dragonwilds.runescape.wiki/w/Kletterbuja_Kara" target="_blank" style="color: var(--text-main); text-decoration: none;">Kletterbuja Kara</a></h3>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Bloodblight Swamp</span>
+                            </div>
+                            <span class="timer-badge" id="timer-badge-kletterbuja" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">Murky marsh cavern. Infested with rot fiends and venomous leeches. Antipoison recommended. Cycle: 72 min.</p>
+                        
+                        <div style="text-align: center; margin: 1.25rem 0 0.75rem 0;">
+                            <div class="vault-digits" id="timer-digits-kletterbuja" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
+                            <div class="vault-meta" id="timer-meta-kletterbuja" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
+                        </div>
+
+                        <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-bottom: 1.25rem;">
+                            <div id="timer-bar-kletterbuja" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-timer-loot" data-vault="kletterbuja" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
+                        <button type="button" class="btn-timer-adj" data-vault="kletterbuja" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
+                        <button type="button" class="btn-timer-adj" data-vault="kletterbuja" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
+                        <button type="button" class="btn-timer-reset" data-vault="kletterbuja" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
+                    </div>
+                </div>
+
+                <!-- Vault 7: Chaktan Kara -->
+                <div class="timer-card" id="vault-card-chaktan" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                            <div>
+                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(245,158,11,0.15); color: #f59e0b; padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">VAULT #7 • POWER LEVEL 4</span>
+                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);"><a href="https://dragonwilds.runescape.wiki/w/Chaktan_Kara" target="_blank" style="color: var(--text-main); text-decoration: none;">Chaktan Kara</a></h3>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Stormtouched Highlands</span>
+                            </div>
+                            <span class="timer-badge" id="timer-badge-chaktan" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">Storm summit peak. Lightning hazards and air elemental guardians; drops high-tier craft ores. Cycle: 72 min.</p>
+                        
+                        <div style="text-align: center; margin: 1.25rem 0 0.75rem 0;">
+                            <div class="vault-digits" id="timer-digits-chaktan" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
+                            <div class="vault-meta" id="timer-meta-chaktan" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
+                        </div>
+
+                        <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-bottom: 1.25rem;">
+                            <div id="timer-bar-chaktan" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-timer-loot" data-vault="chaktan" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
+                        <button type="button" class="btn-timer-adj" data-vault="chaktan" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
+                        <button type="button" class="btn-timer-adj" data-vault="chaktan" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
+                        <button type="button" class="btn-timer-reset" data-vault="chaktan" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
+                    </div>
+                </div>
+
+                <!-- Vault 8: Kalistrakthen Kara -->
+                <div class="timer-card" id="vault-card-kalistrakthen" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                            <div>
+                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(239,68,68,0.15); color: #ef4444; padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">VAULT #8 • POWER LEVEL 5</span>
+                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);"><a href="https://dragonwilds.runescape.wiki/w/Kalistrakthen_Kara" target="_blank" style="color: var(--text-main); text-decoration: none;">Kalistrakthen Kara</a></h3>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Emberwood</span>
+                            </div>
+                            <span class="timer-badge" id="timer-badge-kalistrakthen" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">Emberwood flame crater. Fire protection gear essential; heavy ash fiends guard inner sanctuary. Cycle: 72 min.</p>
+                        
+                        <div style="text-align: center; margin: 1.25rem 0 0.75rem 0;">
+                            <div class="vault-digits" id="timer-digits-kalistrakthen" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
+                            <div class="vault-meta" id="timer-meta-kalistrakthen" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
+                        </div>
+
+                        <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-bottom: 1.25rem;">
+                            <div id="timer-bar-kalistrakthen" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-timer-loot" data-vault="kalistrakthen" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
+                        <button type="button" class="btn-timer-adj" data-vault="kalistrakthen" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
+                        <button type="button" class="btn-timer-adj" data-vault="kalistrakthen" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
+                        <button type="button" class="btn-timer-reset" data-vault="kalistrakthen" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
+                    </div>
+                </div>
+
+                <!-- Vault 9: Skekven Kara -->
+                <div class="timer-card" id="vault-card-skekven" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                            <div>
+                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(239,68,68,0.15); color: #ef4444; padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">VAULT #9 • POWER LEVEL 5</span>
+                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);"><a href="https://dragonwilds.runescape.wiki/w/Skekven_Kara" target="_blank" style="color: var(--text-main); text-decoration: none;">Skekven Kara</a></h3>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Lake of Lost Souls (east)</span>
+                            </div>
+                            <span class="timer-badge" id="timer-badge-skekven" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">Eastern Lake of Lost Souls. Soul rift distortion; yields high-end mithril/adamant tier catalysts. Cycle: 72 min.</p>
+                        
+                        <div style="text-align: center; margin: 1.25rem 0 0.75rem 0;">
+                            <div class="vault-digits" id="timer-digits-skekven" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
+                            <div class="vault-meta" id="timer-meta-skekven" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
+                        </div>
+
+                        <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-bottom: 1.25rem;">
+                            <div id="timer-bar-skekven" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-timer-loot" data-vault="skekven" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
+                        <button type="button" class="btn-timer-adj" data-vault="skekven" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
+                        <button type="button" class="btn-timer-adj" data-vault="skekven" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
+                        <button type="button" class="btn-timer-reset" data-vault="skekven" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
+                    </div>
+                </div>
+
+                <!-- Vault 10: Vekchenven Kara -->
+                <div class="timer-card" id="vault-card-vekchenven" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between; transition: border-color 0.2s;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                            <div>
+                                <span style="display: inline-block; font-size: 0.7rem; font-family: monospace; background: rgba(239,68,68,0.15); color: #ef4444; padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem;">VAULT #10 • POWER LEVEL 5</span>
+                                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-main);"><a href="https://dragonwilds.runescape.wiki/w/Vekchenven_Kara" target="_blank" style="color: var(--text-main); text-decoration: none;">Vekchenven Kara</a></h3>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Lake of Lost Souls (west)</span>
+                            </div>
+                            <span class="timer-badge" id="timer-badge-vekchenven" style="font-size: 0.75rem; font-weight: bold; padding: 0.2rem 0.5rem; border-radius: 4px; background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981;">READY</span>
+                        </div>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 1rem 0;">Western Lake of Lost Souls. Elite dragonkin vault; highest density core yields and rare weapon schematics. Cycle: 72 min.</p>
+                        
+                        <div style="text-align: center; margin: 1.25rem 0 0.75rem 0;">
+                            <div class="vault-digits" id="timer-digits-vekchenven" style="font-family: 'JetBrains Mono', monospace; font-size: 2.2rem; font-weight: 700; color: #10b981; letter-spacing: 1px;">READY</div>
+                            <div class="vault-meta" id="timer-meta-vekchenven" style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; font-family: monospace;">Vault is ripe for looting</div>
+                        </div>
+
+                        <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin-bottom: 1.25rem;">
+                            <div id="timer-bar-vekchenven" style="width: 100%; height: 100%; background: #10b981; transition: width 0.3s ease;"></div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                        <button type="button" class="btn-timer-loot" data-vault="vekchenven" style="flex: 2; min-width: 140px; background: var(--accent-cyan); color: #000; font-weight: 700; font-size: 0.85rem; border: none; padding: 0.6rem 0.8rem; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;">⚔️ Looted Just Now</button>
+                        <button type="button" class="btn-timer-adj" data-vault="vekchenven" data-delta="300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">+5m</button>
+                        <button type="button" class="btn-timer-adj" data-vault="vekchenven" data-delta="-300" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-main); font-size: 0.8rem; padding: 0.6rem 0.4rem; border-radius: 6px; cursor: pointer;">-5m</button>
+                        <button type="button" class="btn-timer-reset" data-vault="vekchenven" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.8rem; padding: 0.6rem 0.6rem; border-radius: 6px; cursor: pointer;" title="Reset / Mark Ready">↺</button>
                     </div>
                 </div>
 
@@ -955,21 +1254,21 @@
                 Check off each discovered species as you catch them across Dragonwilds. Progress automatically saves in your browser:
             </p>
             <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="dw-fish-1"><input type="checkbox" id="dw-fish-1" class="ffx-checkbox"> <span class="task-text"><strong>Raw shrimp (PL 2):</strong> Trawled with Coarse Net in starter streams. Used to craft Shrimp Bait.</span></label></li>
-                <li class="task-item"><label for="dw-fish-2"><input type="checkbox" id="dw-fish-2" class="ffx-checkbox"> <span class="task-text"><strong>Raw sardine (PL 2):</strong> Caught with Ash Rod + Shrimp Bait in Brynmoor. Pristine variant unlocks wall trophy.</span></label></li>
-                <li class="task-item"><label for="dw-fish-3"><input type="checkbox" id="dw-fish-3" class="ffx-checkbox"> <span class="task-text"><strong>Raw trout (PL 2):</strong> Caught with Ash Rod + Feather Bait in Brynmoor rivers.</span></label></li>
-                <li class="task-item"><label for="dw-fish-4"><input type="checkbox" id="dw-fish-4" class="ffx-checkbox"> <span class="task-text"><strong>Raw anchovies (PL 3):</strong> Trawled with Net. Processed into Anchovy Bait.</span></label></li>
-                <li class="task-item"><label for="dw-fish-5"><input type="checkbox" id="dw-fish-5" class="ffx-checkbox"> <span class="task-text"><strong>Raw herring (PL 3):</strong> Caught with Oak Rod + Anchovy Bait in Ghornfell.</span></label></li>
-                <li class="task-item"><label for="dw-fish-6"><input type="checkbox" id="dw-fish-6" class="ffx-checkbox"> <span class="task-text"><strong>Raw salmon (PL 3):</strong> Caught with Oak Rod + Feathered Lure in Ghornfell rapids.</span></label></li>
-                <li class="task-item"><label for="dw-fish-7"><input type="checkbox" id="dw-fish-7" class="ffx-checkbox"> <span class="task-text"><strong>Raw lobster (PL 4):</strong> Trawled with Net. High sustenance food and used for Lobster Bait.</span></label></li>
-                <li class="task-item"><label for="dw-fish-8"><input type="checkbox" id="dw-fish-8" class="ffx-checkbox"> <span class="task-text"><strong>Raw undead eel (PL 4):</strong> Caught with Willow Rod + Lobster Bait in Fellhollow.</span></label></li>
-                <li class="task-item"><label for="dw-fish-9"><input type="checkbox" id="dw-fish-9" class="ffx-checkbox"> <span class="task-text"><strong>Raw undead bass (PL 4):</strong> Caught with Willow Rod + Spooky Bait in Fellhollow rot waters.</span></label></li>
-                <li class="task-item"><label for="dw-fish-10"><input type="checkbox" id="dw-fish-10" class="ffx-checkbox"> <span class="task-text"><strong>Raw giant krill (PL 4):</strong> Trawled with Net in Dowdun Reach. Component for Giant Krill Bait.</span></label></li>
-                <li class="task-item"><label for="dw-fish-11"><input type="checkbox" id="dw-fish-11" class="ffx-checkbox"> <span class="task-text"><strong>Raw infernal eel (PL 4):</strong> Caught with Maple Rod + Giant Krill Bait in Dowdun Reach.</span></label></li>
-                <li class="task-item"><label for="dw-fish-12"><input type="checkbox" id="dw-fish-12" class="ffx-checkbox"> <span class="task-text"><strong>Raw armoured catfish (PL 4):</strong> Caught with Maple Rod + Animated Feather in Dowdun Reach.</span></label></li>
-                <li class="task-item"><label for="dw-fish-13"><input type="checkbox" id="dw-fish-13" class="ffx-checkbox"> <span class="task-text"><strong>Raw monkfish (PL 7):</strong> Trawled with Net in Umbral Sands coastal flats.</span></label></li>
-                <li class="task-item"><label for="dw-fish-14"><input type="checkbox" id="dw-fish-14" class="ffx-checkbox"> <span class="task-text"><strong>Raw desert sole (PL 7):</strong> Caught with Yew Rod + Monkfish Bait in Umbral Sands oasis.</span></label></li>
-                <li class="task-item"><label for="dw-fish-15"><input type="checkbox" id="dw-fish-15" class="ffx-checkbox"> <span class="task-text"><strong>Raw beltfish (PL 7):</strong> Caught with Yew Rod + Kalphite Bait in Umbral Sands depths.</span></label></li>
+                <li class="task-item"><label for="dw-fish-1"><input type="checkbox" id="dw-fish-1" class="ffx-checkbox"> <span class="task-text"><strong>Raw shrimp:</strong> Trawled with Coarse Net in starter streams. Used to craft Shrimp Bait.</span></label></li>
+                <li class="task-item"><label for="dw-fish-2"><input type="checkbox" id="dw-fish-2" class="ffx-checkbox"> <span class="task-text"><strong>Raw sardine:</strong> Caught with Ash Rod + Shrimp Bait in Brynmoor. Pristine variant unlocks wall trophy.</span></label></li>
+                <li class="task-item"><label for="dw-fish-3"><input type="checkbox" id="dw-fish-3" class="ffx-checkbox"> <span class="task-text"><strong>Raw trout:</strong> Caught with Ash Rod + Feather Bait in Brynmoor rivers.</span></label></li>
+                <li class="task-item"><label for="dw-fish-4"><input type="checkbox" id="dw-fish-4" class="ffx-checkbox"> <span class="task-text"><strong>Raw anchovies:</strong> Trawled with Net. Processed into Anchovy Bait.</span></label></li>
+                <li class="task-item"><label for="dw-fish-5"><input type="checkbox" id="dw-fish-5" class="ffx-checkbox"> <span class="task-text"><strong>Raw herring:</strong> Caught with Oak Rod + Anchovy Bait in Ghornfell.</span></label></li>
+                <li class="task-item"><label for="dw-fish-6"><input type="checkbox" id="dw-fish-6" class="ffx-checkbox"> <span class="task-text"><strong>Raw salmon:</strong> Caught with Oak Rod + Feathered Lure in Ghornfell rapids.</span></label></li>
+                <li class="task-item"><label for="dw-fish-7"><input type="checkbox" id="dw-fish-7" class="ffx-checkbox"> <span class="task-text"><strong>Raw lobster:</strong> Trawled with Net. High sustenance food and used for Lobster Bait.</span></label></li>
+                <li class="task-item"><label for="dw-fish-8"><input type="checkbox" id="dw-fish-8" class="ffx-checkbox"> <span class="task-text"><strong>Raw undead eel:</strong> Caught with Willow Rod + Lobster Bait in Fellhollow.</span></label></li>
+                <li class="task-item"><label for="dw-fish-9"><input type="checkbox" id="dw-fish-9" class="ffx-checkbox"> <span class="task-text"><strong>Raw undead bass:</strong> Caught with Willow Rod + Spooky Bait in Fellhollow rot waters.</span></label></li>
+                <li class="task-item"><label for="dw-fish-10"><input type="checkbox" id="dw-fish-10" class="ffx-checkbox"> <span class="task-text"><strong>Raw giant krill:</strong> Trawled with Net in Dowdun Reach. Component for Giant Krill Bait.</span></label></li>
+                <li class="task-item"><label for="dw-fish-11"><input type="checkbox" id="dw-fish-11" class="ffx-checkbox"> <span class="task-text"><strong>Raw infernal eel:</strong> Caught with Maple Rod + Giant Krill Bait in Dowdun Reach.</span></label></li>
+                <li class="task-item"><label for="dw-fish-12"><input type="checkbox" id="dw-fish-12" class="ffx-checkbox"> <span class="task-text"><strong>Raw armoured catfish:</strong> Caught with Maple Rod + Animated Feather in Dowdun Reach.</span></label></li>
+                <li class="task-item"><label for="dw-fish-13"><input type="checkbox" id="dw-fish-13" class="ffx-checkbox"> <span class="task-text"><strong>Raw monkfish:</strong> Trawled with Net in Umbral Sands coastal flats.</span></label></li>
+                <li class="task-item"><label for="dw-fish-14"><input type="checkbox" id="dw-fish-14" class="ffx-checkbox"> <span class="task-text"><strong>Raw desert sole:</strong> Caught with Yew Rod + Monkfish Bait in Umbral Sands oasis.</span></label></li>
+                <li class="task-item"><label for="dw-fish-15"><input type="checkbox" id="dw-fish-15" class="ffx-checkbox"> <span class="task-text"><strong>Raw beltfish:</strong> Caught with Yew Rod + Kalphite Bait in Umbral Sands depths.</span></label></li>
             </ul>
         </div>
         <!-- End Fishing Guide Tab -->
@@ -1194,6 +1493,42 @@
             catch(e) { console.error('Could not save tracking progress', e); }
         }
 
+        function updateUrnsCount() {
+            const urnCheckboxes = document.querySelectorAll('.dw-urn-checkbox');
+            const checkedUrns = document.querySelectorAll('.dw-urn-checkbox:checked').length;
+            const totalUrns = urnCheckboxes.length || 21;
+            const bonusHp = checkedUrns * 10;
+            const totalHp = 100 + bonusHp;
+
+            const countEl = document.getElementById('urns-collected-count');
+            const hpBonusEl = document.getElementById('urns-hp-bonus');
+            const totalHpEl = document.getElementById('urns-total-hp');
+            const barEl = document.getElementById('urns-progress-bar');
+            const pctEl = document.getElementById('urns-percentage');
+
+            if (countEl) countEl.textContent = `${checkedUrns} / ${totalUrns}`;
+            if (hpBonusEl) hpBonusEl.textContent = `+${bonusHp} HP`;
+            if (totalHpEl) totalHpEl.textContent = `${totalHp} HP`;
+            const pct = totalUrns > 0 ? Math.round((checkedUrns / totalUrns) * 100) : 0;
+            if (barEl) barEl.style.width = pct + '%';
+            if (pctEl) pctEl.textContent = `${pct}% Complete`;
+        }
+
+        const resetUrnsBtn = document.getElementById('reset-urns-btn');
+        if (resetUrnsBtn) {
+            resetUrnsBtn.addEventListener('click', () => {
+                if (confirm('Reset your Sanguine Urns progress?')) {
+                    document.querySelectorAll('.dw-urn-checkbox').forEach(cb => {
+                        cb.checked = false;
+                        delete savedState[cb.id];
+                    });
+                    saveState();
+                    updateProgress();
+                    updateUrnsCount();
+                }
+            });
+        }
+
         function updateProgress() {
             const total = checkboxes.length;
             const checked = document.querySelectorAll('.ffx-checkbox:checked').length;
@@ -1202,6 +1537,7 @@
             if (progressText) progressText.textContent = `${percentage}% (${checked} / ${total})`;
             if (progressBar) progressBar.style.background = percentage === 100 ? '#10b981' : 'var(--accent-cyan)';
             if (progressText) progressText.style.color = percentage === 100 ? '#10b981' : 'var(--accent-cyan)';
+            updateUrnsCount();
         }
 
         // Tab switching & URL deep-linking
@@ -1228,6 +1564,9 @@
             activeBtn.style.color = 'var(--accent-cyan)';
             targetPanel.style.display = 'block';
 
+            if (tabKey === 'urns') {
+                updateUrnsCount();
+            }
             if (tabKey === 'stats') {
                 updateSummary();
                 drawProfile();
@@ -1782,7 +2121,10 @@
         const TIMERS_STORAGE_KEY = 'dragonwilds_vault_timers_v1';
         const SOUND_STORAGE_KEY = 'dragonwilds_timer_sound_enabled';
         const DEFAULT_VAULT_SECONDS = 72 * 60; // 4,320 seconds (3 in-game days)
-        const VAULT_KEYS = ['temple', 'swamp', 'plains', 'fellhollow', 'custom'];
+        const VAULT_KEYS = [
+            'crasorak', 'thishepen', 'vertentis', 'takla', 'skeklac',
+            'kletterbuja', 'chaktan', 'kalistrakthen', 'skekven', 'vekchenven'
+        ];
 
         let vaultTimers = {};
         try {
@@ -1802,19 +2144,6 @@
             soundToggle.addEventListener('change', () => {
                 soundEnabled = soundToggle.checked;
                 try { localStorage.setItem(SOUND_STORAGE_KEY, soundEnabled); } catch(e) {}
-            });
-        }
-
-        const customDurationInput = document.getElementById('custom-vault-duration');
-        const customLabelInput = document.getElementById('custom-vault-label');
-        if (customLabelInput && vaultTimers.custom && vaultTimers.custom.label) {
-            customLabelInput.value = vaultTimers.custom.label;
-        }
-        if (customLabelInput) {
-            customLabelInput.addEventListener('change', () => {
-                if (!vaultTimers.custom) vaultTimers.custom = {};
-                vaultTimers.custom.label = customLabelInput.value;
-                saveVaultTimers();
             });
         }
 
@@ -1948,21 +2277,13 @@
         document.querySelectorAll('.btn-timer-loot').forEach(btn => {
             btn.addEventListener('click', () => {
                 const key = btn.dataset.vault;
-                let durationSec = DEFAULT_VAULT_SECONDS;
-                if (key === 'custom') {
-                    const durInput = document.getElementById('custom-vault-duration');
-                    const mins = parseInt(durInput ? durInput.value : '72', 10);
-                    durationSec = (!isNaN(mins) && mins > 0 ? mins : 72) * 60;
-                }
+                const durationSec = DEFAULT_VAULT_SECONDS;
                 vaultTimers[key] = {
                     targetTime: Date.now() + durationSec * 1000,
                     durationSec: durationSec,
                     lootedAt: Date.now(),
                     notified: false
                 };
-                if (key === 'custom' && customLabelInput) {
-                    vaultTimers.custom.label = customLabelInput.value;
-                }
                 saveVaultTimers();
                 updateVaultDisplay(key);
             });
@@ -1974,12 +2295,7 @@
                 const deltaSec = parseInt(btn.dataset.delta, 10) || 0;
                 if (!vaultTimers[key] || !vaultTimers[key].targetTime) {
                     // If not running, start it and apply delta
-                    let durationSec = DEFAULT_VAULT_SECONDS;
-                    if (key === 'custom') {
-                        const durInput = document.getElementById('custom-vault-duration');
-                        const mins = parseInt(durInput ? durInput.value : '72', 10);
-                        durationSec = (!isNaN(mins) && mins > 0 ? mins : 72) * 60;
-                    }
+                    const durationSec = DEFAULT_VAULT_SECONDS;
                     vaultTimers[key] = {
                         targetTime: Date.now() + (durationSec + deltaSec) * 1000,
                         durationSec: durationSec,
@@ -2016,6 +2332,7 @@
         }
 
         updateProgress();
+        updateUrnsCount();
         updateSummary();
         drawProfile();
         updateCaptionPreview();

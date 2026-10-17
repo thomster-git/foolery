@@ -403,6 +403,7 @@
     flex-wrap: nowrap;
     overflow-x: auto;
     gap: 0.5rem;
+    padding-top: 1.25rem;
     padding-bottom: 1.5rem;
     margin-bottom: 1.5rem;
     border-bottom: 1px dashed rgba(255,255,255,0.1);
@@ -460,11 +461,26 @@
   
   /* Practice Mode Styles */
   .practice-active {
-    transform: scale(1.1);
-    box-shadow: 0 0 15px var(--accent-cyan);
-    border-radius: 8px;
-    background: rgba(234, 88, 12, 0.1);
-    transition: all 0.2s ease-out;
+    transform: scale(1.32);
+    z-index: 25;
+    position: relative;
+    box-shadow: 0 0 24px rgba(6, 182, 212, 0.75), 0 10px 28px rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    background: rgba(6, 182, 212, 0.16) !important;
+    border: 2px solid var(--accent-cyan);
+    padding: 6px 4px 8px 4px;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease-out;
+  }
+  .practice-active .note-name {
+    font-size: 1.35rem !important;
+    font-weight: 800 !important;
+    color: #000 !important;
+    background: var(--accent-cyan) !important;
+    border-color: var(--accent-cyan) !important;
+    box-shadow: 0 2px 8px rgba(6, 182, 212, 0.5);
+  }
+  .practice-active .note-fingering svg {
+    filter: drop-shadow(0 2px 6px rgba(6, 182, 212, 0.6));
   }
   .practice-done {
     opacity: 0.4;
@@ -972,6 +988,9 @@ let practiceType = null;
 let practiceNotes = [];
 let practiceIndex = 0;
 let practiceSustainFrames = 0;
+let practiceRequireReattack = false;
+let practicePauseUntil = 0;
+let practiceHasReleased = true;
 
 function noteFromFreq(freq, targetNoteNum = null) {
   if (freq < 50) return null;
@@ -1037,6 +1056,9 @@ function tunerLoop() {
     silenceFrames = 0;
   } else {
     silenceFrames++;
+    if (practiceRequireReattack) {
+      practiceHasReleased = true;
+    }
     if (silenceFrames > 30) {
       freqBuffer = [];
       currentNoteNum = null;
@@ -1097,6 +1119,10 @@ function tunerLoop() {
         const exactTargetFreq = 440 * Math.pow(2, (targetNote.noteNum - 69) / 12);
         const centsDiff = 1200 * Math.log2(smoothedFreq / exactTargetFreq);
         const absCentsDiff = Math.abs(centsDiff);
+
+        if (practiceRequireReattack && absCentsDiff > 80) {
+          practiceHasReleased = true;
+        }
         
         // UI Feedback Element
         let fb = targetNote.el.querySelector('.practice-feedback');
@@ -1115,12 +1141,28 @@ function tunerLoop() {
           nameEl.parentNode.insertBefore(fb, nameEl.nextSibling);
         }
 
+        // Back-to-back duplicate note debounce: require brief pause/re-tongue
+        if (practiceRequireReattack) {
+          const now = Date.now();
+          if (now < practicePauseUntil || !practiceHasReleased) {
+            fb.textContent = 'Re-tongue ⏸';
+            fb.style.background = 'rgba(234, 179, 8, 0.2)';
+            fb.style.color = '#eab308';
+            practiceSustainFrames = 0;
+            tunerRAF = requestAnimationFrame(tunerLoop);
+            return;
+          } else {
+            practiceRequireReattack = false;
+          }
+        }
+
         if (absCentsDiff <= 20) {
           fb.textContent = 'Perfect!';
           fb.style.color = '#000';
           fb.style.background = '#22c55e';
           practiceSustainFrames++;
           if (practiceSustainFrames > 10) {
+            const prevNoteNum = targetNote.noteNum;
             targetNote.el.classList.remove('practice-active');
             targetNote.el.classList.add('practice-done');
             fb.textContent = 'Done';
@@ -1129,8 +1171,18 @@ function tunerLoop() {
             practiceIndex++;
             practiceSustainFrames = 0;
             if (practiceIndex < practiceNotes.length) {
-              practiceNotes[practiceIndex].el.classList.add('practice-active');
-              practiceNotes[practiceIndex].el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              const nextNote = practiceNotes[practiceIndex];
+              nextNote.el.classList.add('practice-active');
+              nextNote.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              if (nextNote.noteNum === prevNoteNum) {
+                practiceRequireReattack = true;
+                practicePauseUntil = Date.now() + 450;
+                practiceHasReleased = false;
+              } else {
+                practiceRequireReattack = false;
+                practicePauseUntil = 0;
+                practiceHasReleased = true;
+              }
             } else {
               stopPracticeMode();
               alert("🎉 Song Complete! Great job!");
@@ -1244,6 +1296,9 @@ function startPracticeMode(type) {
   practiceIndex = 0;
   practiceSustainFrames = 0;
   practiceNotes = [];
+  practiceRequireReattack = false;
+  practicePauseUntil = 0;
+  practiceHasReleased = true;
   
   const container = type === 'custom' ? document.getElementById('custom-tab-output') : (type === 'oot' ? document.getElementById('oot-display') : document.getElementById('song-display'));
   if (!container) return;
