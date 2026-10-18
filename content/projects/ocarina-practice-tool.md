@@ -1,4 +1,5 @@
 ---
+stage: "teaser"
 type: "project"
 id: ocarina-practice-tool
 title: Ocarina Practice Tool

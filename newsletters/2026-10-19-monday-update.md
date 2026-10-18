@@ -27,7 +27,7 @@ It covers the complete engineering story behind the custom Thoms Foolery bot:
 * **The Monday Morning FOMO Engine:** An autonomous agent that sweeps 500 messages across all opt-in niche channels every Monday morning to generate an entertaining weekly highlight reel, driving continuous cross-channel discovery.
 * **Zero-Scraping Real-Time Sports:** Reverse-engineered private APIs for MLB base-state diamond graphics, 3-day reliever bullpen fatigue calculations, NFL quarter alerts, and OpenF1 telemetry.
 
-👉 **Read the full essay:** [thomsfoolery.com/articles/building-a-comprehensive-discord-ecosystem/](https://thomsfoolery.com/articles/building-a-comprehensive-discord-ecosystem/)
+👉 **Read the full essay:** [thomsfoolery.com/articles/building-a-comprehensive-discord-ecosystem.html](https://thomsfoolery.com/articles/building-a-comprehensive-discord-ecosystem.html)
 
 ---
 
@@ -60,8 +60,8 @@ Starting this week, we're testing a low-friction, privacy-friendly way to suppor
 * **Companion PWYW PDFs:** We're rolling out printable, offline companions for our live tools via Lemon Squeezy slide-over checkout overlays:
   * **The Ocarina of Time 12-Hole Practice Companion:** Printable fingering charts, tab sheets, and phrasing guides ($0+ Pay-What-You-Want).
   * **FFX 100% Tracker Reference:** Offline checklists, celestial weapon requirements, and monster arena capture routes.
-* **1-on-1 Architecture & Advisory Calls:** Readers interested in digital gardens, static site architecture, or sports data telemetry can now book 45-minute advisory sessions directly.
-* **Productized 1-Week Micro-Builds:** If your company or project needs a custom interactive tool, calculator, or dashboard built in 5 weekdays, check our new "Work With Me" details.
+* **1-on-1 Architecture & Advisory Calls:** Readers interested in digital gardens, static site architecture, or sports data telemetry can now [book 45-minute advisory sessions directly](https://thomsfoolery.com/hire/).
+* **Productized 1-Week Micro-Builds:** If your company or project needs a custom interactive tool, calculator, or dashboard built in 5 weekdays, check our new [Work With Me offerings](https://thomsfoolery.com/hire/).
 
 ---
 
@@ -77,26 +77,22 @@ Ever wondered what fuels the engineering behind the tools? We've just launched o
 
 ---
 
-## 6. [DRAFT: Personal Notes & Community Announcements] ✍️
+## 6. Personal Notes & Community Field Reports ✍️
 
-<!-- 
-NOTE: Add any personal reflections, song additions (e.g. Saria's Song, Title Theme), 
-or community highlights here before sending.
--->
-
-* *[Add notes on new song tabs or Ocarina practice additions]*
-* *[Add notes on Discord community milestones or upcoming garden nodes]*
+* **The Weekend Build Sprint:** Dedicated this full Friday and Saturday into refining the site's layout engine, expanding desktop screen real-estate for ultrawide monitors, and writing the technical post-mortem on our Discord community operating system. Everything feels noticeably snappier and more coherent.
+* **Dragonwilds Field Notes:** The new 10 Dragonkin Vault Timers (72-minute respawn cycle) and Sanguine Urns (+10 HP) checklist were born out of practical necessity while playing through dedicated servers myself. This tool is an active work-in-progress—new tips, fishing hotspots, and mechanics will be added on a regular basis as I push deeper into the endgame.
+* **Tier List Creator is Live:** Tired of bloated, ad-ridden tier list websites, we rolled our own zero-friction alternative at [thomsfoolery.com/tools/tier-list/](https://thomsfoolery.com/tools/tier-list/). You can paste images straight from your clipboard (`Ctrl+V`), customize the exported title, and instantly download a high-res PNG.
+* **Ocarina of Time Remake (Target: Nov 5):** Preparing our progression walkthrough pipeline for the upcoming remake. As I play through on release day, I’ll be documenting dungeon routing, taking authentic screenshots, and wiring custom melody tablatures straight into our interactive Web Audio player.
 
 ---
 
 ## 7. What’s Coming Next 🗺️
 
-With the sports analyzers, sharing pipeline, monetization blueprint, and interests taxonomy stabilized on `teaser-launch`, our focus moves toward:
-1. **Dragonwilds Vault Timers & Fishing Guide:** Dedicated server 72-minute (3 in-game days) vault core respawn countdowns, law rune siphoning paths, interactive fishing maps, and shareable collection goals.
-2. **Ocarina of Time Remake Progression Guide:** Step-by-step notes, custom screenshots, and mechanics breakdowns for the November 5 release.
-3. **Interactive Tier List Tool Rollout:** Bringing our standalone Tier List creator out of internal testing and into the public `/tools/` catalog.
-4. **Career & Industrial Engineering Chronicles:** Publishing our technical deep dives on remote fluorspar mine telemetry and zero-ransom disaster recovery.
-5. **The Project Atlas Starter Kit:** Packaging the clean static-generator codebase for developers who want to grow their own obsidian-dark knowledge garden.
+With the Discord architecture essay, sports momentum persistence, Tier List creator, and Interests taxonomy live on `thomsfoolery.com`, our upcoming focus moves toward:
+1. **Dragonwilds Compendium Part 2:** Sharable collection goals / supply logs (sync URL hash mechanics matching our profile generator) and missing-step progression logs.
+2. **Ocarina of Time Remake Progression Guide:** Step-by-step dungeon notes and authentic screenshots launching alongside the game on November 5.
+3. **Career & Industrial Engineering Chronicles:** Publishing our technical deep dives on remote fluorspar mine telemetry (CFI) and zero-ransom disaster recovery (Akira Ransomware).
+4. **The Project Atlas Starter Kit:** Packaging the clean static-generator codebase for developers who want to grow their own obsidian-dark knowledge garden.
 
 Until next Monday,  
 **Jonathan Thoms**  

@@ -22,6 +22,27 @@
   to = "/.netlify/functions/submit-inquiry"
   status = 200
 
+# Canonical redirects for article and project slugs (prevents GSC 404s on trailing slashes)
+[[redirects]]
+  from = "/articles/:slug/"
+  to = "/articles/:slug.html"
+  status = 301
+
+[[redirects]]
+  from = "/articles/:slug"
+  to = "/articles/:slug.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/:slug/"
+  to = "/projects/:slug.html"
+  status = 301
+
+[[redirects]]
+  from = "/projects/:slug"
+  to = "/projects/:slug.html"
+  status = 301
+
 # Custom 404 page for missing pages
 [[redirects]]
   from = "/*"

@@ -45,6 +45,10 @@
                         <option value="goalDiff">Cumulative Goal Differential</option>
                         <option value="winPct">Points Percentage</option>
                         <option value="streak">Current Point Streak</option>
+                        <option value="penaltiesPerGame">Penalties per Game</option>
+                        <option value="ppPerGame">Power Plays per Game</option>
+                        <option value="pkPct">Power Play Kill %</option>
+                        <option value="ppPct">Goal on Power Play %</option>
                     </select>
                 </div>
                 <div>
@@ -73,8 +77,9 @@
                         <!-- Populated by JS -->
                     </select>
                 </div>
-                <div style="margin-left: auto; align-self: flex-end;">
-                    <button id="reset-zoom" style="background: var(--accent-cyan); color: #fff; border: none; padding: 0.6rem 1rem; border-radius: var(--radius-md); font-weight: bold; cursor: pointer;">Reset Zoom</button>
+                <div style="margin-left: auto; align-self: flex-end; display: flex; gap: 0.5rem;">
+                    <button id="clear-filters" type="button" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.6rem 1rem; border-radius: var(--radius-md); font-weight: bold; cursor: pointer; transition: all 0.2s;" title="Reset metric, division, and team filters to default">Clear Filters</button>
+                    <button id="reset-zoom" type="button" style="background: var(--accent-cyan); color: #fff; border: none; padding: 0.6rem 1rem; border-radius: var(--radius-md); font-weight: bold; cursor: pointer;">Reset Zoom</button>
                 </div>
             </div>
 

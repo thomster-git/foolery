@@ -444,5 +444,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    const clearFiltersBtn = document.getElementById('clear-filters');
+    if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener('click', () => {
+            if (metricSelect) metricSelect.value = 'runDiff';
+            if (divisionSelect) divisionSelect.value = 'all';
+            if (teamSelect) teamSelect.value = 'none';
+            localStorage.removeItem(STORAGE_KEY_METRIC);
+            localStorage.removeItem(STORAGE_KEY_DIVISION);
+            localStorage.removeItem(STORAGE_KEY_TEAM);
+            if (chartInstance) chartInstance.resetZoom();
+            renderChart();
+        });
+    }
+
     fetchData();
 });

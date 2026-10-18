@@ -256,8 +256,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
 
-            if (away.isWinner) seriesMap[sKey].team1Wins++;
-            if (home.isWinner) seriesMap[sKey].team2Wins++;
+            const winningTeamId = away.isWinner ? away.team.id : (home.isWinner ? home.team.id : null);
+            if (winningTeamId) {
+                if (seriesMap[sKey].team1.id === winningTeamId) {
+                    seriesMap[sKey].team1Wins++;
+                } else if (seriesMap[sKey].team2.id === winningTeamId) {
+                    seriesMap[sKey].team2Wins++;
+                }
+            }
             seriesMap[sKey].games.push(game);
 
             // Initialize Team Records

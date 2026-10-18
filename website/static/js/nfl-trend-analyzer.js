@@ -280,5 +280,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (chartInstance) chartInstance.resetZoom();
     });
 
+    const clearFiltersBtn = document.getElementById('clear-filters');
+    if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener('click', () => {
+            metricSelect.value = 'pointDiff';
+            divisionSelect.value = 'all';
+            teamSelect.value = 'none';
+            teamSelect2.value = 'none';
+            localStorage.removeItem(STORAGE_KEY_METRIC);
+            localStorage.removeItem(STORAGE_KEY_DIVISION);
+            localStorage.removeItem(STORAGE_KEY_TEAM);
+            localStorage.removeItem(STORAGE_KEY_TEAM2);
+            if (chartInstance) chartInstance.resetZoom();
+            renderChart();
+        });
+    }
+
     fetchRealData();
 });
