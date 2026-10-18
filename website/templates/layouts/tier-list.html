@@ -56,8 +56,8 @@
                     <div id="presets-menu" style="display: none; position: absolute; right: 0; top: 110%; background: #0f172a; border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 50; width: 220px; padding: 0.4rem 0;">
                         <button class="preset-opt" data-preset="skills" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 0.88rem;">🐉 Dragonwilds Skills</button>
                         <button class="preset-opt" data-preset="baseball" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 0.88rem;">⚾ Baseball Positions</button>
-                        <button class="preset-opt" data-preset="f1-drivers" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 0.88rem;">🏎️ Formula 1 Drivers</button>
-                        <button class="preset-opt" data-preset="f1-teams" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 0.88rem;">🏁 Formula 1 Teams</button>
+                        <button class="preset-opt" data-preset="f1-drivers" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 0.88rem;">🏎️ F1 Drivers (2026 Grid)</button>
+                        <button class="preset-opt" data-preset="f1-teams" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 0.88rem;">🏁 F1 Teams (2026 Grid)</button>
                         <button class="preset-opt" data-preset="blank" style="width: 100%; text-align: left; padding: 0.6rem 1rem; background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.88rem; border-top: 1px solid rgba(255,255,255,0.08);">🗑️ Clear to Blank</button>
                     </div>
                 </div>
@@ -894,16 +894,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (presetName === 'f1-drivers') {
-            state.title = 'Formula 1 Drivers Tier List';
+            state.title = 'Formula 1 Drivers Tier List (2026 Grid)';
             if (titleInput) titleInput.value = state.title;
             if (exportTitleInput) exportTitleInput.value = state.title;
             state.tiers = JSON.parse(JSON.stringify(DEFAULT_TIERS));
             const drivers = [
-                'Max Verstappen', 'Lewis Hamilton', 'Charles Leclerc', 'Lando Norris',
-                'Fernando Alonso', 'George Russell', 'Carlos Sainz', 'Oscar Piastri',
-                'Sergio Perez', 'Pierre Gasly', 'Esteban Ocon', 'Alexander Albon',
-                'Yuki Tsunoda', 'Lance Stroll', 'Nico Hülkenberg', 'Valtteri Bottas',
-                'Kevin Magnussen', 'Daniel Ricciardo', 'Liam Lawson', 'Franco Colapinto'
+                'Max Verstappen', 'Isack Hadjar', 'Lewis Hamilton', 'Charles Leclerc',
+                'Lando Norris', 'Oscar Piastri', 'George Russell', 'Kimi Antonelli',
+                'Fernando Alonso', 'Lance Stroll', 'Carlos Sainz', 'Alexander Albon',
+                'Pierre Gasly', 'Franco Colapinto', 'Liam Lawson', 'Arvid Lindblad',
+                'Esteban Ocon', 'Oliver Bearman', 'Nico Hülkenberg', 'Gabriel Bortoleto',
+                'Sergio Pérez', 'Valtteri Bottas'
             ];
             state.items = drivers.map((d, idx) => ({
                 id: 'driver_' + idx,
@@ -913,19 +914,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }));
             saveState();
             renderBoard();
-            showToast('Loaded 20 Formula 1 Drivers into stash!');
+            showToast('Loaded 22 Formula 1 Drivers (2026 Grid) into stash!');
             return;
         }
 
         if (presetName === 'f1-teams') {
-            state.title = 'Formula 1 Teams Tier List';
+            state.title = 'Formula 1 Teams Tier List (2026 Grid)';
             if (titleInput) titleInput.value = state.title;
             if (exportTitleInput) exportTitleInput.value = state.title;
             state.tiers = JSON.parse(JSON.stringify(DEFAULT_TIERS));
             const teams = [
-                'Red Bull Racing', 'Ferrari', 'McLaren', 'Mercedes',
-                'Aston Martin', 'Alpine', 'Williams', 'Visa Cash App RB',
-                'Kick Sauber', 'Haas'
+                'McLaren', 'Ferrari', 'Red Bull Racing', 'Mercedes',
+                'Aston Martin', 'Alpine', 'Williams', 'Racing Bulls',
+                'Haas F1 Team', 'Audi', 'Cadillac F1 Team'
             ];
             state.items = teams.map((t, idx) => ({
                 id: 'team_' + idx,
@@ -935,7 +936,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }));
             saveState();
             renderBoard();
-            showToast('Loaded 10 Formula 1 Teams into stash!');
+            showToast('Loaded 11 Formula 1 Teams (2026 Grid) into stash!');
             return;
         }
     }
