@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-keel-systems-and-honest-kpis
 title: My Story With Keel Systems And Honest Kpis
 type: article

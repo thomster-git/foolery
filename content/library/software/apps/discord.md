@@ -16,8 +16,6 @@ themes:
   - community
   - systems-thinking
 related:
-  - discord-vs-corporate-comms
-  - building-a-comprehensive-discord-ecosystem
   - building-a-comprehensive-discord-ecosystem
 ---
 

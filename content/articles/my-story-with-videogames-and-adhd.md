@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-videogames-and-adhd
 title: My Story With Videogames And Adhd
 type: article

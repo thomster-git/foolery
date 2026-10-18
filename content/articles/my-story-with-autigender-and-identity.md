@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-autigender-and-identity
 title: My Story With Autigender And Identity
 type: article

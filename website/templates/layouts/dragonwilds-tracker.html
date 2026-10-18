@@ -306,6 +306,7 @@
         <!-- End Progression Guide Tab -->
 
         <!-- Tab: Quests -->
+        <!-- Tab: Quest Progression by Area -->
         <div id="dw-tab-quests" class="dw-tab-panel" style="display: none;">
 
             <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
@@ -315,95 +316,271 @@
                         Track all primary and secondary quests grouped by region progression order. As you advance through Ashenfall, complete primary milestones to unlock gates and secondary quests to earn key gear and lore rewards.
                     </p>
                 </div>
-                <a href="https://dragonwilds.runescape.wiki/w/Quests" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(6,182,212,0.12); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.82rem; font-family: monospace; text-decoration: none;">
-                    📖 Official Quests Wiki &rarr;
-                </a>
+                <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                    <a href="https://dragonwilds.runescape.wiki/w/Quests" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(6,182,212,0.12); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.82rem; font-family: monospace; text-decoration: none;">
+                        📖 Official Quests Wiki &rarr;
+                    </a>
+                </div>
             </div>
 
-            <h3 style="color: var(--text-main); margin-top: 1.5rem;">Tutorial — Temple Woods</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qp-1"><input type="checkbox" id="qp-1" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/First_Steps" target="_blank" style="color: var(--accent-cyan);">First Steps</a> — <em>Temple Woods</em> — Automatically started with new character.</span></label></li>
-                <li class="task-item"><label for="qp-2"><input type="checkbox" id="qp-2" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Getting_Started" target="_blank" style="color: var(--accent-cyan);">Getting Started</a> — <em>Temple Woods</em> — Speak to Doric just outside of the temple.</span></label></li>
-                <li class="task-item"><label for="qp-3"><input type="checkbox" id="qp-3" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Ratcatcher" target="_blank" style="color: var(--accent-cyan);">Ratcatcher</a> — <em>Temple Woods</em> — Speak to Vannaka near the old windmill.</span></label></li>
-                <li class="task-item"><label for="qp-4"><input type="checkbox" id="qp-4" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Rune_Mysteries" target="_blank" style="color: var(--accent-cyan);">Rune Mysteries</a> — <em>Temple Woods</em> — Speak to Zanik on the path leading to Bramblemead Valley.</span></label></li>
-            </ul>
+            <!-- Controls: Expand / Collapse All Quests -->
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+                <button type="button" id="btn-expand-all-quests" style="background: rgba(6,182,212,0.1); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-family: monospace; cursor: pointer; transition: all 0.2s;">Expand All Quests</button>
+                <button type="button" id="btn-collapse-all-quests" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-dim); padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-family: monospace; cursor: pointer; transition: all 0.2s;">Collapse All Quests</button>
+            </div>
 
-            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Tutorial — Brynmoor</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qs-1"><input type="checkbox" id="qs-1" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Growing_Pains" target="_blank" style="color: var(--accent-cyan);">Growing Pains</a> — <em>Brynmoor</em> — Speak to the Wise Old Man in Bramblemead Village.</span></label></li>
-                <li class="task-item"><label for="qs-2"><input type="checkbox" id="qs-2" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Shrimp_Catcher" target="_blank" style="color: var(--accent-cyan);">Shrimp Catcher</a> — <em>Brynmoor</em> — Speak to the Wise Old Man in Bramblemead Village.</span></label></li>
-            </ul>
+            <!-- 1. Tutorial — Temple Woods -->
+            <details class="dw-chapter-accordion" open id="quest-accordion-tw">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">🧭</span>
+                        <span class="dw-chapter-title">Tutorial — Temple Woods</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 4</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="qp-1"><input type="checkbox" id="qp-1" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/First_Steps" target="_blank" style="color: var(--accent-cyan);">First Steps</a> — <em>Temple Woods</em> — Automatically started with new character.</span></label></li>
+                        <li class="task-item"><label for="qp-2"><input type="checkbox" id="qp-2" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Getting_Started" target="_blank" style="color: var(--accent-cyan);">Getting Started</a> — <em>Temple Woods</em> — Speak to Doric just outside of the temple.</span></label></li>
+                        <li class="task-item"><label for="qp-3"><input type="checkbox" id="qp-3" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Ratcatcher" target="_blank" style="color: var(--accent-cyan);">Ratcatcher</a> — <em>Temple Woods</em> — Speak to Vannaka near the old windmill.</span></label></li>
+                        <li class="task-item"><label for="qp-4"><input type="checkbox" id="qp-4" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Rune_Mysteries" target="_blank" style="color: var(--accent-cyan);">Rune Mysteries</a> — <em>Temple Woods</em> — Speak to Zanik on the path leading to Bramblemead Valley.</span></label></li>
+                    </ul>
+                </div>
+            </details>
 
-            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Primary — Brynmoor / Ghornfell</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qp-5"><input type="checkbox" id="qp-5" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Dragon_Slayer" target="_blank" style="color: var(--accent-cyan);">Dragon Slayer</a> — <em>Brynmoor / Ghornfell</em> — Speak to the Wise Old Man in Bramblemead Village.</span></label></li>
-            </ul>
+            <!-- 2. Tutorial — Brynmoor -->
+            <details class="dw-chapter-accordion" open id="quest-accordion-brynmoor-tut">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">🌿</span>
+                        <span class="dw-chapter-title">Tutorial — Brynmoor</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 2</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="qs-1"><input type="checkbox" id="qs-1" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Growing_Pains" target="_blank" style="color: var(--accent-cyan);">Growing Pains</a> — <em>Brynmoor</em> — Speak to the Wise Old Man in Bramblemead Village.</span></label></li>
+                        <li class="task-item"><label for="qs-2"><input type="checkbox" id="qs-2" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Shrimp_Catcher" target="_blank" style="color: var(--accent-cyan);">Shrimp Catcher</a> — <em>Brynmoor</em> — Speak to the Wise Old Man in Bramblemead Village.</span></label></li>
+                    </ul>
+                </div>
+            </details>
 
-            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Secondary — Brynmoor</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qs-3"><input type="checkbox" id="qs-3" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Restless_Ghosts" target="_blank" style="color: var(--accent-cyan);">Restless Ghosts</a> — <em>Brynmoor</em> — Interact with the crumbling well in Bramblemead Village.</span></label></li>
-                <li class="task-item"><label for="qs-4"><input type="checkbox" id="qs-4" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Goblin_Diplomacy" target="_blank" style="color: var(--accent-cyan);">Goblin Diplomacy</a> — <em>Brynmoor</em> — Speak to Zanik in Bramblemead Valley.</span></label></li>
-                <li class="task-item"><label for="qs-5"><input type="checkbox" id="qs-5" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Highlighting_the_Problem" target="_blank" style="color: var(--accent-cyan);">Highlighting the Problem</a> — <em>Brynmoor</em> — Interact with the statue of a wizard in the Runecrafting Guild in Bramblemead Valley.</span></label></li>
-            </ul>
+            <!-- 3. Primary — Brynmoor / Ghornfell -->
+            <details class="dw-chapter-accordion" open id="quest-accordion-primary-brynmoor">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">⚔️</span>
+                        <span class="dw-chapter-title">Primary — Brynmoor / Ghornfell</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 1</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="qp-5"><input type="checkbox" id="qp-5" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Dragon_Slayer" target="_blank" style="color: var(--accent-cyan);">Dragon Slayer</a> — <em>Brynmoor / Ghornfell</em> — Speak to the Wise Old Man in Bramblemead Village.</span></label></li>
+                    </ul>
+                </div>
+            </details>
 
-            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Secondary — Ghornfell</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qs-6"><input type="checkbox" id="qs-6" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Granite_Mauled" target="_blank" style="color: var(--accent-cyan);">Granite Mauled</a> — <em>Ghornfell</em> — Speak to Doric in the Fractured Plains.</span></label></li>
-                <li class="task-item"><label for="qs-7"><input type="checkbox" id="qs-7" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Heartstrings" target="_blank" style="color: var(--accent-cyan);">Heartstrings</a> — <em>Ghornfell</em> — Interact with the memorial on top of the hill in the Fractured Plains.</span></label></li>
-                <li class="task-item"><label for="qs-8"><input type="checkbox" id="qs-8" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Dog_Days" target="_blank" style="color: var(--accent-cyan);">Dog Days</a> — <em>Ghornfell</em> — Speak to Vannaka at the centre of the Stormtouched Highlands.</span></label></li>
-                <li class="task-item"><label for="qs-9"><input type="checkbox" id="qs-9" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Cook%27s_Assistant" target="_blank" style="color: var(--accent-cyan);">Cook's Assistant</a> — <em>Ghornfell</em> — Speak with Slopfinger at the southern border between Stormtouched Highlands and Fractured Plains.</span></label></li>
-                <li class="task-item"><label for="qs-10"><input type="checkbox" id="qs-10" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Animal_Magnetism" target="_blank" style="color: var(--accent-cyan);">Animal Magnetism</a> — <em>Ghornfell</em> — Speak to Manktongue at the southern border between Stormtouched Highlands and Fractured Plains.</span></label></li>
-                <li class="task-item"><label for="qs-11"><input type="checkbox" id="qs-11" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/A_Room_With_A_Garou" target="_blank" style="color: var(--accent-cyan);">A Room With A Garou</a> — <em>Ghornfell</em> — Speak to Caratacus in the Fractured Plains.</span></label></li>
-                <li class="task-item"><label for="qs-12"><input type="checkbox" id="qs-12" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/A_Melody_Remembered" target="_blank" style="color: var(--accent-cyan);">A Melody Remembered</a> — <em>Ghornfell</em> — Repair a broken music box found in a desk within the Stormtouched Highlands.</span></label></li>
-                <li class="task-item"><label for="qs-13"><input type="checkbox" id="qs-13" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/The_Great_Body_Robbery" target="_blank" style="color: var(--accent-cyan);">The Great Body Robbery</a> — <em>Ghornfell (Bloodblight Swamp)</em> — Speak to Doctor Fenkenstrain in the Bloodblight Swamp.</span></label></li>
-            </ul>
+            <!-- 4. Secondary — Brynmoor -->
+            <details class="dw-chapter-accordion" open id="quest-accordion-sec-brynmoor">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">📜</span>
+                        <span class="dw-chapter-title">Secondary — Brynmoor</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 3</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="qs-3"><input type="checkbox" id="qs-3" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Restless_Ghosts" target="_blank" style="color: var(--accent-cyan);">Restless Ghosts</a> — <em>Brynmoor</em> — Interact with the crumbling well in Bramblemead Village.</span></label></li>
+                        <li class="task-item"><label for="qs-4"><input type="checkbox" id="qs-4" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Goblin_Diplomacy" target="_blank" style="color: var(--accent-cyan);">Goblin Diplomacy</a> — <em>Brynmoor</em> — Speak to Zanik in Bramblemead Valley.</span></label></li>
+                        <li class="task-item"><label for="qs-5"><input type="checkbox" id="qs-5" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Highlighting_the_Problem" target="_blank" style="color: var(--accent-cyan);">Highlighting the Problem</a> — <em>Brynmoor</em> — Interact with the statue of a wizard in the Runecrafting Guild in Bramblemead Valley.</span></label></li>
+                    </ul>
+                </div>
+            </details>
 
-            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Primary — Fellhollow</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qp-6"><input type="checkbox" id="qp-6" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Withering_Heights" target="_blank" style="color: var(--accent-cyan);">Withering Heights</a> — <em>Fellhollow</em> — Speak to the Wise Old Man near Ashien's Watch.</span></label></li>
-            </ul>
+            <!-- 5. Secondary — Ghornfell -->
+            <details class="dw-chapter-accordion" open id="quest-accordion-sec-ghornfell">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">⛰️</span>
+                        <span class="dw-chapter-title">Secondary — Ghornfell</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 8</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="qs-6"><input type="checkbox" id="qs-6" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Granite_Mauled" target="_blank" style="color: var(--accent-cyan);">Granite Mauled</a> — <em>Ghornfell</em> — Speak to Doric in the Fractured Plains.</span></label></li>
+                        <li class="task-item"><label for="qs-7"><input type="checkbox" id="qs-7" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Heartstrings" target="_blank" style="color: var(--accent-cyan);">Heartstrings</a> — <em>Ghornfell</em> — Interact with the memorial on top of the hill in the Fractured Plains.</span></label></li>
+                        <li class="task-item"><label for="qs-8"><input type="checkbox" id="qs-8" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Dog_Days" target="_blank" style="color: var(--accent-cyan);">Dog Days</a> — <em>Ghornfell</em> — Speak to Vannaka at the centre of the Stormtouched Highlands.</span></label></li>
+                        <li class="task-item"><label for="qs-9"><input type="checkbox" id="qs-9" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Cook%27s_Assistant" target="_blank" style="color: var(--accent-cyan);">Cook's Assistant</a> — <em>Ghornfell</em> — Speak with Slopfinger at the southern border between Stormtouched Highlands and Fractured Plains.</span></label></li>
+                        <li class="task-item"><label for="qs-10"><input type="checkbox" id="qs-10" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Animal_Magnetism" target="_blank" style="color: var(--accent-cyan);">Animal Magnetism</a> — <em>Ghornfell</em> — Speak to Manktongue at the southern border between Stormtouched Highlands and Fractured Plains.</span></label></li>
+                        <li class="task-item"><label for="qs-11"><input type="checkbox" id="qs-11" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/A_Room_With_A_Garou" target="_blank" style="color: var(--accent-cyan);">A Room With A Garou</a> — <em>Ghornfell</em> — Speak to Caratacus in the Fractured Plains.</span></label></li>
+                        <li class="task-item"><label for="qs-12"><input type="checkbox" id="qs-12" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/A_Melody_Remembered" target="_blank" style="color: var(--accent-cyan);">A Melody Remembered</a> — <em>Ghornfell</em> — Repair a broken music box found in a desk within the Stormtouched Highlands.</span></label></li>
+                        <li class="task-item"><label for="qs-13"><input type="checkbox" id="qs-13" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/The_Great_Body_Robbery" target="_blank" style="color: var(--accent-cyan);">The Great Body Robbery</a> — <em>Ghornfell (Bloodblight Swamp)</em> — Speak to Doctor Fenkenstrain in the Bloodblight Swamp.</span></label></li>
+                    </ul>
+                </div>
+            </details>
 
-            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Secondary — Fellhollow</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qs-14"><input type="checkbox" id="qs-14" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Even_More_Restless_Ghosts" target="_blank" style="color: var(--accent-cyan);">Even More Restless Ghosts</a> — <em>Fellhollow</em> — Speak to Zanik in Fellhollow.</span></label></li>
-                <li class="task-item"><label for="qs-15"><input type="checkbox" id="qs-15" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/The_Wild_Hunt" target="_blank" style="color: var(--accent-cyan);">The Wild Hunt</a> — <em>Fellhollow</em> — Speak to Vannaka in Bleaksfield Valley.</span></label></li>
-                <li class="task-item"><label for="qs-16"><input type="checkbox" id="qs-16" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Things_That_Go_Boom_In_The_Night" target="_blank" style="color: var(--accent-cyan);">Things That Go Boom In The Night</a> — <em>Fellhollow</em> — Speak to Vannaka in Bleaksfield Valley.</span></label></li>
-                <li class="task-item"><label for="qs-17"><input type="checkbox" id="qs-17" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Seeking_Salvation" target="_blank" style="color: var(--accent-cyan);">Seeking Salvation</a> — <em>Fellhollow</em> — Speak to Doric east of the Lake of Lost Souls, inside a cave.</span></label></li>
-                <li class="task-item"><label for="qs-18"><input type="checkbox" id="qs-18" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Doric%27s_Quest" target="_blank" style="color: var(--accent-cyan);">Doric's Quest</a> — <em>Fellhollow</em> — Speak to Doric east of the Lake of Lost Souls, inside a cave.</span></label></li>
-                <li class="task-item"><label for="qs-19"><input type="checkbox" id="qs-19" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Letters_for_the_Dead" target="_blank" style="color: var(--accent-cyan);">Letters for the Dead</a> — <em>Fellhollow</em> — Speak to Postie Pete in the Forgotten Temple.</span></label></li>
-                <li class="task-item"><label for="qs-20"><input type="checkbox" id="qs-20" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/What_Remains_is_Written" target="_blank" style="color: var(--accent-cyan);">What Remains is Written</a> — <em>Fellhollow</em> — Speak to Abraxus The Eternal in Coalridge Pass.</span></label></li>
-                <li class="task-item"><label for="qs-21"><input type="checkbox" id="qs-21" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Mirror,_Mirror" target="_blank" style="color: var(--accent-cyan);">Mirror, Mirror</a> — <em>Fellhollow</em> — Interact with the mirror west of the Guthix shrine near Emberwood.</span></label></li>
-            </ul>
+            <!-- 6. Primary — Fellhollow -->
+            <details class="dw-chapter-accordion" open id="quest-accordion-prim-fellhollow">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">⚔️</span>
+                        <span class="dw-chapter-title">Primary — Fellhollow</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 1</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="qp-6"><input type="checkbox" id="qp-6" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Withering_Heights" target="_blank" style="color: var(--accent-cyan);">Withering Heights</a> — <em>Fellhollow</em> — Speak to the Wise Old Man near Ashien's Watch.</span></label></li>
+                    </ul>
+                </div>
+            </details>
 
-            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Primary — Dowdun Reach</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qp-7"><input type="checkbox" id="qp-7" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Black_Knight%27s_Fortress" target="_blank" style="color: var(--accent-cyan);">Black Knight's Fortress</a> — <em>Dowdun Reach</em> — Speak to Death in the Forgotten Temple.</span></label></li>
-            </ul>
+            <!-- 7. Secondary — Fellhollow -->
+            <details class="dw-chapter-accordion" open id="quest-accordion-sec-fellhollow">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">📜</span>
+                        <span class="dw-chapter-title">Secondary — Fellhollow</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 8</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="qs-14"><input type="checkbox" id="qs-14" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Even_More_Restless_Ghosts" target="_blank" style="color: var(--accent-cyan);">Even More Restless Ghosts</a> — <em>Fellhollow</em> — Speak to Zanik in Fellhollow.</span></label></li>
+                        <li class="task-item"><label for="qs-15"><input type="checkbox" id="qs-15" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/The_Wild_Hunt" target="_blank" style="color: var(--accent-cyan);">The Wild Hunt</a> — <em>Fellhollow</em> — Speak to Vannaka in Bleaksfield Valley.</span></label></li>
+                        <li class="task-item"><label for="qs-16"><input type="checkbox" id="qs-16" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Things_That_Go_Boom_In_The_Night" target="_blank" style="color: var(--accent-cyan);">Things That Go Boom In The Night</a> — <em>Fellhollow</em> — Speak to Vannaka in Bleaksfield Valley.</span></label></li>
+                        <li class="task-item"><label for="qs-17"><input type="checkbox" id="qs-17" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Seeking_Salvation" target="_blank" style="color: var(--accent-cyan);">Seeking Salvation</a> — <em>Fellhollow</em> — Speak to Doric east of the Lake of Lost Souls, inside a cave.</span></label></li>
+                        <li class="task-item"><label for="qs-18"><input type="checkbox" id="qs-18" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Doric%27s_Quest" target="_blank" style="color: var(--accent-cyan);">Doric's Quest</a> — <em>Fellhollow</em> — Speak to Doric east of the Lake of Lost Souls, inside a cave.</span></label></li>
+                        <li class="task-item"><label for="qs-19"><input type="checkbox" id="qs-19" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Letters_for_the_Dead" target="_blank" style="color: var(--accent-cyan);">Letters for the Dead</a> — <em>Fellhollow</em> — Speak to Postie Pete in the Forgotten Temple.</span></label></li>
+                        <li class="task-item"><label for="qs-20"><input type="checkbox" id="qs-20" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/What_Remains_is_Written" target="_blank" style="color: var(--accent-cyan);">What Remains is Written</a> — <em>Fellhollow</em> — Speak to Abraxus The Eternal in Coalridge Pass.</span></label></li>
+                        <li class="task-item"><label for="qs-21"><input type="checkbox" id="qs-21" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Mirror,_Mirror" target="_blank" style="color: var(--accent-cyan);">Mirror, Mirror</a> — <em>Fellhollow</em> — Interact with the mirror west of the Guthix shrine near Emberwood.</span></label></li>
+                    </ul>
+                </div>
+            </details>
 
-            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Secondary — Dowdun Reach</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qs-22"><input type="checkbox" id="qs-22" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Biohazard" target="_blank" style="color: var(--accent-cyan);">Biohazard</a> — <em>Dowdun Reach</em> — Attack and pick up the lootdrop of the corrupted raven in The Courtyard.</span></label></li>
-                <li class="task-item"><label for="qs-23"><input type="checkbox" id="qs-23" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Wanted!" target="_blank" style="color: var(--accent-cyan);">Wanted!</a> — <em>Dowdun Reach</em> — Speak to Vannaka in The Courtyard.</span></label></li>
-                <li class="task-item"><label for="qs-24"><input type="checkbox" id="qs-24" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/What%27s_Theirs_is_Mine!" target="_blank" style="color: var(--accent-cyan);">What's Theirs is Mine!</a> — <em>Dowdun Reach</em> — Speak to Doric next to the Dreaming Stone in The Nexus.</span></label></li>
-            </ul>
+            <!-- 8. Primary — Dowdun Reach -->
+            <details class="dw-chapter-accordion" open id="quest-accordion-prim-dowdun">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">⚔️</span>
+                        <span class="dw-chapter-title">Primary — Dowdun Reach</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 1</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="qp-7"><input type="checkbox" id="qp-7" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Black_Knight%27s_Fortress" target="_blank" style="color: var(--accent-cyan);">Black Knight's Fortress</a> — <em>Dowdun Reach</em> — Speak to Death in the Forgotten Temple.</span></label></li>
+                    </ul>
+                </div>
+            </details>
 
-            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Primary — Umbral Sands</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qp-8"><input type="checkbox" id="qp-8" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Icthlarin%27s_Little_Helper" target="_blank" style="color: var(--accent-cyan);">Icthlarin's Little Helper</a> — <em>Umbral Sands</em> — Interact with the door to the Umbral Sands.</span></label></li>
-            </ul>
+            <!-- 9. Secondary — Dowdun Reach -->
+            <details class="dw-chapter-accordion" open id="quest-accordion-sec-dowdun">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">📜</span>
+                        <span class="dw-chapter-title">Secondary — Dowdun Reach</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 3</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="qs-22"><input type="checkbox" id="qs-22" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Biohazard" target="_blank" style="color: var(--accent-cyan);">Biohazard</a> — <em>Dowdun Reach</em> — Attack and pick up the lootdrop of the corrupted raven in The Courtyard.</span></label></li>
+                        <li class="task-item"><label for="qs-23"><input type="checkbox" id="qs-23" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Wanted!" target="_blank" style="color: var(--accent-cyan);">Wanted!</a> — <em>Dowdun Reach</em> — Speak to Vannaka in The Courtyard.</span></label></li>
+                        <li class="task-item"><label for="qs-24"><input type="checkbox" id="qs-24" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/What%27s_Theirs_is_Mine!" target="_blank" style="color: var(--accent-cyan);">What's Theirs is Mine!</a> — <em>Dowdun Reach</em> — Speak to Doric next to the Dreaming Stone in The Nexus.</span></label></li>
+                    </ul>
+                </div>
+            </details>
 
-            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Secondary — Umbral Sands</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qs-25"><input type="checkbox" id="qs-25" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Contact!" target="_blank" style="color: var(--accent-cyan);">Contact!</a> — <em>Umbral Sands</em> — Speak to Avisk Crystal in Dunes of Uzzer.</span></label></li>
-                <li class="task-item"><label for="qs-26"><input type="checkbox" id="qs-26" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Brink_of_Extinction" target="_blank" style="color: var(--accent-cyan);">Brink of Extinction</a> — <em>Umbral Sands</em> — Speak to Zi at The Burning Spire, south of the Sinking Pyramid.</span></label></li>
-                <li class="task-item"><label for="qs-27"><input type="checkbox" id="qs-27" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Mapping_The_Sands_I" target="_blank" style="color: var(--accent-cyan);">Mapping The Sands I</a> — <em>Umbral Sands</em> — Speak to Anamcara in Alcarrid Camp.</span></label></li>
-                <li class="task-item"><label for="qs-28"><input type="checkbox" id="qs-28" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Mapping_The_Sands_II" target="_blank" style="color: var(--accent-cyan);">Mapping The Sands II</a> — <em>Umbral Sands</em> — Speak to Anamcara in Alcarrid Camp.</span></label></li>
-            </ul>
+            <!-- 10. Primary — Umbral Sands -->
+            <details class="dw-chapter-accordion" open id="quest-accordion-prim-umbral">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">⚔️</span>
+                        <span class="dw-chapter-title">Primary — Umbral Sands</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 1</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="qp-8"><input type="checkbox" id="qp-8" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Icthlarin%27s_Little_Helper" target="_blank" style="color: var(--accent-cyan);">Icthlarin's Little Helper</a> — <em>Umbral Sands</em> — Interact with the door to the Umbral Sands.</span></label></li>
+                    </ul>
+                </div>
+            </details>
 
-            <h3 style="color: var(--text-main); margin-top: 1.75rem;">Primary — Scorned Wilderness</h3>
-            <ul style="list-style: none; padding-left: 0;">
-                <li class="task-item"><label for="qp-9"><input type="checkbox" id="qp-9" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Regicide" target="_blank" style="color: var(--accent-cyan);">Regicide</a> — <em>Scorned Wilderness</em> — Interact with the Dragon Gate north-west of Velgar's Rise.</span></label></li>
-            </ul>
+            <!-- 11. Secondary — Umbral Sands -->
+            <details class="dw-chapter-accordion" open id="quest-accordion-sec-umbral">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">📜</span>
+                        <span class="dw-chapter-title">Secondary — Umbral Sands</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 4</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="qs-25"><input type="checkbox" id="qs-25" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Contact!" target="_blank" style="color: var(--accent-cyan);">Contact!</a> — <em>Umbral Sands</em> — Speak to Avisk Crystal in Dunes of Uzzer.</span></label></li>
+                        <li class="task-item"><label for="qs-26"><input type="checkbox" id="qs-26" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Brink_of_Extinction" target="_blank" style="color: var(--accent-cyan);">Brink of Extinction</a> — <em>Umbral Sands</em> — Speak to Zi at The Burning Spire, south of the Sinking Pyramid.</span></label></li>
+                        <li class="task-item"><label for="qs-27"><input type="checkbox" id="qs-27" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Mapping_The_Sands_I" target="_blank" style="color: var(--accent-cyan);">Mapping The Sands I</a> — <em>Umbral Sands</em> — Speak to Anamcara in Alcarrid Camp.</span></label></li>
+                        <li class="task-item"><label for="qs-28"><input type="checkbox" id="qs-28" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Mapping_The_Sands_II" target="_blank" style="color: var(--accent-cyan);">Mapping The Sands II</a> — <em>Umbral Sands</em> — Speak to Anamcara in Alcarrid Camp.</span></label></li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- 12. Primary — Scorned Wilderness -->
+            <details class="dw-chapter-accordion" open id="quest-accordion-prim-scorned">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">⚔️</span>
+                        <span class="dw-chapter-title">Primary — Scorned Wilderness</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 1</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="qp-9"><input type="checkbox" id="qp-9" class="ffx-checkbox"> <span class="task-text"><a href="https://dragonwilds.runescape.wiki/w/Regicide" target="_blank" style="color: var(--accent-cyan);">Regicide</a> — <em>Scorned Wilderness</em> — Interact with the Dragon Gate north-west of Velgar's Rise.</span></label></li>
+                    </ul>
+                </div>
+            </details>
 
         </div>
         <!-- End Quests Tab -->
@@ -457,87 +634,145 @@
                 </span>
             </div>
 
-            <!-- Urns Checklist By Region -->
-            <div style="margin-bottom: 2rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                    <h3 style="color: var(--accent-cyan); margin: 0;">1. Brynmoor (6 Urns)</h3>
-                    <span style="font-size: 0.85rem; font-family: monospace; color: var(--text-dim);">+60 HP Total</span>
-                </div>
-                
-                <h4 style="color: var(--text-main); margin: 1rem 0 0.5rem 0; font-size: 0.95rem;">Bramblemead Valley (3 Urns)</h4>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li class="task-item"><label for="dw-urn-1"><input type="checkbox" id="dw-urn-1" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Bramblemead Urn #1:</strong> Valley overlook rocky ledge, northeast of the starter village.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-2"><input type="checkbox" id="dw-urn-2" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Bramblemead Urn #2:</strong> Hidden alcove behind the waterfall ravine near the Old Mill.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-3"><input type="checkbox" id="dw-urn-3" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Bramblemead Urn #3:</strong> Southern boundary ridge cave near the Goblin Castle outskirts.</span></label></li>
-                </ul>
-
-                <h4 style="color: var(--text-main); margin: 1rem 0 0.5rem 0; font-size: 0.95rem;">Whispering Swamp (3 Urns)</h4>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li class="task-item"><label for="dw-urn-4"><input type="checkbox" id="dw-urn-4" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Whispering Swamp Urn #1:</strong> Submerged root island in the northern marsh delta.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-5"><input type="checkbox" id="dw-urn-5" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Whispering Swamp Urn #2:</strong> Ancient mossy ruin foundation near the Spitfoot bog trail.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-6"><input type="checkbox" id="dw-urn-6" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Whispering Swamp Urn #3:</strong> Grotto nook beneath the towering mangrove canopy (east of the swamp vault).</span></label></li>
-                </ul>
+            <!-- Controls: Expand / Collapse All Urn Regions -->
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;">
+                <button type="button" id="btn-expand-all-urns" style="background: rgba(6,182,212,0.1); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-family: monospace; cursor: pointer; transition: all 0.2s;">Expand All Regions</button>
+                <button type="button" id="btn-collapse-all-urns" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-dim); padding: 0.35rem 0.75rem; border-radius: 4px; font-size: 0.8rem; font-family: monospace; cursor: pointer; transition: all 0.2s;">Collapse All Regions</button>
             </div>
 
-            <div style="margin-bottom: 2rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                    <h3 style="color: var(--accent-cyan); margin: 0;">2. Ghornfell (3 Urns)</h3>
-                    <span style="font-size: 0.85rem; font-family: monospace; color: var(--text-dim);">+30 HP Total</span>
-                </div>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li class="task-item"><label for="dw-urn-7"><input type="checkbox" id="dw-urn-7" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Fractured Plains (1 Urn):</strong> Jagged crag crevice near the copper and tin mining bluffs.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-8"><input type="checkbox" id="dw-urn-8" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Stormtouched Highlands (1 Urn):</strong> Wind-swept plateau cliff edge overlooking the valley.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-9"><input type="checkbox" id="dw-urn-9" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Bloodblight Swamp (1 Urn):</strong> Rotten peat hollow adjacent to Dr. Fenkenstrain's research camp.</span></label></li>
-                </ul>
-            </div>
+            <!-- 1. Brynmoor (6 Urns) -->
+            <details class="dw-chapter-accordion" open id="urn-accordion-brynmoor">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">🏺</span>
+                        <span class="dw-chapter-title">1. Brynmoor (6 Urns)</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 6</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <h4 style="color: var(--text-main); margin: 0 0 0.5rem 0; font-size: 0.95rem;">Bramblemead Valley (3 Urns)</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-bottom: 1rem;">
+                        <li class="task-item"><label for="dw-urn-1"><input type="checkbox" id="dw-urn-1" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Bramblemead Urn #1:</strong> Valley overlook rocky ledge, northeast of the starter village.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-2"><input type="checkbox" id="dw-urn-2" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Bramblemead Urn #2:</strong> Hidden alcove behind the waterfall ravine near the Old Mill.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-3"><input type="checkbox" id="dw-urn-3" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Bramblemead Urn #3:</strong> Southern boundary ridge cave near the Goblin Castle outskirts.</span></label></li>
+                    </ul>
 
-            <div style="margin-bottom: 2rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                    <h3 style="color: var(--accent-cyan); margin: 0;">3. Fellhollow (3 Urns)</h3>
-                    <span style="font-size: 0.85rem; font-family: monospace; color: var(--text-dim);">+30 HP Total</span>
+                    <h4 style="color: var(--text-main); margin: 1rem 0 0.5rem 0; font-size: 0.95rem;">Whispering Swamp (3 Urns)</h4>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="dw-urn-4"><input type="checkbox" id="dw-urn-4" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Whispering Swamp Urn #1:</strong> Submerged root island in the northern marsh delta.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-5"><input type="checkbox" id="dw-urn-5" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Whispering Swamp Urn #2:</strong> Ancient mossy ruin foundation near the Spitfoot bog trail.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-6"><input type="checkbox" id="dw-urn-6" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Whispering Swamp Urn #3:</strong> Grotto nook beneath the towering mangrove canopy (east of the swamp vault).</span></label></li>
+                    </ul>
                 </div>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li class="task-item"><label for="dw-urn-10"><input type="checkbox" id="dw-urn-10" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Emberwood (1 Urn):</strong> Charcoal grove clearing west of the Guthixian stone shrine.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-11"><input type="checkbox" id="dw-urn-11" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Hope's Fall (1 Urn):</strong> Misty cavern shelf at the foot of the cascading soul falls.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-12"><input type="checkbox" id="dw-urn-12" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Silverthorn Keep (1 Urn):</strong> Outer bastion rampart ruins overlooking the wither river.</span></label></li>
-                </ul>
-            </div>
+            </details>
 
-            <div style="margin-bottom: 2rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                    <h3 style="color: var(--accent-cyan); margin: 0;">4. Dowdun Reach (3 Urns)</h3>
-                    <span style="font-size: 0.85rem; font-family: monospace; color: var(--text-dim);">+30 HP Total</span>
+            <!-- 2. Ghornfell (3 Urns) -->
+            <details class="dw-chapter-accordion" open id="urn-accordion-ghornfell">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">🏺</span>
+                        <span class="dw-chapter-title">2. Ghornfell (3 Urns)</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 3</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="dw-urn-7"><input type="checkbox" id="dw-urn-7" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Fractured Plains (1 Urn):</strong> Jagged crag crevice near the copper and tin mining bluffs.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-8"><input type="checkbox" id="dw-urn-8" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Stormtouched Highlands (1 Urn):</strong> Wind-swept plateau cliff edge overlooking the valley.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-9"><input type="checkbox" id="dw-urn-9" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Bloodblight Swamp (1 Urn):</strong> Rotten peat hollow adjacent to Dr. Fenkenstrain's research camp.</span></label></li>
+                    </ul>
                 </div>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li class="task-item"><label for="dw-urn-13"><input type="checkbox" id="dw-urn-13" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>The Grand Hall (1 Urn):</strong> Dilapidated royal courtyard gallery, hidden behind collapsed arches.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-14"><input type="checkbox" id="dw-urn-14" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>The Garrison (1 Urn):</strong> Former armory guard tower basement stairwell.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-15"><input type="checkbox" id="dw-urn-15" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>The Menagerie (1 Urn):</strong> Overgrown enclosure pavilion near the corrupted beast pens.</span></label></li>
-                </ul>
-            </div>
+            </details>
 
-            <div style="margin-bottom: 2rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                    <h3 style="color: var(--accent-cyan); margin: 0;">5. Umbral Sands (3 Urns)</h3>
-                    <span style="font-size: 0.85rem; font-family: monospace; color: var(--text-dim);">+30 HP Total</span>
+            <!-- 3. Fellhollow (3 Urns) -->
+            <details class="dw-chapter-accordion" open id="urn-accordion-fellhollow">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">🏺</span>
+                        <span class="dw-chapter-title">3. Fellhollow (3 Urns)</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 3</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="dw-urn-10"><input type="checkbox" id="dw-urn-10" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Emberwood (1 Urn):</strong> Charcoal grove clearing west of the Guthixian stone shrine.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-11"><input type="checkbox" id="dw-urn-11" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Hope's Fall (1 Urn):</strong> Misty cavern shelf at the foot of the cascading soul falls.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-12"><input type="checkbox" id="dw-urn-12" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Silverthorn Keep (1 Urn):</strong> Outer bastion rampart ruins overlooking the wither river.</span></label></li>
+                    </ul>
                 </div>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li class="task-item"><label for="dw-urn-16"><input type="checkbox" id="dw-urn-16" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Alcarrid Oasis (1 Urn):</strong> Palm spring embankment nestled against the sandstone cliffs.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-17"><input type="checkbox" id="dw-urn-17" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>The Burning Spire (1 Urn):</strong> Scorched altar pedestal south of the Sinking Pyramid.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-18"><input type="checkbox" id="dw-urn-18" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Manafem Plains (1 Urn):</strong> Desolate dune outcrop sheltered from the shifting sand winds.</span></label></li>
-                </ul>
-            </div>
+            </details>
 
-            <div style="margin-bottom: 2rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                    <h3 style="color: var(--accent-cyan); margin: 0;">6. Scorned Wilderness (3 Urns)</h3>
-                    <span style="font-size: 0.85rem; font-family: monospace; color: var(--text-dim);">+30 HP Total</span>
+            <!-- 4. Dowdun Reach (3 Urns) -->
+            <details class="dw-chapter-accordion" open id="urn-accordion-dowdun">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">🏺</span>
+                        <span class="dw-chapter-title">4. Dowdun Reach (3 Urns)</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 3</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="dw-urn-13"><input type="checkbox" id="dw-urn-13" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>The Grand Hall (1 Urn):</strong> Dilapidated royal courtyard gallery, hidden behind collapsed arches.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-14"><input type="checkbox" id="dw-urn-14" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>The Garrison (1 Urn):</strong> Former armory guard tower basement stairwell.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-15"><input type="checkbox" id="dw-urn-15" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>The Menagerie (1 Urn):</strong> Overgrown enclosure pavilion near the corrupted beast pens.</span></label></li>
+                    </ul>
                 </div>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li class="task-item"><label for="dw-urn-19"><input type="checkbox" id="dw-urn-19" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Fragments of Ghornfell Urn #1:</strong> Shattered floating landmass crag reachable via wind traversal.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-20"><input type="checkbox" id="dw-urn-20" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Fragments of Ghornfell Urn #2:</strong> Deep obsidian ravine crevice on the northern perimeter edge.</span></label></li>
-                    <li class="task-item"><label for="dw-urn-21"><input type="checkbox" id="dw-urn-21" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Cataclysm Keep (1 Urn):</strong> Final stronghold inner sanctum platform near the core gate.</span></label></li>
-                </ul>
-            </div>
+            </details>
+
+            <!-- 5. Umbral Sands (3 Urns) -->
+            <details class="dw-chapter-accordion" open id="urn-accordion-umbral">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">🏺</span>
+                        <span class="dw-chapter-title">5. Umbral Sands (3 Urns)</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 3</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="dw-urn-16"><input type="checkbox" id="dw-urn-16" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Alcarrid Oasis (1 Urn):</strong> Palm spring embankment nestled against the sandstone cliffs.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-17"><input type="checkbox" id="dw-urn-17" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>The Burning Spire (1 Urn):</strong> Scorched altar pedestal south of the Sinking Pyramid.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-18"><input type="checkbox" id="dw-urn-18" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Manafem Plains (1 Urn):</strong> Desolate dune outcrop sheltered from the shifting sand winds.</span></label></li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- 6. Scorned Wilderness (3 Urns) -->
+            <details class="dw-chapter-accordion" open id="urn-accordion-scorned">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">🏺</span>
+                        <span class="dw-chapter-title">6. Scorned Wilderness (3 Urns)</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 3</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li class="task-item"><label for="dw-urn-19"><input type="checkbox" id="dw-urn-19" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Fragments of Ghornfell Urn #1:</strong> Shattered floating landmass crag reachable via wind traversal.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-20"><input type="checkbox" id="dw-urn-20" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Fragments of Ghornfell Urn #2:</strong> Deep obsidian ravine crevice on the northern perimeter edge.</span></label></li>
+                        <li class="task-item"><label for="dw-urn-21"><input type="checkbox" id="dw-urn-21" class="ffx-checkbox dw-urn-checkbox"> <span class="task-text"><strong>Cataclysm Keep (1 Urn):</strong> Final stronghold inner sanctum platform near the core gate.</span></label></li>
+                    </ul>
+                </div>
+            </details>
 
             <div style="text-align: right; margin-top: 1.5rem;">
                 <button type="button" id="reset-urns-btn" style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">↺ Reset Urns Progress</button>
@@ -1720,12 +1955,40 @@
         const collapseAllChaptersBtn = document.getElementById('btn-collapse-all-chapters');
         if (expandAllChaptersBtn) {
             expandAllChaptersBtn.addEventListener('click', () => {
-                document.querySelectorAll('.dw-chapter-accordion').forEach(el => el.open = true);
+                document.querySelectorAll('#dw-tab-guide .dw-chapter-accordion').forEach(el => el.open = true);
             });
         }
         if (collapseAllChaptersBtn) {
             collapseAllChaptersBtn.addEventListener('click', () => {
-                document.querySelectorAll('.dw-chapter-accordion').forEach(el => el.open = false);
+                document.querySelectorAll('#dw-tab-guide .dw-chapter-accordion').forEach(el => el.open = false);
+            });
+        }
+
+        // Expand / Collapse All Quests handlers
+        const expandAllQuestsBtn = document.getElementById('btn-expand-all-quests');
+        const collapseAllQuestsBtn = document.getElementById('btn-collapse-all-quests');
+        if (expandAllQuestsBtn) {
+            expandAllQuestsBtn.addEventListener('click', () => {
+                document.querySelectorAll('#dw-tab-quests .dw-chapter-accordion').forEach(el => el.open = true);
+            });
+        }
+        if (collapseAllQuestsBtn) {
+            collapseAllQuestsBtn.addEventListener('click', () => {
+                document.querySelectorAll('#dw-tab-quests .dw-chapter-accordion').forEach(el => el.open = false);
+            });
+        }
+
+        // Expand / Collapse All Urn Regions handlers
+        const expandAllUrnsBtn = document.getElementById('btn-expand-all-urns');
+        const collapseAllUrnsBtn = document.getElementById('btn-collapse-all-urns');
+        if (expandAllUrnsBtn) {
+            expandAllUrnsBtn.addEventListener('click', () => {
+                document.querySelectorAll('#dw-tab-urns .dw-chapter-accordion').forEach(el => el.open = true);
+            });
+        }
+        if (collapseAllUrnsBtn) {
+            collapseAllUrnsBtn.addEventListener('click', () => {
+                document.querySelectorAll('#dw-tab-urns .dw-chapter-accordion').forEach(el => el.open = false);
             });
         }
 

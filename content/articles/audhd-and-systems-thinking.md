@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: audhd-and-systems-thinking
 type: article
 status: draft

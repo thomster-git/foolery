@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-healthcare
 title: My Story With Healthcare
 type: article

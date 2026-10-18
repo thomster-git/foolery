@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-the-msp-trap-and-broken-infrastructure
 title: My Story With The Msp Trap And Broken Infrastructure
 type: article

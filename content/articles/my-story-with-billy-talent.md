@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-billy-talent
 title: My Story With Billy Talent
 type: article

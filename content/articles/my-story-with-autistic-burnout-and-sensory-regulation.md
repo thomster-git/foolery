@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-autistic-burnout-and-sensory-regulation
 title: My Story With Autistic Burnout And Sensory Regulation
 type: article

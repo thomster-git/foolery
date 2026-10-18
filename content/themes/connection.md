@@ -14,10 +14,8 @@ topics:
   - audhd
   - technology
 related:
-  - my-story-with-everything-is-connected
-  - my-story-with-billy-talent
-  - my-story-with-the-akira-ransomware-attack
-  - my-story-with-the-nicu-and-corporate-coldness
+  - project-atlas
+  - building-a-comprehensive-discord-ecosystem
 ---
 
 The core manifesto behind this project is that everything is connected — not as a spiritual claim, but as a practical observation. The decision I made to set up immutable backups at the mining company didn't happen in a vacuum: it came from a prior context, a set of things I'd read, a particular way of thinking I'd developed from engineering training. When the ransomware hit, that earlier decision determined the outcome. What looks like a single event in the present is always a product of every circumstance that came before it. Once you start seeing things that way, it becomes very hard to treat any decision as isolated or any moment as self-contained.

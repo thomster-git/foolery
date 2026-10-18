@@ -1,6 +1,6 @@
 ---
 status: "published"
-stage: "teaser"
+stage: "full"
 title: "The Project Atlas Manifesto"
 id: "manifesto"
 type: "article"

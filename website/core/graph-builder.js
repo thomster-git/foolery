@@ -17,15 +17,17 @@ export default class GraphBuilder {
     build(content) {
 
         const graph = {
-
             nodes: [],
             edges: []
-
         };
         
         const tags = new Set();
 
-        content.forEach(object => {
+        // Only include non-draft content in the knowledge graph
+        const publishedContent = content.filter(obj => obj.metadata?.status !== "draft");
+        const publishedIds = new Set(publishedContent.map(obj => obj.metadata.id));
+
+        publishedContent.forEach(object => {
 
             graph.nodes.push({
                 id: object.metadata.id,
@@ -40,24 +42,20 @@ export default class GraphBuilder {
                 .forEach(([relation, targets]) => {
 
                     targets.forEach(target => {
-
-                        graph.edges.push({
-
-                            source:
-                                object.metadata.id,
-
-                            target:
-                                target.metadata.id,
-
-                            relation
-
-                        });
+                        // Only add edge if target is also published
+                        if (target.metadata?.id && publishedIds.has(target.metadata.id)) {
+                            graph.edges.push({
+                                source: object.metadata.id,
+                                target: target.metadata.id,
+                                relation
+                            });
+                        }
 
                     });
 
                 });
                 
-        // Synthesize tag edges
+            // Synthesize tag edges
             if (object.metadata.tags && Array.isArray(object.metadata.tags)) {
                 object.metadata.tags.forEach(tag => {
                     tags.add(tag);
@@ -72,7 +70,6 @@ export default class GraphBuilder {
             // Synthesize Library Category edges
             const libraryTypes = ["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "music", "tv-show"];
             if (libraryTypes.includes(object.metadata.type)) {
-                const pluralType = object.metadata.type + "s";
                 graph.edges.push({
                     source: `hub-${object.metadata.type}`,
                     target: object.metadata.id,
@@ -93,9 +90,14 @@ export default class GraphBuilder {
             });
         });
 
-        // Add Library Category Hub nodes
-        const libraryTypes = ["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "music", "tv-show"];
-        libraryTypes.forEach(type => {
+        // Add Library Category Hub nodes only if they have published items
+        const activeLibraryTypes = new Set(
+            publishedContent
+                .filter(obj => ["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "music", "tv-show"].includes(obj.metadata.type))
+                .map(obj => obj.metadata.type)
+        );
+
+        activeLibraryTypes.forEach(type => {
             const plural = type.charAt(0).toUpperCase() + type.slice(1) + "s";
             graph.nodes.push({
                 id: `hub-${type}`,

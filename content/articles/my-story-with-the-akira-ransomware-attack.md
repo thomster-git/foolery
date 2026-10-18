@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-the-akira-ransomware-attack
 title: My Story With The Akira Ransomware Attack
 type: article

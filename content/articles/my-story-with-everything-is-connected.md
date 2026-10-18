@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-everything-is-connected
 title: Everything Is Connected: The Manifesto Behind Project Atlas
 type: article

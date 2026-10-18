@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-typing-trainers-and-early-internet
 title: My Story With Typing Trainers And Early Internet
 type: article

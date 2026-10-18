@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-cfi
 title: My Story With Cfi
 type: article

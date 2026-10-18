@@ -1,9 +1,9 @@
 ---
-stage: "teaser"
+stage: "full"
 id: discord-ai-bot
 title: "The Thoms Foolery Discord Bot"
 type: project
-status: active
+status: draft
 author: Jonathan Thoms
 summary: A custom Python bot that transformed a standard Discord server into a self-sustaining ecosystem — complete with a virtual economy, real-time sports APIs, automated meme triggers, and stateful AI agents powered by the Google Antigravity SDK.
 topics:

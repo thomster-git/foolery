@@ -13,9 +13,8 @@ themes:
   - connection
   - craftsmanship
 related:
-  - manifesto
-  - keel-systems
-  - my-story-with-everything-is-connected
+  - building-a-comprehensive-discord-ecosystem
+  - ocarina-practice-tool
 tags:
   - knowledge-graph
   - digital-garden

@@ -15,9 +15,8 @@ tags:
   - gaming
   - home-lab
 related:
-  - my-story-with-typing-trainers-and-early-internet
-  - my-story-with-videogames-and-adhd
-  - my-story-with-home-lab-and-proxmox
+  - building-a-comprehensive-discord-ecosystem
+  - project-atlas
 ---
 
 I've known my way around a computer from a young age, but it wasn't until recently that I really did any actual IT work.

@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-the-nicu-and-corporate-coldness
 title: My Story With The Nicu And Corporate Coldness
 type: article

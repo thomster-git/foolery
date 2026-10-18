@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: discord-vs-corporate-comms
 type: article
 status: draft

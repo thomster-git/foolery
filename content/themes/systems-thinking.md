@@ -13,10 +13,8 @@ topics:
   - technology
   - audhd
 related:
-  - audhd-and-systems-thinking
-  - my-story-with-mechanical-engineering-and-systems-thinking
-  - my-story-with-keel-systems-and-honest-kpis
-  - my-story-with-the-msp-trap-and-broken-infrastructure
+  - building-a-comprehensive-discord-ecosystem
+  - project-atlas
 ---
 
 Mechanical Engineering taught me something that I keep applying in contexts it was never explicitly meant for: you have to account for failure at the foundation before you build anything on top of it. Load paths, failure modes, tolerances — these aren't afterthoughts you bolt on at the end, they're embedded in the design from the first sketch. When I moved into IT work, I found that almost nobody was thinking this way. Infrastructure had been assembled piece by piece as needs arose, with no one ever asking what happens when the worst-case scenario hits the oldest, most load-bearing part. The ransomware attack confirmed what I already suspected: the attack surface wasn't the result of negligence, it was the result of never modeling the system as a whole.

@@ -16,6 +16,12 @@
   status = 301
   force = true
 
+[[redirects]]
+  from = "/projects/discord-ai-bot*"
+  to = "/articles/building-a-comprehensive-discord-ecosystem.html"
+  status = 301
+  force = true
+
 # API Routes for Netlify Functions
 [[redirects]]
   from = "/api/submit-inquiry"

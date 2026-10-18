@@ -4,8 +4,8 @@ id: building-a-comprehensive-discord-ecosystem
 title: "The Architecture of an Autonomous Community Operating System"
 type: article
 status: published
-created: 2026-09-14
-updated: 2026-10-12
+created: 2026-10-19
+updated: 2026-10-19
 access: public
 summary: A deep technical breakdown of the Thoms Foolery Discord Ecosystem — a custom Python bot built with discord.py, SQLite3, Google Antigravity SDK, Pillow, and reverse-engineered sports APIs. This is the story of how a standard Discord server was re-engineered into a self-sustaining, proactive community operating system.
 topics:
@@ -21,20 +21,18 @@ tags:
   - community-engineering
   - sports-analytics
 related:
-  - discord-ai-bot
   - project-atlas
-  - manifesto
   - technology
 ---
 
 # 🌿 The Architecture of an Autonomous Community Operating System
 
 **Project:** Thoms Foolery Discord Ecosystem  
-**Author:** Keel / Thom  
-**Platform:** Digital Garden (Thoms Foolery)  
+**Author:** Jonathan Thoms  
+**Platform:** Discord (Thoms Foolery Server) / Python 3.14  
 **Tech Stack:** Python 3.14, discord.py, SQLite3, Google Antigravity / Gemini SDK, Pillow, aiohttp  
 **Status:** Production / Final Release  
-**Tags:** `#discord-bot` `#python` `#ai-agents` `#system-architecture` `#community-engineering` `#sports-analytics`
+**Tags:** [#discord-bot](/tags/discord-bot.html) • [#python](/tags/python.html) • [#ai-agents](/tags/ai-agents.html) • [#system-architecture](/tags/system-architecture.html) • [#community-engineering](/tags/community-engineering.html) • [#sports-analytics](/tags/sports-analytics.html)
 
 ---
 

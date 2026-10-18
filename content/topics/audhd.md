@@ -10,10 +10,6 @@ themes:
   - growth
   - resilience
 related:
-  - my-story-with-neurodiversity-and-adult-diagnosis
-  - my-story-with-autistic-burnout-and-sensory-regulation
-  - my-story-with-autigender-and-identity
-  - my-story-with-healthcare
   - bose-quietcomfort-pro-2
   - ark-chewers-sensory-wearable
 tags:

@@ -31,7 +31,6 @@ export default class SitemapBuilder {
         pages.push({ url: "/tools/dragonwilds-tracker/", updated: now });
         pages.push({ url: "/tools/ffx-tracker/", updated: now });
         pages.push({ url: "/sponsors/", updated: now });
-        pages.push({ url: "/hire/", updated: now });
         pages.push({ url: "/interests/", updated: now });
         pages.push({ url: "/uses/", updated: now });
         pages.push({ url: "/shit-list/", updated: now });

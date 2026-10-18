@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-home-lab-and-proxmox
 title: My Story With Home Lab And Proxmox
 type: article

@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: keel-systems
 title: Keel Systems
 type: project

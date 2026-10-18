@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-mechanical-engineering-and-systems-thinking
 title: My Story With Mechanical Engineering And Systems Thinking
 type: article

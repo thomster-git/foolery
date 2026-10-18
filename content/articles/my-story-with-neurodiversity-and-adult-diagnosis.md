@@ -1,5 +1,5 @@
 ---
-stage: "teaser"
+stage: "full"
 id: my-story-with-neurodiversity-and-adult-diagnosis
 title: My Story With Neurodiversity And Adult Diagnosis
 type: article
