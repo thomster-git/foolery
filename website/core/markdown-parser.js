@@ -7,10 +7,13 @@ export default function parseMarkdown(markdownText = "") {
 
   let text = markdownText.trim();
 
-  // Code blocks ```lang\ncode\n```
+  // 1. Extract and protect code blocks with placeholders
+  const codeBlocks = [];
   text = text.replace(/```([^\n]*)\n([\s\S]*?)```/g, (match, lang, code) => {
     const langClass = lang.trim() ? ` class="language-${escapeHtml(lang.trim())}"` : '';
-    return `<pre><code${langClass}>${escapeHtml(code.trim())}</code></pre>`;
+    const placeholder = `%%%ATLAS_CODE_BLOCK_${codeBlocks.length}%%%`;
+    codeBlocks.push(`<pre><code${langClass}>${escapeHtml(code.trim())}</code></pre>`);
+    return placeholder;
   });
 
   // Blockquotes > quote
@@ -31,7 +34,7 @@ export default function parseMarkdown(markdownText = "") {
   // Inline formatting: bold, italic, inline code, links
   text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+  text = text.replace(/`([^`]+)`/g, (match, code) => `<code>${escapeHtml(code)}</code>`);
   text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 
   // Markdown tables: | col1 | col2 |\n|---|---|\n| val1 | val2 |
@@ -76,14 +79,21 @@ export default function parseMarkdown(markdownText = "") {
 
   // Split into paragraphs for text blocks not already wrapped in HTML tags
   const blocks = text.split(/\n\s*\n/);
-  return blocks.map(block => {
+  let parsedHtml = blocks.map(block => {
     block = block.trim();
     if (!block) return '';
-    if (/^<(h[1-6]|ul|ol|li|blockquote|pre|hr|div|p|article|section|table)/i.test(block)) {
+    if (/^<(h[1-6]|ul|ol|li|blockquote|pre|hr|div|p|article|section|table)/i.test(block) || /^%%%ATLAS_CODE_BLOCK_\d+%%%$/.test(block)) {
       return block;
     }
     return `<p>${block.replace(/\n/g, '<br>')}</p>`;
   }).filter(Boolean).join('\n\n');
+
+  // Restore protected code blocks
+  parsedHtml = parsedHtml.replace(/%%%ATLAS_CODE_BLOCK_(\d+)%%%/g, (match, index) => {
+    return codeBlocks[Number(index)] || '';
+  });
+
+  return parsedHtml;
 }
 
 function escapeHtml(str) {

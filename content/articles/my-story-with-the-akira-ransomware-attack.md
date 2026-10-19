@@ -4,8 +4,8 @@ id: my-story-with-the-akira-ransomware-attack
 title: "Surviving the Akira Ransomware Attack: 14 Days of Bare-Metal Triage, Toxic Leadership, and Rebuilding a Mine from Scratch"
 type: article
 status: published
-author: "Jonathan Thom"
-created: 2026-09-14
+author: "Jonathan Thoms"
+created: 2026-10-19
 updated: 2026-10-19
 access: paid
 summary: The true story of how a single IT Coordinator stood between the Akira ransomware gang and the total operational collapse of an isolated fluorspar mine in Newfoundland. From waking up to 200 Defender alert emails at 4:43 AM and discovering our Datto backups untouched, to enduring toxic executive pressure, assembly-line endpoint reimaging, and forensic analysis of a rushed, sloppy adversary.
