@@ -818,8 +818,11 @@ export default class PageBuilder {
 
             const isAkira = article.metadata.id === "my-story-with-the-akira-ransomware-attack";
             const teaserDesc = isAkira 
-              ? "The technical containment was only the beginning. Unlock the full essay to read about the untouched Datto lifeline, toxic owner remarks, stolen credit, the WiFi Pineapple and night-shift torrenting post-mortem, and the autistic burnout that followed."
+              ? "The technical containment was only the beginning. This flagship investigative essay is unlocked for supporters who subscribe—featuring the untouched Datto lifeline, toxic owner remarks, stolen credit, the WiFi Pineapple and night-shift torrenting post-mortem, and the autistic burnout that followed."
               : "Support future independent technical journalism and unlock the full deep-dive essay.";
+            const btnText = isAkira 
+              ? "Unlock with Supporter Subscription" 
+              : "Unlock with Supporter Pass";
 
             bodyHtml = `
             <div class="article-teaser-section">
@@ -846,7 +849,7 @@ export default class PageBuilder {
                 <!-- Lemon Squeezy Supporter Button -->
                 <a href="https://thomsfoolery.lemonsqueezy.com/checkout" class="btn btn-primary lemonsqueezy-button" id="lemon-supporter-btn" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; border: none; padding: 0.85rem 1.25rem; font-weight: 700; font-size: 1rem; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.25); transition: opacity 0.2s;">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-                  <span>Unlock with Supporter Pass ($5 / PWYW)</span>
+                  <span>${btnText}</span>
                 </a>
 
                 <!-- Passcode / Key Unlock -->
