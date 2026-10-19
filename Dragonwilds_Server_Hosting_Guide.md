@@ -1,7 +1,7 @@
 # RuneScape: Dragonwilds Dedicated Server Operations Manual
 
 > **Project Atlas Technical Companion Series • Field Operations Manual**  
-> *Author:* Jonathan Thom • Founder, Thom's Foolery & Keel Systems  
+> *Author:* Jonathan Thoms • Founder, Thoms Foolery  
 > *Edition:* First Edition • Version 1.4.0 (October 2026) • Pay-What-You-Want Digital Companion  
 > *Companion Tools:* [Live 72-Minute Vault Timers & Tracker](https://www.thomsfoolery.com/tools/dragonwilds-tracker/)
 
@@ -324,8 +324,8 @@ This field guide is published by **Thom's Foolery** as an open-access companion 
   [https://www.thomsfoolery.com/tools/dragonwilds-tracker/#stats](https://www.thomsfoolery.com/tools/dragonwilds-tracker/#stats)
 
 ### About the Author
-**Jonathan Thom** is a software architect, homelab enthusiast, and the creator of Project Atlas and Keel Systems. When he isn't managing Proxmox clusters or laser engraving at EtchCentric Creations, he deconstructs retro game mechanics and builds tools for communities.
+**Jonathan Thoms** is a software architect, homelab enthusiast, and the creator of Project Atlas. When he isn't managing Proxmox clusters or laser engraving at EtchCentric Creations, he deconstructs retro game mechanics and builds tools for communities.
 
 ---
-*Published by Thom's Foolery Digital Press • Distributed under Pay-What-You-Want Terms*  
-*Copyright © 2026 Jonathan Thom. All rights reserved.*
+*Published by Thoms Foolery Digital Press • Distributed under Pay-What-You-Want Terms*  
+*Copyright © 2026 Jonathan Thoms. All rights reserved.*
