@@ -18,7 +18,7 @@ Here is the full breakdown of what landed in **v1.3.0** and where we are steerin
 
 Most Discord servers turn into ghost towns after their first few weeks. Niche channels go quiet, admins burn out trying to manually prompt conversations, and users disengage.
 
-This week, we published our most comprehensive architectural deep-dive yet: **The Architecture of an Autonomous Community Operating System**.
+Today, we published our most comprehensive architectural deep-dive yet: **The Architecture of an Autonomous Community Operating System**.
 
 It covers the complete engineering story behind the custom Thoms Foolery bot:
 * **Asynchronous Cogs Architecture (Python 3.14):** 22+ isolated modules handling virtual economies, real-time sports telemetry, automated daily chess puzzles, AutoMod rules, and automated media compression via Pillow.
@@ -31,21 +31,44 @@ It covers the complete engineering story behind the custom Thoms Foolery bot:
 
 ---
 
-## 2. Sports Analytics Polish: Persistent Filter States ⚾🏈🏒
+## 2. Sports Analytics Polish: Special Teams Metrics, Clear Filters & Postseason Updates ⚾🏈🏒
 
 If you frequently jump between our MLB, NFL, and NHL trend analyzers, you shouldn't have to re-select your favorite team or preferred metric every time you reload or switch tabs.
 
-All four of our core sports intelligence tools now feature full **`localStorage` state persistence**:
-* **MLB Trend Analyzer:** Remembers your chosen metric, division filter, and isolated team.
-* **NFL Trend Analyzer:** Remembers your primary and secondary comparative teams, metric, and conference/division.
-* **NHL Trend Analyzer:** Remembers your head-to-head franchise selections, division views, and point trend metrics.
-* **MLB Postseason Momentum Analyzer:** Remembers your tournament round (Wild Card, Division Series, LCS, World Series), active momentum metric, isolated playoff club, and view mode (Trajectory Stream vs Fire & Ice Quadrant).
+All four of our core sports intelligence tools now feature full **`localStorage` state persistence** alongside brand-new analysis features:
+* **NHL Trend Analyzer Expanded Special Teams:** We've integrated four critical special-teams metrics into the analyzer:
+  * **Penalties Per Game (PIM/GP):** Visualizing discipline trends over rolling 5, 10, and 20-game stretches.
+  * **Power Plays Per Game (PP/GP):** Tracking referee whistle frequency and offensive draw rates.
+  * **Penalty Kill Percentage (PK%):** Analyzing short-handed resilience and goal suppression.
+  * **Power Play Goal Percentage (PP%):** Modeling conversion efficiency with the man advantage.
+* **One-Click "Clear Filters" Button:** Added dedicated reset controls to the NHL, MLB Regular Season, and NFL analyzers to instantly restore default comparative views without manual unchecking.
+* **MLB Postseason Momentum Analyzer:** Updated with live October playoff bracket momentum—tracking the Brewers' historic 3-0 sweep of the Dodgers, ALCS and NLCS momentum curves, and acute Fire & Ice velocity metrics as teams fight for a World Series berth.
 
 Selections restore instantly as data loads, keeping your personal dashboard tailored to how you analyze the games.
 
 ---
 
-## 3. Share Cards v2: Clipboard-First & Expanded Socials 📋✨
+## 3. Dragonwilds Progression Guide & Quest Tracker Overhaul 🐉⚔️
+
+As I continue working through *Dragonwilds* myself on dedicated servers, the progression guide has evolved from a simple checklist into a full interactive compendium. New improvements, mechanics, and boss tips will continue landing on a regular basis:
+
+* **Collapsible Chapter Accordions:** Chapters 1 through 6, Quests by Area, and the Sanguine Urns tracker are now interactive collapsible accordions featuring live completion badges (e.g. `14 / 20`) so you can focus strictly on your active area.
+* **Hierarchical Subtask Auto-Checking:** Complex multi-part steps (like gathering the 3 Curse Fragments in 9.1–9.3 or preparing for Imaru in 10.1–10.4) now automatically mark the parent objective complete once all sub-steps are finished.
+* **Chapter 6 (Fellhollow) Survival Callouts:**
+  * **Early Lodestone Placement:** Advice on packing materials to plant your Lodestone immediately after crossing the wither water river to skip the dangerous hazardous crossing on return trips.
+  * **Mount Unlock Alert:** Directions to speak with Vannaka in Bleakfields Valley for *The Wild Hunt* to unlock your first ridable mount and sprint across the expanse.
+  * **Ghornfell Quest Completion:** Clarifying that *A Melody Remembered* (initiated in Ghornfell) can finally be finished once you breach Fellhollow.
+* **Imaru Boss Encounter Masterclass:** Comprehensive preparation checklist before breaching Hope's Fall:
+  * **Recommended Pre-Fight Unlocks:** Salve Amulet (*Seeking Salvation*, +17% damage vs undead), Level 5 Zombie Axe (*Doric's Quest*), Level 5 Longbow (*Mirror, Mirror*), and Level 5 Crossbow (*Even More Restless Ghosts*).
+  * **Consumable & Infusion Stacks:** Undead Delight / Eggs Royale (Sea Life 20-min regen), Pumpkin Soup (Soul Food), combat infusions, Whetstones, and Lesser Attack / Magic Potions.
+  * **Spells & Elemental Affinities:** Fire burn immunity warnings (favoring Air and Water), Surge dodge frames, and Tempest Shield block mechanics.
+  * **Phase 1 & 2 Strategies:** Safe positioning during flying phases, rot bolt dodges, purifying pool management, and dodging lethal ground sweeps.
+
+👉 **Track your run:** [thomsfoolery.com/tools/dragonwilds-tracker/](https://thomsfoolery.com/tools/dragonwilds-tracker/)
+
+---
+
+## 4. Share Cards v2: Clipboard-First & Expanded Socials 📋✨
 
 Our dynamic SVG-to-canvas image exporter now has an upgraded, frictionless workflow:
 * **Clipboard-First Image Sharing:** When you tap share on your custom Dragonwilds tracker cards or stats panels, the generated image is instantly copied to your system clipboard before opening the destination platform. Jump right into Discord, Reddit, or chat and hit `Ctrl+V` (or paste on mobile).
@@ -53,21 +76,9 @@ Our dynamic SVG-to-canvas image exporter now has an upgraded, frictionless workf
 
 ---
 
-## 4. Digital Companions & Working Together 💡
-
-Starting this week, we're testing a low-friction, privacy-friendly way to support the site without paywalls or tracking:
-
-* **Companion PWYW PDFs:** We're rolling out printable, offline companions for our live tools via Lemon Squeezy slide-over checkout overlays:
-  * **The Ocarina of Time 12-Hole Practice Companion:** Printable fingering charts, tab sheets, and phrasing guides ($0+ Pay-What-You-Want).
-  * **FFX 100% Tracker Reference:** Offline checklists, celestial weapon requirements, and monster arena capture routes.
-* **1-on-1 Architecture & Advisory Calls:** Readers interested in digital gardens, static site architecture, or sports data telemetry can now [book 45-minute advisory sessions directly](https://thomsfoolery.com/hire/).
-* **Productized 1-Week Micro-Builds:** If your company or project needs a custom interactive tool, calculator, or dashboard built in 5 weekdays, check our new [Work With Me offerings](https://thomsfoolery.com/hire/).
-
----
-
 ## 5. Beyond the Resume: The Interactive Interests Taxonomy 🧭
 
-Ever wondered what fuels the engineering behind the tools? We've just launched our dedicated **Interests Taxonomy** ([thomsfoolery.com/interests/](https://thomsfoolery.com/interests/)), giving visitors a multi-tier, progressive deep-dive beyond standard CV bullet points:
+Ever wondered what fuels the engineering behind the tools? We've launched our dedicated **Interests Taxonomy** ([thomsfoolery.com/interests/](https://thomsfoolery.com/interests/)), giving visitors a multi-tier, progressive deep-dive beyond standard CV bullet points:
 * **Sports Analytics & Modeling:** High-leverage win-probability swings, bullpen fatigue telemetry, and streak regression modeling.
 * **Video Games & Mechanics:** Zelda retro sound synthesis, FFX Sphere Grid route optimization, Dragonwilds dedicated server mechanics, and Overwatch 2.
 * **Music & Acoustic Engineering:** 12-hole Alto C vessel flute acoustics, Web Audio autocorrelation pitch detection, and custom song tablatures.
@@ -79,9 +90,9 @@ Ever wondered what fuels the engineering behind the tools? We've just launched o
 
 ## 6. Personal Notes & Community Field Reports ✍️
 
-* **The Weekend Build Sprint:** Dedicated this full Friday and Saturday into refining the site's layout engine, expanding desktop screen real-estate for ultrawide monitors, and writing the technical post-mortem on our Discord community operating system. Everything feels noticeably snappier and more coherent.
-* **Dragonwilds Field Notes:** The new 10 Dragonkin Vault Timers (72-minute respawn cycle) and Sanguine Urns (+10 HP) checklist were born out of practical necessity while playing through dedicated servers myself. This tool is an active work-in-progress—new tips, fishing hotspots, and mechanics will be added on a regular basis as I push deeper into the endgame.
-* **Tier List Creator is Live:** Tired of bloated, ad-ridden tier list websites, we rolled our own zero-friction alternative at [thomsfoolery.com/tools/tier-list/](https://thomsfoolery.com/tools/tier-list/). You can paste images straight from your clipboard (`Ctrl+V`), customize the exported title, and instantly download a high-res PNG.
+* **The Weekend Build Sprint:** Dedicated this full weekend to refining the site's layout engine, expanding desktop screen real-estate for ultrawide monitors, and writing the technical deep-dive on our Discord community operating system. Everything feels noticeably snappier and more coherent.
+* **Formula 1 2026 Grid Update:** We updated our interactive Tier List Creator with presets for the full 22-driver 2026 Formula 1 grid and updated team constructor identities. Build your tier rankings with zero ads or watermarks at [thomsfoolery.com/tools/tier-list/](https://thomsfoolery.com/tools/tier-list/).
+* **Knowledge Graph Privacy Protection:** Hardened our 3D graph resolver so that in-progress draft articles remain strictly sequestered during our teaser phase, keeping the live graph focused on published pieces.
 * **Ocarina of Time Remake (Target: Nov 5):** Preparing our progression walkthrough pipeline for the upcoming remake. As I play through on release day, I’ll be documenting dungeon routing, taking authentic screenshots, and wiring custom melody tablatures straight into our interactive Web Audio player.
 
 ---
