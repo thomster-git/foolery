@@ -50,10 +50,5 @@ export default async function tokenCommand(args = []) {
     console.log(`\x1b[36m${tokenStr}\x1b[0m\n`);
     console.log(`Valid for:   ${days} days (Expires: ${expirationDate})`);
     console.log("Scope:       Unlocks /resume/, Akira essay, and all gated supporter content\n");
-    console.log("Alternative Master Passcodes (Permanent):");
-    console.log("  • supporter2026");
-    console.log("  • akira2026");
-    console.log("  • atlaspass2026");
-    console.log("  • thomsfoolery\n");
     console.log("======================================\n");
 }

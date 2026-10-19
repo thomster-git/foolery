@@ -852,18 +852,18 @@ export default class PageBuilder {
                   <span>${btnText}</span>
                 </a>
 
-                <!-- Passcode / Key Unlock -->
+                <!-- Supporter Token Unlock -->
                 <div style="display: flex; align-items: center; margin: 1.25rem 0 1rem; gap: 0.75rem;">
                   <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
-                  <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 600;">Already have a key?</span>
+                  <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 600;">Already have a supporter token?</span>
                   <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
                 </div>
 
                 <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                  <input type="password" id="passcode-input" placeholder="Enter Supporter Key or Passcode" style="flex: 1; margin: 0; padding: 0.65rem 0.85rem; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-main); font-size: 0.9rem;" />
+                  <input type="password" id="passcode-input" placeholder="Enter Supporter Token (Atlas-...)" style="flex: 1; margin: 0; padding: 0.65rem 0.85rem; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-main); font-size: 0.9rem;" />
                   <button class="btn" id="passcode-submit-btn" onclick="checkArticlePasscode()" style="padding: 0.65rem 1.1rem; font-weight: 600; white-space: nowrap;">Unlock</button>
                 </div>
-                <p id="auth-error" style="color: #ef4444; display: none; font-size: 0.8rem; margin: 0.4rem 0 0; text-align: left;">Invalid or expired key</p>
+                <p id="auth-error" style="color: #ef4444; display: none; font-size: 0.8rem; margin: 0.4rem 0 0; text-align: left;">Invalid or expired supporter token</p>
 
                 <p style="font-size: 0.8rem; margin-top: 1.25rem; color: var(--text-dim); text-align: center; line-height: 1.5;">
                   Discord patron, sponsor, or long-time peer? <a href="/contact/" style="color: var(--accent-cyan); text-decoration: underline;">Request your free supporter token</a>.
@@ -873,13 +873,9 @@ export default class PageBuilder {
 
             <script>
             (function() {
-              const MASTER_PASSCODES = ["supporter2026", "atlaspass2026", "thomsfoolery", "akira2026", "autobiography2026", "garden2026"];
-              
               function validateToken(token) {
                 if (!token) return false;
                 const cleaned = token.trim();
-                if (MASTER_PASSCODES.includes(cleaned.toLowerCase())) return true;
-                if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(cleaned)) return true;
                 if (!cleaned.startsWith("Atlas-")) return false;
                 try {
                   const b64 = cleaned.replace("Atlas-", "");
@@ -935,7 +931,7 @@ export default class PageBuilder {
                 } else {
                   if (err) {
                     err.style.display = 'block';
-                    err.textContent = 'Invalid or expired supporter key';
+                    err.textContent = 'Invalid or expired supporter token';
                   }
                 }
               };

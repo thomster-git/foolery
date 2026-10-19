@@ -1007,9 +1007,11 @@ function initMemberPaywallAuth(container = document) {
   const SECRET = "AtlasPass2026";
 
   const validateToken = (token) => {
-    if (!token || !token.startsWith("Atlas-")) return false;
+    if (!token) return false;
+    const cleaned = token.trim();
+    if (!cleaned.startsWith("Atlas-")) return false;
     try {
-      const b64 = token.replace("Atlas-", "");
+      const b64 = cleaned.replace("Atlas-", "");
       const obj = JSON.parse(atob(b64));
       if (!obj.e || !obj.s) return false;
       
@@ -1048,7 +1050,7 @@ function initMemberPaywallAuth(container = document) {
       } else {
         if (authError) {
           authError.style.display = "block";
-          authError.textContent = "Invalid or expired passcode";
+          authError.textContent = "Invalid or expired supporter token";
         }
       }
     });
