@@ -815,28 +815,142 @@ export default class PageBuilder {
                 teaser = paragraphs.slice(0, 2).join("\n\n") || paragraphs[0] || "";
                 fullBody = this.markdown(paragraphs.slice(2).join("\n\n"));
             }
+
+            const isAkira = article.metadata.id === "my-story-with-the-akira-ransomware-attack";
+            const teaserDesc = isAkira 
+              ? "The technical containment was only the beginning. Unlock the full essay to read about the untouched Datto lifeline, toxic owner remarks, stolen credit, the WiFi Pineapple and night-shift torrenting post-mortem, and the autistic burnout that followed."
+              : "Support future independent technical journalism and unlock the full deep-dive essay.";
+
             bodyHtml = `
-            <div class="teaser-gradient">
+            <div class="article-teaser-section">
               ${this.markdown(teaser)}
             </div>
             
-            <div class="lock-screen" id="paywall-card">
-              <div class="paywall-badge">🔒 Members Only</div>
-              <h3>Gated Content</h3>
-              <p style="color: var(--text-dim); font-size: 0.9rem;">Please enter the Master Passcode to unlock.</p>
-              <div style="margin: 1rem 0;">
-                <input type="password" id="passcode-input" placeholder="Passcode" />
+            <div class="paywall-wrapper" style="position: relative; margin-top: 2rem;">
+              <!-- Blurred Content Preview -->
+              <div class="gated-full-content premium-blur" id="gated-full-content" style="max-height: 480px; overflow: hidden; position: relative; pointer-events: none; user-select: none; filter: blur(6px); opacity: 0.35;">
+                ${fullBody}
+                <div id="gated-fade-overlay" style="position: absolute; bottom: 0; left: 0; right: 0; height: 260px; background: linear-gradient(to bottom, transparent, var(--bg-main)); pointer-events: none;"></div>
               </div>
-              <button class="btn" style="width: 100%; justify-content: center;" onclick="checkPasscode(this)">Unlock</button>
-              <p id="auth-error" style="color: #ef4444; display: none; font-size: 0.8rem; margin-top: 0.5rem;">Incorrect Passcode</p>
-                    <p style="font-size: 0.8rem; margin-top: 1rem; color: var(--text-dim);">
-                        Don't have a token? <a href="/contact/" style="color: var(--accent); text-decoration: underline;">Contact us to request access</a>.
-                    </p>
+
+              <!-- High-Conversion Glassmorphism Paywall Card -->
+              <div class="lock-screen paywall-card-modern" id="paywall-card" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 92%; max-width: 500px; padding: 2.25rem; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(124, 58, 237, 0.4); box-shadow: 0 10px 40px rgba(0,0,0,0.7), 0 0 30px rgba(124, 58, 237, 0.2); border-radius: var(--radius-lg, 14px); text-align: center; backdrop-filter: blur(12px); z-index: 50;">
+                <div class="paywall-badge" style="background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; display: inline-flex; align-items: center; gap: 0.35rem; font-weight: 700; padding: 0.3rem 0.85rem; border-radius: 20px; font-size: 0.82rem; margin-bottom: 0.75rem;">
+                  ✨ Supporter Exclusive
+                </div>
+                <h3 style="margin: 0.25rem 0 0.5rem; font-size: 1.45rem; color: var(--text-main); font-weight: 800;">Want to Read the Full Story?</h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.5rem;">
+                  ${teaserDesc}
+                </p>
+
+                <!-- Lemon Squeezy Supporter Button -->
+                <a href="https://thomsfoolery.lemonsqueezy.com/checkout" class="btn btn-primary lemonsqueezy-button" id="lemon-supporter-btn" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; border: none; padding: 0.85rem 1.25rem; font-weight: 700; font-size: 1rem; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.25); transition: opacity 0.2s;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                  <span>Unlock with Supporter Pass ($5 / PWYW)</span>
+                </a>
+
+                <!-- Passcode / Key Unlock -->
+                <div style="display: flex; align-items: center; margin: 1.25rem 0 1rem; gap: 0.75rem;">
+                  <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
+                  <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 600;">Already have a key?</span>
+                  <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
+                </div>
+
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                  <input type="password" id="passcode-input" placeholder="Enter Supporter Key or Passcode" style="flex: 1; margin: 0; padding: 0.65rem 0.85rem; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-main); font-size: 0.9rem;" />
+                  <button class="btn" id="passcode-submit-btn" onclick="checkArticlePasscode()" style="padding: 0.65rem 1.1rem; font-weight: 600; white-space: nowrap;">Unlock</button>
+                </div>
+                <p id="auth-error" style="color: #ef4444; display: none; font-size: 0.8rem; margin: 0.4rem 0 0; text-align: left;">Invalid or expired key</p>
+
+                <p style="font-size: 0.8rem; margin-top: 1.25rem; color: var(--text-dim); text-align: center; line-height: 1.5;">
+                  Discord patron, sponsor, or long-time peer? <a href="/contact/" style="color: var(--accent-cyan); text-decoration: underline;">Request your free supporter token</a>.
+                </p>
+              </div>
             </div>
-            
-            <div class="gated-full-content premium-blur" id="gated-full-content" style="display:block;">
-              ${fullBody}
-            </div>
+
+            <script>
+            (function() {
+              const MASTER_PASSCODES = ["supporter2026", "atlaspass2026", "thomsfoolery", "akira2026", "autobiography2026", "garden2026"];
+              
+              function validateToken(token) {
+                if (!token) return false;
+                const cleaned = token.trim();
+                if (MASTER_PASSCODES.includes(cleaned.toLowerCase())) return true;
+                if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(cleaned)) return true;
+                if (!cleaned.startsWith("Atlas-")) return false;
+                try {
+                  const b64 = cleaned.replace("Atlas-", "");
+                  const obj = JSON.parse(atob(b64));
+                  if (!obj.e || !obj.s) return false;
+                  const SECRET = "AtlasPass2026";
+                  const cyrb53 = (str, seed = 0) => {
+                    let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+                    for (let i = 0, ch; i < str.length; i++) {
+                      ch = str.charCodeAt(i);
+                      h1 = Math.imul(h1 ^ ch, 2654435761);
+                      h2 = Math.imul(h2 ^ ch, 1597334677);
+                    }
+                    h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507);
+                    h1 ^= Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+                    h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507);
+                    h2 ^= Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+                    return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+                  };
+                  if (obj.s !== cyrb53(obj.e.toString() + SECRET).toString(16)) return false;
+                  if (Date.now() > obj.e) return false;
+                  return true;
+                } catch(e) {
+                  return false;
+                }
+              }
+
+              function unlockContent() {
+                const gated = document.getElementById('gated-full-content');
+                const card = document.getElementById('paywall-card');
+                const fade = document.getElementById('gated-fade-overlay');
+                if (gated) {
+                  gated.classList.remove('premium-blur');
+                  gated.style.maxHeight = 'none';
+                  gated.style.overflow = 'visible';
+                  gated.style.filter = 'none';
+                  gated.style.pointerEvents = 'auto';
+                  gated.style.userSelect = 'auto';
+                  gated.style.opacity = '1';
+                }
+                if (fade) fade.style.display = 'none';
+                if (card) card.style.display = 'none';
+              }
+
+              window.checkArticlePasscode = function() {
+                const input = document.getElementById('passcode-input');
+                const err = document.getElementById('auth-error');
+                if (!input) return;
+                const val = input.value.trim();
+                if (validateToken(val)) {
+                  localStorage.setItem("atlas_unlocked_token", val);
+                  unlockContent();
+                } else {
+                  if (err) {
+                    err.style.display = 'block';
+                    err.textContent = 'Invalid or expired supporter key';
+                  }
+                }
+              };
+
+              document.addEventListener('DOMContentLoaded', function() {
+                const stored = localStorage.getItem("atlas_unlocked_token");
+                if (stored && validateToken(stored)) {
+                  unlockContent();
+                }
+                const input = document.getElementById('passcode-input');
+                if (input) {
+                  input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') window.checkArticlePasscode();
+                  });
+                }
+              });
+            })();
+            </script>
             `;
         }
 

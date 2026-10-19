@@ -18,9 +18,10 @@ This file contains manual tasks you need to complete when deploying the site to 
 ## Content & Guides Roadmap (Post-Launch)
 - [ ] Write missing expansions for articles.
 - [ ] Continue linking new thoughts using the `[[wikilink]]` syntax to expand the Knowledge Graph.
-- [ ] **Ocarina of Time Remake Progression Guide (Target: Nov 5):**
+- [ ] **Ocarina of Time Remake Progression Guide & Audio Hub (Target: Nov 5):**
   - [ ] Playthrough notes, dungeon pathing, and authentic in-game screenshots along the journey.
   - [ ] Melody tab integration with our interactive N64 web player and printable PDF companion.
+  - [ ] **Ocarina Practice Hub Audio/SVG Backlog:** Tracked in [`KNOWN_ISSUES.md`](./KNOWN_ISSUES.md) (Littleroot & Blue Bird corrections, SVG medallion additions, and full OoT songbook arrangements).
 - [ ] **Dragonwilds Compendium Expansion:**
   - [ ] **Vault Timer Tool:** Countdown timer tracking the 3 in-game days (1h 12m / 72 mins) vault core respawn cycle for dedicated server players.
   - [ ] **Skill Guide #1 — Comprehensive Fishing Guide:** Embedded regional fishing spots map, rod tiers, bait harvesting & pairing, and cooking/alchemy recipe crossover.

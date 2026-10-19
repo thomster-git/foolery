@@ -15,6 +15,7 @@ export default function parseMarkdown(markdownText = "") {
 
   // Blockquotes > quote
   text = text.replace(/^>\s+(.+)$/gm, '<blockquote>$1</blockquote>');
+  text = text.replace(/<\/blockquote>\s*<blockquote>/g, '<br>');
 
   // Headings # ## ###
   text = text.replace(/^###\s+(.+)$/gm, '<h3>$1</h3>');
@@ -32,6 +33,19 @@ export default function parseMarkdown(markdownText = "") {
   text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
   text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
   text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+  // Markdown tables: | col1 | col2 |\n|---|---|\n| val1 | val2 |
+  text = text.replace(/(\|.+?\|\n\|[-:\s|]+\|\n(?:\|.+?\|(?:\n|$))+)/g, (match) => {
+    const rows = match.trim().split('\n').map(r => r.trim());
+    if (rows.length < 3) return match;
+    const parseCells = (row) => row.split('|').slice(1, -1).map(c => c.trim());
+    const headers = parseCells(rows[0]).map(h => `<th>${h}</th>`).join('');
+    const bodyRows = rows.slice(2).map(row => {
+      const cells = parseCells(row).map(c => `<td>${c}</td>`).join('');
+      return `  <tr>${cells}</tr>`;
+    }).join('\n');
+    return `<table class="article-table">\n<thead>\n  <tr>${headers}</tr>\n</thead>\n<tbody>\n${bodyRows}\n</tbody>\n</table>`;
+  });
 
   // Bullet lists (- or * at start of line)
   const lines = text.split('\n');
@@ -65,7 +79,7 @@ export default function parseMarkdown(markdownText = "") {
   return blocks.map(block => {
     block = block.trim();
     if (!block) return '';
-    if (/^<(h[1-6]|ul|ol|li|blockquote|pre|hr|div|p|article|section)/i.test(block)) {
+    if (/^<(h[1-6]|ul|ol|li|blockquote|pre|hr|div|p|article|section|table)/i.test(block)) {
       return block;
     }
     return `<p>${block.replace(/\n/g, '<br>')}</p>`;
