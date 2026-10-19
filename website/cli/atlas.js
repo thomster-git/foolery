@@ -28,6 +28,7 @@ import statsCommand from "./commands/stats.js";
 import doctorCommand from "./commands/doctor.js";
 import newCommand from "./commands/new.js";
 import backupCommand from "./commands/backup.js";
+import tokenCommand from "./commands/token.js";
 
 const [, , command, ...args] = process.argv;
 
@@ -57,6 +58,10 @@ async function main() {
 
         case "backup":
             await backupCommand(args);
+            break;
+
+        case "token":
+            await tokenCommand(args);
             break;
 
         case "help":
@@ -103,11 +108,16 @@ Commands
     new
         Create a new Atlas object.
 
+    token [days]
+        Generate a signed supporter unlock token (default: 30 days).
+
 Examples
 
     node cli/atlas.js build
 
     node cli/atlas.js validate
+
+    node cli/atlas.js token 60
 
     node cli/atlas.js new article "My Story With Linux"
 
