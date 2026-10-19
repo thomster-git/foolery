@@ -34,9 +34,40 @@
 <meta name="twitter:description" content="{{meta_description}}">
 <meta name="twitter:image" content="{{og_image}}">
 
-<!-- Favicon -->
-<link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+<!-- Favicon & Search Identity -->
+<link rel="icon" type="image/svg+xml" href="https://www.thomsfoolery.com/images/logo.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="https://www.thomsfoolery.com/images/logo-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="https://www.thomsfoolery.com/images/logo-512.png">
+<link rel="shortcut icon" href="https://www.thomsfoolery.com/favicon.ico">
+<link rel="apple-touch-icon" href="https://www.thomsfoolery.com/images/logo-192.png">
 <meta name="theme-color" content="#0b0f19">
+
+<!-- Structured Data for Google Search Indexing & Brand Identity -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://www.thomsfoolery.com/#website",
+      "url": "https://www.thomsfoolery.com/",
+      "name": "Thoms Foolery",
+      "description": "{{meta_description}}",
+      "publisher": {
+        "@type": "Person",
+        "@id": "https://www.thomsfoolery.com/#author",
+        "name": "Jonathan Thoms",
+        "url": "https://www.thomsfoolery.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.thomsfoolery.com/images/logo.svg"
+        },
+        "image": "https://www.thomsfoolery.com/images/logo-512.png"
+      }
+    }
+  ]
+}
+</script>
 
 <!-- RSS Feed Autodiscovery -->
 <link rel="alternate" type="application/rss+xml" title="{{site_title}} RSS Feed" href="/rss.xml">
