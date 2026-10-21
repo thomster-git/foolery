@@ -34,6 +34,7 @@
             <button class="dw-tab-btn" data-tab="quests" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">⚔️ Quests</button>
             <button class="dw-tab-btn" data-tab="urns" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">🏺 Sanguine Urns</button>
             <button class="dw-tab-btn" data-tab="gear" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">🛡️ Gear</button>
+            <button class="dw-tab-btn" data-tab="ascension" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">💎 Ascension Shards</button>
             <button class="dw-tab-btn" data-tab="timers" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">⏱️ Vault Timers</button>
             <button class="dw-tab-btn" data-tab="fishing" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">🎣 Fishing Guide</button>
             <button class="dw-tab-btn" data-tab="server" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">🖥️ Server Hosting</button>
@@ -52,6 +53,7 @@
                 <button type="button" class="dw-quick-jump" data-target="chapter-accordion-ch5" style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s;">⚔️ Ch 5: Velgar</button>
                 <button type="button" class="dw-quick-jump" data-target="chapter-accordion-ch6" style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s;">🧟 Ch 6: Withering Heights</button>
                 <button type="button" class="dw-quick-jump" data-target="chapter-accordion-ch7" style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s;">💀 Ch 7: Imaru</button>
+                <button type="button" class="dw-quick-jump" data-target="chapter-accordion-ch8" style="background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.35rem 0.75rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s;">🏰 Ch 8: Black Knight's Fortress</button>
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
@@ -261,9 +263,7 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;• <a href="https://dragonwilds.runescape.wiki/w/Spectral_Arrows" target="_blank" style="color: var(--accent-cyan);">Spectral Arrows</a>: Amplifies ranged damage; maintain active throughout if using <a href="https://dragonwilds.runescape.wiki/w/Ranged" target="_blank" style="color: var(--accent-cyan);">Ranged</a>.<br>
                         &nbsp;&nbsp;&nbsp;&nbsp;• <a href="https://dragonwilds.runescape.wiki/w/Internal_Alchemy" target="_blank" style="color: var(--accent-cyan);">Internal Alchemy</a>: Optional spell to refresh active food & drink buffs (note: 4–5s cast time leaves you open).</span></label></li>
                         <li class="task-item"><label for="dw-check-43"><input type="checkbox" id="dw-check-43" class="ffx-checkbox"> <span class="task-text"><strong>2. Craft the Challenge Horn:</strong> The second Anvil replacement step. Using your upgraded crafting station (instead of the old Smithing Anvil), combine 5 Bronze Bars, the Dragon Tooth, and the Bloodwood Sap to assemble the horn.</span></label></li>
-                        <li class="task-item"><label for="dw-check-44"><input type="checkbox" id="dw-check-44" class="ffx-checkbox"> <span class="task-text"><strong>3. Summon General Velgar & Pedestal Cheese Strategy:</strong> Travel to Velgar's Rise in the center of the Fractured Plains. Drink your Antipoison potion immediately before entering. Velgar can be defeated solo or with friends in Normal or Hard mode.<br>
-                        • <strong>Horn's Holder Pedestal Cheese:</strong> Velgar can be easily defeated by simply standing on the horn's holder pedestal. Standing on it completely evades close combat attacks and lethal ground spikes. You will absorb poison damage, but your Lesser Antipoison and food regeneration mitigate this. The only time you need to jump off is to dodge the aerial poison rain.<br>
-                        • <strong>Pedestal Persistence Workaround:</strong> The pedestal normally vanishes the moment the fight starts. To prevent this: build a Lodestone directly in front of the boss entrance. Start the encounter normally, pause the game, and press the <strong>"X" key</strong> to teleport out. Then use your Lodestone to teleport right back to the boss entrance and re-enter. The pedestal will reappear and stay for the entire fight!</span></label></li>
+                        <li class="task-item"><label for="dw-check-44"><input type="checkbox" id="dw-check-44" class="ffx-checkbox"> <span class="task-text"><strong>3. Summon General Velgar:</strong> Travel to Velgar's Rise in the center of the Fractured Plains. Drink your Antipoison potion immediately before entering. Velgar can be defeated solo or with friends in Normal or Hard mode.</span></label></li>
                         <li class="task-item"><label for="dw-check-45"><input type="checkbox" id="dw-check-45" class="ffx-checkbox"> <span class="task-text"><strong>4. Defeat General Velgar:</strong> Execute your combat strategy and master his attack patterns:<br>
                         • <strong>Attack Patterns:</strong> Velgar's main attacks are Claw Slam, Claw Strike, Bite, Head Swing, and Dragon Breath (Poison). He only uses Bite and Claw Strike if within melee range, but can slam the ground to send earthen spikes towards you or unleash a cone of poisonous dragon breath (~4 HP/sec if unmitigated).<br>
                         • <strong>25% Health Intervals (Aerial Poison Barrages):</strong> Each time Velgar's health drops by roughly 25% (until reaching the final 25%), he flies high into the sky and rains down poison barrages landing on red-orange circles on the ground. Avoid these circles—they sometimes overlap and cause multi-hit damage.<br>
@@ -372,25 +372,115 @@
 
                         <li class="task-item"><label for="dw-c6-step-10-4"><input type="checkbox" id="dw-c6-step-10-4" class="ffx-checkbox"> <span class="task-text"><strong>4. Phase 1 — Hope's Fall Lair Entry (Belly Safe Zone & Rot Bolts):</strong><br>
                         • <strong>Entry & Arena Layout:</strong> Carry the 3 Curse Fragments to the tower within <a href="https://dragonwilds.runescape.wiki/w/Hope%27s_Fall" target="_blank" style="color: var(--accent-cyan);">Hope's Fall</a>. Interact with the seal and select <strong>Option 1</strong> to enter. The arena houses four <a href="https://dragonwilds.runescape.wiki/w/Purifying_pool" target="_blank" style="color: var(--accent-cyan);">Purifying pools</a> surrounded by lethal wither rot. Imaru emerges from the river (can be fought solo or in a group).<br>
-                        • <strong>Ground Stomps & Fire Sweeps:</strong> Imaru attacks with sweeping fire breath and foot stomps that send rot earth spikes towards you, rapidly filling your <a href="https://dragonwilds.runescape.wiki/w/Wither" target="_blank" style="color: var(--accent-cyan);">Wither</a> meter. Position directly <strong>under her belly</strong> to completely avoid both attacks while targeting her heart for critical damage.<br>
+                        • <strong>Melee Strategy & Belly Safe Zone:</strong> Imaru attacks with sweeping fire breath and foot stomps that send rot earth spikes towards you, rapidly filling your <a href="https://dragonwilds.runescape.wiki/w/Wither" target="_blank" style="color: var(--accent-cyan);">Wither</a> meter. For melee combatants, staying positioned directly <strong>under her belly</strong> the entire time is extraordinarily effective—it safely negates both the fire breath sweep and ground stomps while positioning you directly beneath her heart for consistent critical strikes.<br>
                         • <strong>Airborne Rot Bolts:</strong> Imaru will fly away for ~5 seconds (replenish Lifeward and health). When she takes flight, she fires three homing rot bolts. Melee users should focus on evasion; Ranged/Magic users should fire at most two attacks before dodging, as the bolts act like missiles and will hit if you dodge too early. When she slams back down, dodge toward her belly and burst damage until she dives into the wither pool.</span></label></li>
 
-                        <li class="task-item"><label for="dw-c6-step-10-5"><input type="checkbox" id="dw-c6-step-10-5" class="ffx-checkbox"> <span class="task-text"><strong>5. Phase 2 — Centre Spectral Form & Soul Rifting Stagger:</strong><br>
-                        • <strong>Lethal Spectral Charge:</strong> Imaru lands in the center as an immune spectral form, charging a devastating attack capable of dealing half your health or killing you in one hit.<br>
-                        • <strong>Soul Rifting Stagger:</strong> You must enter <a href="https://dragonwilds.runescape.wiki/w/Soul_rifting" target="_blank" style="color: var(--accent-cyan);">soul rifting</a> to damage and stagger her. Watch out for spawning <a href="https://dragonwilds.runescape.wiki/w/Rotsworn_thrall" target="_blank" style="color: var(--accent-cyan);">rotsworn thralls</a>.<br>
-                        • <strong>Pool Cleansing & Vulnerability Window:</strong> Once Imaru is knocked to the ground, immediately sprint to a <a href="https://dragonwilds.runescape.wiki/w/Purification_Pool" target="_blank" style="color: var(--accent-cyan);">Purification Pool</a> to cleanse your soul before time expires. Clear remaining thralls if time allows, then immediately unleash your highest DPS on her exposed chest while she is downed.</span></label></li>
+                        <li class="task-item"><label for="dw-c6-step-10-5"><input type="checkbox" id="dw-c6-step-10-5" class="ffx-checkbox"> <span class="task-text"><strong>5. Phase 2 — Centre Spectral Form, Knockdown & Critical Cleansing:</strong><br>
+                        • <strong>Spectral Ghost Form & Heart Knockdown:</strong> Imaru lands in the center as an immune spectral (ghost) form, charging a devastating attack capable of dealing half your health or killing you in one hit. Enter <a href="https://dragonwilds.runescape.wiki/w/Soul_rifting" target="_blank" style="color: var(--accent-cyan);">soul rifting</a> to damage and stagger her. Concentrate all your attacks on hitting Imaru repeatedly to knock her down to the ground. The moment she collapses, focus all your highest burst DPS directly into her exposed glowing heart!<br>
+                        • <strong>🚨 CRITICAL SURVIVAL PRIORITY — Fly Away & One-Shot Ghost Claw:</strong> This is the trickiest and deadliest mechanic in the entire fight: the moment Imaru recovers and flies away from her knockdown, you <strong>must immediately sprint to a <a href="https://dragonwilds.runescape.wiki/w/Purification_Pool" target="_blank" style="color: var(--accent-cyan);">Purification Pool</a> to cleanse your soul!</strong> You have very little time. If you do not cleanse fast enough, Imaru will execute an unavoidable ghost claw attack that <strong>one-shot kills you instantly</strong> regardless of your gear or health pool. Cleansing your soul must be your #1 immediate priority the instant she takes flight—do not linger to hit adds or finish combos!</span></label></li>
 
                         <li class="task-item"><label for="dw-c6-step-10-6"><input type="checkbox" id="dw-c6-step-10-6" class="ffx-checkbox"> <span class="task-text"><strong>6. Phase 3 — Sub-50% Desperation, Ground Rot & Explosive Rocks:</strong><br>
-                        • <strong>Sub-50% Combination Attacks:</strong> At below 50% health, Imaru lands in the arena center after 5s. She combines rot spikes with fire breath sweeps that leave persistent withered hazard patches across the floor. Hug close to her body to avoid these patches; cleanse at a pool immediately if you contract withering.<br>
+                        • <strong>Sub-50% Combination Attacks:</strong> At below 50% health, Imaru lands in the arena center after 5s. She combines rot spikes with fire breath sweeps that leave persistent withered hazard patches across the floor. Hug close directly under her belly to avoid these hazard patches; cleanse at a pool immediately if you contract withering.<br>
                         • <strong>Arena Fire Sweep & Explosive Rocks:</strong> When she takes flight and breathes fire in a wide sweep around the arena, stand in the dead center until the breath halts, then prepare to dodge her descending slam and rot spikes. In the final stage of Phase 3, dodge clear of summoned explosive rot rocks.<br>
-                        • <strong>Second Spectral Form (40s Timer):</strong> When she re-enters spectral form, become withered, kill the rotsworn enemies promptly, knock Imaru out of spectral mode, and cleanse at a Purification Pool—all within the 40-second window. Replenish health, hunger, and thirst during the transition.</span></label></li>
+                        • <strong>Second Spectral Form (One-Hit Death Claw Warning):</strong> When she re-enters spectral form, become withered, concentrate on knocking Imaru out of spectral mode, burst her exposed heart, and <strong>sprint immediately to a Purification Pool the moment she flies away</strong> to evade the one-shot death claw attack. Replenish health, hunger, and thirst during the transition.</span></label></li>
 
                         <li class="task-item"><label for="dw-c6-step-10-7"><input type="checkbox" id="dw-c6-step-10-7" class="ffx-checkbox"> <span class="task-text"><strong>7. Phase 4 — Final Spectral Phase, Looting Imaru's Head & Victory:</strong><br>
-                        • <strong>Final Spectral Break (&lt; 10% HP):</strong> At under 10% health, Imaru enters her spectral form a final time. Become withered, prioritize eliminating all rotsworn adds, shatter her spectral shield, and cleanse at a Purification Pool under the 40-second limit.<br>
-                        • <strong>Final Heart Strike:</strong> With her defenses broken, focus all damage into her heart to deliver the finishing blow. Defeating Imaru while withered automatically cures your withering and instantly eliminates all remaining rotsworn creatures.<br>
+                        • <strong>Final Spectral Break (&lt; 10% HP):</strong> At under 10% health, Imaru enters her spectral form a final time. Become withered, knock her down, shatter her remaining resistance, and cleanse at a Purification Pool under the strict timer before delivering the final strikes into her heart.<br>
+                        • <strong>Final Heart Strike:</strong> With her defenses shattered, focus all damage into her heart to deliver the finishing blow. Defeating Imaru while withered automatically cures your withering and instantly eliminates all remaining rotsworn creatures.<br>
                         • <strong>Claim Loot & Conclude Quest:</strong> <a href="https://dragonwilds.runescape.wiki/w/Imaru%27s_Head" target="_blank" style="color: var(--accent-cyan);">Imaru's Head</a> will automatically spawn in your quest inventory <em>(ensure you maintain at least 1 free inventory slot)</em>. Return to Death at the Forgotten Temple and present Imaru's head to successfully conclude <em>Withering Heights</em>!</span></label></li>
 
                         <li class="task-item"><label for="dw-c6-step-10"><input type="checkbox" id="dw-c6-step-10" class="ffx-checkbox"> <span class="task-text"><strong>8. Defeat Imaru the Soul-Eater (Encounter Mastery):</strong> Successfully conquer all four combat phases, banish the Soul-Eater from Fellhollow, and secure the realm.</span></label></li>
+                    </ul>
+                </div>
+            </details>
+
+            <!-- Chapter 8 -->
+            <details class="dw-chapter-accordion" open id="chapter-accordion-ch8">
+                <summary class="dw-chapter-summary">
+                    <div class="dw-chapter-header-left">
+                        <span class="dw-chapter-icon">🏰</span>
+                        <span class="dw-chapter-title">Chapter 8: Black Knight's Fortress (Dowdun Reach)</span>
+                    </div>
+                    <div class="dw-chapter-header-right">
+                        <span class="dw-chapter-badge">0 / 24</span>
+                        <span class="dw-chapter-chevron">▼</span>
+                    </div>
+                </summary>
+                <div class="dw-chapter-body">
+                    <div class="critical-warning" style="background: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b; padding: 1rem; border-radius: 8px; margin-bottom: 1.25rem;">
+                        <strong style="color: #f59e0b; font-size: 1rem;">⚠️ Crucial Dialogue Warning (Avisk the Eternal):</strong>
+                        <p style="margin: 0.4rem 0 0; color: var(--text-main); line-height: 1.5;">
+                            When investigating the Dreaming Stone at The Nexus, always select <strong>Option 1 ("Attempt to outwit Avisk, claiming to be a wandering pilgrim seeking audience")</strong>. Avisk is amused and unlocks keep access for free. <em>DO NOT select Option 2</em> (inflicts 200 flat damage) or <em>Option 3</em> (Avisk strikes you with lightning, cursing your max HP to <strong>1 HP for 5 minutes</strong>!).
+                        </p>
+                    </div>
+
+                    <ul style="list-style: none; padding-left: 0;">
+                        <!-- Part I: The Dark Fortress -->
+                        <li class="task-item"><label for="dw-c8-step-1"><input type="checkbox" id="dw-c8-step-1" class="ffx-checkbox"> <span class="task-text"><strong>1. Speak to Death & Find Cathan (Part I: The Dark Fortress):</strong><br>
+                        • Speak to <a href="https://dragonwilds.runescape.wiki/w/Death_(Grim_Reaper)" target="_blank" style="color: var(--accent-cyan);">Death</a> in the Forgotten Temple. He commends your triumph over Imaru in Fellhollow and explains that a colleague awaits your assistance in the <a href="https://dragonwilds.runescape.wiki/w/Umbral_Sands" target="_blank" style="color: var(--accent-cyan);">Umbral Sands</a>, instructing you first to rally allies and investigate the Black Knights.<br>
+                        • Travel east of Fellhollow near the southern ominous gatehouse of <a href="https://dragonwilds.runescape.wiki/w/Silverthorn_Keep" target="_blank" style="color: var(--accent-cyan);">Silverthorn Keep</a> to find <a href="https://dragonwilds.runescape.wiki/w/Cathan" target="_blank" style="color: var(--accent-cyan);">Cathan</a>.</span></label></li>
+
+                        <li class="task-item"><label for="dw-c8-step-2"><input type="checkbox" id="dw-c8-step-2" class="ffx-checkbox"> <span class="task-text"><strong>2. Forge Crowbar, Breach Gatehouse & Reach The Courtyard:</strong><br>
+                        • Speak to Cathan. The Black Knights have heavily reinforced the gatehouse doors. Hand him <strong>5 <a href="https://dragonwilds.runescape.wiki/w/Steel_bar" target="_blank" style="color: var(--accent-cyan);">Steel bars</a></strong> and <strong>3 <a href="https://dragonwilds.runescape.wiki/w/Willow_logs" target="_blank" style="color: var(--accent-cyan);">Willow logs</a></strong> so he can forge a <a href="https://dragonwilds.runescape.wiki/w/Crowbar" target="_blank" style="color: var(--accent-cyan);">Crowbar</a>.<br>
+                        • Force the gatehouse doors open, enter <a href="https://dragonwilds.runescape.wiki/w/The_Approach" target="_blank" style="color: var(--accent-cyan);">The Approach</a>, and follow the road south down the hill into <a href="https://dragonwilds.runescape.wiki/w/The_Courtyard" target="_blank" style="color: var(--accent-cyan);">The Courtyard</a> of the <a href="https://dragonwilds.runescape.wiki/w/Black_Knight%27s_Fortress" target="_blank" style="color: var(--accent-cyan);">Black Knight's Fortress</a> to meet the <a href="https://dragonwilds.runescape.wiki/w/Wise_Old_Man" target="_blank" style="color: var(--accent-cyan);">Wise Old Man</a>.</span></label></li>
+
+                        <!-- Part II: Shadows Within -->
+                        <li class="task-item"><label for="dw-c8-step-3"><input type="checkbox" id="dw-c8-step-3" class="ffx-checkbox"> <span class="task-text"><strong>3. Establish Courtyard Base Camp & Attune Nodestone (Part II: Shadows Within):</strong><br>
+                        • Speak to the Wise Old Man in The Courtyard. He explains that an arcane gatekeeper barrier blocks the deeper fortress.<br>
+                        • Set up your <a href="https://dragonwilds.runescape.wiki/w/Base_camp" target="_blank" style="color: var(--accent-cyan);">Base camp</a> in the courtyard, craft the new tier of gear, and activate the nearby <a href="https://dragonwilds.runescape.wiki/w/Nodestone" target="_blank" style="color: var(--accent-cyan);">Nodestone</a> to secure your fast travel and respawn waypoint in Dowdun Reach.</span></label></li>
+
+                        <li class="task-item"><label for="dw-c8-step-4"><input type="checkbox" id="dw-c8-step-4" class="ffx-checkbox"> <span class="task-text"><strong>4. Consult Doric at The Nexus:</strong><br>
+                        • Climb high up into the fortress to reach <a href="https://dragonwilds.runescape.wiki/w/The_Nexus" target="_blank" style="color: var(--accent-cyan);">The Nexus</a>. Find <a href="https://dragonwilds.runescape.wiki/w/Doric" target="_blank" style="color: var(--accent-cyan);">Doric</a> inspecting the unyielding gatekeeper barrier.<br>
+                        • Doric reveals that the barrier is controlled by the ancient <a href="https://dragonwilds.runescape.wiki/w/Dreaming_Stone" target="_blank" style="color: var(--accent-cyan);">Dreaming Stone</a>, which has been shattered into 13 fragments.</span></label></li>
+
+                        <li class="task-item"><label for="dw-c8-step-5"><input type="checkbox" id="dw-c8-step-5" class="ffx-checkbox"> <span class="task-text"><strong>5. Commune with Avisk the Eternal (Select Option 1):</strong><br>
+                        • Investigate the Dreaming Stone to commune with Avisk the Eternal.<br>
+                        • <strong>Select Option 1:</strong> Attempt to outwit Avisk, claiming to be a wandering pilgrim seeking audience. Avisk responds in amusement and grants keep access without penalty.<br>
+                        • <em>(Unlocks access to the fortress grounds and enables shattering the barriers protecting regional Nodestones using nearby Dreaming Stone shards).</em></span></label></li>
+
+                        <!-- Part III: Shard Hunting -->
+                        <li class="task-item"><label for="dw-c8-step-6"><input type="checkbox" id="dw-c8-step-6" class="ffx-checkbox" data-has-substeps="true"> <span class="task-text"><strong>6. Shard Hunting — Recover All 13 Dreaming Stone Shards (Part III):</strong><br>
+                        Track down the 10 surface shards and 3 underground shards scattered across <a href="https://dragonwilds.runescape.wiki/w/Dowdun_Reach" target="_blank" style="color: var(--accent-cyan);">Dowdun Reach</a>:</span></label>
+                            <ul style="list-style: none; padding-left: 1.5rem; margin-top: 0.5rem;">
+                                <li class="task-item"><label for="dw-c8-shard-1"><input type="checkbox" id="dw-c8-shard-1" class="ffx-checkbox" data-parent="dw-c8-step-6"> <span class="task-text"><strong>Shard 1 (Garrison Service Stairs):</strong> Descend the service stairs past the courtyard, avoid the floor spikes, defeat the guards, and loot the chest against the rear wall.</span></label></li>
+                                <li class="task-item"><label for="dw-c8-shard-2"><input type="checkbox" id="dw-c8-shard-2" class="ffx-checkbox" data-parent="dw-c8-step-6"> <span class="task-text"><strong>Shard 2 (Garrison Upper Battlement):</strong> Ascend the main stairs, turn right onto the wooden scaffold, and cast <a href="https://dragonwilds.runescape.wiki/w/Windstep" target="_blank" style="color: var(--accent-cyan);">Windstep</a> to clear the gap to the parapet where a Black Knight stands guard.</span></label></li>
+                                <li class="task-item"><label for="dw-c8-shard-3"><input type="checkbox" id="dw-c8-shard-3" class="ffx-checkbox" data-parent="dw-c8-step-6"> <span class="task-text"><strong>Shard 3 (Pastures Hut):</strong> Enter the dilapidated hut with the collapsed roof in The Pastures; use your <a href="https://dragonwilds.runescape.wiki/w/Spade" target="_blank" style="color: var(--accent-cyan);">Spade</a> to dig the shard out of the rubble.</span></label></li>
+                                <li class="task-item"><label for="dw-c8-shard-4"><input type="checkbox" id="dw-c8-shard-4" class="ffx-checkbox" data-parent="dw-c8-step-6"> <span class="task-text"><strong>Shard 4 (Lower Pastures):</strong> Explore deeper into the pastures near the encampment chef/NPC station to locate the shard.</span></label></li>
+                                <li class="task-item"><label for="dw-c8-shard-5"><input type="checkbox" id="dw-c8-shard-5" class="ffx-checkbox" data-parent="dw-c8-step-6"> <span class="task-text"><strong>Shard 5 (Lower Garrison Subterranean):</strong> Navigate the lower subterranean corridors beneath the garrison to retrieve the hidden fragment.</span></label></li>
+                                <li class="task-item"><label for="dw-c8-shard-6"><input type="checkbox" id="dw-c8-shard-6" class="ffx-checkbox" data-parent="dw-c8-step-6"> <span class="task-text"><strong>Shard 6 (The Crypt — Underground):</strong> Descend into <a href="https://dragonwilds.runescape.wiki/w/The_Crypt" target="_blank" style="color: var(--accent-cyan);">The Crypt</a> catacombs and search near the ancient stone graves.</span></label></li>
+                                <li class="task-item"><label for="dw-c8-shard-7"><input type="checkbox" id="dw-c8-shard-7" class="ffx-checkbox" data-parent="dw-c8-step-6"> <span class="task-text"><strong>Shard 7 (The Demon Gate — Underground):</strong> Venture deep into <a href="https://dragonwilds.runescape.wiki/w/The_Demon_Gate" target="_blank" style="color: var(--accent-cyan);">The Demon Gate</a> past cultists and lesser demons to claim the underground nexus shard.</span></label></li>
+                                <li class="task-item"><label for="dw-c8-shard-8"><input type="checkbox" id="dw-c8-shard-8" class="ffx-checkbox" data-parent="dw-c8-step-6"> <span class="task-text"><strong>Shard 8 (The Lake Shoreline — Underground):</strong> Head to <a href="https://dragonwilds.runescape.wiki/w/The_Lake_(Dowdun_Reach)" target="_blank" style="color: var(--accent-cyan);">The Lake</a> cavern, speak to the Angler Goblin, catch 1 Raw Trout with your Fishing Rod + Bait, and hand it over to receive the shard.</span></label></li>
+                                <li class="task-item"><label for="dw-c8-shard-9"><input type="checkbox" id="dw-c8-shard-9" class="ffx-checkbox" data-parent="dw-c8-step-6"> <span class="task-text"><strong>Shard 9 (The Cathedral Rear Overlook):</strong> Infiltrate <a href="https://dragonwilds.runescape.wiki/w/The_Cathedral" target="_blank" style="color: var(--accent-cyan);">The Cathedral</a>, defeat the guarding cultists, chop through barricaded vines with your <a href="https://dragonwilds.runescape.wiki/w/Logging_axe" target="_blank" style="color: var(--accent-cyan);">Logging Axe</a>, and loot the area behind the altar.</span></label></li>
+                                <li class="task-item"><label for="dw-c8-shard-10"><input type="checkbox" id="dw-c8-shard-10" class="ffx-checkbox" data-parent="dw-c8-step-6"> <span class="task-text"><strong>Shard 10 (The Library Vault):</strong> Enter <a href="https://dragonwilds.runescape.wiki/w/The_Library" target="_blank" style="color: var(--accent-cyan);">The Library</a>, solve the tome puzzle by activating the 4 books in sequence, and defeat the 2 Lesser Demons to unlock the vault.</span></label></li>
+                                <li class="task-item"><label for="dw-c8-shard-11"><input type="checkbox" id="dw-c8-shard-11" class="ffx-checkbox" data-parent="dw-c8-step-6"> <span class="task-text"><strong>Shard 11 (High Watchtower Spire):</strong> Climb the high pasture watchtower, speak to the second-floor NPC, and use your <a href="https://dragonwilds.runescape.wiki/w/Spade" target="_blank" style="color: var(--accent-cyan);">Spade</a> on the dirt mound beyond the dragon territory.</span></label></li>
+                                <li class="task-item"><label for="dw-c8-shard-12"><input type="checkbox" id="dw-c8-shard-12" class="ffx-checkbox" data-parent="dw-c8-step-6"> <span class="task-text"><strong>Shard 12 (The Menagerie Triple-Lever Gate):</strong> Locate and trigger 3 hidden levers across <a href="https://dragonwilds.runescape.wiki/w/The_Menagerie" target="_blank" style="color: var(--accent-cyan);">The Menagerie</a> (one behind vines requiring a Logging Axe, one on a building rooftop, and one buried under dirt requiring a Spade) to unseal the gate.</span></label></li>
+                                <li class="task-item"><label for="dw-c8-shard-13"><input type="checkbox" id="dw-c8-shard-13" class="ffx-checkbox" data-parent="dw-c8-step-6"> <span class="task-text"><strong>Shard 13 (The Menagerie Lower Platform):</strong> Drop down to the lower cliff ledge and cast <a href="https://dragonwilds.runescape.wiki/w/Windstep" target="_blank" style="color: var(--accent-cyan);">Windstep</a> across the eastern chasm to grab the 13th shard.</span></label></li>
+                            </ul>
+                        </li>
+
+                        <!-- Part IV: Remember the Titans -->
+                        <li class="task-item"><label for="dw-c8-step-7"><input type="checkbox" id="dw-c8-step-7" class="ffx-checkbox"> <span class="task-text"><strong>7. Restore Dreaming Stone & Shatter Barrier (Part IV: Remember the Titans):</strong><br>
+                        • Return to Doric at The Nexus with all 13 shards and place them onto the Dreaming Stone to restore it.<br>
+                        • Commune with Avisk once more and select <strong>Option 1</strong> to outwit them again. The massive gatekeeper barrier shatters, opening the gateway into <a href="https://dragonwilds.runescape.wiki/w/The_Bastion" target="_blank" style="color: var(--accent-cyan);">The Bastion</a>.</span></label></li>
+
+                        <li class="task-item"><label for="dw-c8-step-8"><input type="checkbox" id="dw-c8-step-8" class="ffx-checkbox"> <span class="task-text"><strong>8. Ascend The Bastion (Windstep Navigation):</strong><br>
+                        • Pass through the shattered barrier and climb the fortress stairs into The Bastion.<br>
+                        • Use <a href="https://dragonwilds.runescape.wiki/w/Windstep" target="_blank" style="color: var(--accent-cyan);">Windstep</a> to cross broken stone pathways and hazardous chasms along the ascent.<br>
+                        • <em>Safety Tip: Ensure you unblock and attune all nearby Nodestones along the path to provide quick respawns and runbacks in case of death!</em></span></label></li>
+
+                        <li class="task-item"><label for="dw-c8-step-9"><input type="checkbox" id="dw-c8-step-9" class="ffx-checkbox"> <span class="task-text"><strong>9. Defeat Lord Rasmodel & The Black Knight Titan:</strong><br>
+                        • Confront <a href="https://dragonwilds.runescape.wiki/w/Lord_Rasmodel" target="_blank" style="color: var(--accent-cyan);">Lord Rasmodel</a> at the fortress summit, who summons the massive <a href="https://dragonwilds.runescape.wiki/w/Black_Knight_Titan" target="_blank" style="color: var(--accent-cyan);">Black Knight Titan</a> to crush you.<br>
+                        • <strong>Boss Strategy:</strong> The Titan hits extremely hard and possesses a large health pool, but his attacks are slow and clearly telegraphed. Maintain mobility, dodge clear of his heavy overhead swings, and punish his long recovery windows with high-damage burst attacks.<br>
+                        • Once the Titan collapses, Lord Rasmodel surrenders and yields the fortress.</span></label></li>
+
+                        <!-- Part V: To the Umbral Sands! -->
+                        <li class="task-item"><label for="dw-c8-step-10"><input type="checkbox" id="dw-c8-step-10" class="ffx-checkbox"> <span class="task-text"><strong>10. Claim Avisk's Bribe & Report to Death (Part V: To the Umbral Sands!):</strong><br>
+                        • Return to The Nexus and speak to Avisk. Impressed by your strength, Avisk offers a valuable reward bribe to keep quiet about what you discovered.<br>
+                        • Return to the Forgotten Temple and speak to <a href="https://dragonwilds.runescape.wiki/w/Death_(Grim_Reaper)" target="_blank" style="color: var(--accent-cyan);">Death</a>. He thanks you for dismantling the Black Knight threat in Dowdun Reach and officially concludes the quest.</span></label></li>
+
+                        <li class="task-item"><label for="dw-c8-step-11"><input type="checkbox" id="dw-c8-step-11" class="ffx-checkbox"> <span class="task-text"><strong>11. Prepare Expedition into the Umbral Sands:</strong><br>
+                        • Death instructs you to proceed to the <a href="https://dragonwilds.runescape.wiki/w/Umbral_Sands" target="_blank" style="color: var(--accent-cyan);">Umbral Sands</a> desert to meet his waiting colleague.<br>
+                        • Prepare desert survival gear (waterskins, sun protection, high-tier provisions) and advance to the arid southern border!</span></label></li>
                     </ul>
                 </div>
             </details>
@@ -1045,7 +1135,393 @@
         </div>
         <!-- End Gear Progression Tab -->
 
+        <!-- Tab: Ascension Shards Grinding -->
+        <div id="dw-tab-ascension" class="dw-tab-panel" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                <div>
+                    <h2 style="color: var(--accent-cyan); margin: 0 0 0.5rem 0; border: none; padding: 0;">💎 Ascension Shard Grinding &amp; Masterwork Upgrades</h2>
+                    <p style="color: var(--text-muted); margin: 0; max-width: 780px; font-size: 0.95rem; line-height: 1.5;">
+                        Ascension Shards are rare endgame catalysts used to ascend and upgrade Masterwork weapons and shields to their peak combat potential. Farm specific Power Level 4 through 8 encounters, slayer monsters, and regional bounty reward packs to gather the shards required for endgame gear progression.
+                    </p>
+                </div>
+                <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: center;">
+                    <span style="font-size: 0.8rem; color: var(--text-dim); font-family: monospace; margin-right: 0.25rem;">TIERS:</span>
+                    <span style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); padding: 0.2rem 0.55rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">PL 4</span>
+                    <span style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168,85,247,0.3); padding: 0.2rem 0.55rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">PL 5</span>
+                    <span style="background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid rgba(6,182,212,0.3); padding: 0.2rem 0.55rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">PL 6</span>
+                    <span style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); padding: 0.2rem 0.55rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">PL 7</span>
+                    <span style="background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236,72,153,0.3); padding: 0.2rem 0.55rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">PL 8</span>
+                </div>
+            </div>
 
+            <!-- Server Time-Gating Recommendation -->
+            <div class="critical-warning" style="background: rgba(168, 85, 247, 0.08); border: 1px solid var(--accent-purple); padding: 1.25rem; border-radius: 8px; margin-bottom: 2rem;">
+                <div style="display: flex; align-items: flex-start; gap: 0.85rem;">
+                    <span style="font-size: 1.8rem; line-height: 1;">⏱️</span>
+                    <div>
+                        <strong style="color: var(--accent-purple); font-size: 1.05rem; display: block; margin-bottom: 0.35rem;">Dedicated "Always On" Server Recommendation:</strong>
+                        <p style="margin: 0 0 0.5rem 0; color: var(--text-main); line-height: 1.55; font-size: 0.95rem;">
+                            These high-tier shard creatures and world chests are <strong>time gated</strong>. In standard single-player or local co-op, world respawn clocks only advance while you are actively logged in.
+                        </p>
+                        <p style="margin: 0; color: var(--text-muted); line-height: 1.55; font-size: 0.9rem;">
+                            It is strongly recommended to have a dedicated <strong>"always on" server</strong> so bosses (Velgar, Imaru, Dragons, Titans) and wilderness loot chests respawn while you aren't playing, ensuring they are ready to farm every time you connect. Check our <a href="#server" onclick="switchTab('server'); return false;" style="color: var(--accent-cyan); font-weight: 600; text-decoration: underline;">🖥️ Server Hosting Tab</a> for server configuration and the 72-minute respawn cadence guide!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Masterwork Equipment Grid -->
+            <div style="margin-bottom: 2.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+                    <h3 style="color: var(--text-main); margin: 0; font-size: 1.25rem;">🛠️ Masterwork Equipment Upgrades</h3>
+                    <span style="color: var(--text-muted); font-size: 0.85rem;">Ascension Shards are used to upgrade these Masterwork items:</span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                    
+                    <!-- Melee Weapons Card -->
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-top: 3px solid #ef4444; border-radius: 8px; padding: 1.25rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                            <span style="font-size: 1.3rem;">⚔️</span>
+                            <h4 style="margin: 0; color: #ef4444; font-size: 1.05rem;">Melee</h4>
+                        </div>
+                        <ul style="list-style: none; padding-left: 0; margin: 0; font-size: 0.92rem; line-height: 1.9;">
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Abyssal_whip" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Abyssal whip</a></li>
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Granite_maul" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Granite maul</a></li>
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Titan%27s_Wrath" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Titan's Wrath</a></li>
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Zombie_Axe" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Zombie Axe</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Ranged Weapons Card -->
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-top: 3px solid #10b981; border-radius: 8px; padding: 1.25rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                            <span style="font-size: 1.3rem;">🏹</span>
+                            <h4 style="margin: 0; color: #10b981; font-size: 1.05rem;">Ranged</h4>
+                        </div>
+                        <ul style="list-style: none; padding-left: 0; margin: 0; font-size: 0.92rem; line-height: 1.9;">
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Crystal_bow" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Crystal bow</a></li>
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Bow_of_Elidinis" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Bow of Elidinis</a></li>
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Dorgeshuun_Crossbow" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Dorgeshuun Crossbow</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Magic Card -->
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-top: 3px solid #38bdf8; border-radius: 8px; padding: 1.25rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                            <span style="font-size: 1.3rem;">🔮</span>
+                            <h4 style="margin: 0; color: #38bdf8; font-size: 1.05rem;">Magic</h4>
+                        </div>
+                        <ul style="list-style: none; padding-left: 0; margin: 0; font-size: 0.92rem; line-height: 1.9;">
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Staff_of_light" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Staff of light</a></li>
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Zamorak_staff" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Zamorak staff</a></li>
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Pharaoh%27s_sceptre" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Pharaoh's sceptre</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Shields Card -->
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-top: 3px solid #fbbf24; border-radius: 8px; padding: 1.25rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                            <span style="font-size: 1.3rem;">🛡️</span>
+                            <h4 style="margin: 0; color: #fbbf24; font-size: 1.05rem;">Shields</h4>
+                        </div>
+                        <ul style="list-style: none; padding-left: 0; margin: 0; font-size: 0.92rem; line-height: 1.9;">
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Anti-dragon_shield" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Anti-dragon shield</a></li>
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Dragonblight_shield" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Dragonblight shield</a></li>
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Dragoncurse_shield" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Dragoncurse shield</a></li>
+                            <li>• <a href="https://dragonwilds.runescape.wiki/w/Dragonfire_shield" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Dragonfire shield</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Interactive Shard Inventory Stash -->
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 10px; padding: 1.25rem; margin-bottom: 2.25rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem;">
+                    <div>
+                        <h4 style="margin: 0; color: var(--accent-cyan); font-size: 1.05rem;">🎒 Your Ascension Shard Stash</h4>
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Track your active shard reserves across power levels (saves automatically to local storage)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <span id="shard-stash-total" style="font-family: monospace; font-size: 0.95rem; color: #10b981; font-weight: 700; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); padding: 0.25rem 0.6rem; border-radius: 4px;">Total Shards: 0</span>
+                        <button id="shard-stash-reset" type="button" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); color: #ef4444; font-size: 0.75rem; padding: 0.3rem 0.65rem; border-radius: 4px; cursor: pointer; transition: all 0.2s;">Reset Stash</button>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 0.75rem;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.75rem; text-align: center;">
+                        <span style="font-size: 0.75rem; color: #ef4444; font-weight: 700; display: block; margin-bottom: 0.35rem;">SHARD 4</span>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+                            <button type="button" class="shard-btn-adj" data-tier="4" data-delta="-1" style="width: 26px; height: 26px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; cursor: pointer; font-weight: bold; line-height: 1;">-</button>
+                            <input type="number" id="shard-count-4" min="0" value="0" class="shard-input" data-tier="4" style="width: 52px; text-align: center; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); font-family: monospace; font-weight: bold; border-radius: 4px; padding: 0.25rem 0.2rem;">
+                            <button type="button" class="shard-btn-adj" data-tier="4" data-delta="1" style="width: 26px; height: 26px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; cursor: pointer; font-weight: bold; line-height: 1;">+</button>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.75rem; text-align: center;">
+                        <span style="font-size: 0.75rem; color: #c084fc; font-weight: 700; display: block; margin-bottom: 0.35rem;">SHARD 5</span>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+                            <button type="button" class="shard-btn-adj" data-tier="5" data-delta="-1" style="width: 26px; height: 26px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; cursor: pointer; font-weight: bold; line-height: 1;">-</button>
+                            <input type="number" id="shard-count-5" min="0" value="0" class="shard-input" data-tier="5" style="width: 52px; text-align: center; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); font-family: monospace; font-weight: bold; border-radius: 4px; padding: 0.25rem 0.2rem;">
+                            <button type="button" class="shard-btn-adj" data-tier="5" data-delta="1" style="width: 26px; height: 26px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; cursor: pointer; font-weight: bold; line-height: 1;">+</button>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.75rem; text-align: center;">
+                        <span style="font-size: 0.75rem; color: #22d3ee; font-weight: 700; display: block; margin-bottom: 0.35rem;">SHARD 6</span>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+                            <button type="button" class="shard-btn-adj" data-tier="6" data-delta="-1" style="width: 26px; height: 26px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; cursor: pointer; font-weight: bold; line-height: 1;">-</button>
+                            <input type="number" id="shard-count-6" min="0" value="0" class="shard-input" data-tier="6" style="width: 52px; text-align: center; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); font-family: monospace; font-weight: bold; border-radius: 4px; padding: 0.25rem 0.2rem;">
+                            <button type="button" class="shard-btn-adj" data-tier="6" data-delta="1" style="width: 26px; height: 26px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; cursor: pointer; font-weight: bold; line-height: 1;">+</button>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.75rem; text-align: center;">
+                        <span style="font-size: 0.75rem; color: #fbbf24; font-weight: 700; display: block; margin-bottom: 0.35rem;">SHARD 7</span>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+                            <button type="button" class="shard-btn-adj" data-tier="7" data-delta="-1" style="width: 26px; height: 26px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; cursor: pointer; font-weight: bold; line-height: 1;">-</button>
+                            <input type="number" id="shard-count-7" min="0" value="0" class="shard-input" data-tier="7" style="width: 52px; text-align: center; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); font-family: monospace; font-weight: bold; border-radius: 4px; padding: 0.25rem 0.2rem;">
+                            <button type="button" class="shard-btn-adj" data-tier="7" data-delta="1" style="width: 26px; height: 26px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; cursor: pointer; font-weight: bold; line-height: 1;">+</button>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.75rem; text-align: center;">
+                        <span style="font-size: 0.75rem; color: #f472b6; font-weight: 700; display: block; margin-bottom: 0.35rem;">SHARD 8</span>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 0.35rem;">
+                            <button type="button" class="shard-btn-adj" data-tier="8" data-delta="-1" style="width: 26px; height: 26px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; cursor: pointer; font-weight: bold; line-height: 1;">-</button>
+                            <input type="number" id="shard-count-8" min="0" value="0" class="shard-input" data-tier="8" style="width: 52px; text-align: center; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); font-family: monospace; font-weight: bold; border-radius: 4px; padding: 0.25rem 0.2rem;">
+                            <button type="button" class="shard-btn-adj" data-tier="8" data-delta="1" style="width: 26px; height: 26px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 4px; cursor: pointer; font-weight: bold; line-height: 1;">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tier Filter Bar -->
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.25rem;">
+                <h3 style="color: var(--text-main); margin: 0; font-size: 1.2rem;">🗺️ Ascension Shard Drop Sources &amp; Rates</h3>
+                <div style="display: flex; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.25rem;" id="ascension-filter-bar">
+                    <button type="button" class="ascension-filter-btn active" data-tier="all" style="background: var(--accent-cyan); color: #000; border: none; padding: 0.35rem 0.8rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 700; cursor: pointer; white-space: nowrap; transition: all 0.2s;">All Power Levels (4–8)</button>
+                    <button type="button" class="ascension-filter-btn" data-tier="4" style="background: rgba(255,255,255,0.04); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.35rem 0.8rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s;">PL 4</button>
+                    <button type="button" class="ascension-filter-btn" data-tier="5" style="background: rgba(255,255,255,0.04); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.35rem 0.8rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s;">PL 5</button>
+                    <button type="button" class="ascension-filter-btn" data-tier="6" style="background: rgba(255,255,255,0.04); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.35rem 0.8rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s;">PL 6</button>
+                    <button type="button" class="ascension-filter-btn" data-tier="7" style="background: rgba(255,255,255,0.04); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.35rem 0.8rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s;">PL 7</button>
+                    <button type="button" class="ascension-filter-btn" data-tier="8" style="background: rgba(255,255,255,0.04); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.35rem 0.8rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s;">PL 8</button>
+                </div>
+            </div>
+
+            <!-- Grinding Tier Sections -->
+            <div id="ascension-tiers-container" style="display: flex; flex-direction: column; gap: 1.75rem; margin-bottom: 2rem;">
+                
+                <!-- Power Level 4 Section -->
+                <div class="ascension-tier-card" data-tier="4" style="background: var(--bg-card); border: 1px solid var(--border-color); border-left: 4px solid #ef4444; border-radius: 8px; padding: 1.25rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.6rem;">
+                            <span style="font-size: 1.25rem;">🐉</span>
+                            <h4 style="margin: 0; color: #ef4444; font-size: 1.15rem;">Power Level 4 — Ascension Shard 4</h4>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--text-dim); font-family: monospace;">Region: Ghornfell &amp; Bloodblight Swamp</span>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; color: var(--text-main); font-size: 0.92rem;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Source</th>
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Quantity</th>
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Rarity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Velgar" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Velgar</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">30–40</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700; font-size: 0.78rem;">Always</span></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Abyssal_Demon" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Abyssal Demon</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">12–19</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid #fbbf24; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.78rem;">40/100</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Garou_King" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Garou King</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">6–12</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid #fbbf24; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.78rem;">1/2</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Power Level 5 Section -->
+                <div class="ascension-tier-card" data-tier="5" style="background: var(--bg-card); border: 1px solid var(--border-color); border-left: 4px solid #c084fc; border-radius: 8px; padding: 1.25rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.6rem;">
+                            <span style="font-size: 1.25rem;">🧟</span>
+                            <h4 style="margin: 0; color: #c084fc; font-size: 1.15rem;">Power Level 5 — Ascension Shard 5</h4>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--text-dim); font-family: monospace;">Region: Fellhollow (Withering Heights)</span>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; color: var(--text-main); font-size: 0.92rem;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Source</th>
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Quantity</th>
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Rarity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Imaru" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Imaru</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">30–40</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700; font-size: 0.78rem;">Always</span></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Green_Dragon" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Green Dragon</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">15–20</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700; font-size: 0.78rem;">Always</span></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Zogre" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Zogre</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">12–19</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid #fbbf24; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.78rem;">20/100</span></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Reward_Pack:_Fellhollow_Gold" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Reward Pack: Fellhollow Gold</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">1–3</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid #fbbf24; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.78rem;">1/4</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Reward_Pack:_Fellhollow_Silver" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Reward Pack: Fellhollow Silver</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">1–2</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid #22d3ee; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.78rem;">1/20</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Power Level 6 Section -->
+                <div class="ascension-tier-card" data-tier="6" style="background: var(--bg-card); border: 1px solid var(--border-color); border-left: 4px solid #22d3ee; border-radius: 8px; padding: 1.25rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.6rem;">
+                            <span style="font-size: 1.25rem;">⚡</span>
+                            <h4 style="margin: 0; color: #22d3ee; font-size: 1.15rem;">Power Level 6 — Ascension Shard 6</h4>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--text-dim); font-family: monospace;">Region: Dowdun Reach</span>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; color: var(--text-main); font-size: 0.92rem;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Source</th>
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Quantity</th>
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Rarity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Blue_Dragon" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Blue Dragon</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">15–20</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700; font-size: 0.78rem;">Always</span></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Black_Knight_Titan" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Black Knight Titan</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">20–30</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700; font-size: 0.78rem;">Always</span></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Ulgo_the_Zogre" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Ulgo the Zogre</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">12–19</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid #fbbf24; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.78rem;">20/100</span></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Reward_Pack:_Dowdun_Reach_Gold" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Reward Pack: Dowdun Reach Gold</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">1–3</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid #fbbf24; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.78rem;">1/4</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Reward_Pack:_Dowdun_Reach_Silver" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Reward Pack: Dowdun Reach Silver</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">1–2</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid #22d3ee; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.78rem;">1/20</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Power Level 7 Section -->
+                <div class="ascension-tier-card" data-tier="7" style="background: var(--bg-card); border: 1px solid var(--border-color); border-left: 4px solid #fbbf24; border-radius: 8px; padding: 1.25rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.6rem;">
+                            <span style="font-size: 1.25rem;">⏳</span>
+                            <h4 style="margin: 0; color: #fbbf24; font-size: 1.15rem;">Power Level 7 — Ascension Shard 7</h4>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--text-dim); font-family: monospace;">Region: Umbral Sands</span>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; color: var(--text-main); font-size: 0.92rem;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Source</th>
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Quantity</th>
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Rarity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Reward_Pack:_Umbral_Sands_Gold" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Reward Pack: Umbral Sands Gold</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">1–2</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid #22d3ee; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.78rem;">1/20</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Reward_Pack:_Umbral_Sands_Silver" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Reward Pack: Umbral Sands Silver</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">1–2</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(6, 182, 212, 0.15); color: #22d3ee; border: 1px solid #22d3ee; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.78rem;">1/20</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Power Level 8 Section -->
+                <div class="ascension-tier-card" data-tier="8" style="background: var(--bg-card); border: 1px solid var(--border-color); border-left: 4px solid #f472b6; border-radius: 8px; padding: 1.25rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.6rem;">
+                            <span style="font-size: 1.25rem;">💀</span>
+                            <h4 style="margin: 0; color: #f472b6; font-size: 1.15rem;">Power Level 8 — Ascension Shard 8</h4>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--text-dim); font-family: monospace;">Region: Scorned Wilderness</span>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; color: var(--text-main); font-size: 0.92rem;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--border-color); text-align: left;">
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Source</th>
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Quantity</th>
+                                    <th style="padding: 0.6rem 0.75rem; color: var(--text-muted);">Rarity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Black_Dragon" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Black Dragon</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">8–12</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 700; font-size: 0.78rem;">Always</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.65rem 0.75rem;"><strong><a href="https://dragonwilds.runescape.wiki/w/Chest_(Scorned_Wilderness)" target="_blank" style="color: var(--accent-cyan); font-weight: 600;">Chest (Scorned Wilderness)</a></strong></td>
+                                    <td style="padding: 0.65rem 0.75rem; font-family: monospace; font-weight: 700; color: #fff;">8–12</td>
+                                    <td style="padding: 0.65rem 0.75rem;"><span style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid #c084fc; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; font-size: 0.78rem;">Rare</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- End Ascension Shards Grinding Tab -->
 
         <!-- Tab: Vault Timers -->
         <div id="dw-tab-timers" class="dw-tab-panel" style="display: none;">
@@ -3149,12 +3625,107 @@
             });
         }
 
+        // ==========================================
+        // ASCENSION SHARDS GRINDING & STASH TRACKER
+        // ==========================================
+        const SHARDS_STORAGE_KEY = 'dragonwilds_ascension_shards_v1';
+        let savedShards = { 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
+
+        try {
+            const raw = localStorage.getItem(SHARDS_STORAGE_KEY);
+            if (raw) Object.assign(savedShards, JSON.parse(raw));
+        } catch(e) { console.error('Could not load shard stash', e); }
+
+        function saveShardStash() {
+            try { localStorage.setItem(SHARDS_STORAGE_KEY, JSON.stringify(savedShards)); }
+            catch(e) { console.error('Could not save shard stash', e); }
+        }
+
+        function updateShardStashUI() {
+            let total = 0;
+            [4, 5, 6, 7, 8].forEach(tier => {
+                const count = Math.max(0, parseInt(savedShards[tier], 10) || 0);
+                savedShards[tier] = count;
+                total += count;
+                const input = document.getElementById('shard-count-' + tier);
+                if (input) input.value = count;
+            });
+            const totalEl = document.getElementById('shard-stash-total');
+            if (totalEl) totalEl.textContent = `Total Shards: ${total}`;
+        }
+
+        function initAscensionTracker() {
+            // Tier Filter Buttons
+            const filterBtns = document.querySelectorAll('.ascension-filter-btn');
+            const tierCards = document.querySelectorAll('.ascension-tier-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tier = btn.dataset.tier;
+                    filterBtns.forEach(b => {
+                        b.classList.remove('active');
+                        b.style.background = 'rgba(255,255,255,0.04)';
+                        b.style.color = 'var(--text-muted)';
+                        b.style.border = '1px solid var(--border-color)';
+                    });
+                    btn.classList.add('active');
+                    btn.style.background = 'var(--accent-cyan)';
+                    btn.style.color = '#000';
+                    btn.style.border = 'none';
+
+                    tierCards.forEach(card => {
+                        if (tier === 'all' || card.dataset.tier === tier) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Shard adjustments (+ / -)
+            document.querySelectorAll('.shard-btn-adj').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tier = btn.dataset.tier;
+                    const delta = parseInt(btn.dataset.delta, 10);
+                    savedShards[tier] = Math.max(0, (parseInt(savedShards[tier], 10) || 0) + delta);
+                    saveShardStash();
+                    updateShardStashUI();
+                });
+            });
+
+            // Shard direct input
+            document.querySelectorAll('.shard-input').forEach(input => {
+                input.addEventListener('change', () => {
+                    const tier = input.dataset.tier;
+                    savedShards[tier] = Math.max(0, parseInt(input.value, 10) || 0);
+                    saveShardStash();
+                    updateShardStashUI();
+                });
+            });
+
+            // Reset Stash
+            const resetBtn = document.getElementById('shard-stash-reset');
+            if (resetBtn) {
+                resetBtn.addEventListener('click', () => {
+                    if (confirm('Reset your Ascension Shard stash counts to zero?')) {
+                        savedShards = { 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
+                        saveShardStash();
+                        updateShardStashUI();
+                    }
+                });
+            }
+
+            updateShardStashUI();
+        }
+
         updateProgress();
         updateUrnsCount();
         updateSummary();
         drawProfile();
         updateCaptionPreview();
         updateAllTimers();
+        initAscensionTracker();
 
         // Direct linking via hash (#stats, #profile) or query param (?tab=stats, ?tab=profile)
         checkUrlForTab();
