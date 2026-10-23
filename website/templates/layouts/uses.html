@@ -8,11 +8,82 @@
 
         <div style="margin-bottom: 3rem;">
             <h1 style="font-size: 3rem; color: var(--accent-cyan); margin-bottom: 1rem;">What I Use</h1>
-            <p style="font-size: 1.2rem; color: var(--text-muted);">A curated list of the hardware, software, and everyday carry that powers Thoms Foolery. I only recommend things I actively use and love. <em>Note: The links below are <strong>not</strong> currently affiliate links. I'm waiting to build up my newsletter subscriber count before doing so! For now, these are just regular links for your convenience.</em></p>
+            <p style="font-size: 1.2rem; color: var(--text-muted); line-height: 1.7;">A curated list of the software stack, web infrastructure, hardware, and everyday tools that power Thoms Foolery. I only recommend tools and gear I actively use, build with, and trust. <em>Note: Physical product links below are <strong>not</strong> currently affiliate links. I'm waiting to build up my newsletter subscriber count before doing so! For now, these are just direct links for your convenience.</em></p>
+        </div>
+
+        <!-- Web Stack, Hosting & Data Collection -->
+        <div class="uses-category">
+            <h2 class="uses-category-title">🌐 Web Stack, Hosting &amp; Data Collection</h2>
+            <ul class="uses-list">
+                <li>
+                    <strong><a href="https://github.com/thomsfoolery" target="_blank" rel="noopener noreferrer">Project Atlas SSG (Custom Node.js Engine)</a></strong> - Zero-framework, lightweight static site generator built from scratch in vanilla Node.js. Compiles Markdown essays, YAML frontmatter, and JSON Knowledge Graph schemas directly into pure static HTML/CSS/JS. No React hydration overhead, no client-side framework bloat, and sub-50ms page renders.
+                </li>
+                <li>
+                    <strong><a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages &amp; GitHub Actions</a></strong> - Our continuous deployment pipeline automatically compiles the static distribution (`website/dist`) upon git push and deploys the generated output directly to GitHub Pages. Version-controlled, reproducible, and completely immune to server-side CMS exploits or database crashes.
+                </li>
+                <li>
+                    <strong><a href="https://www.cloudflare.com/" target="_blank" rel="noopener noreferrer">Cloudflare (DNS, Edge SSL &amp; DDoS Protection)</a></strong> - Routes DNS for `thomsfoolery.com`, provides modern TLS encryption, and caches global edge assets with instant cache invalidation.
+                </li>
+                <li>
+                    <strong><a href="https://www.cloudflare.com/web-analytics/" target="_blank" rel="noopener noreferrer">Cloudflare Web Analytics (Cookieless Telemetry)</a></strong> - Privacy-first metrics injected strictly at the edge. We collect zero tracking cookies, do not track you across the web, and run no heavy third-party scripts (no Google Analytics, no Facebook Pixels, no fingerprinting). Just clean, privacy-respecting metrics on page performance and traffic without nagging cookie consent banners.
+                </li>
+            </ul>
+        </div>
+
+        <!-- Email & Commerce Philosophy -->
+        <div class="uses-category">
+            <h2 class="uses-category-title">📬 Email &amp; Commerce: Why We Don't Self-Host (Yet)</h2>
+            <div class="uses-philosophy-card">
+                <p>
+                    A core tenet of systems thinking is <em>stage-appropriate engineering</em>. While I love open source, Linux sysadmin work, and self-hosting tools in my homelab, running mission-critical commercial infrastructure for email deliverability and global payment compliance is an entirely different operational beast. Here is why we deliberately chose managed partners over self-hosting at this specific time:
+                </p>
+
+                <div class="service-decision-grid">
+                    <div class="service-decision-card">
+                        <div class="service-card-header">
+                            <span class="service-icon">✉️</span>
+                            <div>
+                                <h3 class="service-title">Buttondown</h3>
+                                <span class="service-role">Newsletter &amp; The Monday Dispatch</span>
+                            </div>
+                        </div>
+                        <p class="service-desc">
+                            <strong>Why not self-host Listmonk, Ghost, or Mailcoach?</strong>
+                        </p>
+                        <ul class="service-points">
+                            <li><strong>Deliverability &amp; IP Reputation:</strong> Running your own mail transfer agent (MTA) means constant warfare with Gmail and Outlook spam algorithms, managing IP warmup schedules, monitoring reverse DNS/SPF/DKIM/DMARC records, and reacting to blocklists. One rogue spam report can torpedo domain deliverability.</li>
+                            <li><strong>Privacy-First Architecture:</strong> Buttondown was built by indie developer Justin Duke with privacy by design: tracking pixels and link tracking are off by default, and subscriber data is never monetized or packaged for advertising networks.</li>
+                            <li><strong>Developer Ergonomics:</strong> Pure Markdown-native drafting, zero bloated WYSIWYG editors, and a lightweight HTML embed form that drops directly into our static site templates without a single byte of client-side JavaScript.</li>
+                        </ul>
+                    </div>
+
+                    <div class="service-decision-card">
+                        <div class="service-card-header">
+                            <span class="service-icon">🍋</span>
+                            <div>
+                                <h3 class="service-title">Lemon Squeezy</h3>
+                                <span class="service-role">Digital Guides, Memberships &amp; Paywall</span>
+                            </div>
+                        </div>
+                        <p class="service-desc">
+                            <strong>Why not self-host Medusa, WooCommerce, or raw Stripe?</strong>
+                        </p>
+                        <ul class="service-points">
+                            <li><strong>Merchant of Record (MoR) &amp; Global Tax Compliance:</strong> The decisive factor. Selling digital downloads and recurring subscriptions globally triggers digital services taxes (EU VAT, Canadian GST/HST, UK digital sales tax, US state economic nexus). With raw Stripe or self-hosted carts, <em>you</em> must register with tax authorities in dozens of jurisdictions and file complex international tax returns. As our Merchant of Record, Lemon Squeezy legally assumes liability, calculating, collecting, and remitting global sales taxes automatically.</li>
+                            <li><strong>Zero Security &amp; PCI-DSS Surface Area:</strong> We never touch, process, or store sensitive credit card or banking details on our servers. Lemon Squeezy handles fraud detection, 3D Secure, chargeback disputes, and secure localized checkout modals (Apple Pay, Google Pay).</li>
+                            <li><strong>Built-In License Keys &amp; Customer Portal:</strong> Provides turnkey recurring subscriptions, automated license key generation (such as our 2-machine activation limits for the All-Access Garden Pass), and self-service customer billing management without requiring a 24/7 PostgreSQL database or webhook listener on our static site.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p class="uses-philosophy-footnote">
+                    💡 <em>The bottom line: Using Buttondown and Lemon Squeezy frees up 100% of my cognitive bandwidth to write essays, design interactive tools, and engineer open systems—instead of spending evenings troubleshooting mail servers and deciphering cross-border VAT law. If and when our operational scale justifies dedicated compliance and DevOps overhead, we'll re-evaluate.</em>
+                </p>
+            </div>
         </div>
 
         <div class="uses-category">
-            <h2 class="uses-category-title">Content Creation & Streaming</h2>
+            <h2 class="uses-category-title">Content Creation &amp; Streaming</h2>
             <ul class="uses-list">
                 <li>
                     <strong><a href="https://www.amazon.ca/Shure-SM57-LC-Cardioid-Dynamic-Microphone/dp/B0000AQRST" target="_blank" rel="noopener noreferrer">Shure SM57 Dynamic Microphone</a></strong> - The legendary workhorse. I use this to record the Ocarina and for streaming.
@@ -131,5 +202,115 @@
     .uses-list a:hover {
         text-decoration: underline;
         color: var(--accent-purple);
+    }
+
+    /* Philosophy & Third-Party Service Cards */
+    .uses-philosophy-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md, 10px);
+        padding: 1.75rem 2rem;
+        margin-top: 1rem;
+    }
+    .uses-philosophy-card p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        line-height: 1.65;
+        margin-top: 0;
+    }
+    .service-decision-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+    }
+    .service-decision-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(56, 189, 248, 0.2);
+        border-radius: 8px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        transition: border-color 0.2s, transform 0.2s;
+    }
+    .service-decision-card:hover {
+        border-color: var(--accent-cyan);
+        transform: translateY(-2px);
+    }
+    .service-card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .service-icon {
+        font-size: 1.75rem;
+        line-height: 1;
+    }
+    .service-title {
+        font-size: 1.25rem;
+        color: var(--text-main);
+        margin: 0;
+        font-weight: 700;
+    }
+    .service-role {
+        font-size: 0.78rem;
+        color: var(--accent-cyan);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .service-desc {
+        color: var(--text-main) !important;
+        font-size: 0.92rem !important;
+        margin-bottom: 0.75rem !important;
+    }
+    .service-points {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    .service-points li {
+        font-size: 0.88rem;
+        color: var(--text-muted);
+        line-height: 1.55;
+        position: relative;
+        padding-left: 1.25rem;
+        margin-bottom: 0;
+    }
+    .service-points li::before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        color: var(--accent-cyan);
+        font-size: 1.1rem;
+        line-height: 1;
+        top: 0.05rem;
+    }
+    .service-points strong {
+        color: var(--text-main);
+    }
+    .uses-philosophy-footnote {
+        font-size: 0.88rem !important;
+        color: var(--text-dim) !important;
+        margin-top: 1.25rem !important;
+        margin-bottom: 0 !important;
+        border-top: 1px solid var(--border-color);
+        padding-top: 1rem;
+        line-height: 1.6;
+    }
+
+    @media (max-width: 640px) {
+        .uses-philosophy-card {
+            padding: 1.25rem;
+        }
+        .service-decision-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>

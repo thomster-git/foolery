@@ -870,15 +870,18 @@ From that moment forward, the system works to retain them:
 
 By precisely identifying why Discord communities stagnate — no passive content, no economy, no social signaling, no cross-channel discovery — and systematically engineering solutions for each failure mode, the Thoms Foolery ecosystem has achieved its goal: **a server that grows on its own.**
 
----
-
-## 🛠️ Build Something Like This
-
-Looking to build a custom autonomous Discord bot, stateful AI agents, or real-time sports telemetry for your own community? 
-
-I design and build productized bots, interactive web tools, and data dashboards for teams and creators:
-- **Autonomous Community Bots:** Cogs architecture, SQLite3 state persistence, automated backups, and closed-loop virtual economies.
-- **AI Agent Integration:** Google Antigravity SDK & Gemini agents with channel-aware personas and live tool-calling.
-- **Live Sports & API Pipelines:** Reverse-engineered endpoints for MLB, NFL, NHL, and F1.
-
-👉 **Let's talk about your project:** [Book an advisory session or explore sponsorships](/sponsors/) or reach out directly at **jonathan@thoms.email**.
+<div class="article-author-callout">
+  <div class="callout-badge">🛠️ PARTNER &amp; BUILD</div>
+  <h3>Build Something Like This</h3>
+  <p>Looking to build a custom autonomous Discord bot, stateful AI agents, or real-time sports telemetry for your own community?</p>
+  <p>I design and build productized bots, interactive web tools, and data dashboards for teams and creators:</p>
+  <ul>
+    <li><strong>Autonomous Community Bots:</strong> Cogs architecture, SQLite3 state persistence, automated backups, and closed-loop virtual economies.</li>
+    <li><strong>AI Agent Integration:</strong> Google Antigravity SDK &amp; Gemini agents with channel-aware personas and live tool-calling.</li>
+    <li><strong>Live Sports &amp; API Pipelines:</strong> Reverse-engineered endpoints for MLB, NFL, NHL, and F1.</li>
+  </ul>
+  <div class="callout-actions">
+    <a href="/sponsors/" class="callout-btn-primary">Book an Advisory Session / Explore Sponsorships →</a>
+    <span class="callout-contact">or reach out directly at <strong>jonathan@thoms.email</strong></span>
+  </div>
+</div>

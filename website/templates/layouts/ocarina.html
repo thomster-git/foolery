@@ -494,6 +494,169 @@
   }
 
   /* ============================================================
+     OoT Melodies Zoom Control & Enlarged Fingering Diagrams
+     ============================================================ */
+  .oot-zoom-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.2rem 0.4rem;
+  }
+  .oot-zoom-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    padding: 0 0.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .oot-zoom-pill {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.22rem 0.6rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  .oot-zoom-pill:hover {
+    color: var(--text-main);
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .oot-zoom-pill.active {
+    background: var(--accent-cyan);
+    color: #000;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 2px 8px rgba(6, 182, 212, 0.35);
+  }
+
+  /* OoT Display Custom Sizing & Centering */
+  #oot-display {
+    --oot-diagram-width: 250px;
+    --oot-svg-max: 250px;
+    --oot-note-font: 1.45rem;
+  }
+  #oot-display.oot-zoom-compact {
+    --oot-diagram-width: 170px;
+    --oot-svg-max: 170px;
+    --oot-note-font: 1.15rem;
+  }
+  #oot-display.oot-zoom-standard {
+    --oot-diagram-width: 250px;
+    --oot-svg-max: 250px;
+    --oot-note-font: 1.45rem;
+  }
+  #oot-display.oot-zoom-jumbo {
+    --oot-diagram-width: 330px;
+    --oot-svg-max: 330px;
+    --oot-note-font: 1.75rem;
+  }
+
+  #oot-display .song-notes {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+  #oot-display .song-phrase {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.75rem 2.25rem;
+    width: 100%;
+    padding: 1.5rem 0.5rem 2rem 0.5rem;
+    margin-bottom: 1.75rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+    overflow-x: visible;
+  }
+  #oot-display .song-phrase:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0.5rem;
+  }
+  #oot-display .note-beat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 0 1 var(--oot-diagram-width);
+    width: var(--oot-diagram-width);
+    max-width: 100%;
+    padding: 1.1rem 0.9rem 1.25rem 0.9rem;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 12px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  }
+  #oot-display .note-beat:hover {
+    background: rgba(6, 182, 212, 0.06);
+    border-color: rgba(6, 182, 212, 0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  }
+  #oot-display .note-beat > div:nth-child(2) {
+    display: none; /* Hide empty duration spacer in OoT melodies */
+  }
+  #oot-display .note-fingering {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #oot-display .note-fingering svg {
+    width: 100%;
+    max-width: var(--oot-svg-max);
+    height: auto;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
+    transition: max-width 0.2s ease, filter 0.2s ease;
+  }
+  #oot-display .note-name {
+    font-size: var(--oot-note-font);
+    font-weight: 800;
+    color: #fff;
+    background: rgba(6, 182, 212, 0.18);
+    border: 1.5px solid var(--accent-cyan);
+    border-radius: 8px;
+    padding: 0.3rem 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px rgba(6, 182, 212, 0.25);
+  }
+  #oot-display .practice-active {
+    transform: scale(1.08) translateY(-4px) !important;
+    background: rgba(6, 182, 212, 0.18) !important;
+    border-color: var(--accent-cyan) !important;
+    box-shadow: 0 0 32px rgba(6, 182, 212, 0.75), 0 12px 32px rgba(0, 0, 0, 0.8) !important;
+  }
+  #oot-display .practice-active .note-name {
+    background: var(--accent-cyan) !important;
+    color: #000 !important;
+    font-weight: 900 !important;
+  }
+  #oot-display .practice-active .note-fingering svg {
+    filter: drop-shadow(0 4px 14px rgba(6, 182, 212, 0.8)) !important;
+  }
+
+  @media (max-width: 680px) {
+    #oot-display {
+      --oot-diagram-width: min(100%, 260px);
+      --oot-svg-max: min(100%, 260px);
+      padding: 1.25rem 0.75rem !important;
+    }
+    #oot-display .song-phrase {
+      gap: 1.25rem 1rem;
+    }
+  }
+
+  /* ============================================================
      N64 Interactive Controller Styles
      ============================================================ */
   .n64-controller-wrapper {
@@ -1588,6 +1751,17 @@ function switchTab(tab) {
 
   // Stop tuner if leaving tuner tab
   if (tab !== 'tuner' && analyser) stopTuner();
+
+  if (tab === 'oot') {
+    const activeOotBtn = document.querySelector('#oot-buttons-container .song-btn.active');
+    if (!activeOotBtn) {
+      const firstOotBtn = document.querySelector('#oot-buttons-container .song-btn');
+      if (firstOotBtn) {
+        const id = firstOotBtn.getAttribute('data-oot');
+        loadOotSong(id, firstOotBtn);
+      }
+    }
+  }
 }
 
 // ============================================================
@@ -1633,6 +1807,32 @@ function renderOotButtons() {
   container.innerHTML = html;
 }
 
+let currentOotZoom = 'standard';
+try {
+  currentOotZoom = localStorage.getItem('ocarina_oot_zoom') || 'standard';
+} catch(e) {}
+
+function setOotZoom(level) {
+  currentOotZoom = level;
+  try { localStorage.setItem('ocarina_oot_zoom', level); } catch(e) {}
+  applyOotZoom();
+}
+
+function applyOotZoom() {
+  const display = document.getElementById('oot-display');
+  if (!display) return;
+  display.classList.remove('oot-zoom-compact', 'oot-zoom-standard', 'oot-zoom-jumbo');
+  display.classList.add(`oot-zoom-${currentOotZoom}`);
+
+  document.querySelectorAll('.oot-zoom-pill').forEach(btn => {
+    if (btn.getAttribute('data-zoom') === currentOotZoom) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+
 function loadOotSong(id, btn) {
   document.querySelectorAll('#oot-buttons-container .song-btn').forEach(b => b.classList.remove('active'));
   if(btn) btn.classList.add('active');
@@ -1651,20 +1851,28 @@ function loadOotSong(id, btn) {
   else if (id === 'oot-saria') songSvg = '<img src="/images/website-assets/sarias-Song.svg" alt="Saria" style="width: 32px; opacity: 0.6;">';
 
   display.innerHTML = `
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem; flex-wrap: wrap; gap: 0.75rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.75rem;">
       <div style="display: flex; align-items: center; gap: 1rem;">
         <img src="/images/website-assets/triforce.svg" alt="Triforce" style="width: 24px; opacity: 0.6;">
-        <h3 style="color: var(--text-main); margin: 0;">${song.title}</h3>
+        <h3 style="color: var(--text-main); margin: 0; font-size: 1.35rem;">${song.title}</h3>
         ${songSvg}
       </div>
-      <div style="display: flex; gap: 0.5rem; align-items: center;">
-        <button class="preview-btn" onclick="previewOotMelody('${id}')" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: all 0.2s;">▶ Preview Melody</button>
-        <button class="practice-btn" onclick="startPracticeMode('oot')" style="background: var(--accent-emerald); border: none; color: #000; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; transition: background 0.2s;">🎙️ Practice Mode</button>
+      <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+        <div class="oot-zoom-bar">
+          <span class="oot-zoom-label">🔍 Zoom:</span>
+          <button type="button" class="oot-zoom-pill" data-zoom="compact" onclick="setOotZoom('compact')" title="Compact size (170px)">1x</button>
+          <button type="button" class="oot-zoom-pill" data-zoom="standard" onclick="setOotZoom('standard')" title="Large size (250px)">1.5x</button>
+          <button type="button" class="oot-zoom-pill" data-zoom="jumbo" onclick="setOotZoom('jumbo')" title="Jumbo size (330px)">2x</button>
+        </div>
+        <button class="preview-btn" onclick="previewOotMelody('${id}')" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.35rem 0.85rem; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: bold; transition: all 0.2s;">▶ Preview Melody</button>
+        <button class="practice-btn" onclick="startPracticeMode('oot')" style="background: var(--accent-emerald); border: none; color: #000; padding: 0.35rem 0.85rem; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: bold; transition: background 0.2s;">🎙️ Practice Mode</button>
       </div>
     </div>
-    <p style="color: var(--text-muted); font-size: 1.2rem; font-weight: bold; margin-bottom: 1.75rem;">N64: ${song.info}</p>
+    <p style="color: var(--text-muted); font-size: 1.25rem; font-weight: bold; margin-bottom: 1.75rem;">N64: ${song.info}</p>
     <div class="song-notes">${notesHtml}</div>
   `;
+
+  applyOotZoom();
 }
 
 // ============================================================
@@ -1916,6 +2124,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (firstBtn) {
     const id = firstBtn.getAttribute('data-song');
     loadSong(id, firstBtn);
+  }
+
+  const firstOotBtn = document.querySelector('#oot-buttons-container .song-btn');
+  if (firstOotBtn) {
+    const ootId = firstOotBtn.getAttribute('data-oot');
+    loadOotSong(ootId, firstOotBtn);
   }
 });
 </script>

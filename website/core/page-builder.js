@@ -847,7 +847,7 @@ export default class PageBuilder {
                 </p>
 
                 <!-- Lemon Squeezy Supporter Button -->
-                <a href="https://thomsfoolery.lemonsqueezy.com/checkout" class="btn btn-primary lemonsqueezy-button" id="lemon-supporter-btn" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; border: none; padding: 0.85rem 1.25rem; font-weight: 700; font-size: 1rem; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.25); transition: opacity 0.2s;">
+                <a href="https://thomsfoolery.lemonsqueezy.com/checkout/buy/00a8892a-289a-40dc-acab-1f6cb4a4428b?embed=1" class="btn btn-primary lemonsqueezy-button" id="lemon-supporter-btn" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; border: none; padding: 0.85rem 1.25rem; font-weight: 700; font-size: 1rem; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.25rem; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.25); transition: opacity 0.2s;">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
                   <span>${btnText}</span>
                 </a>
@@ -996,6 +996,53 @@ export default class PageBuilder {
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const newsletterSignup = await this.loadPartial("newsletter.html");
 
+        const prevArticleHtml = article.metadata.prevArticle
+            ? `<a href="/articles/${article.metadata.prevArticle.metadata.id}.html" class="article-nav-card prev-card">
+                 <div class="nav-card-label">
+                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                   <span>Previous Essay</span>
+                 </div>
+                 <div class="nav-card-title">${article.metadata.prevArticle.metadata.title}</div>
+                 <div class="nav-card-date">${this.formatDate(article.metadata.prevArticle.metadata.created)}</div>
+               </a>`
+            : `<div class="article-nav-card empty-card">
+                 <div class="nav-card-label text-muted">
+                   <span>Archive Origin</span>
+                 </div>
+                 <div class="nav-card-title text-muted">You've reached the earliest article in this series.</div>
+                 <a href="/articles/" class="nav-card-action">Browse All Articles →</a>
+               </div>`;
+
+        const nextArticleHtml = article.metadata.nextArticle
+            ? `<a href="/articles/${article.metadata.nextArticle.metadata.id}.html" class="article-nav-card next-card">
+                 <div class="nav-card-label">
+                   <span>Next Essay</span>
+                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                 </div>
+                 <div class="nav-card-title">${article.metadata.nextArticle.metadata.title}</div>
+                 <div class="nav-card-date">${this.formatDate(article.metadata.nextArticle.metadata.created)}</div>
+               </a>`
+            : `<div class="article-nav-card empty-card latest-card">
+                 <div class="nav-card-label accent-glow">
+                   <span>✨ Latest Release</span>
+                 </div>
+                 <div class="nav-card-title">You're reading the latest publication!</div>
+                 <a href="/articles/" class="nav-card-action">Explore Complete Archive →</a>
+               </div>`;
+
+        const graphHtml = `
+        <div class="article-graph-section">
+            <div class="article-graph-header">
+                <div class="graph-title-group">
+                    <span class="graph-icon">🕸️</span>
+                    <span class="graph-title-text">Interactive Knowledge Map</span>
+                </div>
+                <span class="graph-hint-pill">Click &amp; drag nodes • Scroll to zoom</span>
+            </div>
+            <div id="graph-canvas" class="graph-canvas" data-focus-id="${article.metadata.id}"></div>
+        </div>
+        `;
+
         const html = await this.wrapPage(
 
             this.renderer.render(template, {
@@ -1019,15 +1066,10 @@ export default class PageBuilder {
                 themes: this.linksArray(article.links.themes),
                 related: this.linksArray(article.links.related),
                 tags: this.tagsPills(article.metadata.tags),
-                prev_article: article.metadata.prevArticle ? `<a href="/articles/${article.metadata.prevArticle.metadata.id}.html">← ${article.metadata.prevArticle.metadata.title}</a>` : "",
-                next_article: article.metadata.nextArticle ? `<a href="/articles/${article.metadata.nextArticle.metadata.id}.html">${article.metadata.nextArticle.metadata.title} →</a>` : "",
+                prev_article: prevArticleHtml,
+                next_article: nextArticleHtml,
                 ad_sidebar: adSidebar,
-                graph_html: `
-        <section class="graph-container">
-            <h2>Article Knowledge Connections</h2>
-            <div id="graph-canvas" class="graph-canvas" data-focus-id="${article.metadata.id}"></div>
-        </section>
-                `
+                graph_html: graphHtml
 
             }),
 

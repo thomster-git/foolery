@@ -4,15 +4,15 @@
   <section class="hero" style="text-align: center; max-width: 820px; padding: 2.5rem 0 1.5rem; margin: 0 auto;">
     <h1 style="font-size: 2.8rem; margin-bottom: 0.75rem; color: var(--accent-cyan); line-height: 1.15;">Everything is Connected.</h1>
     <p style="font-size: 1.2rem; color: var(--text-muted); line-height: 1.7; margin-top: 0; margin-bottom: 1.5rem; max-width: 720px; margin-left: auto; margin-right: auto;">
-      I'm <strong style="color: var(--text-main);">Jonathan Thoms</strong>. Welcome to my digital garden and interconnected systems lab. Read our latest long-form architecture deep dive below, or explore our suite of real-time interactive tools.
+      I'm <strong style="color: var(--text-main);">Jonathan Thoms</strong>. Welcome to my digital garden and interconnected systems lab. Explore our latest personal essays and technical architecture deep dives below, or test our suite of real-time interactive tools.
     </p>
   </section>
 
-  <!-- Birthday Broadcast Ticker & Party Celebration (Active Oct 22, 2026) -->
-  <div class="news-ticker-banner" id="birthday-party-banner" role="button" tabindex="0" aria-label="Special Broadcast: Happy Birthday Ryan! Click to party!" title="Click to play celebration track & dance party!" style="display: none;">
+  <!-- Birthday Broadcast Ticker & Party Celebration (Active Oct 31, 2026) -->
+  <div class="news-ticker-banner" id="birthday-party-banner" role="button" tabindex="0" aria-label="Special Broadcast: Happy Birthday! Click to party!" title="Click to play celebration track & dance party!" style="display: none;">
     <div class="ticker-badge" id="ticker-badge">⚡ BROADCAST</div>
     <div class="ticker-content">
-      <div class="ticker-text">Happy Birthday to the homie Ryan. Sending good vibes and good luck with his little "crawler" soon. 🧟🎂</div>
+      <div class="ticker-text">Happy Birthday shoutout to my dad, and my son's friend "Ei"! 🎂🎉</div>
     </div>
     <div class="ticker-party-action" id="ticker-party-action">
       <span class="party-btn-icon">🎉</span>
@@ -31,29 +31,54 @@
   <!-- Confetti Canvas -->
   <canvas id="party-confetti-canvas"></canvas>
 
-  <!-- Featured Deep Dive Banner -->
-  <section style="margin-bottom: 2.5rem;">
-    <a href="/articles/building-a-comprehensive-discord-ecosystem.html" style="text-decoration: none; display: block; background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%); border: 1px solid rgba(56, 189, 248, 0.28); border-radius: var(--radius-lg, 12px); padding: 1.75rem 2rem; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;" class="featured-essay-card">
+  <!-- Featured Releases & Deep Dives -->
+  <section style="margin-bottom: 2.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+    <!-- Primary Feature: Latest Release (Medical Stigma & Advocacy) -->
+    <a href="/articles/my-story-with-medical-stigma-and-advocacy.html" style="text-decoration: none; display: block; background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(56, 189, 248, 0.12) 50%, rgba(139, 92, 246, 0.08) 100%); border: 1px solid rgba(52, 211, 153, 0.4); border-radius: var(--radius-lg, 12px); padding: 1.85rem 2rem; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;" class="featured-essay-card primary-latest-feature">
       <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem;">
         <div style="display: flex; align-items: center; gap: 0.6rem;">
-          <span style="background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; font-size: 0.7rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase;">Featured Release</span>
+          <span style="background: linear-gradient(135deg, #059669, #06b6d4); color: white; font-size: 0.72rem; font-weight: 800; padding: 0.28rem 0.7rem; border-radius: 4px; letter-spacing: 0.06em; text-transform: uppercase;">✨ Latest Release</span>
+          <span style="color: var(--accent-emerald); font-size: 0.85rem; font-weight: 600;">Personal Essay &amp; Medical Advocacy • 12 min read</span>
+        </div>
+        <div style="color: var(--text-dim); font-size: 0.8rem; font-family: monospace;">Oct 20, 2026</div>
+      </div>
+      <h2 style="font-size: 1.7rem; color: var(--text-main); margin: 0 0 0.65rem 0; line-height: 1.3; font-weight: 700;">The Breath I Didn't Know I Was Missing: Medical Stigma, CPAP Therapy, &amp; The Science of Severe Sleep Apnea</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin: 0 0 1.25rem 0; max-width: 920px;">
+        A vulnerable, deeply technical personal essay on enduring undiagnosed severe obstructive sleep apnea (AHI 60, SaO2 67%), battling anti-fat medical stigma, overcoming sensory hurdles with AuDHD, and how continuous airway therapy halted a 15-year struggle with retinal macular edema.
+      </p>
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+          <span class="tag-pill" style="font-size: 0.75rem; padding: 3px 9px; background: rgba(52, 211, 153, 0.08); border: 1px solid rgba(52, 211, 153, 0.25); border-radius: 4px; color: var(--accent-emerald);">Sleep Apnea</span>
+          <span class="tag-pill" style="font-size: 0.75rem; padding: 3px 9px; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 4px; color: var(--accent-cyan);">CPAP Therapy</span>
+          <span class="tag-pill" style="font-size: 0.75rem; padding: 3px 9px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-muted);">Medical Advocacy</span>
+          <span class="tag-pill" style="font-size: 0.75rem; padding: 3px 9px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-muted);">Biochemistry</span>
+          <span class="tag-pill" style="font-size: 0.75rem; padding: 3px 9px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-muted);">AuDHD</span>
+        </div>
+        <span style="color: var(--accent-emerald); font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 0.35rem;">Read Personal Essay &rarr;</span>
+      </div>
+    </a>
+
+    <!-- Secondary Feature: Architecture Deep Dive (Discord Ecosystem) -->
+    <a href="/articles/building-a-comprehensive-discord-ecosystem.html" style="text-decoration: none; display: block; background: linear-gradient(135deg, rgba(56, 189, 248, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%); border: 1px solid rgba(56, 189, 248, 0.22); border-radius: var(--radius-lg, 12px); padding: 1.5rem 2rem; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;" class="featured-essay-card secondary-feature">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.6rem;">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; font-size: 0.7rem; font-weight: 700; padding: 0.22rem 0.6rem; border-radius: 4px; letter-spacing: 0.05em; text-transform: uppercase;">Featured Architecture</span>
           <span style="color: var(--accent-cyan); font-size: 0.85rem; font-weight: 600;">Technical Deep Dive • 15 min read</span>
         </div>
         <div style="color: var(--text-dim); font-size: 0.8rem; font-family: monospace;">Oct 19, 2026</div>
       </div>
-      <h2 style="font-size: 1.65rem; color: var(--text-main); margin: 0 0 0.6rem 0; line-height: 1.3; font-weight: 700;">The Architecture of an Autonomous Community Operating System</h2>
-      <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin: 0 0 1.25rem 0; max-width: 900px;">
-        A comprehensive breakdown of how a custom Discord bot was engineered with Python 3.14, SQLite3, Google Antigravity AI agents, Pillow media compression, and reverse-engineered sports APIs into a self-sustaining, 24/7 engagement engine that talks first.
+      <h3 style="font-size: 1.35rem; color: var(--text-main); margin: 0 0 0.5rem 0; line-height: 1.3; font-weight: 700;">The Architecture of an Autonomous Community Operating System</h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.55; margin: 0 0 1rem 0; max-width: 900px;">
+        A comprehensive breakdown of how a custom Discord bot was engineered with Python 3.14, SQLite3 WAL mode, Google Antigravity AI agents, and reverse-engineered sports APIs into a self-sustaining engagement engine.
       </p>
       <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
         <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
-          <span class="tag-pill" style="font-size: 0.75rem; padding: 3px 9px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-muted);">Python 3.14</span>
-          <span class="tag-pill" style="font-size: 0.75rem; padding: 3px 9px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-muted);">AI Agents</span>
-          <span class="tag-pill" style="font-size: 0.75rem; padding: 3px 9px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-muted);">discord.py</span>
-          <span class="tag-pill" style="font-size: 0.75rem; padding: 3px 9px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-muted);">Sports Telemetry</span>
-          <span class="tag-pill" style="font-size: 0.75rem; padding: 3px 9px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-muted);">Virtual Economy</span>
+          <span class="tag-pill" style="font-size: 0.72rem; padding: 2px 8px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-muted);">Python 3.14</span>
+          <span class="tag-pill" style="font-size: 0.72rem; padding: 2px 8px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-muted);">AI Agents</span>
+          <span class="tag-pill" style="font-size: 0.72rem; padding: 2px 8px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-muted);">discord.py</span>
+          <span class="tag-pill" style="font-size: 0.72rem; padding: 2px 8px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-muted);">Sports Telemetry</span>
         </div>
-        <span style="color: var(--accent-cyan); font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 0.35rem;">Read Essay &rarr;</span>
+        <span style="color: var(--accent-cyan); font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 0.35rem;">Read Breakdown &rarr;</span>
       </div>
     </a>
   </section>
@@ -104,9 +129,14 @@
       <div style="background: var(--bg-card); padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
         <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1.25rem;">
           <li style="border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">
-            <div style="font-size: 0.8rem; color: var(--accent-cyan); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Live Now • v1.3.4</div>
-            <div style="font-weight: 600; color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.3rem;">Autonomous Garden &amp; Discord Bot</div>
-            <div style="color: var(--text-muted); font-size: 0.9rem;">Architectural deep dive on autonomous community systems, live Tier List creator, Dragonwilds 10-vault timers, and sports momentum persistence.</div>
+            <div style="font-size: 0.8rem; color: var(--accent-emerald); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Latest Release • Oct 20, 2026</div>
+            <div style="font-weight: 600; color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.3rem;">Medical Stigma, CPAP &amp; Macular Edema</div>
+            <div style="color: var(--text-muted); font-size: 0.9rem;">Vulnerable personal essay exploring severe sleep apnea, anti-fat medical bias, sensory AuDHD adaptation, and retinal recovery.</div>
+          </li>
+          <li style="border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">
+            <div style="font-size: 0.8rem; color: var(--accent-cyan); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Featured System • Oct 19, 2026</div>
+            <div style="font-weight: 600; color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.3rem;">Autonomous Community Operating System</div>
+            <div style="color: var(--text-muted); font-size: 0.9rem;">Architectural deep dive on custom Discord bots, SQLite3 WAL concurrency, and Google Antigravity AI agents.</div>
           </li>
           <li style="border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">
             <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Next Phase • Early 2027</div>
@@ -353,19 +383,19 @@
   const banner = document.getElementById('birthday-party-banner');
   if (!banner) return;
 
-  // Active Schedule: From 12:00 AM on Oct 22, 2026 to 12:00 AM on Oct 23, 2026 (local time)
+  // Active Schedule: From 12:00 AM on Oct 31, 2026 to 12:00 AM on Nov 1, 2026 (local time)
   const now = new Date();
-  const startDate = new Date(2026, 9, 22, 0, 0, 0); // Oct 22 2026 00:00:00
-  const endDate = new Date(2026, 9, 23, 0, 0, 0);   // Oct 23 2026 00:00:00
+  const startDate = new Date(2026, 9, 31, 0, 0, 0); // Oct 31 2026 00:00:00
+  const endDate = new Date(2026, 10, 1, 0, 0, 0);   // Nov 1 2026 00:00:00
   const urlParams = new URLSearchParams(window.location.search);
-  const forceShow = urlParams.get('party') === 'true' || urlParams.get('ryan') === 'true' || urlParams.get('preview') === 'birthday';
+  const forceShow = urlParams.get('party') === 'true' || urlParams.get('birthday') === 'true' || urlParams.get('preview') === 'birthday';
 
   if (!(now >= startDate && now < endDate) && !forceShow) {
     banner.style.display = 'none';
     return;
   }
 
-  // Display banner on Oct 22 or when testing with ?party=true
+  // Display banner on Oct 31 or when testing with ?party=true
   banner.style.display = 'flex';
 
   const badge = document.getElementById('ticker-badge');
@@ -382,8 +412,9 @@
   let animationFrameId = null;
   let particles = [];
 
-  // CoD Zombies Easter Egg Song: 115 (Elena Siegman / Kevin Sherwood)
-  const YOUTUBE_VIDEO_ID = 'GQyVUbOIlvw';
+  // Birthday Celebration Song
+  const YOUTUBE_VIDEO_ID = 'sVjk5nrb_lI';
+  const YOUTUBE_START_TIME = 5;
 
   // Setup YouTube Player API
   window.onYouTubeIframeAPIReady = function() {
@@ -393,7 +424,7 @@
         width: '200',
         videoId: YOUTUBE_VIDEO_ID,
         playerVars: {
-          start: 0,
+          start: YOUTUBE_START_TIME,
           autoplay: 0,
           controls: 0,
           disablekb: 1,
@@ -405,7 +436,7 @@
           onReady: function(e) {
             playerReady = true;
             if (isPartying) {
-              e.target.seekTo(0);
+              e.target.seekTo(YOUTUBE_START_TIME);
               e.target.playVideo();
             }
           },
@@ -528,19 +559,19 @@
     isPartying = true;
     document.body.classList.add('screen-dancing');
     banner.classList.add('is-partying');
-    badge.textContent = '🧟 MOSH TIME!';
-    if (actionLabel) actionLabel.textContent = 'Pause Mosh';
+    badge.textContent = '🎂 CELEBRATE!';
+    if (actionLabel) actionLabel.textContent = 'Pause Party';
     if (actionIcon) actionIcon.textContent = '⏸';
 
     // Play YouTube Audio
     if (playerReady && ytPlayer && ytPlayer.playVideo) {
-      ytPlayer.seekTo(0);
+      ytPlayer.seekTo(YOUTUBE_START_TIME);
       ytPlayer.playVideo();
     } else {
       // Fallback: embed autoplay iframe directly
       const container = document.getElementById('yt-audio-container');
       if (container) {
-        container.innerHTML = '<iframe id="yt-fallback-frame" width="200" height="200" src="https://www.youtube-nocookie.com/embed/' + YOUTUBE_VIDEO_ID + '?autoplay=1&start=0&enablejsapi=1" allow="autoplay; encrypted-media"></iframe>';
+        container.innerHTML = '<iframe id="yt-fallback-frame" width="200" height="200" src="https://www.youtube-nocookie.com/embed/' + YOUTUBE_VIDEO_ID + '?autoplay=1&start=' + YOUTUBE_START_TIME + '&enablejsapi=1" allow="autoplay; encrypted-media"></iframe>';
       }
     }
 

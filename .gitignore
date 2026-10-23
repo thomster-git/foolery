@@ -143,3 +143,5 @@ vite.config.ts.timestamp-*
 .vite/
 content/media/
 content/fitness/
+scratch/
+/Dragonwilds_Server_Hosting_Guide.pdf

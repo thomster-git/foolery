@@ -1350,6 +1350,429 @@ kbd {
   box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
 }
 
+/* ============================================================
+   Article Footer Redesign & Navigation Elements
+   ============================================================ */
+
+/* 1. Author CTA / Build Something Like This Callout Card */
+.article-author-callout {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(129, 140, 248, 0.08) 100%);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  border-radius: var(--radius-md);
+  padding: 1.75rem 2rem;
+  margin: 3rem 0 2rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.article-author-callout .callout-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  padding: 0.25rem 0.65rem;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.article-author-callout h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 0.75rem 0;
+}
+
+.article-author-callout p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+}
+
+.article-author-callout ul {
+  margin: 0 0 1.25rem 1.25rem;
+  padding: 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.article-author-callout ul li {
+  margin-bottom: 0.4rem;
+}
+
+.article-author-callout .callout-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.article-author-callout .callout-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  background: var(--accent-cyan);
+  color: #0b0f19;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.article-author-callout .callout-btn-primary:hover {
+  background: #38bdf8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35);
+}
+
+.article-author-callout .callout-contact {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+.article-author-callout .callout-contact strong {
+  color: var(--text-main);
+}
+
+/* 2. Social Sharing Bar */
+.article-share-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.85rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  margin: 2.5rem 0 1.5rem 0;
+}
+
+.article-share-bar .share-prompt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.article-share-bar .share-action-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.btn-share-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btn-share-pill svg {
+  flex-shrink: 0;
+}
+
+.btn-share-pill:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--text-muted);
+  transform: translateY(-1px);
+}
+
+.btn-share-pill.share-x:hover {
+  border-color: #1da1f2;
+  color: #1da1f2;
+  background: rgba(29, 161, 242, 0.1);
+}
+
+.btn-share-pill.share-linkedin:hover {
+  border-color: #0a66c2;
+  color: #38bdf8;
+  background: rgba(10, 102, 194, 0.1);
+}
+
+.btn-share-pill.share-facebook:hover {
+  border-color: #1877f2;
+  color: #60a5fa;
+  background: rgba(24, 119, 242, 0.1);
+}
+
+.btn-share-pill.share-copy:hover {
+  border-color: var(--accent-emerald);
+  color: var(--accent-emerald);
+  background: rgba(52, 211, 153, 0.1);
+}
+
+/* 3. Prev / Next Navigation Grid */
+.article-nav-section {
+  margin: 1.5rem 0 2rem 0;
+}
+
+.article-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.article-nav-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.4rem;
+  text-decoration: none;
+  min-height: 110px;
+  box-sizing: border-box;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.article-nav-card:hover:not(.empty-card) {
+  transform: translateY(-2px);
+  border-color: var(--accent-cyan);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.article-nav-card.prev-card {
+  text-align: left;
+}
+
+.article-nav-card.next-card {
+  text-align: right;
+}
+
+.article-nav-card.next-card .nav-card-label {
+  justify-content: flex-end;
+}
+
+.nav-card-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  margin-bottom: 0.4rem;
+}
+
+.nav-card-label.accent-glow {
+  color: var(--accent-emerald);
+}
+
+.nav-card-title {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.nav-card-date {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-top: auto;
+}
+
+.article-nav-card.empty-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed var(--border-color);
+  cursor: default;
+}
+
+.article-nav-card.empty-card.latest-card {
+  border-color: rgba(52, 211, 153, 0.35);
+  background: linear-gradient(135deg, rgba(52, 211, 153, 0.04), transparent);
+}
+
+.nav-card-action {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  text-decoration: none;
+  margin-top: auto;
+  transition: color 0.2s;
+}
+
+.nav-card-action:hover {
+  text-decoration: underline;
+}
+
+/* 4. Article Newsletter Wrapper */
+.article-newsletter-wrap {
+  margin: 2rem 0;
+}
+
+.article-newsletter-wrap .newsletter-signup {
+  margin: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.75rem 2rem;
+}
+
+/* 5. Unified Knowledge Graph Context Card */
+.article-context-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.75rem 2rem;
+  margin: 2.5rem 0 1.5rem 0;
+}
+
+.context-card-header {
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+.context-card-badge {
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-emerald);
+  display: inline-block;
+  margin-bottom: 0.35rem;
+}
+
+.context-card-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.context-metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.context-meta-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.context-meta-block.full-span {
+  grid-column: 1 / -1;
+}
+
+.context-meta-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.context-pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.context-pill-list em {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-style: normal;
+}
+
+/* 6. Interactive Graph Section inside Context Card */
+.article-graph-section {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.article-graph-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.graph-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.graph-title-text {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.graph-hint-pill {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-color);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+}
+
+.article-graph-section .graph-canvas {
+  height: 320px;
+  background: var(--bg-dark);
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 640px) {
+  .article-share-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .article-share-bar .share-action-group {
+    justify-content: space-between;
+  }
+  .article-nav-card.next-card {
+    text-align: left;
+  }
+  .article-nav-card.next-card .nav-card-label {
+    justify-content: flex-start;
+  }
+  .article-author-callout {
+    padding: 1.25rem 1.25rem;
+  }
+  .article-context-card {
+    padding: 1.25rem 1.25rem;
+  }
+}
+
+
 .theme-toggle-btn {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-color);
