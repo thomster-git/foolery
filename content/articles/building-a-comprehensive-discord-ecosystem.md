@@ -11,6 +11,7 @@ summary: A deep technical breakdown of the Thoms Foolery Discord Ecosystem — a
 topics:
   - technology
 themes:
+  - community
   - craftsmanship
   - systems-thinking
 tags:
@@ -22,6 +23,7 @@ tags:
   - sports-analytics
 related:
   - project-atlas
+  - discord
   - technology
 ---
 
@@ -128,6 +130,7 @@ This strict separation means a bug in the motorsport module cannot crash the bet
 Production Cog Lifecycle Pattern: Graceful Async Initialization and Task Teardown
 Ensures zero task leaks during dynamic runtime hot-reloads via /admin reload.
 """
+import asyncio
 import discord
 from discord.ext import commands, tasks
 import aiohttp
@@ -351,7 +354,7 @@ For instant gratification, members have access to a full casino suite powered by
   A communal wealth redistribution engine. Throughout the week, players buy tickets via `/lotto buy <count>` (`/lotto info` displays total tickets and pool value). Every Sunday night at 11:59 PM, an automated `@tasks.loop` draws a winning ticket using cryptographic pseudo-random selection, broadcasts the winner in `#general`, and seeds the next week's pool.
 
 - **Instant Scratch Cards / Pulltabs (`cogs/pulltabs.py`)**:  
-  Designed for fast mobile-friendly play, `/pulltabs buy` generates tiered scratch cards using Discord spoiler blocks (`|| 🍒 || || 💎 || || 7️⃣ ||`) and interactive buttons. Players tap to reveal symbols across multiple tiers with multipliers ranging from $2\times$ up to $25\times$ for diamond matches.
+  Designed for fast mobile-friendly play, `/pulltabs buy` generates tiered scratch cards using Discord spoiler blocks (`|| 🍒 || || 💎 || || 7️⃣ ||`) and interactive buttons. Players tap to reveal symbols across multiple tiers with multipliers ranging from 2× up to 25× for diamond matches.
 
 ```python
 """

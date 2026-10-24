@@ -258,6 +258,31 @@ export default class PageBuilder {
 
         await fs.writeFile(path.join(folder, "index.html"), html);
         await fs.writeFile(path.join(this.output, "tools", "ocarina.html"), html);
+
+        // Dedicated direct URL aliases for each Ocarina tab (matching /tools/dragonwilds-profile/)
+        const ocarinaTabs = [
+            { slug: "chart", hash: "#chart", title: "Ocarina Fingering Chart" },
+            { slug: "tuner", hash: "#tuner", title: "Ocarina Live Pitch Tuner" },
+            { slug: "songs", hash: "#songs", title: "Ocarina Songbook" },
+            { slug: "songbook", hash: "#songs", title: "Ocarina Songbook" },
+            { slug: "oot", hash: "#oot", title: "Ocarina of Time Melodies" }
+        ];
+
+        for (const tab of ocarinaTabs) {
+            const targetPath = `/tools/ocarina/${tab.hash}`;
+            const redirectHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>${tab.title} - Thoms Foolery</title><link rel="canonical" href="https://thomsfoolery.com${targetPath}"><meta http-equiv="refresh" content="0; url=${targetPath}"><script>window.location.replace('${targetPath}');</script></head><body><p>Redirecting to <a href="${targetPath}">${tab.title}</a>...</p></body></html>`;
+
+            const aliasName = `ocarina-${tab.slug}`;
+            const aliasFolder = path.join(this.output, "tools", aliasName);
+            await fs.mkdir(aliasFolder, { recursive: true });
+            await fs.writeFile(path.join(aliasFolder, "index.html"), redirectHtml);
+            await fs.writeFile(path.join(this.output, "tools", `${aliasName}.html`), redirectHtml);
+
+            const subFolder = path.join(folder, tab.slug);
+            await fs.mkdir(subFolder, { recursive: true });
+            await fs.writeFile(path.join(subFolder, "index.html"), redirectHtml);
+            await fs.writeFile(path.join(folder, `${tab.slug}.html`), redirectHtml);
+        }
     }
 
     //--------------------------------------------------
@@ -852,28 +877,38 @@ export default class PageBuilder {
                   <span>${btnText}</span>
                 </a>
 
-                <!-- Supporter Token Unlock -->
+                <!-- Supporter Token / License Key Unlock -->
                 <div style="display: flex; align-items: center; margin: 1.25rem 0 1rem; gap: 0.75rem;">
                   <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
-                  <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 600;">Already have a supporter token?</span>
+                  <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); font-weight: 600;">Already a member or have a pass?</span>
                   <div style="flex: 1; height: 1px; background: var(--border-color);"></div>
                 </div>
 
                 <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                  <input type="password" id="passcode-input" placeholder="Enter Supporter Token (Atlas-...)" style="flex: 1; margin: 0; padding: 0.65rem 0.85rem; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-main); font-size: 0.9rem;" />
-                  <button class="btn" id="passcode-submit-btn" onclick="checkArticlePasscode()" style="padding: 0.65rem 1.1rem; font-weight: 600; white-space: nowrap;">Unlock</button>
+                  <input type="text" id="passcode-input" placeholder="Paste License Key or Supporter Token" autocomplete="off" spellcheck="false" style="flex: 1; margin: 0; padding: 0.65rem 0.85rem; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-main); font-size: 0.9rem;" />
+                  <button class="btn" id="passcode-submit-btn" onclick="checkArticlePasscode()" style="padding: 0.65rem 1.1rem; font-weight: 600; white-space: nowrap; cursor: pointer;">Unlock</button>
                 </div>
-                <p id="auth-error" style="color: #ef4444; display: none; font-size: 0.8rem; margin: 0.4rem 0 0; text-align: left;">Invalid or expired supporter token</p>
+                <p id="auth-error" style="color: #ef4444; display: none; font-size: 0.82rem; margin: 0.4rem 0 0; text-align: left; line-height: 1.4;"></p>
 
                 <p style="font-size: 0.8rem; margin-top: 1.25rem; color: var(--text-dim); text-align: center; line-height: 1.5;">
-                  Discord patron, sponsor, or long-time peer? <a href="/contact/" style="color: var(--accent-cyan); text-decoration: underline;">Request your free supporter token</a>.
+                  Subscribers receive a key via email. Peer, patron, or student? <a href="/contact/" style="color: var(--accent-cyan); text-decoration: underline;">Request a supporter token</a>.
                 </p>
               </div>
             </div>
 
             <script>
             (function() {
-              function validateToken(token) {
+              function getDeviceId() {
+                let id = localStorage.getItem('atlas_device_id');
+                if (!id) {
+                  id = 'dev_' + Math.random().toString(36).substring(2, 10) + '_' + Date.now().toString(36);
+                  localStorage.setItem('atlas_device_id', id);
+                }
+                const platform = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || 'Device';
+                return 'Atlas Reader (' + platform + ' #' + id.slice(-4) + ')';
+              }
+
+              function validateOfflineToken(token) {
                 if (!token) return false;
                 const cleaned = token.trim();
                 if (!cleaned.startsWith("Atlas-")) return false;
@@ -920,27 +955,156 @@ export default class PageBuilder {
                 if (card) card.style.display = 'none';
               }
 
-              window.checkArticlePasscode = function() {
-                const input = document.getElementById('passcode-input');
+              function showError(msg) {
                 const err = document.getElementById('auth-error');
+                if (err) {
+                  err.textContent = msg;
+                  err.style.display = 'block';
+                }
+              }
+
+              function clearError() {
+                const err = document.getElementById('auth-error');
+                if (err) err.style.display = 'none';
+              }
+
+              async function verifyLemonSqueezyLicense(key) {
+                const instanceName = getDeviceId();
+                const formData = new FormData();
+                formData.append('license_key', key);
+                formData.append('instance_name', instanceName);
+
+                try {
+                  const res = await fetch('https://api.lemonsqueezy.com/v1/licenses/activate', {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/json' },
+                    body: formData
+                  });
+                  const data = await res.json();
+
+                  if (data.activated === true) {
+                    const expiresAt = data.license_key && data.license_key.expires_at ? new Date(data.license_key.expires_at).getTime() : null;
+                    const record = {
+                      key: key,
+                      instanceId: data.instance && data.instance.id,
+                      expiresAt: expiresAt,
+                      productName: data.meta && data.meta.product_name,
+                      verifiedAt: Date.now()
+                    };
+                    localStorage.setItem('atlas_ls_license', JSON.stringify(record));
+                    return { success: true };
+                  } else {
+                    // If activate failed because already activated on this instance, check validate
+                    const stored = localStorage.getItem('atlas_ls_license');
+                    let existingRecord = null;
+                    try { existingRecord = stored ? JSON.parse(stored) : null; } catch(e){}
+
+                    const valData = new FormData();
+                    valData.append('license_key', key);
+                    if (existingRecord && existingRecord.instanceId) {
+                      valData.append('instance_id', existingRecord.instanceId);
+                    }
+
+                    const valRes = await fetch('https://api.lemonsqueezy.com/v1/licenses/validate', {
+                      method: 'POST',
+                      headers: { 'Accept': 'application/json' },
+                      body: valData
+                    });
+                    const valJson = await valRes.json();
+                    if (valJson.valid === true) {
+                      const exp = valJson.license_key && valJson.license_key.expires_at ? new Date(valJson.license_key.expires_at).getTime() : null;
+                      const updated = {
+                        key: key,
+                        instanceId: (existingRecord && existingRecord.instanceId) || (valJson.instance && valJson.instance.id),
+                        expiresAt: exp,
+                        productName: valJson.meta && valJson.meta.product_name,
+                        verifiedAt: Date.now()
+                      };
+                      localStorage.setItem('atlas_ls_license', JSON.stringify(updated));
+                      return { success: true };
+                    }
+
+                    return {
+                      success: false,
+                      error: data.error || valJson.error || 'Invalid or expired license key.'
+                    };
+                  }
+                } catch(err) {
+                  return {
+                    success: false,
+                    error: 'Unable to reach license verification server. Please check your connection.'
+                  };
+                }
+              }
+
+              window.checkArticlePasscode = async function() {
+                const input = document.getElementById('passcode-input');
+                const btn = document.getElementById('passcode-submit-btn');
                 if (!input) return;
+                clearError();
                 const val = input.value.trim();
-                if (validateToken(val)) {
-                  localStorage.setItem("atlas_unlocked_token", val);
+                if (!val) {
+                  showError('Please enter your license key or supporter token.');
+                  return;
+                }
+
+                // Check offline token format (Atlas-...)
+                if (val.startsWith('Atlas-')) {
+                  if (validateOfflineToken(val)) {
+                    localStorage.setItem('atlas_unlocked_token', val);
+                    unlockContent();
+                  } else {
+                    showError('Invalid or expired supporter token.');
+                  }
+                  return;
+                }
+
+                // Lemon Squeezy License Key validation
+                const originalBtnText = btn ? btn.textContent : 'Unlock';
+                if (btn) {
+                  btn.textContent = 'Verifying...';
+                  btn.disabled = true;
+                }
+
+                const result = await verifyLemonSqueezyLicense(val);
+                if (btn) {
+                  btn.textContent = originalBtnText;
+                  btn.disabled = false;
+                }
+
+                if (result.success) {
                   unlockContent();
                 } else {
-                  if (err) {
-                    err.style.display = 'block';
-                    err.textContent = 'Invalid or expired supporter token';
-                  }
+                  showError(result.error);
                 }
               };
 
               document.addEventListener('DOMContentLoaded', function() {
-                const stored = localStorage.getItem("atlas_unlocked_token");
-                if (stored && validateToken(stored)) {
+                // 1. Check offline Atlas token
+                const storedAtlas = localStorage.getItem('atlas_unlocked_token');
+                if (storedAtlas && validateOfflineToken(storedAtlas)) {
                   unlockContent();
+                  return;
                 }
+
+                // 2. Check stored Lemon Squeezy license
+                const storedLS = localStorage.getItem('atlas_ls_license');
+                if (storedLS) {
+                  try {
+                    const record = JSON.parse(storedLS);
+                    if (record && record.key) {
+                      if (!record.expiresAt || Date.now() < record.expiresAt) {
+                        unlockContent();
+                        return;
+                      } else {
+                        // Expired 4-week pass: remove expired record
+                        localStorage.removeItem('atlas_ls_license');
+                      }
+                    }
+                  } catch(e) {}
+                }
+
+                // Attach Enter key handler
                 const input = document.getElementById('passcode-input');
                 if (input) {
                   input.addEventListener('keydown', function(e) {

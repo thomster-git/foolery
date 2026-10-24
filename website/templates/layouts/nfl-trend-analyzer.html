@@ -42,10 +42,42 @@
                 <div>
                     <label style="display: block; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.5rem; text-transform: uppercase;">Select Metric</label>
                     <select id="metric-select" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: var(--radius-md);">
-                        <option value="pointDiff">Cumulative Point Differential</option>
-                        <option value="winPct">Win Percentage</option>
-                        <option value="pointsScored">Points Scored Per Game</option>
-                        <option value="pointsAllowed">Points Allowed Per Game</option>
+                        <optgroup label="Scoring &amp; Standings">
+                            <option value="pointDiff">Cumulative Point Differential</option>
+                            <option value="winPct">Win Percentage</option>
+                            <option value="pythagorean">Pythagorean Expected Win %</option>
+                            <option value="pointsScored">Points Scored Per Game</option>
+                            <option value="pointsAllowed">Points Allowed Per Game</option>
+                            <option value="streak">Current Win/Loss Streak</option>
+                        </optgroup>
+                        <optgroup label="Chains &amp; Down Efficiency">
+                            <option value="firstDowns">First Downs Per Game</option>
+                            <option value="firstDownsAllowed">First Downs Allowed Per Game</option>
+                            <option value="firstDownDiff">Cumulative First Down Differential</option>
+                            <option value="thirdDownPct">3rd Down Conversion %</option>
+                            <option value="fourthDownPct">4th Down Conversion %</option>
+                            <option value="redZonePct">Red Zone TD %</option>
+                        </optgroup>
+                        <optgroup label="Yardage &amp; Explosive Offense">
+                            <option value="totalYards">Total Yards Per Game</option>
+                            <option value="passingYards">Passing Yards Per Game</option>
+                            <option value="rushingYards">Rushing Yards Per Game</option>
+                            <option value="yardsPerPlay">Yards Per Play</option>
+                            <option value="playsPerGame">Offensive Plays Per Game</option>
+                        </optgroup>
+                        <optgroup label="Defense &amp; Trench Warfare">
+                            <option value="yardsAllowed">Total Yards Allowed Per Game</option>
+                            <option value="sacksMade">Sacks Recorded Per Game</option>
+                            <option value="sacksAllowed">Sacks Allowed Per Game</option>
+                        </optgroup>
+                        <optgroup label="Ball Security, Clock &amp; Discipline">
+                            <option value="turnoverDiff">Cumulative Turnover Differential</option>
+                            <option value="takeaways">Takeaways Per Game</option>
+                            <option value="giveaways">Giveaways Per Game</option>
+                            <option value="possessionMins">Time of Possession (Mins/Game)</option>
+                            <option value="penalties">Penalties Per Game</option>
+                            <option value="penaltyYards">Penalty Yards Per Game</option>
+                        </optgroup>
                     </select>
                 </div>
                 <div>
@@ -100,17 +132,27 @@
             <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--accent-cyan);">Methodology: Tracking NFL True Performance</h2>
             
             <p style="margin-bottom: 1.5rem;">
-                The NFL Trend Analyzer visualizes team performance over the 17-game regular season. Because the NFL season is so short compared to the MLB or NBA, single-game variance (turnovers, bad bounces, officiating) can drastically skew a team's win-loss record.
+                The NFL Trend Analyzer visualizes team performance over the 17-game regular season. Because the NFL season is so short compared to MLB, NHL, or NBA schedules, single-game variance (fumble luck, tipped interceptions, officiating) can drastically skew a team's win-loss record. Tracking underlying head stats week-over-week separates true contenders from mirages.
             </p>
             
-            <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Cumulative Point Differential</h3>
+            <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Cumulative Point Differential &amp; Pythagorean Win %</h3>
             <p style="margin-bottom: 1.5rem;">
-                A team's point differential (points scored minus points allowed) is one of the most reliable indicators of how good they actually are. A team that is 9-3 but has a negative point differential has likely been exceptionally lucky in one-score games, and is a prime candidate for negative regression in the playoffs.
+                A team's point differential (points scored minus points allowed) and <strong>Pythagorean Expected Win Percentage</strong> (using the pro-football exponent of <code>2.37</code>) are among the strongest predictive indicators of future performance. A team sitting at 9–3 with a negative point differential has likely overperformed in one-score games and faces steep regression in January.
             </p>
             
-            <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Points Allowed vs Points Scored</h3>
+            <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Chains, Down Conversions &amp; Red Zone Efficiency</h3>
             <p style="margin-bottom: 1.5rem;">
-                By splitting the differential into its component parts, you can visualize the specific identity of a team. Are they winning shootouts, or grinding out defensive struggles? Tracking this on a weekly basis reveals momentum shifts triggered by injuries to key defensive personnel or changes in offensive play-calling.
+                Sustaining drives requires moving the chains on early downs and converting money downs. Tracking <strong>First Downs Per Game</strong>, <strong>First Down Differential</strong>, and <strong>3rd/4th Down Conversion %</strong> reveals which offenses dictate tempo and stay on the field, while <strong>Red Zone TD %</strong> measures how effectively teams finish drives with six points instead of settling for field goals.
+            </p>
+
+            <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Yardage, Explosive Offense &amp; Trench Warfare</h3>
+            <p style="margin-bottom: 1.5rem;">
+                Raw yardage splits—<strong>Total Yards</strong>, <strong>Passing Yards</strong>, and <strong>Rushing Yards Per Game</strong>—highlight offensive balance, while <strong>Yards Per Play (YPP)</strong> strips out pace to measure pure per-snap explosiveness. On the other side of the ball, <strong>Total Yards Allowed</strong> and the trench battle between <strong>Sacks Recorded</strong> and <strong>Sacks Allowed</strong> show which front sevens and offensive lines control the line of scrimmage.
+            </p>
+
+            <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Turnover Margin, Clock Control &amp; Discipline</h3>
+            <p style="margin-bottom: 1.5rem;">
+                Few statistics correlate more strongly with single-game NFL outcomes than <strong>Cumulative Turnover Differential</strong> (Takeaways minus Giveaways). Pairing ball security with <strong>Time of Possession</strong> and <strong>Penalties / Penalty Yards Per Game</strong> illustrates whether a team wins through complementary, disciplined football or constantly has to overcome self-inflicted mistakes.
             </p>
         </div>
 

@@ -12,7 +12,6 @@ tags:
   - audhd
   - infrastructure
   - systems-thinking
-description: "How my neurodivergent brain turns the chaos of IT infrastructure into logical, optimized, and honest systems."
 summary: "How my neurodivergent brain turns the chaos of IT infrastructure into logical, optimized, and honest systems."
 topics:
   - audhd
@@ -22,9 +21,9 @@ themes:
   - identity
 related:
   - keel-systems
+  - my-story-with-the-akira-ransomware-attack
   - my-story-with-the-msp-trap-and-broken-infrastructure
   - my-story-with-neurodiversity-and-adult-diagnosis
-  - my-story-with-mechanical-engineering-and-systems-thinking
   - my-story-with-mechanical-engineering-and-systems-thinking
 ---
 If you spend enough time looking at how companies build their networks, structure their communication, or buy their hardware, you start to realize a frustrating truth: a lot of it is built on autopilot. 

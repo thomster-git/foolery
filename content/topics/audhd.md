@@ -23,8 +23,6 @@ tags:
   - autigender
 ---
 
-# AuDHD
-
 I was diagnosed with ADHD at 31 and identified as Autistic at 32. Getting the ADHD diagnosis felt like the noise finally quieting enough to think. But when the executive dysfunction fog cleared, something else got louder — sensory sensitivities, social energy limits, routine rigidity, and all the masking I'd been doing for three decades without knowing it was masking.
 
 That's the AuDHD experience: the two conditions interact, mask each other, and change each other's presentation in ways that make late diagnosis frustratingly common.

@@ -158,8 +158,10 @@ document.addEventListener('DOMContentLoaded', () => {
             console.warn(`[MLB Postseason Analyzer] Live API fetch failed for season ${season} (${liveErr.message}). Switching to verified local postseason archive...`);
         }
 
+        const hasCompletedGames = (d) => Array.isArray(d?.dates) && d.dates.some(dt => Array.isArray(dt.games) && dt.games.some(g => g.status?.statusCode === 'F' || g.status?.statusCode === 'O'));
+
         // Tier 2: Try Local Cached Dataset for requested season
-        if (!data || !data.dates || data.dates.length === 0) {
+        if (!hasCompletedGames(data)) {
             try {
                 const localUrl = `/data/postseason-${season}.json`;
                 data = await fetchWithTimeout(localUrl, 3000);
@@ -170,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Tier 3: Guaranteed 2024 Archive Fallback
-        if (!data || !data.dates || data.dates.length === 0) {
+        if (!hasCompletedGames(data)) {
             try {
                 data = await fetchWithTimeout('/data/postseason-2024.json', 3000);
                 sourceUsed = 'cache-2024';
@@ -230,13 +232,30 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Sort by official date and game number
-        allGames.sort((a, b) => new Date(a.officialDate || a.date) - new Date(b.officialDate || b.date));
+        // Sort chronologically by exact game timestamp, with tie-breakers for series/doubleheader game numbers and gamePk
+        allGames.sort((a, b) => {
+            const tA = new Date(a.gameDate || a.officialDate || a.date || 0).getTime();
+            const tB = new Date(b.gameDate || b.officialDate || b.date || 0).getTime();
+            if (tA !== tB) return tA - tB;
+            const gnA = a.seriesGameNumber || a.gameNumber || 1;
+            const gnB = b.seriesGameNumber || b.gameNumber || 1;
+            if (gnA !== gnB) return gnA - gnB;
+            return (a.gamePk || 0) - (b.gamePk || 0);
+        });
+
+        const seenGamePks = new Set();
 
         allGames.forEach(game => {
-            const home = game.teams.home;
-            const away = game.teams.away;
-            if (!home?.team || !away?.team || home.score === undefined || away.score === undefined) return;
+            if (game.gamePk && seenGamePks.has(game.gamePk)) return;
+            if (game.gamePk) seenGamePks.add(game.gamePk);
+
+            const home = game.teams?.home;
+            const away = game.teams?.away;
+            if (!home?.team || !away?.team) return;
+
+            const homeScore = Number(home.score);
+            const awayScore = Number(away.score);
+            if (!Number.isFinite(homeScore) || !Number.isFinite(awayScore)) return;
 
             const round = game.gameType || 'F';
             const sDesc = game.seriesDescription || ROUND_NAMES[round] || 'Postseason';
@@ -256,7 +275,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
 
-            const winningTeamId = away.isWinner ? away.team.id : (home.isWinner ? home.team.id : null);
+            const awayWon = away.isWinner !== undefined ? Boolean(away.isWinner) : (awayScore > homeScore);
+            const homeWon = home.isWinner !== undefined ? Boolean(home.isWinner) : (homeScore > awayScore);
+            const winningTeamId = awayWon ? away.team.id : (homeWon ? home.team.id : null);
+
             if (winningTeamId) {
                 if (seriesMap[sKey].team1.id === winningTeamId) {
                     seriesMap[sKey].team1Wins++;
@@ -298,44 +320,44 @@ document.addEventListener('DOMContentLoaded', () => {
             let cumAway = 0;
             let inningsCount = 0;
 
-            if (game.linescore && Array.isArray(game.linescore.innings)) {
+            if (game.linescore && Array.isArray(game.linescore.innings) && game.linescore.innings.length > 0) {
                 game.linescore.innings.forEach(inn => {
-                    cumAway += inn.away?.runs || 0;
-                    cumHome += inn.home?.runs || 0;
+                    cumAway += Number(inn.away?.runs) || 0;
+                    cumHome += Number(inn.home?.runs) || 0;
                     inningsCount++;
                     if (cumAway > cumHome) awayLeadInnings++;
                     else if (cumHome > cumAway) homeLeadInnings++;
                 });
             } else {
                 inningsCount = 9;
-                if (away.score > home.score) awayLeadInnings = 5;
-                else homeLeadInnings = 5;
+                if (awayScore > homeScore) awayLeadInnings = 5;
+                else if (homeScore > awayScore) homeLeadInnings = 5;
             }
 
             const dec = game.decisions || {};
             const decText = dec.winner ? `W: ${dec.winner.fullName?.split(' ').pop()} / L: ${dec.loser?.fullName?.split(' ').pop() || '--'}${dec.save ? ` / S: ${dec.save.fullName?.split(' ').pop()}` : ''}` : 'Final';
 
             // Away Game Record
-            const awayMargin = away.score - home.score;
+            const awayMargin = awayScore - homeScore;
             parsedTeams[away.team.id].games.push({
                 gamePk: game.gamePk,
                 date: game.officialDate || game.date,
                 round: round,
                 opponentId: home.team.id,
                 opponentName: home.team.name,
-                teamScore: away.score,
-                oppScore: home.score,
-                isWin: away.isWinner || away.score > home.score,
+                teamScore: awayScore,
+                oppScore: homeScore,
+                isWin: awayWon,
                 margin: awayMargin,
                 leadInnings: awayLeadInnings,
                 totalInnings: inningsCount,
                 decision: decText
             });
-            parsedTeams[away.team.id].runsScored += away.score;
-            parsedTeams[away.team.id].runsAllowed += home.score;
+            parsedTeams[away.team.id].runsScored += awayScore;
+            parsedTeams[away.team.id].runsAllowed += homeScore;
             parsedTeams[away.team.id].leadInningsTotal += awayLeadInnings;
             parsedTeams[away.team.id].totalInningsPlayed += inningsCount;
-            if (away.isWinner) {
+            if (awayWon) {
                 parsedTeams[away.team.id].totalWins++;
                 if (awayMargin === 1) parsedTeams[away.team.id].oneRunWins++;
                 if (awayMargin >= 5) parsedTeams[away.team.id].blowoutWins++;
@@ -345,26 +367,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Home Game Record
-            const homeMargin = home.score - away.score;
+            const homeMargin = homeScore - awayScore;
             parsedTeams[home.team.id].games.push({
                 gamePk: game.gamePk,
                 date: game.officialDate || game.date,
                 round: round,
                 opponentId: away.team.id,
                 opponentName: away.team.name,
-                teamScore: home.score,
-                oppScore: away.score,
-                isWin: home.isWinner || home.score > away.score,
+                teamScore: homeScore,
+                oppScore: awayScore,
+                isWin: homeWon,
                 margin: homeMargin,
                 leadInnings: homeLeadInnings,
                 totalInnings: inningsCount,
                 decision: decText
             });
-            parsedTeams[home.team.id].runsScored += home.score;
-            parsedTeams[home.team.id].runsAllowed += away.score;
+            parsedTeams[home.team.id].runsScored += homeScore;
+            parsedTeams[home.team.id].runsAllowed += awayScore;
             parsedTeams[home.team.id].leadInningsTotal += homeLeadInnings;
             parsedTeams[home.team.id].totalInningsPlayed += inningsCount;
-            if (home.isWinner) {
+            if (homeWon) {
                 parsedTeams[home.team.id].totalWins++;
                 if (homeMargin === 1) parsedTeams[home.team.id].oneRunWins++;
                 if (homeMargin >= 5) parsedTeams[home.team.id].blowoutWins++;
@@ -384,6 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let cumLead = 0;
             let cumInnings = 0;
             let cumWins = 0;
+            let streak = 0;
 
             team.trajectory = [];
 
@@ -393,16 +416,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 cumRA += g.oppScore;
                 cumLead += g.leadInnings;
                 cumInnings += g.totalInnings;
-                if (g.isWin) cumWins++;
+                if (g.isWin) {
+                    cumWins++;
+                    streak = streak > 0 ? streak + 1 : 1;
+                } else {
+                    streak = streak < 0 ? streak - 1 : -1;
+                }
 
-                // 3-Game Weighted Moving Average Run Diff
-                const w0 = g.margin;
-                const w1 = idx >= 1 ? team.games[idx - 1].margin : w0;
-                const w2 = idx >= 2 ? team.games[idx - 2].margin : w1;
-                const wma3 = (3 * w0 + 2 * w1 + 1 * w2) / 6;
+                // 3-Game Weighted Moving Average Run Diff (renormalized weights on partial windows)
+                let wma3 = g.margin;
+                if (idx === 1) {
+                    wma3 = (3 * g.margin + 2 * team.games[0].margin) / 5;
+                } else if (idx >= 2) {
+                    wma3 = (3 * g.margin + 2 * team.games[idx - 1].margin + 1 * team.games[idx - 2].margin) / 6;
+                }
 
-                // Pythagorean Expected Win %
-                const pyth = (cumRS === 0 && cumRA === 0) ? 0.5 : (Math.pow(cumRS, 1.83) / (Math.pow(cumRS, 1.83) + Math.pow(cumRA, 1.83)));
+                // Pythagorean Expected Win % (exponent 1.83)
+                const rsPow = Math.pow(Math.max(0, cumRS), 1.83);
+                const raPow = Math.pow(Math.max(0, cumRA), 1.83);
+                const pyth = (rsPow + raPow === 0) ? 0.5 : (rsPow / (rsPow + raPow));
                 const actWinPct = cumWins / (idx + 1);
                 const luckGap = actWinPct - pyth; // > 0 = overperforming run diff, < 0 = underperforming
 
@@ -410,8 +442,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const leadShare = cumInnings > 0 ? (cumLead / cumInnings) * 100 : 50;
 
                 // Postseason Momentum Index (Normalized -100 to +100)
-                // Components: 35% WMA3 run diff (+-5), 25% Lead Share (0-100), 25% Pythagorean Performance, 15% Win Streak Momentum
-                const pmiRaw = (wma3 * 10) + ((leadShare - 50) * 0.8) - (luckGap * 30);
+                // Components: 35% WMA3 run diff (clamped +-5 -> +-35), 25% Lead Share (0-100 -> +-25),
+                // 25% Pythagorean Performance (0-1 -> +-25), 15% Win Streak Momentum (clamped +-3 -> +-15)
+                const wmaComp = Math.max(-35, Math.min(35, wma3 * 7));
+                const leadComp = Math.max(-25, Math.min(25, (leadShare - 50) * 0.5));
+                const pythComp = Math.max(-25, Math.min(25, (pyth - 0.5) * 50));
+                const streakComp = Math.max(-15, Math.min(15, streak * 5));
+                const pmiRaw = wmaComp + leadComp + pythComp + streakComp;
                 const pmi = Math.max(-100, Math.min(100, Math.round(pmiRaw)));
 
                 g.pmi = pmi;
@@ -419,6 +456,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 g.wma3 = parseFloat(wma3.toFixed(2));
                 g.luckGap = parseFloat(luckGap.toFixed(3));
                 g.leadShare = parseFloat(leadShare.toFixed(1));
+                g.cumAvgRS = parseFloat((cumRS / (idx + 1)).toFixed(2));
+                g.cumAvgRA = parseFloat((cumRA / (idx + 1)).toFixed(2));
 
                 team.trajectory.push({
                     gameNum: idx + 1,
@@ -429,7 +468,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     rolling3RunDiff: g.wma3,
                     leadInningShare: g.leadShare,
                     luckGap: g.luckGap,
-                    pmi: pmi
+                    pmi: pmi,
+                    cumAvgRS: g.cumAvgRS,
+                    cumAvgRA: g.cumAvgRA
                 });
             });
 
@@ -442,10 +483,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Helper: compute symmetric hard axis bounds [min, max, interval] centered exactly at splitVal
+    function computeSymmetricBounds(values, splitVal, minHalfSpan, stepSize) {
+        let maxAbsDev = minHalfSpan;
+        values.forEach(v => {
+            if (Number.isFinite(v)) {
+                const dev = Math.abs(v - splitVal);
+                if (dev > maxAbsDev) maxAbsDev = dev;
+            }
+        });
+        // Add a small 10% breathing margin when data approaches or exceeds default span, rounded up to nice stepSize
+        const padded = Math.max(minHalfSpan, Math.ceil((maxAbsDev * 1.08) / stepSize) * stepSize);
+        const min = parseFloat((splitVal - padded).toFixed(4));
+        const max = parseFloat((splitVal + padded).toFixed(4));
+        return { min, max, halfSpan: padded };
+    }
+
     // Populate Team Selector
     function populateTeamSelect() {
         teamSelect.innerHTML = '<option value="all">All Playoff Teams</option>';
-        const sorted = Object.values(parsedTeams).sort((a, b) => b.finalPMI - a.finalPMI);
+        const sorted = Object.values(parsedTeams).sort((a, b) => (b.finalPMI - a.finalPMI) || (b.finalRunDiff - a.finalRunDiff) || (b.totalWins - a.totalWins));
         sorted.forEach(t => {
             const opt = document.createElement('option');
             opt.value = t.id;
@@ -564,28 +621,28 @@ document.addEventListener('DOMContentLoaded', () => {
         if (teams.length === 0) return;
 
         // 1. Top Surge
-        const surging = [...teams].sort((a, b) => b.finalPMI - a.finalPMI)[0];
+        const surging = [...teams].sort((a, b) => (b.finalPMI - a.finalPMI) || (b.finalRunDiff - a.finalRunDiff) || (b.totalWins - a.totalWins))[0];
         if (surging) {
             document.getElementById('kpi-surge-team').innerHTML = renderKpiTeamHtml(surging, `${surging.finalPMI > 0 ? '+' : ''}${surging.finalPMI} PMI`);
             document.getElementById('kpi-surge-desc').textContent = `Diff: ${surging.finalRunDiff > 0 ? '+' : ''}${surging.finalRunDiff} runs | ${surging.totalWins}-${surging.totalLosses} overall`;
         }
 
         // 2. Coldest / Fall-off Risk
-        const coldest = [...teams].sort((a, b) => a.finalPMI - b.finalPMI)[0];
+        const coldest = [...teams].sort((a, b) => (a.finalPMI - b.finalPMI) || (a.finalRunDiff - b.finalRunDiff) || (b.totalLosses - a.totalLosses))[0];
         if (coldest) {
             document.getElementById('kpi-cold-team').innerHTML = renderKpiTeamHtml(coldest, `${coldest.finalPMI} PMI`);
             document.getElementById('kpi-cold-desc').textContent = `Diff: ${coldest.finalRunDiff} runs | ${coldest.totalLosses} losses`;
         }
 
         // 3. Game Control Leader
-        const leadBoss = [...teams].sort((a, b) => b.finalLeadShare - a.finalLeadShare)[0];
+        const leadBoss = [...teams].sort((a, b) => (b.finalLeadShare - a.finalLeadShare) || (b.leadInningsTotal - a.leadInningsTotal))[0];
         if (leadBoss) {
             document.getElementById('kpi-lead-team').innerHTML = renderKpiTeamHtml(leadBoss, `${leadBoss.finalLeadShare}% Inning Lead`);
             document.getElementById('kpi-lead-desc').textContent = `Commanded the lead across ${leadBoss.leadInningsTotal} total innings`;
         }
 
         // 4. Cardiac Kids (Most 1-Run Game Wins)
-        const cardiac = [...teams].sort((a, b) => b.oneRunWins - a.oneRunWins)[0];
+        const cardiac = [...teams].sort((a, b) => (b.oneRunWins - a.oneRunWins) || (a.oneRunLosses - b.oneRunLosses) || (b.totalWins - a.totalWins))[0];
         if (cardiac) {
             document.getElementById('kpi-cardiac-team').innerHTML = renderKpiTeamHtml(cardiac, `${cardiac.oneRunWins} 1-Run Wins`);
             document.getElementById('kpi-cardiac-desc').textContent = `Record in 1-run games: ${cardiac.oneRunWins}-${cardiac.oneRunLosses}`;
@@ -610,7 +667,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const selectedRound = roundSelect.value;
         const selectedTeamId = teamSelect.value;
 
-        let filteredTeams = Object.values(parsedTeams);
+        const allTeams = Object.values(parsedTeams);
+        let filteredTeams = [...allTeams];
         let isolatedSeries = null;
 
         // Filter by series if bracket chip is active
@@ -706,6 +764,34 @@ document.addEventListener('DOMContentLoaded', () => {
             'luckGap': 'Pythagorean Luck Gap'
         };
 
+        // Hard-set symmetric Y-axis bounds centered around each metric's neutral split value
+        const metricAxisSpecs = {
+            'pmi': { split: 0, minHalfSpan: 100, step: 20 },
+            'cumRunDiff': { split: 0, minHalfSpan: 40, step: 10 },
+            'rolling3RunDiff': { split: 0, minHalfSpan: 10, step: 2 },
+            'leadInningShare': { split: 50, minHalfSpan: 50, step: 10 },
+            'luckGap': { split: 0, minHalfSpan: 0.5, step: 0.1 }
+        };
+        const spec = metricAxisSpecs[selectedMetric] || { split: 0, minHalfSpan: 50, step: 10 };
+        const allMetricVals = [];
+        allTeams.forEach(t => t.trajectory.forEach(pt => allMetricVals.push(pt[selectedMetric])));
+        const yBounds = computeSymmetricBounds(allMetricVals, spec.split, spec.minHalfSpan, spec.step);
+
+        // Hard-set X-axis bounds (integer game count)
+        const roundMaxGames = { 'F': 3, 'D': 5, 'L': 7, 'W': 7 };
+        let seasonMaxGames = 0;
+        allTeams.forEach(t => {
+            if (t.trajectory.length > seasonMaxGames) seasonMaxGames = t.trajectory.length;
+        });
+        let xMax = 18;
+        if (isolatedSeries) {
+            xMax = Math.max(isolatedSeries.games.length, roundMaxGames[isolatedSeries.round] || 3, maxGames, 2);
+        } else if (selectedRound !== 'all') {
+            xMax = Math.max(roundMaxGames[selectedRound] || 5, maxGames, 2);
+        } else {
+            xMax = Math.max(seasonMaxGames, maxGames, 5);
+        }
+
         let xAxisTitle = 'Postseason Games Played';
         if (isolatedSeries) {
             xAxisTitle = `Series Game Number (${isolatedSeries.seriesDescription || 'Matchup'})`;
@@ -727,8 +813,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const teamId = dataItem?.[2]?.teamId || seriesData[params.seriesIndex]?.teamId;
                     const team = parsedTeams[teamId];
                     const rawGame = dataItem?.[2]?.rawGame;
-                    const pt = dataItem?.[2]?.pt;
                     const gameNumLabel = isolatedSeries ? `Series Game ${dataItem[0]}` : (selectedRound !== 'all' ? `Round Game ${dataItem[0]}` : `Game ${dataItem[0]}`);
+                    const val = dataItem[1];
+                    const isPositive = val >= spec.split;
+                    const signPrefix = (spec.split === 0 && val > 0) ? '+' : '';
 
                     return `
                         <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
@@ -739,7 +827,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <div style="color:var(--text-muted); margin-bottom: 0.2rem;">Round: <strong>${ROUND_NAMES[rawGame?.round] || 'Postseason'}</strong></div>
                             <div style="color:var(--text-muted); margin-bottom: 0.2rem;">Score: <strong style="color:#fff;">${rawGame ? `${rawGame.isWin ? 'W' : 'L'} ${rawGame.teamScore}-${rawGame.oppScore} vs ${rawGame.opponentName}` : '--'}</strong></div>
-                            <div style="color:var(--text-muted); margin-bottom: 0.2rem;">${metricLabels[selectedMetric]}: <strong style="color:${dataItem[1] >= 0 ? '#10B981' : '#EF4444'}; font-size:1rem;">${dataItem[1] > 0 ? '+' : ''}${dataItem[1]}</strong></div>
+                            <div style="color:var(--text-muted); margin-bottom: 0.2rem;">${metricLabels[selectedMetric]}: <strong style="color:${isPositive ? '#10B981' : '#EF4444'}; font-size:1rem;">${signPrefix}${val}</strong></div>
                             ${rawGame ? `<div style="font-size:0.75rem; color:var(--text-dim); margin-top:0.4rem;">${rawGame.decision}</div>` : ''}
                             <div style="margin-top:0.5rem; font-size:0.75rem; color:#EA580C; text-align:right;">Click node for game telemetry &rarr;</div>
                         </div>
@@ -760,7 +848,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 nameGap: 30,
                 nameTextStyle: { color: '#94A3B8', fontFamily: 'JetBrains Mono, monospace' },
                 min: 1,
-                max: Math.max(isolatedSeries ? (isolatedSeries.games.length + 1) : 4, maxGames + 1),
+                max: xMax,
                 interval: 1,
                 splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
                 axisLabel: {
@@ -772,6 +860,8 @@ document.addEventListener('DOMContentLoaded', () => {
             yAxis: {
                 type: 'value',
                 name: metricLabels[selectedMetric],
+                min: yBounds.min,
+                max: yBounds.max,
                 nameTextStyle: { color: '#94A3B8', fontFamily: 'JetBrains Mono, monospace' },
                 splitLine: { lineStyle: { color: 'rgba(255,255,255,0.07)' } },
                 axisLabel: { color: '#94A3B8', fontFamily: 'JetBrains Mono, monospace' }
@@ -811,7 +901,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderQuadrantView() {
         const selectedRound = roundSelect.value;
         const selectedTeamId = teamSelect.value;
-        let teams = Object.values(parsedTeams);
+        const allTeams = Object.values(parsedTeams);
+        let teams = [...allTeams];
 
         if (selectedSeriesId) {
             const series = seriesMatches.find(s => s.id === selectedSeriesId);
@@ -827,7 +918,46 @@ document.addEventListener('DOMContentLoaded', () => {
             teams = teams.filter(t => t.games.some(g => g.round === selectedRound));
         }
 
-        if (teams.length === 0) return;
+        if (allTeams.length === 0) return;
+
+        // Compute season-wide baselines so the quadrant split and axis bounds remain stable across filters
+        let totalPostseasonRS = 0;
+        let totalPostseasonRA = 0;
+        let totalTeamGames = 0;
+        allTeams.forEach(t => {
+            totalPostseasonRS += t.runsScored;
+            totalPostseasonRA += t.runsAllowed;
+            totalTeamGames += t.games.length;
+        });
+
+        const avgLeagueRS = totalTeamGames > 0
+            ? parseFloat((totalPostseasonRS / totalTeamGames).toFixed(2))
+            : 4.0;
+        const avgLeagueRA = totalTeamGames > 0
+            ? parseFloat((totalPostseasonRA / totalTeamGames).toFixed(2))
+            : 4.0;
+
+        // Collect all scatter and cumulative-trajectory comet coordinates across the season to guarantee full containment
+        const allXValues = [0];
+        const allYValues = [0];
+        allTeams.forEach(t => {
+            allXValues.push(t.avgRS);
+            allYValues.push(t.avgRA);
+            if (t.trajectory.length >= 2) {
+                t.trajectory.slice(-3).forEach(pt => {
+                    allXValues.push(pt.cumAvgRS);
+                    allYValues.push(pt.cumAvgRA);
+                });
+            }
+        });
+
+        // Symmetric hard-set bounds around (avgLeagueRS, avgLeagueRA) so all 4 quadrants have strictly EQUAL area
+        const xBounds = computeSymmetricBounds(allXValues, avgLeagueRS, Math.max(avgLeagueRS, 4.5), 0.5);
+        const yBounds = computeSymmetricBounds(allYValues, avgLeagueRA, Math.max(avgLeagueRA, 4.5), 0.5);
+        const xMin = xBounds.min;
+        const xMax = xBounds.max;
+        const yMin = yBounds.min;
+        const yMax = yBounds.max;
 
         // X: Runs Scored per Game (Offense Form)
         // Y: Runs Allowed per Game (Inverted: low RA is high on Y-axis for Lockdown)
@@ -835,7 +965,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const vectorLines = [];
 
         teams.forEach(team => {
-            const currentPoint = [team.avgRS, team.avgRA, team];
             scatterData.push({
                 name: team.name,
                 value: [team.avgRS, team.avgRA],
@@ -849,17 +978,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // If team played multiple games, build vector comet tail of last 3 games
-            if (team.games.length >= 2) {
-                const recent = team.games.slice(-3);
-                const coords = [];
-                let rCumRS = 0, rCumRA = 0;
-                recent.forEach((g, idx) => {
-                    rCumRS += g.teamScore;
-                    rCumRA += g.oppScore;
-                    coords.push([parseFloat((rCumRS / (idx + 1)).toFixed(2)), parseFloat((rCumRA / (idx + 1)).toFixed(2))]);
-                });
-
+            // If team played multiple games, build vector comet tail of last 3 cumulative states ending at (team.avgRS, team.avgRA)
+            if (team.trajectory.length >= 2) {
+                const coords = team.trajectory.slice(-3).map(pt => [pt.cumAvgRS, pt.cumAvgRA]);
                 vectorLines.push({
                     coords: coords,
                     lineStyle: {
@@ -871,10 +992,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         });
-
-        // Compute averages for quadrant crosshairs
-        const avgLeagueRS = teams.reduce((acc, t) => acc + t.avgRS, 0) / teams.length || 4.0;
-        const avgLeagueRA = teams.reduce((acc, t) => acc + t.avgRA, 0) / teams.length || 4.0;
 
         const option = {
             backgroundColor: 'transparent',
@@ -890,8 +1007,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     return `
                         <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
                             <strong style="font-size:1rem; color:${t.color};">${t.name}</strong> (${t.totalWins}-${t.totalLosses})
-                            <div style="color:var(--text-muted); margin-top:0.3rem;">Offense: <strong>${t.avgRS} Runs/G</strong></div>
-                            <div style="color:var(--text-muted);">Pitching Allowed: <strong>${t.avgRA} Runs/G</strong></div>
+                            <div style="color:var(--text-muted); margin-top:0.3rem;">Offense: <strong>${t.avgRS} Runs/G</strong> (Avg: ${avgLeagueRS})</div>
+                            <div style="color:var(--text-muted);">Pitching Allowed: <strong>${t.avgRA} Runs/G</strong> (Avg: ${avgLeagueRA})</div>
                             <div style="color:var(--text-muted);">Lead Inning Share: <strong>${t.finalLeadShare}%</strong></div>
                             <div style="color:${t.finalPMI >= 0 ? '#10B981' : '#EF4444'}; margin-top:0.3rem;">Momentum Index: <strong>${t.finalPMI > 0 ? '+' : ''}${t.finalPMI}</strong></div>
                         </div>
@@ -910,9 +1027,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 name: 'Offensive Firepower (Runs Scored / Game) →',
                 nameLocation: 'middle',
                 nameGap: 30,
+                min: xMin,
+                max: xMax,
                 nameTextStyle: { color: '#94A3B8', fontFamily: 'JetBrains Mono, monospace' },
                 splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
-                axisLabel: { color: '#94A3B8', fontFamily: 'JetBrains Mono, monospace' }
+                axisLabel: {
+                    color: '#94A3B8',
+                    fontFamily: 'JetBrains Mono, monospace',
+                    formatter: (val) => val < 0 ? '' : Number(val.toFixed(1))
+                }
             },
             yAxis: {
                 type: 'value',
@@ -920,34 +1043,58 @@ document.addEventListener('DOMContentLoaded', () => {
                 name: '← Pitching Lockdown (Fewer Runs Allowed)',
                 nameLocation: 'middle',
                 nameGap: 40,
+                min: yMin,
+                max: yMax,
                 nameTextStyle: { color: '#94A3B8', fontFamily: 'JetBrains Mono, monospace' },
                 splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } },
-                axisLabel: { color: '#94A3B8', fontFamily: 'JetBrains Mono, monospace' }
+                axisLabel: {
+                    color: '#94A3B8',
+                    fontFamily: 'JetBrains Mono, monospace',
+                    formatter: (val) => val < 0 ? '' : Number(val.toFixed(1))
+                }
             },
             series: [
-                // Quadrant Backdrop MarkArea
+                // Quadrant Backdrop MarkArea & Center Crosshairs
                 {
                     type: 'scatter',
                     data: [],
+                    markLine: {
+                        silent: true,
+                        symbol: 'none',
+                        lineStyle: {
+                            color: 'rgba(241, 245, 249, 0.35)',
+                            type: 'dashed',
+                            width: 1.5
+                        },
+                        label: {
+                            color: '#94A3B8',
+                            fontFamily: 'JetBrains Mono, monospace',
+                            fontSize: 10
+                        },
+                        data: [
+                            { xAxis: avgLeagueRS, label: { formatter: `Avg RS: ${avgLeagueRS}` } },
+                            { yAxis: avgLeagueRA, label: { formatter: `Avg RA: ${avgLeagueRA}` } }
+                        ]
+                    },
                     markArea: {
                         silent: true,
                         itemStyle: { opacity: 0.08 },
                         data: [
                             [
-                                { name: 'JUGGERNAUTS 🔥\n(Elite Hitting & Lockdown Arms)', coord: [avgLeagueRS, 0], itemStyle: { color: '#10B981' } },
-                                { coord: [12, avgLeagueRA] }
+                                { name: 'JUGGERNAUTS 🔥\n(Elite Hitting & Lockdown Arms)', coord: [avgLeagueRS, yMin], itemStyle: { color: '#10B981' } },
+                                { coord: [xMax, avgLeagueRA] }
                             ],
                             [
-                                { name: 'PITCHING FORTRESS 🛡️\n(Dominant Arms, Cold Bats)', coord: [0, 0], itemStyle: { color: '#38BDF8' } },
+                                { name: 'PITCHING FORTRESS 🛡️\n(Dominant Arms, Cold Bats)', coord: [xMin, yMin], itemStyle: { color: '#38BDF8' } },
                                 { coord: [avgLeagueRS, avgLeagueRA] }
                             ],
                             [
                                 { name: 'GLASS CANNONS ⚔️\n(High Slugging, Leaky Pen)', coord: [avgLeagueRS, avgLeagueRA], itemStyle: { color: '#EA580C' } },
-                                { coord: [12, 12] }
+                                { coord: [xMax, yMax] }
                             ],
                             [
-                                { name: 'DEAD WATER ❄️\n(Fall-Off / Cold Bats & Bleeding Runs)', coord: [0, avgLeagueRA], itemStyle: { color: '#EF4444' } },
-                                { coord: [avgLeagueRS, 12] }
+                                { name: 'DEAD WATER ❄️\n(Fall-Off / Cold Bats & Bleeding Runs)', coord: [xMin, avgLeagueRA], itemStyle: { color: '#EF4444' } },
+                                { coord: [avgLeagueRS, yMax] }
                             ]
                         ]
                     }
@@ -981,7 +1128,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         color: '#fff'
                     }
                 }
-            ]
+            ],
+            graphic: scatterData.length === 0 ? [{
+                type: 'text',
+                left: 'center',
+                top: 'center',
+                style: {
+                    text: `No completed games for ${ROUND_NAMES[selectedRound] || 'this round'} in ${seasonSelect.value}`,
+                    fill: '#94A3B8',
+                    font: '14px monospace'
+                }
+            }] : []
         };
 
         chartInstance.setOption(option, true);
@@ -1011,7 +1168,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td style="padding: 0.6rem; color:${g.margin > 0 ? '#10B981' : '#EF4444'};">${g.margin > 0 ? '+' : ''}${g.margin}</td>
                 <td style="padding: 0.6rem;">${g.leadInnings} of ${g.totalInnings}</td>
                 <td style="padding: 0.6rem; color:var(--text-dim); font-size:0.75rem;">${g.decision}</td>
-                <td style="padding: 0.6rem; font-weight:bold; color:${delta >= 0 ? '#10B981' : '#EF4444'};">${delta >= 0 ? '+' : ''}${delta}</td>
+                <td style="padding: 0.6rem; font-weight:bold; color:${delta >= 0 ? '#10B981' : '#EF4444'};">${delta > 0 ? '+' : ''}${delta}</td>
             `;
             drawerTableBody.appendChild(tr);
         });

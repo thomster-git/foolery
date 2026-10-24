@@ -19,12 +19,10 @@ tags:
   - manifesto
   - systems
 related:
-  - my-story-with-everything-is-connected
   - project-atlas
-  - audhd-and-systems-thinking
+  - building-a-comprehensive-discord-ecosystem
+  - my-story-with-medical-stigma-and-advocacy
 ---
-
-# The Project Atlas Manifesto
 
 > *"I am large, I contain multitudes."* — Walt Whitman
 
@@ -76,11 +74,8 @@ There is no prescribed path. You might start by clicking on a node about basebal
 
 While the vision for this graph is sprawling, the rollout is structured. Here is the current plan for bringing the full Atlas online:
 
-- **Phase 1: Interactive Tool Beta (Currently Live)**
-  Testing the static site generator, Web Audio APIs, and data visualization integrations. You can explore the early tools directly from the homepage.
-- **Phase 2: Building Project Atlas (Next Drop)**
-  The first major content release. This will include a batch of long-form articles detailing exactly how I built this digital garden from the ground up, including the AI-agent orchestration running behind the scenes.
-- **Phase 3: The Full Knowledge Graph (Future)**
-  Connecting the entire 66+ article backlog of systems thinking, tech tutorials, and neurodivergent mapping into a fully realized 3D interactive web.
+- **Phase 1: Interactive Tool Beta (Currently Live):** Testing the static site generator, Web Audio APIs, and data visualization integrations. You can explore the early tools directly from the homepage.
+- **Phase 2: Building Project Atlas (Next Drop):** The first major content release. This will include a batch of long-form articles detailing exactly how I built this digital garden from the ground up, including the AI-agent orchestration running behind the scenes.
+- **Phase 3: The Full Knowledge Graph (Future):** Connecting the entire 66+ article backlog of systems thinking, tech tutorials, and neurodivergent mapping into a fully realized 3D interactive web.
 
 Welcome to the Atlas.

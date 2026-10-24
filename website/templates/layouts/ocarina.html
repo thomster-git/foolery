@@ -645,13 +645,61 @@
     filter: drop-shadow(0 4px 14px rgba(6, 182, 212, 0.8)) !important;
   }
 
+  #oot-display .song-phrase.oot-repeat-phrase {
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  #oot-display .song-phrase.oot-repeat-phrase .note-beat {
+    min-width: 110px;
+  }
+  .oot-repeat-badge {
+    align-self: center;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.65rem 1.15rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-cyan);
+    background: rgba(6, 182, 212, 0.12);
+    border: 2px solid rgba(6, 182, 212, 0.45);
+    border-radius: 999px;
+    box-shadow: 0 4px 16px rgba(6, 182, 212, 0.2);
+    letter-spacing: 0.04em;
+    user-select: none;
+    white-space: nowrap;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  }
+  .oot-repeat-badge:hover {
+    transform: translateY(-2px) scale(1.04);
+    background: rgba(6, 182, 212, 0.2);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.35);
+  }
+  .oot-repeat-icon {
+    font-size: 1.25rem;
+    opacity: 0.85;
+  }
+  .oot-repeat-badge.oot-repeat-active {
+    color: #000;
+    background: var(--accent-cyan);
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 24px rgba(6, 182, 212, 0.8);
+    transform: scale(1.1);
+  }
+
   @media (max-width: 680px) {
     #oot-display {
       --oot-diagram-width: min(100%, 260px);
       --oot-svg-max: min(100%, 260px);
       padding: 1.25rem 0.75rem !important;
     }
-    #oot-display .song-phrase {
+    #oot-display .song-phrase,
+    #oot-display .song-phrase.oot-repeat-phrase {
+      flex-wrap: wrap;
       gap: 1.25rem 1rem;
     }
   }
@@ -1335,6 +1383,18 @@ function tunerLoop() {
             practiceSustainFrames = 0;
             if (practiceIndex < practiceNotes.length) {
               const nextNote = practiceNotes[practiceIndex];
+              if (nextNote.pass && nextNote.pass !== practiceNotes[practiceIndex - 1].pass) {
+                // Starting a repeat pass of an "x2" line: reset the reused note cards
+                const passEls = practiceNotes.filter(n => n.pass === nextNote.pass).map(n => n.el);
+                passEls.forEach(el => {
+                  el.classList.remove('practice-done');
+                  const oldFb = el.querySelector('.practice-feedback');
+                  if (oldFb) oldFb.remove();
+                });
+                const badge = nextNote.el.closest('.song-phrase')?.querySelector('.oot-repeat-badge');
+                if (badge) badge.classList.add('oot-repeat-active');
+              }
+              nextNote.el.classList.remove('practice-done');
               nextNote.el.classList.add('practice-active');
               nextNote.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
               if (nextNote.noteNum === prevNoteNum) {
@@ -1481,6 +1541,17 @@ function startPracticeMode(type) {
     }
   });
 
+  // OoT melodies shown once with an "x2" badge: practice the line N times
+  const repeatCount = type === 'oot' ? parseInt(container.dataset.repeat || '1', 10) : 1;
+  if (repeatCount > 1 && practiceNotes.length > 0) {
+    const onePass = practiceNotes.slice();
+    for (let r = 1; r < repeatCount; r++) {
+      onePass.forEach(n => practiceNotes.push({ ...n, pass: r }));
+    }
+  }
+  const repeatBadge = container.querySelector('.oot-repeat-badge');
+  if (repeatBadge) repeatBadge.classList.remove('oot-repeat-active');
+
   if (practiceNotes.length > 0) {
     practiceNotes[0].el.classList.add('practice-active');
     practiceNotes[0].el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1496,7 +1567,7 @@ function startPracticeMode(type) {
 
 function stopPracticeMode() {
   practiceMode = false;
-  const container = practiceType === 'custom' ? document.getElementById('custom-tab-output') : document.getElementById('song-display');
+  const container = practiceType === 'custom' ? document.getElementById('custom-tab-output') : (practiceType === 'oot' ? document.getElementById('oot-display') : document.getElementById('song-display'));
   if (!container) return;
   
   const noteDivs = Array.from(container.querySelectorAll('.note-beat'));
@@ -1505,6 +1576,8 @@ function stopPracticeMode() {
     const fb = div.querySelector('.practice-feedback');
     if (fb) fb.remove();
   });
+  const repeatBadge = container.querySelector('.oot-repeat-badge');
+  if (repeatBadge) repeatBadge.classList.remove('oot-repeat-active');
   
   const stopBtn = container.querySelector('.practice-btn');
   if (stopBtn) {
@@ -1743,11 +1816,58 @@ function renderCustomTab() {
 // TAB SWITCHING
 // ============================================================
 
-function switchTab(tab) {
+// Deep-linkable tabs: /tools/ocarina/#tuner, #songs, #oot (also ?tab=...)
+// The default tab (chart) uses the bare URL, matching the Dragonwilds tracker.
+const OC_TABS = ['chart', 'tuner', 'songs', 'oot'];
+const OC_DEFAULT_TAB = 'chart';
+const OC_TAB_ALIASES = { 'fingering': 'chart', 'finger-chart': 'chart', 'songbook': 'songs', 'scale': 'songs', 'scales': 'songs', 'melodies': 'oot', 'oot-melodies': 'oot' };
+
+function resolveOcTab(name) {
+  if (!name) return null;
+  const key = String(name).replace('#', '').toLowerCase();
+  const tab = OC_TAB_ALIASES[key] || key;
+  return OC_TABS.includes(tab) ? tab : null;
+}
+
+function getOcTabFromUrl() {
+  const queryTab = new URLSearchParams(window.location.search).get('tab');
+  return resolveOcTab(queryTab) || resolveOcTab(window.location.hash) || OC_DEFAULT_TAB;
+}
+
+function updateOcTabUrl(tab) {
+  if (!history.pushState) return;
+  const newHash = tab === OC_DEFAULT_TAB ? '' : '#' + tab;
+  // Drop ?tab= once we own the URL so hash and query never disagree
+  const params = new URLSearchParams(window.location.search);
+  params.delete('tab');
+  const qs = params.toString();
+  const newUrl = window.location.pathname + (qs ? '?' + qs : '') + newHash;
+  if (newUrl !== window.location.pathname + window.location.search + window.location.hash) {
+    history.pushState({ ocTab: tab }, '', newUrl);
+  }
+}
+
+function syncOcTabFromUrl() {
+  const tab = getOcTabFromUrl();
+  const current = document.querySelector('.oc-tab.active');
+  if (!current || current.dataset.tab !== tab) switchTab(tab, false);
+}
+
+window.addEventListener('popstate', syncOcTabFromUrl);
+window.addEventListener('hashchange', syncOcTabFromUrl);
+
+function switchTab(tab, updateUrl = true) {
+  tab = resolveOcTab(tab) || OC_DEFAULT_TAB;
+  if (updateUrl) updateOcTabUrl(tab);
   document.querySelectorAll('.oc-panel').forEach(p => p.style.display = 'none');
   document.querySelectorAll('.oc-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('tab-' + tab).style.display = 'block';
   document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+
+  const shareBtn = document.querySelector('.share-btn');
+  if (shareBtn) {
+    shareBtn.dataset.url = 'https://thomsfoolery.com/tools/ocarina/' + (tab === OC_DEFAULT_TAB ? '' : '#' + tab);
+  }
 
   // Stop tuner if leaving tuner tab
   if (tab !== 'tuner' && analyser) stopTuner();
@@ -1833,6 +1953,25 @@ function applyOotZoom() {
   });
 }
 
+// If a melody is the same phrase played N times in a row (e.g. Zelda's Lullaby:
+// "B5 D6 A5 | B5 D6 A5"), return { phrase, count } so it can be displayed once
+// with an "x2" badge. The full sequence stays in song.notes so preview playback,
+// N64 melody matching and practice mode still use every note.
+function getOotRepeatInfo(notes) {
+  const phrases = [];
+  let cur = [];
+  notes.forEach(b => {
+    if (b.break) { if (cur.length) { phrases.push(cur); cur = []; } }
+    else cur.push(b);
+  });
+  if (cur.length) phrases.push(cur);
+  if (phrases.length < 2) return null;
+  const sig = p => p.map(b => b.n + (b.dur ? ':' + b.dur : '')).join(' ');
+  const first = sig(phrases[0]);
+  if (!phrases.every(p => sig(p) === first)) return null;
+  return { phrase: phrases[0], count: phrases.length };
+}
+
 function loadOotSong(id, btn) {
   document.querySelectorAll('#oot-buttons-container .song-btn').forEach(b => b.classList.remove('active'));
   if(btn) btn.classList.add('active');
@@ -1841,7 +1980,20 @@ function loadOotSong(id, btn) {
   if (!song) return;
 
   const display = document.getElementById('oot-display');
-  const notesHtml = generateNotesHtml(song.notes);
+  const repeatInfo = getOotRepeatInfo(song.notes);
+  let notesHtml;
+  if (repeatInfo) {
+    notesHtml = generateNotesHtml(repeatInfo.phrase)
+      .replace('class="song-phrase"', 'class="song-phrase oot-repeat-phrase"')
+      .replace(
+        /<\/div>\s*$/,
+        `<div class="oot-repeat-badge" title="Play this line ${repeatInfo.count} times" aria-label="Repeat ${repeatInfo.count} times"><span class="oot-repeat-icon">⟲</span><span>x${repeatInfo.count}</span></div></div>`
+      );
+    display.dataset.repeat = String(repeatInfo.count);
+  } else {
+    notesHtml = generateNotesHtml(song.notes);
+    delete display.dataset.repeat;
+  }
 
   let songSvg = '';
   if (id === 'oot-zelda') songSvg = '<img src="/images/website-assets/royal-crest.svg" alt="Royal Crest" style="width: 32px; opacity: 0.6;">';
@@ -2131,5 +2283,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const ootId = firstOotBtn.getAttribute('data-oot');
     loadOotSong(ootId, firstOotBtn);
   }
+
+  // Direct linking via hash (#tuner, #songs, #oot) or query param (?tab=oot)
+  syncOcTabFromUrl();
 });
 </script>

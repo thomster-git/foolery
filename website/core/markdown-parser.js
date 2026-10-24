@@ -12,13 +12,19 @@ export default function parseMarkdown(markdownText = "") {
   text = text.replace(/```([^\n]*)\n([\s\S]*?)```/g, (match, lang, code) => {
     const langClass = lang.trim() ? ` class="language-${escapeHtml(lang.trim())}"` : '';
     const placeholder = `%%%ATLAS_CODE_BLOCK_${codeBlocks.length}%%%`;
-    codeBlocks.push(`<pre><code${langClass}>${escapeHtml(code.trim())}</code></pre>`);
+    codeBlocks.push(`<pre><code${langClass}>${escapeHtml(code.replace(/^\n+|\n+$/g, ""))}</code></pre>`);
     return placeholder;
   });
 
-  // Blockquotes > quote
-  text = text.replace(/^>\s+(.+)$/gm, '<blockquote>$1</blockquote>');
+  // Blockquotes > quote (and GitHub-style alert callouts > [!WARNING], > [!IMPORTANT], etc.)
+  text = text.replace(/^>\s*(.+)$/gm, '<blockquote>$1</blockquote>');
   text = text.replace(/<\/blockquote>\s*<blockquote>/g, '<br>');
+  text = text.replace(/<blockquote>\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\](?:<br>|\s*)([\s\S]*?)<\/blockquote>/gi, (match, type, content) => {
+    const lower = type.toLowerCase();
+    const icons = { note: 'ℹ️', tip: '💡', important: '📌', warning: '⚠️', caution: '🚨' };
+    const icon = icons[lower] || 'ℹ️';
+    return `<aside class="article-callout article-callout--${lower}"><div class="article-callout-header"><span>${icon}</span><span>${type.toUpperCase()}</span></div><div class="article-callout-body">${content}</div></aside>`;
+  });
 
   // Headings # ## ###
   text = text.replace(/^###\s+(.+)$/gm, '<h3>$1</h3>');
@@ -50,29 +56,38 @@ export default function parseMarkdown(markdownText = "") {
     return `<table class="article-table">\n<thead>\n  <tr>${headers}</tr>\n</thead>\n<tbody>\n${bodyRows}\n</tbody>\n</table>`;
   });
 
-  // Bullet lists (- or * at start of line)
+  // Bullet lists (- or *) and ordered lists (1., 2., etc.)
   const lines = text.split('\n');
-  let inList = false;
+  let listType = null; // 'ul' | 'ol' | null
   const resultLines = [];
 
   for (let line of lines) {
-    const listMatch = line.match(/^[\*\-]\s+(.+)$/);
-    if (listMatch) {
-      if (!inList) {
+    const ulMatch = line.match(/^\s*[\*\-]\s+(.+)$/);
+    const olMatch = line.match(/^\s*\d+\.\s+(.+)$/);
+    if (ulMatch) {
+      if (listType !== 'ul') {
+        if (listType) resultLines.push(`</${listType}>`);
         resultLines.push('<ul>');
-        inList = true;
+        listType = 'ul';
       }
-      resultLines.push(`  <li>${listMatch[1]}</li>`);
+      resultLines.push(`  <li>${ulMatch[1]}</li>`);
+    } else if (olMatch) {
+      if (listType !== 'ol') {
+        if (listType) resultLines.push(`</${listType}>`);
+        resultLines.push('<ol>');
+        listType = 'ol';
+      }
+      resultLines.push(`  <li>${olMatch[1]}</li>`);
     } else {
-      if (inList) {
-        resultLines.push('</ul>');
-        inList = false;
+      if (listType) {
+        resultLines.push(`</${listType}>`);
+        listType = null;
       }
       resultLines.push(line);
     }
   }
-  if (inList) {
-    resultLines.push('</ul>');
+  if (listType) {
+    resultLines.push(`</${listType}>`);
   }
 
   text = resultLines.join('\n');
@@ -82,7 +97,7 @@ export default function parseMarkdown(markdownText = "") {
   let parsedHtml = blocks.map(block => {
     block = block.trim();
     if (!block) return '';
-    if (/^<(h[1-6]|ul|ol|li|blockquote|pre|hr|div|p|article|section|table)/i.test(block) || /^%%%ATLAS_CODE_BLOCK_\d+%%%$/.test(block)) {
+    if (/^<(h[1-6]|ul|ol|li|blockquote|aside|pre|hr|div|p|article|section|table)/i.test(block) || /^%%%ATLAS_CODE_BLOCK_\d+%%%$/.test(block)) {
       return block;
     }
     return `<p>${block.replace(/\n/g, '<br>')}</p>`;

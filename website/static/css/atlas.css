@@ -344,8 +344,55 @@ blockquote {
   margin: 1.5rem 0;
   padding: 1rem 1.5rem;
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
-  color: #e2e8f0;
+  color: var(--text-bright);
   font-style: italic;
+}
+
+.article-callout {
+  border-left: 4px solid var(--accent-cyan);
+  background: rgba(13, 148, 136, 0.07);
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  color: var(--text-main);
+  font-style: normal;
+}
+
+.article-callout-header {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.4rem;
+}
+
+.article-callout--warning, .article-callout--caution {
+  border-left-color: #d97706;
+  background: rgba(217, 119, 6, 0.08);
+}
+.article-callout--warning .article-callout-header,
+.article-callout--caution .article-callout-header {
+  color: #b45309;
+}
+
+.article-callout--important {
+  border-left-color: var(--accent-indigo);
+  background: rgba(129, 140, 248, 0.1);
+}
+.article-callout--important .article-callout-header {
+  color: var(--accent-indigo);
+}
+
+.article-callout--note, .article-callout--tip {
+  border-left-color: var(--accent-cyan);
+  background: rgba(13, 148, 136, 0.08);
+}
+.article-callout--note .article-callout-header,
+.article-callout--tip .article-callout-header {
+  color: var(--accent-cyan);
 }
 
 pre {
@@ -360,7 +407,7 @@ pre {
 }
 
 code {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.06);
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
   font-family: var(--font-mono);
@@ -387,7 +434,7 @@ table, .article-table {
 }
 
 table th, .article-table th {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(15, 23, 42, 0.04);
   color: var(--accent-cyan);
   padding: 0.75rem 1rem;
   text-align: left;
@@ -407,7 +454,7 @@ table tr:last-child td, .article-table tr:last-child td {
 }
 
 table tr:hover td, .article-table tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(15, 23, 42, 0.02);
 }
 
 article ul, article ol {
@@ -417,7 +464,7 @@ article ul, article ol {
 
 article li {
   margin-bottom: 0.5rem;
-  color: #cbd5e1;
+  color: var(--text-main);
 }
 
 /* Breadcrumbs */
@@ -2756,3 +2803,308 @@ footer {
   justify-content: center;
 }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
+
+/* ==========================================================================
+   Baseball Companion Guide (tickets, gear & regional wagering)
+   Shared by: postseason-baseball-analyzer, baseball-trend-analyzer
+   ========================================================================== */
+.companion-guide {
+  margin-top: 3.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-card);
+  text-align: left;
+  color: var(--text-main);
+}
+
+.companion-guide__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.companion-guide__header-text {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.companion-guide__eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  margin-bottom: 0.5rem;
+}
+
+.companion-guide__title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-bright);
+  line-height: 1.25;
+  margin: 0 0 0.5rem 0;
+}
+
+.companion-guide__lede {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 65ch;
+}
+
+.companion-guide__badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  padding: 0.3rem 0.8rem;
+  border-radius: 9999px;
+  white-space: nowrap;
+}
+
+/* Resource cards (tickets / gear / data) */
+.companion-guide__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.25rem;
+  margin: 0 0 2.25rem 0;
+}
+
+.companion-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.35rem;
+  transition: var(--transition-fast);
+}
+
+.companion-card:hover {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 1px var(--border-glow);
+}
+
+.companion-card__icon {
+  font-size: 1.6rem;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.companion-card__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin: 0 0 0.4rem 0;
+}
+
+.companion-card__desc {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  margin: 0 0 1rem 0;
+  flex-grow: 1;
+}
+
+.companion-card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Consistent outbound link "chips" */
+.companion-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2rem;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+.companion-link:hover,
+.companion-link:focus-visible {
+  border-color: var(--accent-cyan);
+  background: var(--accent-cyan);
+  color: #fff;
+  text-decoration: none;
+}
+
+.companion-link:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+/* Regional wagering sub-section */
+.companion-guide__wagering {
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.75rem;
+}
+
+.companion-guide__subtitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin: 0 0 0.6rem 0;
+}
+
+.companion-guide__intro {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0 0 1.25rem 0;
+  max-width: 75ch;
+}
+
+.companion-regions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.companion-region {
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--region-accent, var(--accent-cyan));
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.15rem;
+}
+
+.companion-region--atlantic { --region-accent: var(--accent-cyan); }
+.companion-region--ontario  { --region-accent: var(--accent-blue); }
+.companion-region--west     { --region-accent: var(--accent-emerald); }
+.companion-region--us       { --region-accent: var(--accent-amber); }
+
+.companion-region__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin: 0 0 0.25rem 0;
+}
+
+.companion-region__regulator {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: var(--text-dim);
+  margin-bottom: 0.6rem;
+}
+
+.companion-region p {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.companion-region strong {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.companion-region a {
+  color: var(--accent-cyan);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Responsible gambling + disclosure */
+.companion-guide__disclaimer {
+  margin-top: 1.5rem;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-left: 4px solid var(--accent-amber);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.15rem;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.companion-guide__disclaimer-title {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-bright);
+  margin-bottom: 0.35rem;
+}
+
+.companion-guide__disclaimer p {
+  margin: 0 0 0.6rem 0;
+}
+
+.companion-guide__help {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.companion-guide__help a {
+  color: var(--text-main);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.companion-guide__help a:hover {
+  color: var(--accent-cyan);
+}
+
+.companion-guide__disclosure {
+  margin: 1rem 0 0 0;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--text-dim);
+}
+
+@media (max-width: 640px) {
+  .companion-guide {
+    padding: 1.25rem;
+    margin-top: 2.5rem;
+  }
+  .companion-guide__title {
+    font-size: 1.3rem;
+  }
+  .companion-guide__badge {
+    white-space: normal;
+  }
+  .companion-guide__grid,
+  .companion-regions {
+    grid-template-columns: 1fr;
+  }
+}

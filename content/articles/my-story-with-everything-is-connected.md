@@ -1,7 +1,7 @@
 ---
 stage: "full"
 id: my-story-with-everything-is-connected
-title: Everything Is Connected: The Manifesto Behind Project Atlas
+title: "Everything Is Connected: The Manifesto Behind Project Atlas"
 type: article
 access: public
 status: draft
@@ -13,11 +13,12 @@ topics:
 themes:
   - worldview
   - connection
+  - systems-thinking
 related:
   - project-atlas
-  - keel-systems
-  - my-story-with-neurodiversity-and-adult-diagnosis
-  - my-story-with-cfi
+  - manifesto
+  - my-story-with-medical-stigma-and-advocacy
+  - my-story-with-the-akira-ransomware-attack
 tags:
   - project-atlas
   - manifesto
@@ -25,11 +26,7 @@ tags:
   - knowledge-graph
   - systems-thinking
 created: 2026-09-14
-updated: 2026-08-04
-connections:
-  - articles
-  - my-story-with-autigender-and-identity
-  - my-story-with-billy-talent
+updated: 2026-09-14
 ---
 
 

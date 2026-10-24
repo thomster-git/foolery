@@ -1,17 +1,16 @@
 ---
 stage: "teaser"
 id: my-story-with-the-grade-9-french-test
-title: "The Grade 9 French Test: Zero Marks, Red Seals, & The Illusion of Authority"
+title: "The Grade 9 French Test: Zero Marks, a College Certificate, & The Illusion of Authority"
 type: article
 status: published
 access: paid
 author: "Jonathan Thoms"
 created: 2026-10-20
 updated: 2026-10-20
-summary: Accused of cheating during recess for reviewing vocabulary with a friend, interrogated in isolation by school administrators, and given a zero on the highest-scoring test of my year. The day I realized adults aren't as smart as they claim to be, and why my dad offered to return his Red Seal.
+summary: Accused of cheating during recess for reviewing vocabulary with a friend, interrogated in isolation by school administrators, and given a zero on the highest-scoring test of my year. The day I realized adults aren't as smart as they claim to be, and why my dad offered to hand back his college certificate.
 topics:
   - audhd
-  - technology
 themes:
   - resilience
   - worldview
@@ -22,7 +21,6 @@ tags:
   - audhd
   - justice-sensitivity
   - newfoundland
-  - red-seal
 related:
   - project-atlas
   - my-story-with-the-akira-ransomware-attack
@@ -37,7 +35,7 @@ Every kid eventually experiences the watershed moment where the illusion of adul
 
 That was the day I stopped believing that authority figures were automatically smarter, fairer, or more professional than the rest of us. 
 
-It was also the day my father offered to return his provincial Red Seal certification in protest.
+It was also the day my father offered to hand back his college certificate in protest.
 
 ---
 
@@ -79,9 +77,11 @@ I stood there in the corridor, completely bewildered.
 
 Years later, looking back with an adult's understanding of workplace dynamics and human insecurity, the puzzle pieces fell into place: **her own son was in our grade.**
 
-In a small Newfoundland school, academic recognition and "best grade" awards carry an absurd amount of parental pride. Her son was a strong student, and I was directly competing with him for class standing and honors roll rankings. Any mark I earned wasn't just a number on my report card; to a defensive parent with gradebook privileges, it was an obstacle standing in front of her son's academic accolades. 
+In a small Newfoundland school, academic recognition and "best grade" awards carry an absurd amount of parental pride. Her son was a strong student, and I was directly competing with him for class standing and honour roll rankings. Any mark I earned wasn't just a number on my report card; to a defensive parent with gradebook privileges, it was an obstacle standing in front of her son's academic accolades. 
 
 Her accusation wasn't based on what she saw on that textbook page—she hadn't even looked close enough to see whether Victor was pointing at vocabulary or a cartoon doodle of the Eiffel Tower. Her reaction was pure confirmation bias. She had assigned a narrative of dishonesty to me long before she walked through that door.
+
+<!-- more -->
 
 ---
 
@@ -129,9 +129,10 @@ I sat down in the chair. The vice principal leaned forward with an expression of
 
 The tone was suffocatingly condescending. They weren't asking investigative questions; they were stating accusations as established fact and waiting for me to grovel. They spoke to me like I was a delinquent running a counterfeit ring, lecturing me on the "severe ethical failure" of my behavior.
 
-Every attempt I made to explain what had actually happened was brushed aside. 
-* *I was cramming before a test.* ("You were soliciting unauthorized intelligence.")
-* *He pointed to a vocabulary list in our regular textbook.* ("You were taking shortcuts to undermine your peers.")
+Every attempt I made to explain what had actually happened was brushed aside:
+
+- *I was cramming before a test.* ("You were soliciting unauthorized intelligence.")
+- *He pointed to a vocabulary list in our regular textbook.* ("You were taking shortcuts to undermine your peers.")
 
 And then came the moment that snapped my patience completely.
 
@@ -165,7 +166,7 @@ They gave Victor a zero. They gave Donald a zero. And they gave me a zero.
 
 ---
 
-## Act VI: The Highest Score & The Red Seal
+## Act VI: The Highest Score & The College Certificate
 
 A couple of days later, the tests were graded. 
 
@@ -185,7 +186,7 @@ Instead, my parents looked at the situation, looked at how the school had conduc
 
 My mother was disgusted that her friend and the school had escalated a recess study session into a full-blown tribunal. And my father—a career tradesman who built his living with his hands and understands how the real world actually functions—gave me the greatest piece of reassurance I have ever received:
 
-> *"Jonathan, if looking over notes with a buddy and asking what to study before a test is considered cheating, then I need to march down to the government office and hand my Red Seal certification back right now—because that’s how every single one of us got through college."*
+> *"Jonathan, if looking over notes with a buddy and asking what to study before a test is considered cheating, then I need to march right down there and hand my college certificate back—because that’s how every single one of us got through school."*
 
 In that single sentence, my dad dismantled three days of institutional gaslighting. 
 
@@ -224,4 +225,4 @@ It was the day I graduated from the childish belief that adults are inherently w
 3. **You Have the Right to Disengage:** When an authority figure has already written the verdict before hearing the testimony, you owe them zero emotional vulnerability. *"Yeah, whatever"* isn't disrespect; sometimes, it is the only dignity you have left.
 4. **Real-World Success is Collaborative:** In the real world—whether engineering a complex CAD model, troubleshooting a fiber optic network, or surviving a corporate ransomware attack—sharing knowledge with your peers is the only way organizations survive. The school system punishes collaboration because it fears what happens when students support each other.
 
-They took my score, but they gave me my skepticism. And thirty years later, that skepticism has served me far better than any French verb conjugation ever could.
+They took my score, but they gave me my skepticism. And two decades later, that skepticism has served me far better than any French verb conjugation ever could.

@@ -272,16 +272,19 @@ Even with the investigation prematurely killed by corporate leadership, the fore
 ```
 
 ### 1. The Dormant Admin Accounts (The Weapon)
+
 The previous MSP had been dangerously negligent with Active Directory hygiene. They had left multiple dormant administrator accounts active on the domain with legacy authorization methods enabled. 
 
 Akira frequently exploits known authorization flaws (such as legacy NTLM relay or unpatched license/auth service bypasses) to hijack inactive administrative credentials without ever needing to brute-force a password. Once inside, they inherit the keys to the kingdom.
 
 ### 2. The Rogue IP Anomaly (Ingress Suspect #1: Physical Proximity)
+
 On the days leading up to the attack, the mine hosted a high volume of outside foot traffic: investors and potential buyers touring the surface facilities and administrative buildings. 
 
 While reviewing the Microsoft Defender connection telemetry from that window, I spotted an anomalous private IP address behaving erratically on our wireless perimeter. Its network signature and packet broadcast behavior bore a striking resemblance to a **WiFi Pineapple**—a rogue penetration-testing access point used to perform man-in-the-middle credential harvesting against nearby corporate devices.
 
 ### 3. The Security Guard's Workstation (Ingress Suspect #2: Internal Shadow IT)
+
 There was a competing, equally plausible theory. A security officer at the front gate had been connecting his personal laptop to the corporate network to **download torrents** during night shifts. 
 
 The Defender alert timelines indicated that the lateral scan and initial credential staging appeared to emanate directly from the security station’s subnet early that morning before spreading to the core servers. The mine’s unsegmented flat network meant that an infected personal laptop on the perimeter had direct, unfiltered line-of-sight to production domain controllers.
@@ -317,21 +320,27 @@ I lay on the floor, completely non-verbal, overwhelmed by the realization that I
 Surviving Akira taught me more about enterprise architecture, human nature, and systems engineering than any certification ever could. If you are responsible for keeping infrastructure alive, here are the truths that matter:
 
 ### 1. One Immutable Backup Device Beats a $50,000 Security Stack
+
 Every single software defense we had failed or was in transition. The only reason Canada Fluorspar survived without paying ransom was our isolated, immutable Datto BCDR appliance. Follow the **3-2-1 backup rule** religiously: three copies of your data, on two different media types, with at least **one copy completely immutable, offsite, and air-gapped**. Test your bare-metal restores before you need them.
 
 ### 2. Upgrading Licensing Is an Operational Decision
+
 Upgrading from Microsoft 365 Business Standard to Business Premium days prior gave us the Defender for Endpoint telemetry that caught Akira at 4:43 AM. If you are running an organization on baseline licensing without EDR or centralized email alerting, you are operating blind.
 
 ### 3. Clean Your Active Directory Regularly
+
 Dormant admin accounts are open doors with welcome mats. Implement strict privileged access workstations (PAWs), enforce multi-factor authentication (MFA) everywhere, and run monthly audits to disable or delete orphaned accounts left behind by contractors and former MSPs.
 
 ### 4. Technical Controls Must Enforce What User Trust Cannot
+
 You cannot rely on end-user compliance during an incident. If you tell users not to boot their computers, someone will boot their computer. Design your network so that compromise containment is enforced at the managed switch and VLAN level, not by trusting humans to follow written warnings.
 
 ### 5. Recognize When Adversaries Are Rushed
+
 Ransomware operators are human beings under operational pressure. When you discover an intrusion, look closely: did they lock out your domain admins? Did they touch your backups? Did they clean up their logs? Akira’s sloppy, rushed execution gave us the leverage and unencrypted files we needed to rebuild without panicking.
 
 ### 6. Protect Your Engineers Before They Break
+
 Servers can be wiped, re-imaged, and brought back from bare metal in fourteen days. A human nervous system, shattered by around-the-clock burnout, lack of accommodations, and toxic leadership, takes months or years to heal. 
 
 Cybersecurity is not just about defending data. It’s about building resilient, humane systems that honor both the hardware and the people who keep it running.
