@@ -508,7 +508,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       } else if (hoveredNode.id === 'hub-life-experiences' && (focusType === 'global' || focusType === 'full')) {
           if (!hoveredNode.expanded) {
               hoveredNode.expanded = true;
-              const topicIds = ['audhd', 'health-and-fitness', 'career', 'parenting'];
+              const topicIds = ['audhd', 'health-and-fitness', 'personal-growth', 'career', 'parenting'];
               const topics = data.nodes.filter(n => topicIds.includes(n.id));
               const shitList = data.nodes.filter(n => n.type === 'shit-list');
               const nodesToSpawn = [...topics, ...shitList];

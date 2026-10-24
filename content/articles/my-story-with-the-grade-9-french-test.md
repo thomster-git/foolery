@@ -10,7 +10,7 @@ created: 2026-10-20
 updated: 2026-10-20
 summary: Accused of cheating during recess for reviewing vocabulary with a friend, interrogated in isolation by school administrators, and given a zero on the highest-scoring test of my year. The day I realized adults aren't as smart as they claim to be, and why my dad offered to hand back his college certificate.
 topics:
-  - audhd
+  - personal-growth
 themes:
   - resilience
   - worldview
@@ -18,8 +18,6 @@ themes:
 tags:
   - education
   - authority
-  - audhd
-  - justice-sensitivity
   - newfoundland
 related:
   - project-atlas
@@ -105,7 +103,7 @@ I walked into third period with my pulse pounding in my ears.
 
 ## Act IV: The Third-Period Test
 
-If you have AuDHD (Autism and ADHD), your relationship with stress and focus is paradoxical. Routine stress paralyzes you; acute, high-stakes adrenaline hyper-focuses you.
+When someone falsely accuses you of cheating ten minutes before an exam, the adrenaline hits like a lightning bolt.
 
 When the French teacher slammed the test face-down onto my desk, I didn't feel defeated. I felt a fierce, burning defiance. 
 
@@ -144,7 +142,7 @@ They didn't even pause. They dismissed it instantly. To them, guilt was contagio
 
 That was the breaking point. 
 
-When you have a neurodivergent brain wired with intense **justice sensitivity**, watching authority figures deliberately punish an innocent person just to make paperwork easier is like gasoline on a fire. The last shred of respect I held for the school administration evaporated in that chair.
+Watching authority figures deliberately punish an innocent friend just to make their own paperwork easier was like gasoline on a fire. The last shred of respect I held for the school administration evaporated in that chair.
 
 I stopped explaining. I stopped advocating. I pulled my arms across my chest, leaned back in the chair, and completely severed my cooperation.
 
@@ -178,7 +176,7 @@ She told my mother that when she sat down with the red pen and marked my test wi
 
 When my mom came home and told me what I had actually scored, I didn't feel vindicated. I felt sick. 
 
-All that preparation, all that hyper-focused defiance in third period, had produced the best work of my school year—only for the system to stamp a big, black **0.0%** across my permanent record to teach me a lesson about "character."
+All that preparation, all that focused defiance in third period, had produced the best work of my school year—only for the system to stamp a big, black **0.0%** across my permanent record to teach me a lesson about "character."
 
 I walked into our kitchen expecting my parents to be furious with me. I braced for the grounding, the loss of computer privileges, the standard parental lecture.
 

@@ -89,7 +89,7 @@ That experience burned a false, toxic lesson into my subconscious: *If you go to
 
 Even when I was at my absolute healthiest—working out consistently, lifting heavy, eating clean, and in peak physical condition—I was still suffering from severe sleep apnea. My airway did not care about my gym routine. But the fear of walking into a clinic only to be humiliated kept me away.
 
-On top of the weight bias, I had misconceptions about the diagnostic process itself. I was under the impression that getting tested meant being admitted to a cold hospital ward overnight, covered in hundreds of glued wires, while nurses watched me through a two-way mirror like a zoo animal. For an autistic person with severe sensory sensitivities, the idea of an in-hospital sleep lab felt like an intolerable psychological torture chamber.
+On top of the weight bias, I had misconceptions about the diagnostic process itself. I was under the impression that getting tested meant being admitted to a cold hospital ward overnight, covered in hundreds of glued wires, while nurses watched me through a two-way mirror like a zoo animal. The idea of spending a night wired up in an unfamiliar hospital sleep lab felt like an interrogation room—not a place anyone could actually fall asleep.
 
 So I stayed silent. I adapted. I drank more caffeine, fought the heavy eyelids on the highway, and continued to slowly drown in my own bed.
 
