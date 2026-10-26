@@ -17,14 +17,17 @@ This file contains manual tasks you need to complete when deploying the site to 
 
 ## Content & Guides Roadmap (Post-Launch)
 - [ ] Write missing expansions for articles.
+- [ ] **Option A: Corporate Communication vs. Organic Communities (`discord-vs-corporate-comms.md`):** Why modern enterprise communication suites produce asynchronous burnout and fragmentation, contrasted with how modular Discord architectures enable low-friction community operations.
+- [ ] **Option C: Digital Garden Philosophy (`manifesto.md` / `my-story-with-everything-is-connected.md`):** The foundational essay behind Project Atlas—why chronological blogging fails associative thinking, and how an interconnected digital garden models systems-first exploration.
 - [ ] Continue linking new thoughts using the `[[wikilink]]` syntax to expand the Knowledge Graph.
 - [ ] **Ocarina of Time Remake Progression Guide & Audio Hub (Target: Nov 5):**
   - [ ] Playthrough notes, dungeon pathing, and authentic in-game screenshots along the journey.
   - [ ] Melody tab integration with our interactive N64 web player and printable PDF companion.
   - [ ] **Ocarina Practice Hub Audio/SVG Backlog:** Tracked in [`KNOWN_ISSUES.md`](./KNOWN_ISSUES.md) (Littleroot & Blue Bird corrections, SVG medallion additions, and full OoT songbook arrangements).
 - [ ] **Dragonwilds Compendium Expansion:**
-  - [ ] **Vault Timer Tool:** Countdown timer tracking the 3 in-game days (1h 12m / 72 mins) vault core respawn cycle for dedicated server players.
-  - [ ] **Skill Guide #1 — Comprehensive Fishing Guide:** Embedded regional fishing spots map, rod tiers, bait harvesting & pairing, and cooking/alchemy recipe crossover.
+  - [x] **Vault Timer Tool:** Countdown timer tracking the 3 in-game days (1h 12m / 72 mins) vault core respawn cycle for dedicated server players. *(Completed in v1.4.0)*
+  - [x] **Skill Guide #1 — Comprehensive Fishing Guide:** Regional fishing spots, rod tiers, 15-species bait harvesting & pairing hierarchy, interactive species checklist, and cooking/alchemy recipe crossover. *(Expanded for v1.5.0)*
+  - [x] **Dedicated Server Operations Manual:** On-page technical guide integrating official Jagex dedicated server specs, SteamCMD, UDP 7777 forwarding, and save transfer paths. *(Completed for v1.5.0)*
   - [ ] **Sharable Collection Goal / Supply Log:** Input required crafting materials -> generate greyed-out checklist -> shareable sync URL (overwrites `localStorage` via hash, matching profile card mechanics).
   - [ ] **Missing-Step Discovery Log:** Select discovered materials/recipes to grey out unobtained nodes and instantly reveal missed progression (e.g. Fractured Planes fishing before Fellhollow, blurite ore, missed recipes).
   - [ ] **Area-Based Quest Regrouping:** Re-organize all quests by physical area, with prerequisite gating warnings (e.g. quests started in early zones that require later-game unlocks).
@@ -54,7 +57,7 @@ This file contains manual tasks you need to complete when deploying the site to 
 - [ ] **Productized 1-Week Micro-Builds ($500–$1,500):** Offer fixed-scope 5-weekday calculator/dashboard builds with upfront deposits collected via Lemon Squeezy checkout overlays.
 
 ### Productized & Passive Revenue Track
-- [ ] **Lemon.js Checkout Overlay Integration:** Add lightweight `lemon.js` script to allow slide-over checkout modals without redirecting readers away from tools or articles.
+- [x] **Lemon.js Checkout Overlay Integration:** Add lightweight `lemon.js` script to allow slide-over checkout modals without redirecting readers away from tools or articles. *(Initialized in v1.5.0)*
 - [ ] **Companion PWYW PDFs for Live Tools:**
   - [ ] Printable Ocarina Songbook & Finger Chart PDF ($0 min / $5 suggested on Lemon Squeezy).
   - [ ] Offline FFX 100% Checklist & Stat Guide ($0 min / $5 suggested).

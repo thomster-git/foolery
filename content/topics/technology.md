@@ -16,6 +16,7 @@ tags:
   - home-lab
 related:
   - building-a-comprehensive-discord-ecosystem
+  - my-story-with-the-akira-ransomware-attack
   - project-atlas
 ---
 

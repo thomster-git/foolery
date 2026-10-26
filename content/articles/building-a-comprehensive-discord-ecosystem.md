@@ -125,6 +125,23 @@ The codebase is organized into **22 specialized Cog modules**, categorized acros
 
 This strict separation means a bug in the motorsport module cannot crash the betting engine. Each cog is loaded independently and can be hot-reloaded at runtime via `/admin reload <cog>` without taking the bot offline.
 
+### 3.2 The Decoupled Fault Domain Philosophy: Shared Architecture with Project Atlas
+
+If you inspect the development ethos behind both Project Atlas and this Discord platform, you will find an identical core architectural principle: **each system lives independently with strictly decoupled fault domains.**
+
+When building multi-service platforms, it is tempting to link components together into a shared monolithic pipeline. But when an external API fails, a third-party dependency changes its schema, or an unhandled exception triggers in a worker thread, monolithic architectures trigger cascading outages.
+
+In this ecosystem—just as with Project Atlas's static modular architecture:
+- **Zero Cascade Failures:** If the ESPN live scoreboard API suffers downtime, or the Formula 1 session telemetry throttles requests, only the baseball or motorsport cog backs off into an exponential retry loop. The economy engine, casino tables, SQLite audit logs, moderation guards, and Discord gateway heartbeat remain 100% active.
+- **Isolated Lifecycles & Hot-Reloading:** Any cog can be dynamically loaded, unloaded, or upgraded at runtime without taking the bot offline or disconnecting users.
+- **Threadpool & Async Isolation:** Heavy image compression and AI model calls run in decoupled background workers (`asyncio.to_thread`), preventing CPU starvation on the main event loop.
+- **Durable Local State:** Everything terminates at a localized, crash-resilient SQLite WAL database that survives process interrupts without corrupting balances or records.
+
+If any single system breaks or needs to be taken offline for maintenance, **everything else remains untouched and online.**
+
+<details class="code-rollup">
+<summary><strong>View Implementation Code: Cog Async Lifecycle &amp; Polling Loop (cogs/baseball.py)</strong></summary>
+
 ```python
 """
 Production Cog Lifecycle Pattern: Graceful Async Initialization and Task Teardown
@@ -175,7 +192,9 @@ async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(BaseballCog(bot, bot.session, bot.db))
 ```
 
-### 3.2 State Persistence, Concurrency & The Safety Layer
+</details>
+
+### 3.3 State Persistence, Concurrency & The Safety Layer
 
 Persistence is handled by a localized **SQLite3 database** (`bot_data.db`), managed through a centralized `db.py` module. This module serves as the authoritative single source of truth for all stateful data across the ecosystem:
 
@@ -195,6 +214,9 @@ In production environments running under supervisors (like systemd, Docker, or P
 3. Heartbeat ACK de-synchronization triggers Discord's Gateway to terminate both sessions in an endless reconnect cycle (`CloseCode 4000`).
 
 To guarantee absolute single-process execution, the bot acquires an exclusive, non-blocking kernel-level advisory lock on a local `bot.lock` file via `fcntl.flock` before initializing the Discord client:
+
+<details class="code-rollup">
+<summary><strong>View Implementation Code: Kernel-Level Process Singleton Lock (core.py)</strong></summary>
 
 ```python
 """
@@ -231,6 +253,8 @@ def acquire_process_singleton_lock() -> int:
         sys.exit(1)
 ```
 
+</details>
+
 #### High-Concurrency SQLite3 with 30-Second Busy Timeouts
 
 > 💡 **Operational Simplicity Over Cloud Bloat**  
@@ -240,6 +264,9 @@ In high-traffic spikes—such as 50 members reacting simultaneously to a Blue Ja
 1. **WAL Mode (`PRAGMA journal_mode = WAL;`)**: Decouples readers from writers. Background telemetry loops can read tables without blocking active write transactions.
 2. **Synchronous NORMAL (`PRAGMA synchronous = NORMAL;`)**: Dramatically reduces disk fsync overhead while maintaining WAL crash durability.
 3. **30-Second Busy Timeout (`PRAGMA busy_timeout = 30000;`)**: Configures SQLite's internal busy handler to gracefully wait up to 30,000 milliseconds for a locked write transaction to clear before raising an error, ensuring burst write traffic queues cleanly.
+
+<details class="code-rollup">
+<summary><strong>View Implementation Code: High-Concurrency SQLite3 Database Engine (db.py)</strong></summary>
 
 ```python
 """
@@ -286,6 +313,8 @@ class Database:
                 row = await cursor.fetchone()
                 return dict(row) if row else None
 ```
+
+</details>
 
 **Backup Strategy**: A background `@tasks.loop(hours=24)` task fires every night at midnight. It zips the entire `bot_data.db` file along with all AI memory session folders into a timestamped archive and writes it to a local `/backups/` directory. This creates a rolling 30-day recovery window with zero external dependencies.
 
@@ -356,6 +385,9 @@ For instant gratification, members have access to a full casino suite powered by
 - **Instant Scratch Cards / Pulltabs (`cogs/pulltabs.py`)**:  
   Designed for fast mobile-friendly play, `/pulltabs buy` generates tiered scratch cards using Discord spoiler blocks (`|| 🍒 || || 💎 || || 7️⃣ ||`) and interactive buttons. Players tap to reveal symbols across multiple tiers with multipliers ranging from 2× up to 25× for diamond matches.
 
+<details class="code-rollup">
+<summary><strong>View Implementation Code: Interactive Blackjack UI View (cogs/blackjack.py)</strong></summary>
+
 ```python
 """
 Interactive Blackjack UI View: Native Discord Buttons with Dynamic Ace Evaluation
@@ -415,6 +447,8 @@ class BlackjackView(View):
         await self.resolve_hand(interaction, busted=False)
 ```
 
+</details>
+
 ### 4.3 Spending Wealth (The Sinks)
 
 Hoarding points is discouraged. The high-value sinks are designed to be genuinely desirable:
@@ -444,6 +478,9 @@ The `/jays_live` command is the most technically complex feature in the bot. The
 - **Live Base Runners**: The API provides a binary `onBase` flag for each base. The bot maps all 8 possible combinations (empty, runner on 1st, runners on 1st and 3rd, bases loaded, etc.) to a set of **custom Discord emojis** we designed and uploaded to the server. The resulting display is a visual baseball diamond that updates in real-time.
 - **Pitch Count & Inning State**: Current pitcher, pitch count, outs, inning, and batting order position are all parsed.
 - **Automated Hype Triggers**: The bot watches for specific box score events (a Kirk home run, a Guerrero Jr. RBI, a Varland save) and fires custom meme images into `#⚾-baseball` when they occur.
+
+<details class="code-rollup">
+<summary><strong>View Implementation Code: Baseball Base-Runner Bitmask &amp; Emoji Projection (cogs/baseball.py)</strong></summary>
 
 ```python
 """
@@ -491,8 +528,13 @@ def parse_runner_bitmask(situation: dict[str, Any]) -> str:
     return DIAMOND_EMOJIS.get(state, DIAMOND_EMOJIS[RunnerBase.EMPTY])
 ```
 
+</details>
+
 **Bullpen Availability (`/jays_lineup`)**  
 This feature pulls the last **3 days of box scores** and parses every Blue Jays pitching appearance. It calculates each reliever's cumulative pitch count over that window and displays a color-coded "availability" tier (Ready / Day-to-Day / Unavailable) — a level of granularity typically only available to paid baseball analytics platforms.
+
+<details class="code-rollup">
+<summary><strong>View Implementation Code: 3-Day Rolling Bullpen Fatigue Model (cogs/baseball.py)</strong></summary>
 
 ```python
 """
@@ -546,6 +588,8 @@ def calculate_fatigue(name: str, p0: int, p1: int, p2: int) -> RelieverFatigue:
     )
 ```
 
+</details>
+
 **Multi-Sport Coverage**  
 The same ESPN endpoint pattern is used for:
 - **NFL**: Bills and Eagles weekly previews, live quarter-by-quarter score alerts
@@ -579,6 +623,9 @@ The Mascot reads the channel it's being addressed in and dynamically adjusts its
 
 - **`#chat-with-bot` (General Chat)**: The default persona is irreverent, sarcastic, and unfiltered. It matches user energy. If a user is hostile, the bot roasts them. If a user is playful, the bot is playful. This is intentional — it creates entertaining spectacles that other server members want to watch.
 - **`#⚾-baseball` or `#🏒-hockey` (Niche Sport Channels)**: A system prompt override activates, instructing the mascot to drop the personality and become a focused, polite sports reference tool. The same underlying model, but a completely different face.
+
+<details class="code-rollup">
+<summary><strong>View Implementation Code: Google Antigravity SDK Mascot Agent (cogs/mascot.py)</strong></summary>
 
 ```python
 """
@@ -641,6 +688,8 @@ def create_mascot_agent(session_id: str, channel_name: str) -> Agent:
     return Agent(config=config)
 ```
 
+</details>
+
 ### 6.2 The Weekly Highlight Reel (`cogs/agent_content.py`)
 
 This is the single most impactful anti-stagnation feature in the system. Every Monday at 9:00 AM, an autonomous agent wakes up and executes the following pipeline with zero human input:
@@ -686,6 +735,9 @@ Standard Discord AutoMod filters and naive keyword blockers fail within minutes 
    - **Strike 3**: 12-hour timeout + moderator ping.
    Strikes automatically decay in SQLite after a rolling 14-day clean window.
 5. **Granular Channel-Specific Lockouts (`/channel_lockout`)**: When heated disputes break out in `#⚾-baseball` or `#technology`, global server timeouts are unnecessarily harsh. Moderators use `/channel_lockout <user> <duration>` to apply channel-level permission overwrites (`send_messages=False`, `add_reactions=False`) to isolate problem users from a single channel while leaving the rest of the server accessible.
+
+<details class="code-rollup">
+<summary><strong>View Implementation Code: AutoMod Evasion Defense Pipeline (cogs/moderation.py)</strong></summary>
 
 ```python
 """
@@ -736,6 +788,8 @@ def matches_prohibited_terms(text: str, blacklisted_patterns: list[str]) -> bool
     return False
 ```
 
+</details>
+
 ### 7.2 Dynamic "Join-to-Create" Voice Hub (`cogs/voice.py`)
 
 Static voice channels are a known failure mode in Discord community architecture. Creating 10 static channels (`Voice 1`, `Voice 2`, `Gaming A`, `Gaming B`) permanently clutters the sidebar, making the server feel empty and uninviting when only 2 people are online.
@@ -751,12 +805,12 @@ Static voice channels are a known failure mode in Discord community architecture
                  ▼
 [ Bot moves member into new channel ]
                  │
-   ┌─────────────┴─────────────┐
-   │ (Friends join / chat)     │
-   ▼                           ▼
+    ┌─────────────┴─────────────┐
+    │ (Friends join / chat)     │
+    ▼                           ▼
 [ Members leave ]     [ Last member disconnects ]
-                               │
-                               ▼
+                                │
+                                ▼
             [ Garbage Collection: Bot deletes channel ]
 ```
 
@@ -791,6 +845,9 @@ The `media.py` cog solves this completely. When a user uploads an image to the d
    - Re-encodes with progressive quantization and quality degradation
    - Stops as soon as the file falls below the size threshold
 4. The optimized image is uploaded directly to the server and a confirmation embed is sent to the submitter
+
+<details class="code-rollup">
+<summary><strong>View Implementation Code: Async Pillow Image Compression Pipeline (cogs/media.py)</strong></summary>
 
 ```python
 """
@@ -850,6 +907,8 @@ async def optimize_discord_media(raw_bytes: bytes, is_sticker: bool = False) -> 
     )
     return io.BytesIO(compressed_bytes)
 ```
+
+</details>
 
 Users experience this as magic — their oversized image just works without leaving Discord.
 

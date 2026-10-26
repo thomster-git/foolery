@@ -18,16 +18,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     const STORAGE_KEY_TEAM = 'atlas_nfl_team';
     const STORAGE_KEY_TEAM2 = 'atlas_nfl_team2';
 
-    if (metricSelect && localStorage.getItem(STORAGE_KEY_METRIC)) {
-        const savedMetric = localStorage.getItem(STORAGE_KEY_METRIC);
-        if (Array.from(metricSelect.options).some(o => o.value === savedMetric)) {
-            metricSelect.value = savedMetric;
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramMetric = urlParams.get('metric');
+    const paramDivision = urlParams.get('division');
+    const paramTeam = urlParams.get('team') || urlParams.get('team1');
+    const paramTeam2 = urlParams.get('team2');
+
+    if (metricSelect) {
+        if (paramMetric && Array.from(metricSelect.options).some(o => o.value === paramMetric)) {
+            metricSelect.value = paramMetric;
+        } else if (localStorage.getItem(STORAGE_KEY_METRIC)) {
+            const savedMetric = localStorage.getItem(STORAGE_KEY_METRIC);
+            if (Array.from(metricSelect.options).some(o => o.value === savedMetric)) {
+                metricSelect.value = savedMetric;
+            }
         }
     }
-    if (divisionSelect && localStorage.getItem(STORAGE_KEY_DIVISION)) {
-        const savedDiv = localStorage.getItem(STORAGE_KEY_DIVISION);
-        if (Array.from(divisionSelect.options).some(o => o.value === savedDiv)) {
-            divisionSelect.value = savedDiv;
+    if (divisionSelect) {
+        if (paramDivision && Array.from(divisionSelect.options).some(o => o.value === paramDivision)) {
+            divisionSelect.value = paramDivision;
+        } else if (localStorage.getItem(STORAGE_KEY_DIVISION)) {
+            const savedDiv = localStorage.getItem(STORAGE_KEY_DIVISION);
+            if (Array.from(divisionSelect.options).some(o => o.value === savedDiv)) {
+                divisionSelect.value = savedDiv;
+            }
         }
     }
 
@@ -650,17 +664,26 @@ document.addEventListener('DOMContentLoaded', async () => {
                 teamSelect2.appendChild(option2);
             });
 
-            const savedTeam = localStorage.getItem(STORAGE_KEY_TEAM);
-            if (savedTeam && Array.from(teamSelect.options).some(o => o.value === savedTeam)) {
-                teamSelect.value = savedTeam;
+            if (paramTeam && Array.from(teamSelect.options).some(o => String(o.value) === String(paramTeam))) {
+                teamSelect.value = paramTeam;
+            } else {
+                const savedTeam = localStorage.getItem(STORAGE_KEY_TEAM);
+                if (savedTeam && Array.from(teamSelect.options).some(o => o.value === savedTeam)) {
+                    teamSelect.value = savedTeam;
+                }
             }
-            const savedTeam2 = localStorage.getItem(STORAGE_KEY_TEAM2);
-            if (savedTeam2 && Array.from(teamSelect2.options).some(o => o.value === savedTeam2)) {
-                teamSelect2.value = savedTeam2;
+            if (paramTeam2 && Array.from(teamSelect2.options).some(o => String(o.value) === String(paramTeam2))) {
+                teamSelect2.value = paramTeam2;
+            } else {
+                const savedTeam2 = localStorage.getItem(STORAGE_KEY_TEAM2);
+                if (savedTeam2 && Array.from(teamSelect2.options).some(o => o.value === savedTeam2)) {
+                    teamSelect2.value = savedTeam2;
+                }
             }
 
             loading.style.display = 'none';
             renderChart();
+            syncUrlParams();
 
             // Enrich initially highlighted teams with exact game summaries in the background
             if (teamSelect.value !== 'none') enrichTeamWithBoxscores(teamSelect.value);
@@ -782,16 +805,294 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    function getShareableUrl() {
+        const params = new URLSearchParams();
+        if (metricSelect && metricSelect.value && metricSelect.value !== 'pointDiff') {
+            params.set('metric', metricSelect.value);
+        }
+        if (divisionSelect && divisionSelect.value && divisionSelect.value !== 'all') {
+            params.set('division', divisionSelect.value);
+        }
+        if (teamSelect && teamSelect.value && teamSelect.value !== 'none') {
+            params.set('team', teamSelect.value);
+        }
+        if (teamSelect2 && teamSelect2.value && teamSelect2.value !== 'none') {
+            params.set('team2', teamSelect2.value);
+        }
+        const qs = params.toString();
+        const url = window.location.origin + window.location.pathname + (qs ? '?' + qs : '');
+        return { url, qs };
+    }
+
+    function syncUrlParams() {
+        try {
+            const { url } = getShareableUrl();
+            window.history.replaceState(null, '', url);
+        } catch (e) {}
+    }
+
+    async function copyShareLink(btn) {
+        syncUrlParams();
+        const { url } = getShareableUrl();
+        let copied = false;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            try {
+                await navigator.clipboard.writeText(url);
+                copied = true;
+            } catch (err) {}
+        }
+        if (!copied) {
+            const temp = document.createElement('input');
+            temp.value = url;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                copied = true;
+            } catch (e) {}
+            document.body.removeChild(temp);
+        }
+
+        if (btn) {
+            const origHtml = btn.innerHTML;
+            btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Link Copied!</span>`;
+            btn.style.borderColor = '#10b981';
+            btn.style.color = '#10b981';
+            setTimeout(() => {
+                btn.innerHTML = origHtml;
+                btn.style.borderColor = '';
+                btn.style.color = '';
+            }, 2400);
+        }
+    }
+
+    function exportChartLight() {
+        const metricVal = metricSelect.value;
+        const metricText = metricSelect.options[metricSelect.selectedIndex].text;
+        const filterVal = divisionSelect.value;
+        const highlightId = teamSelect.value;
+        const highlightId2 = teamSelect2.value;
+
+        const team1 = allTeamsData.find(t => String(t.id) === String(highlightId));
+        const team2 = allTeamsData.find(t => String(t.id) === String(highlightId2));
+
+        let teamSubtitle = "All Teams";
+        if (team1 && team2) {
+            teamSubtitle = `${team1.name} vs. ${team2.name}`;
+        } else if (team1) {
+            teamSubtitle = `${team1.name}`;
+        } else if (team2) {
+            teamSubtitle = `${team2.name}`;
+        } else if (filterVal !== 'all') {
+            teamSubtitle = divisionSelect.options[divisionSelect.selectedIndex].text;
+        }
+
+        const hasHighlights = highlightId !== 'none' || highlightId2 !== 'none';
+        const datasets = [];
+
+        allTeamsData.forEach(team => {
+            let include = false;
+            if (filterVal === 'all') include = true;
+            else if (filterVal === 'AFC' && team.leagueId === 'AFC') include = true;
+            else if (filterVal === 'NFC' && team.leagueId === 'NFC') include = true;
+            else if (team.divisionId === filterVal) include = true;
+
+            if (include) {
+                const isT1 = highlightId !== 'none' && String(highlightId) === String(team.id);
+                const isT2 = highlightId2 !== 'none' && String(highlightId2) === String(team.id);
+                const isHighlighted = isT1 || isT2;
+
+                let color = team.color;
+                let borderWidth = 2;
+                let zIndex = 1;
+                let borderDash = [];
+                let pointRadius = 0;
+
+                if (hasHighlights) {
+                    if (isHighlighted) {
+                        color = team.color;
+                        borderWidth = 4.5;
+                        zIndex = 100;
+                        pointRadius = 4.5;
+                    } else {
+                        color = 'rgba(203, 213, 225, 0.5)';
+                        borderWidth = 1.5;
+                        borderDash = [4, 4];
+                        zIndex = 1;
+                    }
+                }
+
+                datasets.push({
+                    label: team.name,
+                    data: team[metricVal] || [],
+                    borderColor: color,
+                    borderWidth: borderWidth,
+                    borderDash: borderDash,
+                    pointRadius: pointRadius,
+                    pointBackgroundColor: color,
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 1.5,
+                    fill: false,
+                    tension: 0.15,
+                    order: -zIndex
+                });
+            }
+        });
+
+        const chartCanvas = document.createElement('canvas');
+        chartCanvas.width = 1500;
+        chartCanvas.height = 740;
+        const chartCtx = chartCanvas.getContext('2d');
+
+        const tempChart = new Chart(chartCtx, {
+            type: 'line',
+            data: { datasets },
+            options: {
+                responsive: false,
+                animation: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                },
+                scales: {
+                    x: {
+                        type: 'linear',
+                        title: {
+                            display: true,
+                            text: 'Games Played',
+                            color: '#0f172a',
+                            font: { size: 14, weight: 'bold', family: 'Inter, sans-serif' }
+                        },
+                        grid: { color: '#e2e8f0' },
+                        ticks: { color: '#475569', font: { size: 12, family: 'Inter, sans-serif' }, stepSize: 1 },
+                        min: 0
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: metricText,
+                            color: '#0f172a',
+                            font: { size: 14, weight: 'bold', family: 'Inter, sans-serif' }
+                        },
+                        grid: { color: '#e2e8f0' },
+                        ticks: { color: '#475569', font: { size: 12, family: 'Inter, sans-serif' } },
+                        suggestedMin: (metricVal === 'winPct' || metricVal === 'pythagorean') ? 0 : undefined,
+                        suggestedMax: (metricVal === 'winPct' || metricVal === 'pythagorean') ? 100 : undefined
+                    }
+                }
+            }
+        });
+
+        const exportCanvas = document.createElement('canvas');
+        exportCanvas.width = 1600;
+        exportCanvas.height = 900;
+        const ctx = exportCanvas.getContext('2d');
+
+        // Light background fill
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillRect(0, 0, 1600, 900);
+
+        // White card container with rounded corners and border
+        ctx.fillStyle = '#ffffff';
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 2;
+        if (typeof ctx.roundRect === 'function') {
+            ctx.beginPath();
+            ctx.roundRect(30, 20, 1540, 860, 16);
+            ctx.fill();
+            ctx.stroke();
+        } else {
+            ctx.fillRect(30, 20, 1540, 860);
+            ctx.strokeRect(30, 20, 1540, 860);
+        }
+
+        // Header Title
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+        ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+        ctx.fillStyle = '#0f172a';
+        ctx.fillText(`NFL Momentum Tracker — ${metricText}`, 60, 60);
+
+        // Subtitle
+        ctx.font = '500 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+        ctx.fillStyle = '#64748b';
+        ctx.fillText(`Regular Season Trajectory • ${teamSubtitle}`, 60, 85);
+
+        // Highlight Badges
+        let badgeX = 60 + ctx.measureText(`Regular Season Trajectory • ${teamSubtitle}`).width + 25;
+        const drawBadge = (team) => {
+            if (!team || badgeX > 1150) return;
+            const badgeText = team.name;
+            ctx.font = 'bold 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+            const textWidth = ctx.measureText(badgeText).width;
+            const badgeW = textWidth + 30;
+            const badgeH = 22;
+            const badgeY = 70;
+
+            ctx.fillStyle = '#f1f5f9';
+            ctx.strokeStyle = team.color;
+            ctx.lineWidth = 1.5;
+            if (typeof ctx.roundRect === 'function') {
+                ctx.beginPath();
+                ctx.roundRect(badgeX, badgeY - 14, badgeW, badgeH, 11);
+                ctx.fill();
+                ctx.stroke();
+            } else {
+                ctx.fillRect(badgeX, badgeY - 14, badgeW, badgeH);
+                ctx.strokeRect(badgeX, badgeY - 14, badgeW, badgeH);
+            }
+
+            ctx.fillStyle = team.color;
+            ctx.beginPath();
+            ctx.arc(badgeX + 11, badgeY - 3, 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#0f172a';
+            ctx.fillText(badgeText, badgeX + 22, badgeY);
+            badgeX += badgeW + 12;
+        };
+
+        if (team1) drawBadge(team1);
+        if (team2) drawBadge(team2);
+
+        // Watermark branding
+        ctx.textAlign = 'right';
+        ctx.font = 'bold 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillStyle = '#0284c7';
+        ctx.fillText('THOMS FOOLERY | PROJECT ATLAS', 1530, 58);
+        ctx.font = '400 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText('thomsfoolery.com/tools/nfl-trend-analyzer', 1530, 78);
+        ctx.textAlign = 'left';
+
+        // Draw Chart
+        ctx.drawImage(chartCanvas, 50, 105, 1500, 740);
+
+        // Cleanup
+        tempChart.destroy();
+
+        // Download PNG
+        const link = document.createElement('a');
+        link.download = `nfl-${metricVal}-momentum.png`;
+        link.href = exportCanvas.toDataURL('image/png');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
     metricSelect.addEventListener('change', () => {
         localStorage.setItem(STORAGE_KEY_METRIC, metricSelect.value);
+        syncUrlParams();
         renderChart();
     });
     divisionSelect.addEventListener('change', () => {
         localStorage.setItem(STORAGE_KEY_DIVISION, divisionSelect.value);
+        syncUrlParams();
         renderChart();
     });
     teamSelect.addEventListener('change', () => {
         localStorage.setItem(STORAGE_KEY_TEAM, teamSelect.value);
+        syncUrlParams();
         renderChart();
         if (teamSelect.value !== 'none') {
             enrichTeamWithBoxscores(teamSelect.value);
@@ -799,6 +1100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     teamSelect2.addEventListener('change', () => {
         localStorage.setItem(STORAGE_KEY_TEAM2, teamSelect2.value);
+        syncUrlParams();
         renderChart();
         if (teamSelect2.value !== 'none') {
             enrichTeamWithBoxscores(teamSelect2.value);
@@ -820,8 +1122,30 @@ document.addEventListener('DOMContentLoaded', async () => {
             localStorage.removeItem(STORAGE_KEY_DIVISION);
             localStorage.removeItem(STORAGE_KEY_TEAM);
             localStorage.removeItem(STORAGE_KEY_TEAM2);
+            syncUrlParams();
             if (chartInstance) chartInstance.resetZoom();
             renderChart();
+        });
+    }
+
+    const copyChartBtn = document.getElementById('copy-chart-btn');
+    if (copyChartBtn) {
+        copyChartBtn.addEventListener('click', () => copyShareLink(copyChartBtn));
+    }
+
+    const exportChartBtn = document.getElementById('export-chart-btn');
+    if (exportChartBtn) {
+        exportChartBtn.addEventListener('click', () => {
+            const origHtml = exportChartBtn.innerHTML;
+            exportChartBtn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Exporting...</span>`;
+            try {
+                exportChartLight();
+            } catch (err) {
+                console.error("Export error:", err);
+            }
+            setTimeout(() => {
+                exportChartBtn.innerHTML = origHtml;
+            }, 2200);
         });
     }
 

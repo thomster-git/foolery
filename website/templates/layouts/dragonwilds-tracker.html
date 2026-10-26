@@ -33,11 +33,11 @@
             <button class="dw-tab-btn" data-tab="stats" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">📊 Stats Profile</button>
             <button class="dw-tab-btn" data-tab="quests" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">⚔️ Quests</button>
             <button class="dw-tab-btn" data-tab="urns" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">🏺 Sanguine Urns</button>
+            <button class="dw-tab-btn" data-tab="server" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">🖥️ Server Hosting</button>
             <button class="dw-tab-btn" data-tab="gear" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">🛡️ Gear</button>
             <button class="dw-tab-btn" data-tab="ascension" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">💎 Ascension Shards</button>
             <button class="dw-tab-btn" data-tab="timers" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">⏱️ Vault Timers</button>
             <button class="dw-tab-btn" data-tab="fishing" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">🎣 Fishing Guide</button>
-            <button class="dw-tab-btn" data-tab="server" style="background: none; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-size: 1rem; font-weight: bold; padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;">🖥️ Server Hosting</button>
         </div>
 
         <!-- Tab: Progression Guide -->
@@ -2173,6 +2173,167 @@
                 <li class="task-item"><label for="dw-fish-14"><input type="checkbox" id="dw-fish-14" class="ffx-checkbox"> <span class="task-text"><strong>Raw desert sole:</strong> Caught with Yew Rod + Monkfish Bait in Umbral Sands oasis.</span></label></li>
                 <li class="task-item"><label for="dw-fish-15"><input type="checkbox" id="dw-fish-15" class="ffx-checkbox"> <span class="task-text"><strong>Raw beltfish:</strong> Caught with Yew Rod + Kalphite Bait in Umbral Sands depths.</span></label></li>
             </ul>
+            <!-- Section 6: Regional Fishing Hotspots & Water Environments -->
+            <h3 style="color: var(--text-main); margin: 2rem 0 1rem 0;">6. Regional Fishing Hotspots &amp; Water Environments</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+                Fish behavior and node respawns are governed by water type. Deploying the appropriate rod and bait for each ecological zone maximizes pristine catch rates:
+            </p>
+            <div style="overflow-x: auto; margin-bottom: 2rem;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left; background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                    <thead>
+                        <tr style="background: rgba(255,255,255,0.05); color: var(--accent-cyan); border-bottom: 1px solid var(--border-color);">
+                            <th style="padding: 0.75rem 1rem;">Region</th>
+                            <th style="padding: 0.75rem 1rem;">Water Environment</th>
+                            <th style="padding: 0.75rem 1rem;">Prime Hotspots</th>
+                            <th style="padding: 0.75rem 1rem;">Environmental Hazards</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: var(--text-muted);">
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Brynmoor</td>
+                            <td style="padding: 0.75rem 1rem; color: #38bdf8;">Freshwater Streams &amp; Ponds</td>
+                            <td style="padding: 0.75rem 1rem;">Mill Dam Pool, Bramblemead Creek Bridge</td>
+                            <td style="padding: 0.75rem 1rem; color: #10b981;">None (Peaceful starter zone)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Ghornfell</td>
+                            <td style="padding: 0.75rem 1rem; color: #38bdf8;">Mountain Rapids &amp; Deep Lakes</td>
+                            <td style="padding: 0.75rem 1rem;">Highland Tarn, Crag Gorge Incline</td>
+                            <td style="padding: 0.75rem 1rem; color: #f59e0b;">Strong currents; high stamina depletion</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Fellhollow</td>
+                            <td style="padding: 0.75rem 1rem; color: #a855f7;">Necrotic Mire &amp; Swamp Deltas</td>
+                            <td style="padding: 0.75rem 1rem;">Spitfoot Bog, Mangrove Grotto Outflow</td>
+                            <td style="padding: 0.75rem 1rem; color: #ef4444;">Rot Mist (wear Miasma Pendant to fish safely)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Dowdun Reach</td>
+                            <td style="padding: 0.75rem 1rem; color: #f97316;">Volcanic Crag Pools &amp; Lava Runoff</td>
+                            <td style="padding: 0.75rem 1rem;">Smoldering Basin, Cinder Rift Pool</td>
+                            <td style="padding: 0.75rem 1rem; color: #ef4444;">Extreme Heat (requires Frost Ward potion/gear)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Umbral Sands</td>
+                            <td style="padding: 0.75rem 1rem; color: #06b6d4;">Coastal Saltwater Flats &amp; Sunken Oasis</td>
+                            <td style="padding: 0.75rem 1rem;">Mirage Spring, Umbral Shallows Trawling Bay</td>
+                            <td style="padding: 0.75rem 1rem; color: #f59e0b;">Desert Thirst; night sandstorms</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 7: Bait Crafting Recipe Matrix -->
+            <h3 style="color: var(--text-main); margin: 2rem 0 1rem 0;">7. Workstation Bait Crafting Matrix</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+                Higher-tier angling requires processed bait crafted at the <em>Field Workstation</em> or <em>Alchemy Cauldron</em>:
+            </p>
+            <div style="overflow-x: auto; margin-bottom: 2rem;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left; background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                    <thead>
+                        <tr style="background: rgba(255,255,255,0.05); color: var(--accent-cyan); border-bottom: 1px solid var(--border-color);">
+                            <th style="padding: 0.75rem 1rem;">Bait Name</th>
+                            <th style="padding: 0.75rem 1rem;">Crafting Station</th>
+                            <th style="padding: 0.75rem 1rem;">Input Ingredients</th>
+                            <th style="padding: 0.75rem 1rem;">Yield</th>
+                            <th style="padding: 0.75rem 1rem;">Target Species</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: var(--text-muted);">
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Shrimp Bait</td>
+                            <td style="padding: 0.75rem 1rem;">Workstation Lvl 1</td>
+                            <td style="padding: 0.75rem 1rem;">1x Raw Shrimp + 1x Grain</td>
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: var(--accent-cyan);">5x</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Sardine</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Feather Bait</td>
+                            <td style="padding: 0.75rem 1rem;">Workstation Lvl 1</td>
+                            <td style="padding: 0.75rem 1rem;">2x Bird Feathers + 1x Coarse Thread</td>
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: var(--accent-cyan);">10x</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Trout</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Anchovy Bait</td>
+                            <td style="padding: 0.75rem 1rem;">Workstation Lvl 2</td>
+                            <td style="padding: 0.75rem 1rem;">1x Raw Anchovies + 1x Plant Fiber</td>
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: var(--accent-cyan);">5x</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Herring</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Feathered Lure</td>
+                            <td style="padding: 0.75rem 1rem;">Anvil Lvl 2</td>
+                            <td style="padding: 0.75rem 1rem;">2x Feathers + 1x Bronze Wire</td>
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: var(--accent-cyan);">3x</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Salmon</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Lobster Bait</td>
+                            <td style="padding: 0.75rem 1rem;">Workstation Lvl 3</td>
+                            <td style="padding: 0.75rem 1rem;">1x Raw Lobster + 1x Fine Thread</td>
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: var(--accent-cyan);">4x</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Undead Eel</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Spooky Bait</td>
+                            <td style="padding: 0.75rem 1rem;">Alchemy Cauldron Lvl 2</td>
+                            <td style="padding: 0.75rem 1rem;">1x Undead Flesh + 1x Bone Meal</td>
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: var(--accent-cyan);">6x</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Undead Bass</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Giant Krill Bait</td>
+                            <td style="padding: 0.75rem 1rem;">Workstation Lvl 4</td>
+                            <td style="padding: 0.75rem 1rem;">1x Raw Giant Krill + 1x Ground Spice</td>
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: var(--accent-cyan);">4x</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Infernal Eel</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Animated Feather</td>
+                            <td style="padding: 0.75rem 1rem;">Magic Cauldron Lvl 3</td>
+                            <td style="padding: 0.75rem 1rem;">1x Enchanted Feather + 1x Mystic Essence</td>
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: var(--accent-cyan);">3x</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Armoured Catfish</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Monkfish Bait</td>
+                            <td style="padding: 0.75rem 1rem;">Workstation Lvl 5</td>
+                            <td style="padding: 0.75rem 1rem;">1x Raw Monkfish + 1x Desert Kelp</td>
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: var(--accent-cyan);">5x</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Desert Sole</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Kalphite Bait</td>
+                            <td style="padding: 0.75rem 1rem;">Alchemy Cauldron Lvl 4</td>
+                            <td style="padding: 0.75rem 1rem;">1x Kalphite Carapace + 1x Dried Dung</td>
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: var(--accent-cyan);">4x</td>
+                            <td style="padding: 0.75rem 1rem;">Raw Beltfish</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 8: Cooking & Alchemy Crossover Perks -->
+            <h3 style="color: var(--text-main); margin: 2rem 0 1rem 0;">8. Cooking &amp; Alchemy Crossover Perks</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+                    <div style="font-size: 0.75rem; font-family: monospace; color: #f97316; font-weight: 700;">COOKING CROSSOVER</div>
+                    <h4 style="margin: 0.35rem 0 0.5rem 0; color: var(--text-main);">🍲 High-Tier Combat Meals</h4>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0;">
+                        <strong>Cooked Infernal Eel:</strong> Grants +150 Max HP and 10 minutes of <em>Heat Ward</em> (immune to Dowdun Reach lava damage).<br>
+                        <strong>Cooked Monkfish:</strong> Top sustenance tier: recovers 160 HP instantly + 20% stamina regen buff.
+                    </p>
+                </div>
+
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+                    <div style="font-size: 0.75rem; font-family: monospace; color: var(--accent-purple); font-weight: 700;">ALCHEMY CROSSOVER</div>
+                    <h4 style="margin: 0.35rem 0 0.5rem 0; color: var(--text-main);">🧪 Pristine Fish Oils &amp; Draughts</h4>
+                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin: 0;">
+                        Extracting oils from <strong>Pristine Catfish</strong> and <strong>Pristine Undead Bass</strong> produces <em>Restorative Draughts</em> and <em>Miasma Resistance Philters</em> necessary for high-tier dungeon delves.
+                    </p>
+                </div>
+            </div>
         </div>
         <!-- End Fishing Guide Tab -->
 
@@ -2180,28 +2341,252 @@
         <div id="dw-tab-server" class="dw-tab-panel" style="display: none;">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1.5rem;">
                 <div>
-                    <h2 style="color: var(--accent-cyan); margin: 0 0 0.5rem 0; border: none; padding: 0;">Dedicated Server Hosting Guide</h2>
-                    <p style="color: var(--text-muted); margin: 0; max-width: 720px; font-size: 0.95rem; line-height: 1.5;">The complete technical manual to hosting your own dedicated Dragonwilds server, setting up systemd services, firewall rules, and automated backups.</p>
+                    <h2 style="color: var(--accent-cyan); margin: 0 0 0.5rem 0; border: none; padding: 0;">🖥️ Dedicated Server Operations Manual</h2>
+                    <p style="color: var(--text-muted); margin: 0; max-width: 780px; font-size: 0.95rem; line-height: 1.5;">The complete technical reference for hosting, configuring, and maintaining dedicated servers for RuneScape: Dragonwilds. Covers official Jagex parameters, SteamCMD automated installs, UDP routing, save management, and user tiers.</p>
                 </div>
-                <a href="https://thomsfoolery.lemonsqueezy.com/checkout/buy/c6245a73-73d1-452d-86ba-ba88e13ec5f2?embed=1&discount=0" class="lemonsqueezy-button" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; padding: 0.6rem 1.25rem; border-radius: 6px; font-weight: 700; text-decoration: none; font-size: 0.92rem; transition: all 0.2s; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);">
+                <a href="https://thomsfoolery.lemonsqueezy.com/checkout/buy/c6245a73-73d1-452d-86ba-ba88e13ec5f2?embed=1&discount=0" class="lemonsqueezy-button" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; padding: 0.65rem 1.25rem; border-radius: 6px; font-weight: 700; text-decoration: none; font-size: 0.92rem; transition: all 0.2s; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-                    <span>Get PDF via Lemon Squeezy (PWYW / Free) &rarr;</span>
+                    <span>Claim 11-Page PDF (PWYW / Free) &rarr;</span>
                 </a>
             </div>
 
+            <!-- Section 1: Hosting Options Comparison -->
+            <h3 style="color: var(--text-main); margin-bottom: 1rem;">1. Dedicated Server Hosting Options</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+                RuneScape: Dragonwilds dedicated servers can be deployed through three primary methods based on your technical comfort, budget, and backup preferences:
+            </p>
+            <div style="overflow-x: auto; margin-bottom: 2rem;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                    <thead>
+                        <tr style="background: rgba(255,255,255,0.05); color: var(--accent-cyan); border-bottom: 1px solid var(--border-color);">
+                            <th style="padding: 0.75rem 1rem;">Hosting Method</th>
+                            <th style="padding: 0.75rem 1rem;">Difficulty</th>
+                            <th style="padding: 0.75rem 1rem;">Cost Model</th>
+                            <th style="padding: 0.75rem 1rem;">Progression &amp; Saves</th>
+                            <th style="padding: 0.75rem 1rem;">Best Suited For</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: var(--text-muted);">
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">
+                                <a href="https://shockbyte.com/partner/runescape-dragonwilds" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Shockbyte (Official Partner)</a>
+                            </td>
+                            <td style="padding: 0.75rem 1rem; color: #10b981; font-weight: 600;">Easiest</td>
+                            <td style="padding: 0.75rem 1rem;">Set monthly subscription</td>
+                            <td style="padding: 0.75rem 1rem; color: #10b981;">Secured &amp; automated cloud backups</td>
+                            <td style="padding: 0.75rem 1rem;">Players wanting 1-click startup with zero network configuration.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">At Home (Self-Hosted PC)</td>
+                            <td style="padding: 0.75rem 1rem; color: #f59e0b; font-weight: 600;">Hard</td>
+                            <td style="padding: 0.75rem 1rem;">Hardware + Electricity costs</td>
+                            <td style="padding: 0.75rem 1rem; color: #f59e0b;">Manual local backups</td>
+                            <td style="padding: 0.75rem 1rem;">Gamers with a spare PC/homelab and access to router port forwarding.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Cloud VPS (Self-Managed)</td>
+                            <td style="padding: 0.75rem 1rem; color: #ef4444; font-weight: 600;">Hardest</td>
+                            <td style="padding: 0.75rem 1rem;">Depends on VPS capacity &amp; RAM</td>
+                            <td style="padding: 0.75rem 1rem; color: #f59e0b;">Manual snapshots &amp; crons</td>
+                            <td style="padding: 0.75rem 1rem;">System administrators deploying headless Linux containers (DigitalOcean, AWS, Linode).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 2: Hosting at Home & Hardware Requirements -->
+            <h3 style="color: var(--text-main); margin-bottom: 1rem;">2. Hardware Prerequisites &amp; Sizing Matrix</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+                Dragonwilds dedicated servers require a 64-bit operating system. Both Windows and Linux (Ubuntu, Debian, Fedora, Arch) are officially supported. Memory consumption scales with player capacity:
+            </p>
+            <div style="background: rgba(6, 182, 212, 0.08); border-left: 4px solid var(--accent-cyan); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin-bottom: 1.5rem;">
+                <div style="font-weight: 700; color: var(--accent-cyan); font-size: 0.95rem; margin-bottom: 0.35rem;">Official Jagex RAM Formula:</div>
+                <div style="font-size: 1.05rem; font-family: monospace; color: var(--text-main); font-weight: bold; margin-bottom: 0.35rem;">
+                    Required RAM = 2 GB Base + 1 GB per Concurrent Player
+                </div>
+                <div style="font-size: 0.88rem; color: var(--text-muted);">
+                    As of version 0.11 (March 2026), dedicated servers support up to 6 players simultaneously. Sizing guide:
+                    <strong>2 Players:</strong> 4 GB RAM | <strong>4 Players:</strong> 6 GB RAM | <strong>6 Players:</strong> 8 GB RAM.
+                </div>
+            </div>
+
+            <!-- Section 3: Network & UDP Port Forwarding -->
+            <h3 style="color: var(--text-main); margin-bottom: 1rem;">3. Network &amp; UDP Port Forwarding (Port 7777 UDP)</h3>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin-bottom: 2rem;">
+                <p style="color: var(--text-main); font-size: 0.95rem; line-height: 1.6; margin: 0 0 1rem 0;">
+                    Dragonwilds dedicated servers communicate over <strong>UDP port 7777</strong> by default. If running multiple server instances on the same host, the second server will bind to <strong>UDP 7778</strong>, the third to <strong>UDP 7779</strong>, and so on.
+                </p>
+                <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; padding: 1rem; margin-bottom: 1rem;">
+                    <div style="color: #ef4444; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.4rem;">⚠️ Important Networking Gotchas:</div>
+                    <ul style="color: var(--text-muted); font-size: 0.86rem; line-height: 1.5; padding-left: 1.2rem; margin: 0;">
+                        <li><strong>Router Chains:</strong> Every router between your server and your Internet Service Provider (ISP) requires UDP 7777 port forwarding.</li>
+                        <li><strong>Carrier-Grade NAT (CGNAT):</strong> Some residential ISPs block inbound port forwarding entirely or place customers behind CGNAT. You may need to access your ISP's customer portal or contact support to request a public IPv4 address.</li>
+                        <li><strong>List Visibility vs. Joinability:</strong> If your dedicated server appears in the public server browser for other players but they receive connection timeouts when joining, <strong>UDP port forwarding has failed on your router or host firewall.</strong></li>
+                        <li>For step-by-step router configuration tutorials, refer to <a href="https://portforward.com" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">portforward.com</a>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 4: Installing via Steam & SteamCMD -->
+            <h3 style="color: var(--text-main); margin-bottom: 1rem;">4. Installing the Dedicated Server via Steam &amp; SteamCMD</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+                The dedicated server software is distributed as the free Steam product <strong>"RuneScape: Dragonwilds - Dedicated Servers"</strong> (Steam App ID: <code>4019830</code>).
+            </p>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin-bottom: 2rem;">
+                <div style="font-size: 0.82rem; font-family: monospace; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">AUTOMATED INSTALL &amp; UPDATE COMMAND (STEAMCMD)</div>
+                <pre style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.85rem; overflow-x: auto; font-family: monospace; font-size: 0.88rem; color: #38bdf8; margin: 0 0 1rem 0;"><code>steamcmd +force_install_dir C:\MyInstallFolder +login anonymous +app_update 4019830 +quit</code></pre>
+                
+                <h4 style="color: var(--text-main); margin: 1rem 0 0.5rem 0; font-size: 1rem;">Recommended Launch Options:</h4>
+                <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 0.75rem 0;">
+                    To see live console diagnostics detailing server health, world state, and connected player IDs:
+                </p>
+                <ol style="color: var(--text-muted); font-size: 0.86rem; line-height: 1.5; padding-left: 1.2rem; margin: 0 0 1rem 0;">
+                    <li>Open Steam &rarr; Library &rarr; Right click <em>RuneScape: Dragonwilds Dedicated Server</em> &rarr; Properties.</li>
+                    <li>In the General tab, enter Launch Options: <code style="background: rgba(0,0,0,0.25); color: #34d399; padding: 0.2rem 0.4rem; border-radius: 4px;">-log -NewConsole</code></li>
+                </ol>
+
+                <div style="background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b; padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.86rem; color: var(--text-main);">
+                    <strong>Ensuring Versions Match:</strong> Whenever Jagex releases a game hotfix or patch, your server must be updated or players will not see it in the browser. Compare the server version displayed at the <strong>very top of the server console log</strong> with the game client version displayed in the <strong>top left corner of the main menu</strong>.
+                </div>
+            </div>
+
+            <!-- Section 5: Configuration Values -->
+            <h3 style="color: var(--text-main); margin-bottom: 1rem;">5. Configuration Values (`DedicatedServer.ini`)</h3>
+            <div style="background: rgba(239, 68, 68, 0.08); border-left: 4px solid #ef4444; padding: 0.85rem 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1.25rem;">
+                <strong style="color: #ef4444;">CRITICAL CONFIGURATION RULE:</strong> Dedicated servers write their state on shutdown. <strong>Changing configuration values while the server is running will result in all your changes being overwritten and lost!</strong> Always shut down the server process prior to modifying files.
+            </div>
+
+            <div style="margin-bottom: 1.25rem; font-size: 0.9rem; color: var(--text-muted);">
+                <strong>Config File Locations:</strong><br>
+                • <strong>Linux:</strong> <code>Files > RSDragonwilds > Saved > Config > Linux > DedicatedServer.ini</code><br>
+                • <strong>Windows:</strong> <code>Files > RSDragonwilds > Saved > Config > WindowsServer > DedicatedServer.ini</code> <em>(copy from Linux template into WindowsServer folder if absent)</em>
+            </div>
+
+            <div style="overflow-x: auto; margin-bottom: 2rem;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left; background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                    <thead>
+                        <tr style="background: rgba(255,255,255,0.05); color: var(--accent-cyan); border-bottom: 1px solid var(--border-color);">
+                            <th style="padding: 0.75rem 1rem;">Variable</th>
+                            <th style="padding: 0.75rem 1rem;">Type</th>
+                            <th style="padding: 0.75rem 1rem;">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: var(--text-muted);">
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: #ef4444; font-weight: bold;">Owner ID</td>
+                            <td style="padding: 0.75rem 1rem; color: #ef4444; font-weight: 700;">Mandatory</td>
+                            <td style="padding: 0.75rem 1rem;">Your unique RuneScape: Dragonwilds Player ID (found at the bottom of the in-game Settings Menu; click the copy button to clipboard). <strong>The server will NOT start without your Owner ID!</strong></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: #ef4444; font-weight: bold;">Server Name</td>
+                            <td style="padding: 0.75rem 1rem; color: #ef4444; font-weight: 700;">Mandatory</td>
+                            <td style="padding: 0.75rem 1rem;">The public name of your server in the server browser, independent of whichever world it loads.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: #ef4444; font-weight: bold;">Default World Name</td>
+                            <td style="padding: 0.75rem 1rem; color: #ef4444; font-weight: 700;">Mandatory</td>
+                            <td style="padding: 0.75rem 1rem;">Upon first startup without existing saves, the server generates a new world. This variable dictates its name.</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: #ef4444; font-weight: bold;">Admin password</td>
+                            <td style="padding: 0.75rem 1rem; color: #ef4444; font-weight: 700;">Mandatory</td>
+                            <td style="padding: 0.75rem 1rem;">Anyone who knows this password can enter the Server Management menu (Pause Menu &rarr; Settings). They remain Admins until the password is changed. A list of active admins is saved inside <code>DedicatedServer.ini</code>.</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: var(--accent-cyan);">world password</td>
+                            <td style="padding: 0.75rem 1rem; color: var(--text-dim);">Optional</td>
+                            <td style="padding: 0.75rem 1rem;">Supersedes any world password stored in the save file. Leave empty to allow open public access.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Section 6: World Management & Save Transfer -->
+            <h3 style="color: var(--text-main); margin-bottom: 1rem;">6. World Management &amp; Save File Transfers</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+                When a dedicated server boots, it loads the <strong>latest .sav file</strong> present in <code>RSDragonwilds/Saved/Savegames/</code>. If empty, it creates a default Standard world using <code>DedicatedServer.ini</code> values.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+                    <h4 style="color: var(--accent-cyan); margin: 0 0 0.5rem 0; font-size: 1rem;">How to Move a Local World to Dedicated Server:</h4>
+                    <ol style="color: var(--text-muted); font-size: 0.86rem; line-height: 1.5; padding-left: 1.2rem; margin: 0;">
+                        <li>Ensure the dedicated server is completely stopped.</li>
+                        <li>Back up every file from <code>RSDragonwilds/Saved/Savegames/</code> to a safe directory.</li>
+                        <li>Empty the <code>RSDragonwilds/Saved/Savegames/</code> folder.</li>
+                        <li>Copy your local world <code>.sav</code> file from your personal computer:
+                            <div style="font-family: monospace; font-size: 0.78rem; background: rgba(0,0,0,0.3); padding: 0.35rem; border-radius: 4px; margin: 0.35rem 0; color: #38bdf8;">C:\Users\&lt;user&gt;\AppData\Local\RSDragonwilds\Saved\SaveGames</div>
+                        </li>
+                        <li>Paste into the dedicated server's <code>RSDragonwilds/Saved/Savegames/</code> directory.</li>
+                        <li>Start the server. Done!</li>
+                    </ol>
+                </div>
+
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+                    <h4 style="color: var(--accent-cyan); margin: 0 0 0.5rem 0; font-size: 1rem;">Creating a New World with Custom Settings:</h4>
+                    <ol style="color: var(--text-muted); font-size: 0.86rem; line-height: 1.5; padding-left: 1.2rem; margin: 0;">
+                        <li>Launch your local RuneScape: Dragonwilds game via Steam.</li>
+                        <li>Select <em>Create World</em> and tune custom rules (Standard, Creative, Custom XP multipliers, death penalties).</li>
+                        <li>Enter the world once, then exit back to the main menu.</li>
+                        <li>Follow the save transfer steps on the left to copy your newly generated world save to the dedicated server.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Section 7: User Management & Privilege Tiers -->
+            <h3 style="color: var(--text-main); margin-bottom: 1rem;">7. User Management &amp; Role Tiers</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; border-top: 3px solid #ef4444;">
+                    <div style="font-size: 0.75rem; font-family: monospace; color: #ef4444; font-weight: 700;">TIER 1 • ROOT</div>
+                    <h4 style="margin: 0.25rem 0 0.35rem 0; color: var(--text-main);">Server Owner</h4>
+                    <p style="color: var(--text-muted); font-size: 0.84rem; line-height: 1.4; margin: 0;">Player ID strictly matches <code>OwnerId</code> in config. Can kick/ban admins, alter server settings, and restart worlds.</p>
+                </div>
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; border-top: 3px solid #f59e0b;">
+                    <div style="font-size: 0.75rem; font-family: monospace; color: #f59e0b; font-weight: 700;">TIER 2 • MODERATION</div>
+                    <h4 style="margin: 0.25rem 0 0.35rem 0; color: var(--text-main);">Admin</h4>
+                    <p style="color: var(--text-muted); font-size: 0.84rem; line-height: 1.4; margin: 0;">Anyone who successfully inputs the Admin Password in Pause Menu &rarr; Settings. Can access Server Management tools until password changes.</p>
+                </div>
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; border-top: 3px solid #10b981;">
+                    <div style="font-size: 0.75rem; font-family: monospace; color: #10b981; font-weight: 700;">TIER 3 • COMMUNITY</div>
+                    <h4 style="margin: 0.25rem 0 0.35rem 0; color: var(--text-main);">Standard Player</h4>
+                    <p style="color: var(--text-muted); font-size: 0.84rem; line-height: 1.4; margin: 0;">Regular adventurers subject to world permissions and passwords.</p>
+                </div>
+            </div>
+
+            <!-- Section 8: Finding & Joining -->
+            <h3 style="color: var(--text-main); margin-bottom: 1rem;">8. Finding &amp; Joining Your Dedicated Server</h3>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin-bottom: 2rem;">
+                <p style="color: var(--text-main); font-size: 0.95rem; margin: 0 0 0.75rem 0;">
+                    To join your dedicated server from the client:
+                </p>
+                <ol style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; padding-left: 1.25rem; margin: 0 0 1rem 0;">
+                    <li>Navigate to <strong>Play &rarr; Worlds &rarr; Public</strong> tab.</li>
+                    <li>In the search field, enter your <strong>exact World Name</strong> (search is <em>case sensitive</em>).</li>
+                    <li>Your server will appear within 3–5 seconds. Click Connect and enter the password (if configured).</li>
+                </ol>
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.85rem; font-size: 0.86rem; color: var(--text-muted);">
+                    <strong>Troubleshooting Checklist if Server Doesn't Appear:</strong><br>
+                    ✓ Confirm server and client share identical patch versions (check console logs vs game title screen).<br>
+                    ✓ Confirm searched name matches the active world name.<br>
+                    ✓ Verify that <code>OwnerId</code>, <code>ServerName</code>, and <code>DefaultWorldName</code> are populated.<br>
+                    ✓ Check that UDP port 7777 is open and forwarded through all routers.<br>
+                    ✓ Verify server console log shows <em>"World loaded successfully"</em>.
+                </div>
+            </div>
+
+            <!-- Standalone PDF Field Guide Callout -->
             <div class="glass-panel" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.75rem; margin-bottom: 1.5rem;">
                 <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
                     <span style="background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em;">Digital Field Guide</span>
-                    <span style="color: var(--accent-cyan); font-size: 0.85rem; font-weight: 600;">11-Page Operations Manual • Edition 1.4.0</span>
+                    <span style="color: var(--accent-cyan); font-size: 0.85rem; font-weight: 600;">11-Page Operations Manual • Edition 1.5.0</span>
                 </div>
                 <h3 style="color: var(--text-main); margin: 0.5rem 0 0.75rem 0; font-size: 1.3rem;">
-                    🖥️ Official Dedicated Server Operations Manual
+                    🖥️ Download the Dedicated Server Operations PDF
                 </h3>
                 <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
-                    The standalone technical reference is compiled and formatted as an authoritative 11-page PDF manual for system administrators and server hosts. Includes SteamCMD automated updates (App ID 4019830), UDP firewall routing for ports 7777 &amp; 27015, sandboxed Linux systemd daemon service scripts, rolling 4:00 AM backup crons, and 72-minute vault respawn configuration.
+                    This comprehensive guide is compiled into a standalone, printable 11-page PDF manual for system administrators and guild hosts. Includes Linux systemd service daemon scripts, sandboxed user security hardening, and rolling 4:00 AM automated backup crons.
                 </p>
                 <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
-                    To have the complete PDF and future version revisions sent directly to your email, claim it through our Lemon Squeezy checkout. It is available under a <strong>Pay-What-You-Want</strong> model—pay whatever you feel it's worth to support Project Atlas, or enter <strong>$0</strong> to receive it completely free.
+                    Delivered instantly to your inbox via Lemon Squeezy under a <strong>Pay-What-You-Want</strong> model. Pay whatever you feel it's worth to support Project Atlas, or enter <strong>$0</strong> to receive it completely free.
                 </p>
                 <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                     <a href="https://thomsfoolery.lemonsqueezy.com/checkout/buy/c6245a73-73d1-452d-86ba-ba88e13ec5f2?embed=1&discount=0" class="btn btn-primary lemonsqueezy-button" style="font-weight: 700; padding: 0.85rem 1.6rem; background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; border: none; display: inline-flex; align-items: center; gap: 0.6rem; font-size: 1rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);">
@@ -2750,7 +3135,7 @@
             catch(e) { console.error('Could not save tracking progress', e); }
         }
 
-        function updateChapterBadges() {
+        function updateChapterBadges(collapseCompleted = false) {
             document.querySelectorAll('.dw-chapter-accordion').forEach(accordion => {
                 const chapterBoxes = accordion.querySelectorAll('.dw-chapter-body .ffx-checkbox');
                 const checkedBoxes = accordion.querySelectorAll('.dw-chapter-body .ffx-checkbox:checked');
@@ -2776,6 +3161,10 @@
                         } else {
                             quickPill.classList.remove('complete');
                         }
+                    }
+                    // Default rolled up and not expanded when 100% complete
+                    if (collapseCompleted && checked === total) {
+                        accordion.open = false;
                     }
                 }
             });
@@ -2869,6 +3258,9 @@
             }
             if (tabKey === 'timers') {
                 updateAllTimers();
+            }
+            if (tabKey === 'guide' || tabKey === 'quests' || tabKey === 'urns') {
+                updateChapterBadges(true);
             }
 
             if (updateUrl && history.replaceState) {
@@ -3721,6 +4113,7 @@
         }
 
         updateProgress();
+        updateChapterBadges(true); // Default roll up 100% complete accordions on load
         updateUrnsCount();
         updateSummary();
         drawProfile();

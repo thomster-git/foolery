@@ -3108,3 +3108,65 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================
+   Collapsible Code Rollups (for long code samples in essays)
+   ============================================================ */
+details.code-rollup {
+  margin: 1.5rem 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+details.code-rollup[open] {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+details.code-rollup summary {
+  padding: 0.85rem 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  font-family: var(--font-mono, monospace);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: background 0.2s ease, color 0.2s ease;
+  list-style: none;
+}
+
+details.code-rollup summary:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--accent-cyan);
+}
+
+details.code-rollup summary::-webkit-details-marker {
+  display: none;
+}
+
+details.code-rollup summary::before {
+  content: "▶";
+  font-size: 0.75rem;
+  color: var(--accent-cyan);
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+details.code-rollup[open] summary::before {
+  transform: rotate(90deg);
+}
+
+details.code-rollup pre {
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  border-top: 1px solid var(--border-color) !important;
+}
+

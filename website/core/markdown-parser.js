@@ -97,7 +97,7 @@ export default function parseMarkdown(markdownText = "") {
   let parsedHtml = blocks.map(block => {
     block = block.trim();
     if (!block) return '';
-    if (/^<(h[1-6]|ul|ol|li|blockquote|aside|pre|hr|div|p|article|section|table)/i.test(block) || /^%%%ATLAS_CODE_BLOCK_\d+%%%$/.test(block)) {
+    if (/^<(\/)?(h[1-6]|ul|ol|li|blockquote|aside|pre|hr|div|p|article|section|table|details|summary)/i.test(block) || /^%%%ATLAS_CODE_BLOCK_\d+%%%$/.test(block)) {
       return block;
     }
     return `<p>${block.replace(/\n/g, '<br>')}</p>`;

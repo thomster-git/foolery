@@ -110,9 +110,17 @@
                         <!-- Populated by JS -->
                     </select>
                 </div>
-                <div style="margin-left: auto; align-self: flex-end; display: flex; gap: 0.5rem;">
-                    <button id="clear-filters" type="button" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.6rem 1rem; border-radius: var(--radius-md); font-weight: bold; cursor: pointer; transition: all 0.2s;" title="Reset metric, division, and team highlight filters">Clear Filters</button>
-                    <button id="reset-zoom" type="button" style="background: var(--accent-cyan); color: #fff; border: none; padding: 0.6rem 1rem; border-radius: var(--radius-md); font-weight: bold; cursor: pointer;">Reset Zoom</button>
+                <div style="margin-left: auto; align-self: flex-end; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <button id="clear-filters" type="button" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.6rem 0.9rem; border-radius: var(--radius-md); font-weight: bold; cursor: pointer; transition: all 0.2s;" title="Reset metric, division, and team highlight filters">Clear Filters</button>
+                    <button id="reset-zoom" type="button" style="background: rgba(255, 255, 255, 0.08); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.6rem 0.9rem; border-radius: var(--radius-md); font-weight: bold; cursor: pointer;">Reset Zoom</button>
+                    <button id="copy-chart-btn" type="button" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); padding: 0.6rem 0.9rem; border-radius: var(--radius-md); font-weight: bold; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem;" title="Copy shareable link with active metric &amp; highlighted teams to clipboard">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                        <span>Share Link</span>
+                    </button>
+                    <button id="export-chart-btn" type="button" style="background: linear-gradient(135deg, #06b6d4, #3b82f6); color: #fff; border: none; padding: 0.6rem 1rem; border-radius: var(--radius-md); font-weight: bold; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem;" title="Export high-resolution chart in crisp light theme with active metric and highlighted teams">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span>Export Chart (Light Theme)</span>
+                    </button>
                 </div>
             </div>
 

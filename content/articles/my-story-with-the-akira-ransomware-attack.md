@@ -11,7 +11,6 @@ access: paid
 summary: The true story of how a single IT Coordinator stood between the Akira ransomware gang and the total operational collapse of an isolated fluorspar mine in Newfoundland. From waking up to 200 Defender alert emails at 4:43 AM and discovering our Datto backups untouched, to enduring toxic executive pressure, assembly-line endpoint reimaging, and forensic analysis of a rushed, sloppy adversary.
 topics:
   - technology
-  - audhd
 themes:
   - resilience
   - systems-thinking
@@ -20,8 +19,6 @@ tags:
   - cybersecurity
   - incident-response
   - datto
-  - audhd
-  - autistic-burnout
   - mining
   - disaster-recovery
 related:

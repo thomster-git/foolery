@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initThemeSwitcher();
   initNodeDrawer();
   initImageLightbox();
+  initLemonSqueezyOverlay();
 });
 
 /* ============================================================
@@ -152,9 +153,12 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     const blueprintsNode = { id: 'hub-blueprints', label: 'The Blueprint Room', type: 'hub', url: null, summary: 'Systems and Workflows' };
     const archiveNode = { id: 'hub-archive', label: 'Career File', type: 'hub', url: '/resume/', summary: 'Work History and Skills' };
     
+    const publishedArticles = (data.nodes || []).filter(n => n.type === 'article');
+    
     filteredNodes = [
         hubNode, coreValuesNode, passionsNode, lifeExperiencesNode, connectionsNode,
-        libraryNode, workshopNode, forgeNode, rabbitHoleNode, soapboxNode, blueprintsNode, archiveNode
+        libraryNode, workshopNode, forgeNode, rabbitHoleNode, soapboxNode, blueprintsNode, archiveNode,
+        ...publishedArticles
     ];
     
     filteredEdges = [
@@ -170,6 +174,27 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
         { source: 'hub-global', target: 'hub-blueprints' },
         { source: 'hub-global', target: 'hub-archive' }
     ];
+
+    publishedArticles.forEach(a => {
+        if (a.id === 'building-a-comprehensive-discord-ecosystem' || a.id === 'my-story-with-the-akira-ransomware-attack') {
+            filteredEdges.push({ source: 'hub-workshop', target: a.id });
+        } else {
+            filteredEdges.push({ source: 'hub-life-experiences', target: a.id });
+        }
+    });
+
+    if (data.edges) {
+        data.edges.forEach(e => {
+            const from = e.source || e.from;
+            const to = e.target || e.to;
+            const isFromArticle = publishedArticles.some(a => a.id === from);
+            const isToArticle = publishedArticles.some(a => a.id === to);
+            if (isFromArticle && isToArticle) {
+                filteredEdges.push(e);
+            }
+        });
+    }
+
     focusId = 'hub-global';
   } else if (focusType) {
 
@@ -508,7 +533,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       } else if (hoveredNode.id === 'hub-life-experiences' && (focusType === 'global' || focusType === 'full')) {
           if (!hoveredNode.expanded) {
               hoveredNode.expanded = true;
-              const topicIds = ['audhd', 'health-and-fitness', 'personal-growth', 'career', 'parenting'];
+              const topicIds = ['health-and-fitness', 'personal-growth', 'career', 'parenting'];
               const topics = data.nodes.filter(n => topicIds.includes(n.id));
               const shitList = data.nodes.filter(n => n.type === 'shit-list');
               const nodesToSpawn = [...topics, ...shitList];
@@ -1411,3 +1436,48 @@ function initImageLightbox() {
     });
   });
 }
+
+/* ============================================================
+   8. Lemon Squeezy Checkout Overlay Support
+   ============================================================ */
+
+function initLemonSqueezyOverlay() {
+  const tryInit = () => {
+    if (typeof window.createLemonSqueezy === "function") {
+      window.createLemonSqueezy();
+    }
+  };
+
+  tryInit();
+
+  if (typeof window.createLemonSqueezy !== "function") {
+    window.addEventListener("load", tryInit, { once: true });
+    // Fallback polling for slow deferred script loading
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      if (typeof window.createLemonSqueezy === "function") {
+        window.createLemonSqueezy();
+        clearInterval(interval);
+      } else if (attempts > 15) {
+        clearInterval(interval);
+      }
+    }, 200);
+  }
+
+  // Setup Lemon Squeezy event hooks if available
+  if (window.LemonSqueezy && typeof window.LemonSqueezy.Setup === "function") {
+    try {
+      window.LemonSqueezy.Setup({
+        eventHandler: (event) => {
+          if (event && event.event === "Checkout.Success") {
+            console.log("Lemon Squeezy checkout succeeded:", event.data);
+          }
+        }
+      });
+    } catch (e) {
+      console.warn("LemonSqueezy Setup warning:", e);
+    }
+  }
+}
+
