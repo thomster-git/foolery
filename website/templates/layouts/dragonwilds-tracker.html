@@ -524,6 +524,13 @@
                             <span style="color: var(--text-muted); font-size: 0.95rem;">Total Level:</span>
                             <span id="stat-total-level-display" style="font-weight: bold; font-size: 1.25rem; color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace;">12 / 1,188</span>
                         </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+                            <span style="color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; gap: 0.4rem;">
+                                <img src="/images/website-assets/health-icon.png" alt="Health Icon" style="width: 1.15rem; height: 1.15rem; vertical-align: middle; object-fit: contain;">
+                                Total Health (HP):
+                            </span>
+                            <span id="stat-total-hp-display" style="font-weight: bold; font-size: 1.25rem; color: #ef4444; font-family: 'JetBrains Mono', monospace;">100 HP</span>
+                        </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                             <span style="color: var(--text-muted); font-size: 0.95rem;">Minimum Total Exp:</span>
                             <span id="stat-total-exp-display" style="font-weight: bold; font-size: 1.15rem; color: #f59e0b; font-family: 'JetBrains Mono', monospace;">0 XP</span>
@@ -532,12 +539,16 @@
                             <input type="checkbox" id="dw-show-exp" class="ffx-checkbox" style="margin-top: 0; width: 1.15rem; height: 1.15rem;">
                             <span style="user-select: none;">Show Minimum Total Experience on Profile Graphic</span>
                         </label>
+                        <label for="dw-show-hp" style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; color: var(--text-main); font-size: 0.9rem; padding-top: 0.75rem; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                            <input type="checkbox" id="dw-show-hp" class="ffx-checkbox" style="margin-top: 0; width: 1.15rem; height: 1.15rem;">
+                            <span style="user-select: none;">Show Sanguine Urns HP on Profile Graphic (<span id="stat-urn-hp-note" style="color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace;">100 HP</span>)</span>
+                        </label>
                     </div>
                 </div>
                 
                 <!-- Preview Section -->
                 <div style="flex: 1; min-width: 320px; display: flex; flex-direction: column; align-items: center; position: sticky; top: 2rem;">
-                    <canvas id="stat-canvas" width="520" height="730" style="width: 100%; max-width: 440px; height: auto; border-radius: 12px; box-shadow: 0 12px 36px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);"></canvas>
+                    <canvas id="stat-canvas" width="520" height="740" style="width: 100%; max-width: 440px; height: auto; border-radius: 12px; box-shadow: 0 12px 36px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);"></canvas>
                     
                     <!-- Action Buttons -->
                     <div style="display: flex; gap: 0.5rem; width: 100%; max-width: 440px; margin-top: 1.25rem;">
@@ -2337,262 +2348,54 @@
         </div>
         <!-- End Fishing Guide Tab -->
 
-        <!-- Tab: Server Hosting -->
+        <!-- Tab: Server Hosting (PWYW Digital Field Guide) -->
         <div id="dw-tab-server" class="dw-tab-panel" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1.5rem;">
-                <div>
-                    <h2 style="color: var(--accent-cyan); margin: 0 0 0.5rem 0; border: none; padding: 0;">🖥️ Dedicated Server Operations Manual</h2>
-                    <p style="color: var(--text-muted); margin: 0; max-width: 780px; font-size: 0.95rem; line-height: 1.5;">The complete technical reference for hosting, configuring, and maintaining dedicated servers for RuneScape: Dragonwilds. Covers official Jagex parameters, SteamCMD automated installs, UDP routing, save management, and user tiers.</p>
+            <div class="glass-panel" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem 2rem; max-width: 900px; margin: 0 auto 2rem auto; box-shadow: 0 8px 30px rgba(0,0,0,0.35);">
+                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.75rem;">
+                    <span style="background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.75rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em;">Digital Field Guide</span>
+                    <span style="color: var(--accent-cyan); font-size: 0.9rem; font-weight: 600;">11-Page PDF Operations Manual • Edition 1.5.0</span>
                 </div>
-                <a href="https://thomsfoolery.lemonsqueezy.com/checkout/buy/c6245a73-73d1-452d-86ba-ba88e13ec5f2?embed=1&discount=0" class="lemonsqueezy-button" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; padding: 0.65rem 1.25rem; border-radius: 6px; font-weight: 700; text-decoration: none; font-size: 0.92rem; transition: all 0.2s; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-                    <span>Claim 11-Page PDF (PWYW / Free) &rarr;</span>
-                </a>
-            </div>
-
-            <!-- Section 1: Hosting Options Comparison -->
-            <h3 style="color: var(--text-main); margin-bottom: 1rem;">1. Dedicated Server Hosting Options</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
-                RuneScape: Dragonwilds dedicated servers can be deployed through three primary methods based on your technical comfort, budget, and backup preferences:
-            </p>
-            <div style="overflow-x: auto; margin-bottom: 2rem;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
-                    <thead>
-                        <tr style="background: rgba(255,255,255,0.05); color: var(--accent-cyan); border-bottom: 1px solid var(--border-color);">
-                            <th style="padding: 0.75rem 1rem;">Hosting Method</th>
-                            <th style="padding: 0.75rem 1rem;">Difficulty</th>
-                            <th style="padding: 0.75rem 1rem;">Cost Model</th>
-                            <th style="padding: 0.75rem 1rem;">Progression &amp; Saves</th>
-                            <th style="padding: 0.75rem 1rem;">Best Suited For</th>
-                        </tr>
-                    </thead>
-                    <tbody style="color: var(--text-muted);">
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">
-                                <a href="https://shockbyte.com/partner/runescape-dragonwilds" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">Shockbyte (Official Partner)</a>
-                            </td>
-                            <td style="padding: 0.75rem 1rem; color: #10b981; font-weight: 600;">Easiest</td>
-                            <td style="padding: 0.75rem 1rem;">Set monthly subscription</td>
-                            <td style="padding: 0.75rem 1rem; color: #10b981;">Secured &amp; automated cloud backups</td>
-                            <td style="padding: 0.75rem 1rem;">Players wanting 1-click startup with zero network configuration.</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">At Home (Self-Hosted PC)</td>
-                            <td style="padding: 0.75rem 1rem; color: #f59e0b; font-weight: 600;">Hard</td>
-                            <td style="padding: 0.75rem 1rem;">Hardware + Electricity costs</td>
-                            <td style="padding: 0.75rem 1rem; color: #f59e0b;">Manual local backups</td>
-                            <td style="padding: 0.75rem 1rem;">Gamers with a spare PC/homelab and access to router port forwarding.</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 0.75rem 1rem; font-weight: 700; color: var(--text-main);">Cloud VPS (Self-Managed)</td>
-                            <td style="padding: 0.75rem 1rem; color: #ef4444; font-weight: 600;">Hardest</td>
-                            <td style="padding: 0.75rem 1rem;">Depends on VPS capacity &amp; RAM</td>
-                            <td style="padding: 0.75rem 1rem; color: #f59e0b;">Manual snapshots &amp; crons</td>
-                            <td style="padding: 0.75rem 1rem;">System administrators deploying headless Linux containers (DigitalOcean, AWS, Linode).</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Section 2: Hosting at Home & Hardware Requirements -->
-            <h3 style="color: var(--text-main); margin-bottom: 1rem;">2. Hardware Prerequisites &amp; Sizing Matrix</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
-                Dragonwilds dedicated servers require a 64-bit operating system. Both Windows and Linux (Ubuntu, Debian, Fedora, Arch) are officially supported. Memory consumption scales with player capacity:
-            </p>
-            <div style="background: rgba(6, 182, 212, 0.08); border-left: 4px solid var(--accent-cyan); padding: 1rem 1.25rem; border-radius: 0 8px 8px 0; margin-bottom: 1.5rem;">
-                <div style="font-weight: 700; color: var(--accent-cyan); font-size: 0.95rem; margin-bottom: 0.35rem;">Official Jagex RAM Formula:</div>
-                <div style="font-size: 1.05rem; font-family: monospace; color: var(--text-main); font-weight: bold; margin-bottom: 0.35rem;">
-                    Required RAM = 2 GB Base + 1 GB per Concurrent Player
-                </div>
-                <div style="font-size: 0.88rem; color: var(--text-muted);">
-                    As of version 0.11 (March 2026), dedicated servers support up to 6 players simultaneously. Sizing guide:
-                    <strong>2 Players:</strong> 4 GB RAM | <strong>4 Players:</strong> 6 GB RAM | <strong>6 Players:</strong> 8 GB RAM.
-                </div>
-            </div>
-
-            <!-- Section 3: Network & UDP Port Forwarding -->
-            <h3 style="color: var(--text-main); margin-bottom: 1rem;">3. Network &amp; UDP Port Forwarding (Port 7777 UDP)</h3>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin-bottom: 2rem;">
-                <p style="color: var(--text-main); font-size: 0.95rem; line-height: 1.6; margin: 0 0 1rem 0;">
-                    Dragonwilds dedicated servers communicate over <strong>UDP port 7777</strong> by default. If running multiple server instances on the same host, the second server will bind to <strong>UDP 7778</strong>, the third to <strong>UDP 7779</strong>, and so on.
-                </p>
-                <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; padding: 1rem; margin-bottom: 1rem;">
-                    <div style="color: #ef4444; font-weight: 700; font-size: 0.9rem; margin-bottom: 0.4rem;">⚠️ Important Networking Gotchas:</div>
-                    <ul style="color: var(--text-muted); font-size: 0.86rem; line-height: 1.5; padding-left: 1.2rem; margin: 0;">
-                        <li><strong>Router Chains:</strong> Every router between your server and your Internet Service Provider (ISP) requires UDP 7777 port forwarding.</li>
-                        <li><strong>Carrier-Grade NAT (CGNAT):</strong> Some residential ISPs block inbound port forwarding entirely or place customers behind CGNAT. You may need to access your ISP's customer portal or contact support to request a public IPv4 address.</li>
-                        <li><strong>List Visibility vs. Joinability:</strong> If your dedicated server appears in the public server browser for other players but they receive connection timeouts when joining, <strong>UDP port forwarding has failed on your router or host firewall.</strong></li>
-                        <li>For step-by-step router configuration tutorials, refer to <a href="https://portforward.com" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;">portforward.com</a>.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Section 4: Installing via Steam & SteamCMD -->
-            <h3 style="color: var(--text-main); margin-bottom: 1rem;">4. Installing the Dedicated Server via Steam &amp; SteamCMD</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
-                The dedicated server software is distributed as the free Steam product <strong>"RuneScape: Dragonwilds - Dedicated Servers"</strong> (Steam App ID: <code>4019830</code>).
-            </p>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin-bottom: 2rem;">
-                <div style="font-size: 0.82rem; font-family: monospace; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.5rem;">AUTOMATED INSTALL &amp; UPDATE COMMAND (STEAMCMD)</div>
-                <pre style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.85rem; overflow-x: auto; font-family: monospace; font-size: 0.88rem; color: #38bdf8; margin: 0 0 1rem 0;"><code>steamcmd +force_install_dir C:\MyInstallFolder +login anonymous +app_update 4019830 +quit</code></pre>
                 
-                <h4 style="color: var(--text-main); margin: 1rem 0 0.5rem 0; font-size: 1rem;">Recommended Launch Options:</h4>
-                <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 0.75rem 0;">
-                    To see live console diagnostics detailing server health, world state, and connected player IDs:
+                <h2 style="color: var(--text-main); font-size: 2rem; margin: 0 0 1rem 0; border: none; padding: 0;">
+                    🖥️ RuneScape: Dragonwilds Dedicated Server Operations Manual
+                </h2>
+                
+                <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem;">
+                    The definitive technical operations manual for guild hosts and system administrators deploying standalone dedicated servers for <em>RuneScape: Dragonwilds</em>. Compiled from official Jagex server documentation and battle-tested Linux production deployments.
                 </p>
-                <ol style="color: var(--text-muted); font-size: 0.86rem; line-height: 1.5; padding-left: 1.2rem; margin: 0 0 1rem 0;">
-                    <li>Open Steam &rarr; Library &rarr; Right click <em>RuneScape: Dragonwilds Dedicated Server</em> &rarr; Properties.</li>
-                    <li>In the General tab, enter Launch Options: <code style="background: rgba(0,0,0,0.25); color: #34d399; padding: 0.2rem 0.4rem; border-radius: 4px;">-log -NewConsole</code></li>
-                </ol>
 
-                <div style="background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b; padding: 0.75rem 1rem; border-radius: 0 6px 6px 0; font-size: 0.86rem; color: var(--text-main);">
-                    <strong>Ensuring Versions Match:</strong> Whenever Jagex releases a game hotfix or patch, your server must be updated or players will not see it in the browser. Compare the server version displayed at the <strong>very top of the server console log</strong> with the game client version displayed in the <strong>top left corner of the main menu</strong>.
-                </div>
-            </div>
-
-            <!-- Section 5: Configuration Values -->
-            <h3 style="color: var(--text-main); margin-bottom: 1rem;">5. Configuration Values (`DedicatedServer.ini`)</h3>
-            <div style="background: rgba(239, 68, 68, 0.08); border-left: 4px solid #ef4444; padding: 0.85rem 1rem; border-radius: 0 6px 6px 0; margin-bottom: 1.25rem;">
-                <strong style="color: #ef4444;">CRITICAL CONFIGURATION RULE:</strong> Dedicated servers write their state on shutdown. <strong>Changing configuration values while the server is running will result in all your changes being overwritten and lost!</strong> Always shut down the server process prior to modifying files.
-            </div>
-
-            <div style="margin-bottom: 1.25rem; font-size: 0.9rem; color: var(--text-muted);">
-                <strong>Config File Locations:</strong><br>
-                • <strong>Linux:</strong> <code>Files > RSDragonwilds > Saved > Config > Linux > DedicatedServer.ini</code><br>
-                • <strong>Windows:</strong> <code>Files > RSDragonwilds > Saved > Config > WindowsServer > DedicatedServer.ini</code> <em>(copy from Linux template into WindowsServer folder if absent)</em>
-            </div>
-
-            <div style="overflow-x: auto; margin-bottom: 2rem;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left; background: var(--bg-card); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
-                    <thead>
-                        <tr style="background: rgba(255,255,255,0.05); color: var(--accent-cyan); border-bottom: 1px solid var(--border-color);">
-                            <th style="padding: 0.75rem 1rem;">Variable</th>
-                            <th style="padding: 0.75rem 1rem;">Type</th>
-                            <th style="padding: 0.75rem 1rem;">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody style="color: var(--text-muted);">
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: #ef4444; font-weight: bold;">Owner ID</td>
-                            <td style="padding: 0.75rem 1rem; color: #ef4444; font-weight: 700;">Mandatory</td>
-                            <td style="padding: 0.75rem 1rem;">Your unique RuneScape: Dragonwilds Player ID (found at the bottom of the in-game Settings Menu; click the copy button to clipboard). <strong>The server will NOT start without your Owner ID!</strong></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: #ef4444; font-weight: bold;">Server Name</td>
-                            <td style="padding: 0.75rem 1rem; color: #ef4444; font-weight: 700;">Mandatory</td>
-                            <td style="padding: 0.75rem 1rem;">The public name of your server in the server browser, independent of whichever world it loads.</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: #ef4444; font-weight: bold;">Default World Name</td>
-                            <td style="padding: 0.75rem 1rem; color: #ef4444; font-weight: 700;">Mandatory</td>
-                            <td style="padding: 0.75rem 1rem;">Upon first startup without existing saves, the server generates a new world. This variable dictates its name.</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: #ef4444; font-weight: bold;">Admin password</td>
-                            <td style="padding: 0.75rem 1rem; color: #ef4444; font-weight: 700;">Mandatory</td>
-                            <td style="padding: 0.75rem 1rem;">Anyone who knows this password can enter the Server Management menu (Pause Menu &rarr; Settings). They remain Admins until the password is changed. A list of active admins is saved inside <code>DedicatedServer.ini</code>.</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 0.75rem 1rem; font-family: monospace; color: var(--accent-cyan);">world password</td>
-                            <td style="padding: 0.75rem 1rem; color: var(--text-dim);">Optional</td>
-                            <td style="padding: 0.75rem 1rem;">Supersedes any world password stored in the save file. Leave empty to allow open public access.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Section 6: World Management & Save Transfer -->
-            <h3 style="color: var(--text-main); margin-bottom: 1rem;">6. World Management &amp; Save File Transfers</h3>
-            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
-                When a dedicated server boots, it loads the <strong>latest .sav file</strong> present in <code>RSDragonwilds/Saved/Savegames/</code>. If empty, it creates a default Standard world using <code>DedicatedServer.ini</code> values.
-            </p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
-                    <h4 style="color: var(--accent-cyan); margin: 0 0 0.5rem 0; font-size: 1rem;">How to Move a Local World to Dedicated Server:</h4>
-                    <ol style="color: var(--text-muted); font-size: 0.86rem; line-height: 1.5; padding-left: 1.2rem; margin: 0;">
-                        <li>Ensure the dedicated server is completely stopped.</li>
-                        <li>Back up every file from <code>RSDragonwilds/Saved/Savegames/</code> to a safe directory.</li>
-                        <li>Empty the <code>RSDragonwilds/Saved/Savegames/</code> folder.</li>
-                        <li>Copy your local world <code>.sav</code> file from your personal computer:
-                            <div style="font-family: monospace; font-size: 0.78rem; background: rgba(0,0,0,0.3); padding: 0.35rem; border-radius: 4px; margin: 0.35rem 0; color: #38bdf8;">C:\Users\&lt;user&gt;\AppData\Local\RSDragonwilds\Saved\SaveGames</div>
-                        </li>
-                        <li>Paste into the dedicated server's <code>RSDragonwilds/Saved/Savegames/</code> directory.</li>
-                        <li>Start the server. Done!</li>
-                    </ol>
+                <!-- What's Inside Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+                        <div style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.35rem; font-size: 0.95rem;">⚡ Official Jagex Matrix</div>
+                        <div style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">Hardware prerequisites, exact 2 GB + 1 GB/player RAM sizing formula, and 6-player March 2026 guidelines.</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+                        <div style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.35rem; font-size: 0.95rem;">🌐 UDP Port Forwarding</div>
+                        <div style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">Port 7777/7778 UDP routing rules, multi-router chains, and Carrier-Grade NAT (CGNAT) traversal.</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+                        <div style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.35rem; font-size: 0.95rem;">⚙️ Headless SteamCMD</div>
+                        <div style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">Automated Steam App ID 4019830 deployment scripts, anonymous login pipelines, and <code>-log -NewConsole</code> diagnostics.</div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+                        <div style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.35rem; font-size: 0.95rem;">💾 World &amp; User Security</div>
+                        <div style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5;">Moving local single-player .sav files to dedicated servers, Owner ID binding, 3-tier user privileges, and systemd daemons.</div>
+                    </div>
                 </div>
 
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
-                    <h4 style="color: var(--accent-cyan); margin: 0 0 0.5rem 0; font-size: 1rem;">Creating a New World with Custom Settings:</h4>
-                    <ol style="color: var(--text-muted); font-size: 0.86rem; line-height: 1.5; padding-left: 1.2rem; margin: 0;">
-                        <li>Launch your local RuneScape: Dragonwilds game via Steam.</li>
-                        <li>Select <em>Create World</em> and tune custom rules (Standard, Creative, Custom XP multipliers, death penalties).</li>
-                        <li>Enter the world once, then exit back to the main menu.</li>
-                        <li>Follow the save transfer steps on the left to copy your newly generated world save to the dedicated server.</li>
-                    </ol>
-                </div>
-            </div>
-
-            <!-- Section 7: User Management & Privilege Tiers -->
-            <h3 style="color: var(--text-main); margin-bottom: 1rem;">7. User Management &amp; Role Tiers</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; border-top: 3px solid #ef4444;">
-                    <div style="font-size: 0.75rem; font-family: monospace; color: #ef4444; font-weight: 700;">TIER 1 • ROOT</div>
-                    <h4 style="margin: 0.25rem 0 0.35rem 0; color: var(--text-main);">Server Owner</h4>
-                    <p style="color: var(--text-muted); font-size: 0.84rem; line-height: 1.4; margin: 0;">Player ID strictly matches <code>OwnerId</code> in config. Can kick/ban admins, alter server settings, and restart worlds.</p>
-                </div>
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; border-top: 3px solid #f59e0b;">
-                    <div style="font-size: 0.75rem; font-family: monospace; color: #f59e0b; font-weight: 700;">TIER 2 • MODERATION</div>
-                    <h4 style="margin: 0.25rem 0 0.35rem 0; color: var(--text-main);">Admin</h4>
-                    <p style="color: var(--text-muted); font-size: 0.84rem; line-height: 1.4; margin: 0;">Anyone who successfully inputs the Admin Password in Pause Menu &rarr; Settings. Can access Server Management tools until password changes.</p>
-                </div>
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; border-top: 3px solid #10b981;">
-                    <div style="font-size: 0.75rem; font-family: monospace; color: #10b981; font-weight: 700;">TIER 3 • COMMUNITY</div>
-                    <h4 style="margin: 0.25rem 0 0.35rem 0; color: var(--text-main);">Standard Player</h4>
-                    <p style="color: var(--text-muted); font-size: 0.84rem; line-height: 1.4; margin: 0;">Regular adventurers subject to world permissions and passwords.</p>
-                </div>
-            </div>
-
-            <!-- Section 8: Finding & Joining -->
-            <h3 style="color: var(--text-main); margin-bottom: 1rem;">8. Finding &amp; Joining Your Dedicated Server</h3>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin-bottom: 2rem;">
-                <p style="color: var(--text-main); font-size: 0.95rem; margin: 0 0 0.75rem 0;">
-                    To join your dedicated server from the client:
-                </p>
-                <ol style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; padding-left: 1.25rem; margin: 0 0 1rem 0;">
-                    <li>Navigate to <strong>Play &rarr; Worlds &rarr; Public</strong> tab.</li>
-                    <li>In the search field, enter your <strong>exact World Name</strong> (search is <em>case sensitive</em>).</li>
-                    <li>Your server will appear within 3–5 seconds. Click Connect and enter the password (if configured).</li>
-                </ol>
-                <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.85rem; font-size: 0.86rem; color: var(--text-muted);">
-                    <strong>Troubleshooting Checklist if Server Doesn't Appear:</strong><br>
-                    ✓ Confirm server and client share identical patch versions (check console logs vs game title screen).<br>
-                    ✓ Confirm searched name matches the active world name.<br>
-                    ✓ Verify that <code>OwnerId</code>, <code>ServerName</code>, and <code>DefaultWorldName</code> are populated.<br>
-                    ✓ Check that UDP port 7777 is open and forwarded through all routers.<br>
-                    ✓ Verify server console log shows <em>"World loaded successfully"</em>.
-                </div>
-            </div>
-
-            <!-- Standalone PDF Field Guide Callout -->
-            <div class="glass-panel" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.75rem; margin-bottom: 1.5rem;">
-                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                    <span style="background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; font-size: 0.72rem; font-weight: 700; padding: 0.25rem 0.65rem; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em;">Digital Field Guide</span>
-                    <span style="color: var(--accent-cyan); font-size: 0.85rem; font-weight: 600;">11-Page Operations Manual • Edition 1.5.0</span>
-                </div>
-                <h3 style="color: var(--text-main); margin: 0.5rem 0 0.75rem 0; font-size: 1.3rem;">
-                    🖥️ Download the Dedicated Server Operations PDF
-                </h3>
-                <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
-                    This comprehensive guide is compiled into a standalone, printable 11-page PDF manual for system administrators and guild hosts. Includes Linux systemd service daemon scripts, sandboxed user security hardening, and rolling 4:00 AM automated backup crons.
-                </p>
-                <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;">
-                    Delivered instantly to your inbox via Lemon Squeezy under a <strong>Pay-What-You-Want</strong> model. Pay whatever you feel it's worth to support Project Atlas, or enter <strong>$0</strong> to receive it completely free.
-                </p>
-                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                    <a href="https://thomsfoolery.lemonsqueezy.com/checkout/buy/c6245a73-73d1-452d-86ba-ba88e13ec5f2?embed=1&discount=0" class="btn btn-primary lemonsqueezy-button" style="font-weight: 700; padding: 0.85rem 1.6rem; background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; border: none; display: inline-flex; align-items: center; gap: 0.6rem; font-size: 1rem; border-radius: 8px; box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-                        <span>Claim Server Guide PDF via Lemon Squeezy (PWYW / Free)</span>
-                    </a>
+                <!-- Call to action box -->
+                <div style="background: rgba(124, 58, 237, 0.08); border: 1px solid rgba(124, 58, 237, 0.3); border-radius: 12px; padding: 1.75rem; text-align: center;">
+                    <h3 style="color: var(--text-main); font-size: 1.3rem; margin: 0 0 0.5rem 0;">Claim the 11-Page PDF Manual (Pay What You Want)</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0 0 1.25rem 0; max-width: 650px; display: inline-block;">
+                        Delivered instantly to your inbox via Lemon Squeezy under a <strong>Pay-What-You-Want ($0 / Free)</strong> model. Support Project Atlas with whatever contribution you feel it's worth, or enter <strong>$0</strong> at checkout to download it 100% free.
+                    </p>
+                    <div>
+                        <a href="https://thomsfoolery.lemonsqueezy.com/checkout/buy/c6245a73-73d1-452d-86ba-ba88e13ec5f2?embed=1&discount=0" class="btn btn-primary lemonsqueezy-button" style="font-weight: 700; padding: 0.9rem 1.8rem; background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; border: none; display: inline-flex; align-items: center; gap: 0.6rem; font-size: 1.05rem; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 18px rgba(124, 58, 237, 0.35); transition: transform 0.2s;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                            <span>Claim PDF via Lemon Squeezy (PWYW / $0) &rarr;</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -3194,6 +2997,8 @@
             const pct = totalUrns > 0 ? Math.round((checkedUrns / totalUrns) * 100) : 0;
             if (barEl) barEl.style.width = pct + '%';
             if (pctEl) pctEl.textContent = `${pct}% Complete`;
+            if (typeof updateSummary === 'function') updateSummary();
+            if (typeof drawProfile === 'function') drawProfile();
         }
 
         const resetUrnsBtn = document.getElementById('reset-urns-btn');
@@ -3293,6 +3098,7 @@
         const STATS_KEY = 'dragonwilds_stats_v1';
         const NAME_KEY = 'dragonwilds_char_name';
         const SHOW_EXP_KEY = 'dragonwilds_show_exp';
+        const SHOW_HP_KEY = 'dragonwilds_show_hp';
 
         // Dragonwilds Experience Table (Level 1 to 99)
         const EXP_TABLE = [
@@ -3311,8 +3117,11 @@
         const statInputs = document.querySelectorAll('.stat-input[data-skill]');
         const charNameInput = document.getElementById('dw-char-name');
         const showExpCheckbox = document.getElementById('dw-show-exp');
+        const showHpCheckbox = document.getElementById('dw-show-hp');
         const totalLevelDisplay = document.getElementById('stat-total-level-display');
         const totalExpDisplay = document.getElementById('stat-total-exp-display');
+        const statTotalHpDisplay = document.getElementById('stat-total-hp-display');
+        const statUrnNote = document.getElementById('stat-urn-hp-note');
         const canvas = document.getElementById('stat-canvas');
         const ctx = canvas ? canvas.getContext('2d') : null;
 
@@ -3367,6 +3176,11 @@
             showExp = localStorage.getItem(SHOW_EXP_KEY) === '1';
         } catch(e) {}
 
+        let showHp = false;
+        try {
+            showHp = localStorage.getItem(SHOW_HP_KEY) === '1';
+        } catch(e) {}
+
         if (charNameInput) {
             charNameInput.value = savedCharName;
             charNameInput.addEventListener('input', () => {
@@ -3382,6 +3196,16 @@
             showExpCheckbox.addEventListener('change', () => {
                 showExp = showExpCheckbox.checked;
                 try { localStorage.setItem(SHOW_EXP_KEY, showExp ? '1' : '0'); } catch(e) {}
+                drawProfile();
+                updateCaptionPreview();
+            });
+        }
+
+        if (showHpCheckbox) {
+            showHpCheckbox.checked = showHp;
+            showHpCheckbox.addEventListener('change', () => {
+                showHp = showHpCheckbox.checked;
+                try { localStorage.setItem(SHOW_HP_KEY, showHp ? '1' : '0'); } catch(e) {}
                 drawProfile();
                 updateCaptionPreview();
             });
@@ -3417,6 +3241,11 @@
             img.src = skill.iconUrl;
         });
 
+        // Preload Health Icon for Sanguine Urns HP preview
+        const healthIconImg = new Image();
+        healthIconImg.onload = () => { drawProfile(); };
+        healthIconImg.src = '/images/website-assets/health-icon.png';
+
         function calculateStats() {
             let totalLvl = 0;
             let totalExp = 0;
@@ -3428,10 +3257,20 @@
             return { totalLvl, totalExp };
         }
 
+        function calculateHp() {
+            const checkedUrns = document.querySelectorAll('.dw-urn-checkbox:checked').length;
+            const totalUrns = document.querySelectorAll('.dw-urn-checkbox').length || 21;
+            const totalHp = 100 + (checkedUrns * 10);
+            return { checkedUrns, totalUrns, totalHp };
+        }
+
         function updateSummary() {
             const { totalLvl, totalExp } = calculateStats();
+            const { checkedUrns, totalUrns, totalHp } = calculateHp();
             if (totalLevelDisplay) totalLevelDisplay.textContent = `${totalLvl} / 1,188`;
             if (totalExpDisplay) totalExpDisplay.textContent = `${totalExp.toLocaleString()} XP`;
+            if (statTotalHpDisplay) statTotalHpDisplay.textContent = `${totalHp} HP`;
+            if (statUrnNote) statUrnNote.textContent = `${checkedUrns}/${totalUrns} Urns • ${totalHp} HP`;
         }
 
         function drawProfile() {
@@ -3599,44 +3438,86 @@
             ctx.lineTo(w - 30, footDivY);
             ctx.stroke();
 
-            const footerBoxH = showExp ? 72 : 54;
+            const { totalLvl, totalExp } = calculateStats();
+            const { checkedUrns, totalUrns, totalHp } = calculateHp();
+
+            const showBoth = showExp && showHp;
+            const footerBoxH = showBoth ? 86 : (showExp || showHp) ? 70 : 54;
+            const boxY = showBoth ? 598 : 602;
+
             ctx.fillStyle = 'rgba(15, 23, 42, 0.6)';
             ctx.beginPath();
-            ctx.roundRect(26, 602, w - 52, footerBoxH, 8);
+            ctx.roundRect(26, boxY, w - 52, footerBoxH, 8);
             ctx.fill();
             ctx.strokeStyle = 'rgba(6, 182, 212, 0.25)';
             ctx.stroke();
 
-            const { totalLvl, totalExp } = calculateStats();
             ctx.textAlign = 'center';
 
-            if (!showExp) {
+            if (!showExp && !showHp) {
                 ctx.font = 'bold 18px "Space Grotesk", sans-serif';
                 ctx.fillStyle = '#f8fafc';
                 ctx.fillText(`TOTAL LEVEL: ${totalLvl} / 1,188`, w / 2, 635);
-            } else {
+            } else if (showExp && !showHp) {
                 ctx.font = 'bold 16px "Space Grotesk", sans-serif';
                 ctx.fillStyle = '#f8fafc';
-                ctx.fillText(`TOTAL LEVEL: ${totalLvl} / 1,188`, w / 2, 628);
+                ctx.fillText(`TOTAL LEVEL: ${totalLvl} / 1,188`, w / 2, 626);
 
                 ctx.font = 'bold 14px "JetBrains Mono", monospace';
                 ctx.fillStyle = '#f59e0b';
-                ctx.fillText(`MIN. TOTAL EXP: ${totalExp.toLocaleString()} XP`, w / 2, 656);
+                ctx.fillText(`MIN. TOTAL EXP: ${totalExp.toLocaleString()} XP`, w / 2, 654);
+            } else if (!showExp && showHp) {
+                ctx.font = 'bold 16px "Space Grotesk", sans-serif';
+                ctx.fillStyle = '#f8fafc';
+                ctx.fillText(`TOTAL LEVEL: ${totalLvl} / 1,188`, w / 2, 626);
+
+                // Total Health with Health Icon
+                const hpText = `TOTAL HEALTH: ${totalHp} HP (${checkedUrns}/${totalUrns} SANGUINE URNS)`;
+                ctx.font = 'bold 13px "JetBrains Mono", monospace';
+                ctx.fillStyle = '#ef4444';
+                const hpTextWidth = ctx.measureText(hpText).width;
+                const hpStartX = (w - hpTextWidth) / 2;
+                if (healthIconImg && healthIconImg.complete && healthIconImg.naturalWidth > 0) {
+                    ctx.drawImage(healthIconImg, hpStartX - 22, 640, 16, 16);
+                }
+                ctx.fillText(hpText, w / 2 + 8, 654);
+            } else {
+                // Both showExp and showHp
+                ctx.font = 'bold 15px "Space Grotesk", sans-serif';
+                ctx.fillStyle = '#f8fafc';
+                ctx.fillText(`TOTAL LEVEL: ${totalLvl} / 1,188`, w / 2, 619);
+
+                // Total Health with Health Icon
+                const hpText = `TOTAL HEALTH: ${totalHp} HP (${checkedUrns}/${totalUrns} SANGUINE URNS)`;
+                ctx.font = 'bold 12px "JetBrains Mono", monospace';
+                ctx.fillStyle = '#ef4444';
+                const hpTextWidth = ctx.measureText(hpText).width;
+                const hpStartX = (w - hpTextWidth) / 2;
+                if (healthIconImg && healthIconImg.complete && healthIconImg.naturalWidth > 0) {
+                    ctx.drawImage(healthIconImg, hpStartX - 20, 632, 15, 15);
+                }
+                ctx.fillText(hpText, w / 2 + 8, 644);
+
+                ctx.font = 'bold 13px "JetBrains Mono", monospace';
+                ctx.fillStyle = '#f59e0b';
+                ctx.fillText(`MIN. TOTAL EXP: ${totalExp.toLocaleString()} XP`, w / 2, 668);
             }
 
             // Call-To-Action Watermark footer (generous margin above border and below stats box)
             ctx.font = 'bold 11px "Space Grotesk", sans-serif';
             ctx.fillStyle = '#38bdf8';
             ctx.textBaseline = 'middle';
-            ctx.fillText('⚡ Create your own at: thomsfoolery.com/tools/dragonwilds-tracker/#stats', w / 2, 696);
+            ctx.fillText('⚡ Create your own at: thomsfoolery.com/tools/dragonwilds-tracker/#stats', w / 2, 712);
         }
 
         function getShareText() {
             const { totalLvl, totalExp } = calculateStats();
+            const { checkedUrns, totalUrns, totalHp } = calculateHp();
             const rawName = (savedCharName || '').trim();
             const titleHeader = rawName ? `⚔️ Runescape: Dragonwilds Character Profile: ${rawName}` : `⚔️ Runescape: Dragonwilds Character Profile`;
             const expPart = showExp ? ` (${totalExp.toLocaleString()} XP)` : '';
-            return `${titleHeader}\n📊 Total Level: ${totalLvl} / 1,188${expPart}\n\nCreate your own profile at: https://thomsfoolery.com/tools/dragonwilds-tracker/#stats`;
+            const hpPart = showHp ? `\n❤️ Total Health: ${totalHp} HP (${checkedUrns}/${totalUrns} Sanguine Urns)` : '';
+            return `${titleHeader}\n📊 Total Level: ${totalLvl} / 1,188${expPart}${hpPart}\n\nCreate your own profile at: https://thomsfoolery.com/tools/dragonwilds-tracker/#stats`;
         }
 
         function updateCaptionPreview() {}

@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    function exportChartLight() {
+    function generateExportCanvas() {
         const metricVal = metricSelect.value;
         const metricText = metricSelect.options[metricSelect.selectedIndex].text;
         const filterVal = divisionSelect.value;
@@ -654,13 +654,55 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Cleanup
         tempChart.destroy();
 
-        // Download PNG
+        return { canvas: exportCanvas, filename: `nhl-${metricVal}-momentum.png` };
+    }
+
+    function exportChartLight() {
+        const { canvas, filename } = generateExportCanvas();
         const link = document.createElement('a');
-        link.download = `nhl-${metricVal}-momentum.png`;
-        link.href = exportCanvas.toDataURL('image/png');
+        link.download = filename;
+        link.href = canvas.toDataURL('image/png');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    }
+
+    async function copyChartImage(btn) {
+        const { canvas, filename } = generateExportCanvas();
+        let copied = false;
+        if (navigator.clipboard && window.ClipboardItem) {
+            try {
+                const item = new ClipboardItem({
+                    'image/png': new Promise(resolve => canvas.toBlob(resolve, 'image/png'))
+                });
+                await navigator.clipboard.write([item]);
+                copied = true;
+            } catch (err) {
+                console.warn('Clipboard image write failed, falling back to download:', err);
+            }
+        }
+        if (!copied) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        if (btn) {
+            const origHtml = btn.innerHTML;
+            btn.innerHTML = copied
+                ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Image Copied!</span>`
+                : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Image Downloaded!</span>`;
+            btn.style.borderColor = '#10b981';
+            btn.style.color = '#10b981';
+            setTimeout(() => {
+                btn.innerHTML = origHtml;
+                btn.style.borderColor = '';
+                btn.style.color = '';
+            }, 2400);
+        }
     }
 
     metricSelect.addEventListener('change', () => {
@@ -708,6 +750,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const copyChartBtn = document.getElementById('copy-chart-btn');
     if (copyChartBtn) {
         copyChartBtn.addEventListener('click', () => copyShareLink(copyChartBtn));
+    }
+
+    const copyImageBtn = document.getElementById('copy-image-btn');
+    if (copyImageBtn) {
+        copyImageBtn.addEventListener('click', () => copyChartImage(copyImageBtn));
     }
 
     const exportChartBtn = document.getElementById('export-chart-btn');

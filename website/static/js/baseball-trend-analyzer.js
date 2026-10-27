@@ -308,6 +308,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             loading.style.display = 'none';
+            populateAwardsAndStandings();
             renderChart();
             syncUrlParams();
 
@@ -496,7 +497,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    function exportChartLight() {
+    function generateExportCanvas() {
         const metricVal = metricSelect ? metricSelect.value : 'runDiff';
         const metricText = metricSelect ? metricSelect.options[metricSelect.selectedIndex].text : 'Run Differential';
         const filterVal = divisionSelect.value;
@@ -697,13 +698,166 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Cleanup
         tempChart.destroy();
 
-        // Download PNG
+        return { canvas: exportCanvas, filename: `mlb-${metricVal}-momentum.png` };
+    }
+
+    function exportChartLight() {
+        const { canvas, filename } = generateExportCanvas();
         const link = document.createElement('a');
-        link.download = `mlb-${metricVal}-momentum.png`;
-        link.href = exportCanvas.toDataURL('image/png');
+        link.download = filename;
+        link.href = canvas.toDataURL('image/png');
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    }
+
+    async function copyChartImage(btn) {
+        const { canvas, filename } = generateExportCanvas();
+        let copied = false;
+        if (navigator.clipboard && window.ClipboardItem) {
+            try {
+                const item = new ClipboardItem({
+                    'image/png': new Promise(resolve => canvas.toBlob(resolve, 'image/png'))
+                });
+                await navigator.clipboard.write([item]);
+                copied = true;
+            } catch (err) {
+                console.warn('Clipboard image write failed, falling back to download:', err);
+            }
+        }
+        if (!copied) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        if (btn) {
+            const origHtml = btn.innerHTML;
+            btn.innerHTML = copied
+                ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Image Copied!</span>`
+                : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Image Downloaded!</span>`;
+            btn.style.borderColor = '#10b981';
+            btn.style.color = '#10b981';
+            setTimeout(() => {
+                btn.innerHTML = origHtml;
+                btn.style.borderColor = '';
+                btn.style.color = '';
+            }, 2400);
+        }
+    }
+
+    function populateAwardsAndStandings() {
+        const container = document.getElementById('awards-container');
+        const top10El = document.getElementById('award-top10');
+        const bottom10El = document.getElementById('award-bottom10');
+        const winStreakEl = document.getElementById('award-winstreak');
+        const lossStreakEl = document.getElementById('award-lossstreak');
+        const bestDiffEl = document.getElementById('award-bestdiff');
+        const worstDiffEl = document.getElementById('award-worstdiff');
+        if (!container || !allTeamsData || allTeamsData.length === 0) return;
+
+        const stats = allTeamsData.map(t => {
+            const gamesCount = t.runDiff ? t.runDiff.length - 1 : 0;
+            const finalDiff = gamesCount > 0 ? t.runDiff[gamesCount].y : 0;
+            const finalWinPctObj = t.winPct ? t.winPct[gamesCount] : null;
+            const finalWinPct = finalWinPctObj && finalWinPctObj.y !== null ? finalWinPctObj.y : 0;
+
+            let maxWStreak = 0;
+            let maxLStreak = 0;
+            if (t.streak) {
+                t.streak.forEach(s => {
+                    if (s.y > maxWStreak) maxWStreak = s.y;
+                    if (s.y < 0 && Math.abs(s.y) > maxLStreak) maxLStreak = Math.abs(s.y);
+                });
+            }
+
+            return {
+                id: t.id,
+                name: t.name,
+                gamesCount,
+                finalDiff,
+                finalWinPct,
+                maxWStreak,
+                maxLStreak
+            };
+        });
+
+        const sortedTop = [...stats].sort((a, b) => b.finalWinPct - a.finalWinPct || b.finalDiff - a.finalDiff);
+        const top10 = sortedTop.slice(0, 10);
+        const bottom10 = [...sortedTop].reverse().slice(0, 10);
+
+        if (top10El) {
+            top10El.innerHTML = top10.map(t => `<li><strong>${t.name}</strong> (${(t.finalWinPct * 100).toFixed(1)}%)</li>`).join('');
+        }
+        if (bottom10El) {
+            bottom10El.innerHTML = bottom10.map(t => `<li><strong>${t.name}</strong> (${(t.finalWinPct * 100).toFixed(1)}%)</li>`).join('');
+        }
+
+        const bestWinStreakTeam = [...stats].sort((a, b) => b.maxWStreak - a.maxWStreak)[0];
+        const worstLossStreakTeam = [...stats].sort((a, b) => b.maxLStreak - a.maxLStreak)[0];
+        const bestDiffTeam = [...stats].sort((a, b) => b.finalDiff - a.finalDiff)[0];
+        const worstDiffTeam = [...stats].sort((a, b) => a.finalDiff - b.finalDiff)[0];
+
+        if (winStreakEl && bestWinStreakTeam) winStreakEl.textContent = `${bestWinStreakTeam.name} (${bestWinStreakTeam.maxWStreak} games)`;
+        if (lossStreakEl && worstLossStreakTeam) lossStreakEl.textContent = `${worstLossStreakTeam.name} (${worstLossStreakTeam.maxLStreak} games)`;
+        if (bestDiffEl && bestDiffTeam) bestDiffEl.textContent = `${bestDiffTeam.name} (${bestDiffTeam.finalDiff > 0 ? '+' : ''}${bestDiffTeam.finalDiff})`;
+        if (worstDiffEl && worstDiffTeam) worstDiffEl.textContent = `${worstDiffTeam.name} (${worstDiffTeam.finalDiff > 0 ? '+' : ''}${worstDiffTeam.finalDiff})`;
+
+        container.style.display = 'block';
+    }
+
+    async function copyAwardsTable(btn) {
+        const top10 = Array.from(document.querySelectorAll('#award-top10 li')).map(li => li.textContent.trim());
+        const bottom10 = Array.from(document.querySelectorAll('#award-bottom10 li')).map(li => li.textContent.trim());
+        const winStreak = document.getElementById('award-winstreak')?.textContent || '';
+        const lossStreak = document.getElementById('award-lossstreak')?.textContent || '';
+        const bestDiff = document.getElementById('award-bestdiff')?.textContent || '';
+        const worstDiff = document.getElementById('award-worstdiff')?.textContent || '';
+
+        let text = "2026 MLB Season Awards & Standings\n\n";
+        text += "Top 10 Teams (Win %):\n" + top10.map((t, idx) => `${idx + 1}. ${t}`).join('\n') + "\n\n";
+        text += "Bottom 10 Teams (Win %):\n" + bottom10.map((t, idx) => `${idx + 1}. ${t}`).join('\n') + "\n\n";
+        text += "Notable Streaks & Metrics:\n";
+        text += `• Longest Win Streak: ${winStreak}\n`;
+        text += `• Longest Losing Streak: ${lossStreak}\n`;
+        text += `• Best Run Differential: ${bestDiff}\n`;
+        text += `• Worst Run Differential: ${worstDiff}\n`;
+
+        let copied = false;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            try {
+                await navigator.clipboard.writeText(text);
+                copied = true;
+            } catch (err) {}
+        }
+        if (!copied) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                copied = true;
+            } catch (e) {}
+            document.body.removeChild(textarea);
+        }
+
+        if (btn) {
+            const origHtml = btn.innerHTML;
+            btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Table Copied!</span>`;
+            btn.style.borderColor = '#10b981';
+            btn.style.color = '#10b981';
+            setTimeout(() => {
+                btn.innerHTML = origHtml;
+                btn.style.borderColor = '';
+                btn.style.color = '';
+            }, 2400);
+        }
     }
 
     if (metricSelect) {
@@ -753,6 +907,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         copyChartBtn.addEventListener('click', () => copyShareLink(copyChartBtn));
     }
 
+    const copyImageBtn = document.getElementById('copy-image-btn');
+    if (copyImageBtn) {
+        copyImageBtn.addEventListener('click', () => copyChartImage(copyImageBtn));
+    }
+
     const exportChartBtn = document.getElementById('export-chart-btn');
     if (exportChartBtn) {
         exportChartBtn.addEventListener('click', () => {
@@ -767,6 +926,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 exportChartBtn.innerHTML = origHtml;
             }, 2200);
         });
+    }
+
+    const copyAwardsBtn = document.getElementById('copy-awards-btn');
+    if (copyAwardsBtn) {
+        copyAwardsBtn.addEventListener('click', () => copyAwardsTable(copyAwardsBtn));
     }
 
     fetchData();

@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawerTeamMeta = document.getElementById('drawer-team-meta');
     const drawerTableBody = document.getElementById('drawer-table-body');
     const drawerCloseBtn = document.getElementById('drawer-close-btn');
+    const drawerCopyTableBtn = document.getElementById('drawer-copy-table-btn');
 
     // localStorage persistence keys
     const STORAGE_KEY_SEASON = 'atlas_postseason_season';
@@ -1312,9 +1313,101 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const btnCopyChart = document.getElementById('btn-copy-chart');
+    if (btnCopyChart) {
+        btnCopyChart.addEventListener('click', async () => {
+            if (!chartInstance) return;
+            try {
+                const dataUrl = chartInstance.getDataURL({
+                    type: 'png',
+                    pixelRatio: 2,
+                    backgroundColor: '#0B1120'
+                });
+
+                let copied = false;
+                if (navigator.clipboard && window.ClipboardItem) {
+                    try {
+                        const res = await fetch(dataUrl);
+                        const blob = await res.blob();
+                        const item = new ClipboardItem({ 'image/png': blob });
+                        await navigator.clipboard.write([item]);
+                        copied = true;
+                    } catch (e) {
+                        console.warn('Clipboard image write failed:', e);
+                    }
+                }
+                if (!copied) {
+                    const link = document.createElement('a');
+                    link.download = `mlb-postseason-${seasonSelect.value || '2026'}.png`;
+                    link.href = dataUrl;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+
+                const origHtml = btnCopyChart.innerHTML;
+                btnCopyChart.innerHTML = copied
+                    ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Image Copied!</span>`
+                    : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Image Downloaded!</span>`;
+                btnCopyChart.style.borderColor = '#10b981';
+                btnCopyChart.style.color = '#10b981';
+                setTimeout(() => {
+                    btnCopyChart.innerHTML = origHtml;
+                    btnCopyChart.style.borderColor = '';
+                    btnCopyChart.style.color = '';
+                }, 2400);
+            } catch (err) {
+                console.error('Error copying chart:', err);
+            }
+        });
+    }
+
     drawerCloseBtn.addEventListener('click', () => {
         telemetryDrawer.style.display = 'none';
     });
+
+    if (drawerCopyTableBtn) {
+        drawerCopyTableBtn.addEventListener('click', async () => {
+            const title = drawerTeamName ? drawerTeamName.textContent : 'Team Telemetry';
+            const meta = drawerTeamMeta ? drawerTeamMeta.textContent : '';
+            const headers = Array.from(telemetryDrawer.querySelectorAll('thead th')).map(th => th.textContent.trim());
+            const rows = Array.from(drawerTableBody.querySelectorAll('tr')).map(tr => {
+                return Array.from(tr.querySelectorAll('td')).map(td => td.textContent.trim()).join('\t');
+            });
+            const tsv = `${title} — ${meta}\n${headers.join('\t')}\n${rows.join('\n')}`;
+
+            let copied = false;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                try {
+                    await navigator.clipboard.writeText(tsv);
+                    copied = true;
+                } catch (err) {}
+            }
+            if (!copied) {
+                const textarea = document.createElement('textarea');
+                textarea.value = tsv;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    copied = true;
+                } catch (e) {}
+                document.body.removeChild(textarea);
+            }
+
+            const origHtml = drawerCopyTableBtn.innerHTML;
+            drawerCopyTableBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span>✓ Table Copied!</span>`;
+            drawerCopyTableBtn.style.borderColor = '#10b981';
+            drawerCopyTableBtn.style.color = '#10b981';
+            setTimeout(() => {
+                drawerCopyTableBtn.innerHTML = origHtml;
+                drawerCopyTableBtn.style.borderColor = '';
+                drawerCopyTableBtn.style.color = '';
+            }, 2400);
+        });
+    }
 
     // Start with 2026 postseason as default
     loadPostseasonData(seasonSelect.value || '2026');

@@ -123,8 +123,12 @@
                     <button id="btn-mode-trajectory" class="view-mode-btn active" style="background: var(--accent-cyan); color: #fff; border: none; padding: 0.5rem 1.2rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;">📈 Trajectory Stream</button>
                     <button id="btn-mode-quadrant" class="view-mode-btn" style="background: transparent; color: var(--text-muted); border: none; padding: 0.5rem 1.2rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;">🎯 Fire & Ice Quadrants</button>
                 </div>
-                <div style="display: flex; gap: 0.5rem;">
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                     <button id="btn-reset-view" style="background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid var(--border-color); padding: 0.45rem 0.9rem; border-radius: 6px; font-size: 0.8rem; font-family: monospace; cursor: pointer;">↺ Reset Zoom</button>
+                    <button id="btn-copy-chart" type="button" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; padding: 0.45rem 0.85rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; transition: all 0.2s;" title="Copy postseason chart graphic to clipboard">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        <span>Copy Chart Image</span>
+                    </button>
                 </div>
             </div>
 
@@ -144,7 +148,13 @@
                         <h3 id="drawer-team-name" style="margin: 0; font-size: 1.3rem; color: var(--text-bright);">Team Telemetry</h3>
                         <div id="drawer-team-meta" style="font-size: 0.85rem; color: var(--text-dim); font-family: monospace; margin-top: 0.25rem;">Detailed Postseason Game Breakdown</div>
                     </div>
-                    <button id="drawer-close-btn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer;">&times;</button>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <button id="drawer-copy-table-btn" type="button" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); padding: 0.45rem 0.85rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s;" title="Copy game breakdown table to clipboard">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span>Copy Table</span>
+                        </button>
+                        <button id="drawer-close-btn" style="background: transparent; border: none; color: var(--text-muted); font-size: 1.4rem; cursor: pointer; line-height: 1;" title="Close drawer">&times;</button>
+                    </div>
                 </div>
                 <div style="overflow-x: auto;">
                     <table style="width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; text-align: left;">

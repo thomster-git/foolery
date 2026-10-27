@@ -149,7 +149,6 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     const workshopNode = { id: 'hub-workshop', label: 'The Workshop', type: 'hub', url: null, summary: 'Software and Code' };
     const forgeNode = { id: 'hub-forge', label: 'The Forge', type: 'hub', url: '/projects/', summary: 'Projects and Builds' };
     const rabbitHoleNode = { id: 'hub-rabbit-hole', label: 'The Rabbit Hole', type: 'hub', url: null, summary: 'Fixations and Deep Dives' };
-    const soapboxNode = { id: 'hub-soapbox', label: 'The Soapbox', type: 'hub', url: null, summary: 'Candid and Unfiltered' };
     const blueprintsNode = { id: 'hub-blueprints', label: 'The Blueprint Room', type: 'hub', url: null, summary: 'Systems and Workflows' };
     const archiveNode = { id: 'hub-archive', label: 'Career File', type: 'hub', url: '/resume/', summary: 'Work History and Skills' };
     
@@ -157,7 +156,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     
     filteredNodes = [
         hubNode, coreValuesNode, passionsNode, lifeExperiencesNode, connectionsNode,
-        libraryNode, workshopNode, forgeNode, rabbitHoleNode, soapboxNode, blueprintsNode, archiveNode,
+        libraryNode, workshopNode, forgeNode, rabbitHoleNode, blueprintsNode, archiveNode,
         ...publishedArticles
     ];
     
@@ -170,7 +169,6 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
         { source: 'hub-global', target: 'hub-workshop' },
         { source: 'hub-global', target: 'hub-forge' },
         { source: 'hub-global', target: 'hub-rabbit-hole' },
-        { source: 'hub-global', target: 'hub-soapbox' },
         { source: 'hub-global', target: 'hub-blueprints' },
         { source: 'hub-global', target: 'hub-archive' }
     ];
@@ -232,34 +230,58 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     focusId = hubNodeId;
   }
 
-  // Assign initial 2D layout positions
-  let nodes = filteredNodes.map((n, i) => {
-    const isFocused = n.id === focusId;
-    const angle = (i / filteredNodes.length) * Math.PI * 2;
-    const radius = isFocused ? 0 : (50 + Math.random() * 30);
+  let nodes = [];
+  let nodeMap = new Map();
+  let links = [];
 
-    let targetUrl = n.url;
-    if (!targetUrl) {
-      targetUrl = libraryTypes.includes(n.type) ? `/library/${n.type}s/${n.id}.html` : `/${n.type}s/${n.id}.html`;
-    }
+  function buildInitialGraph() {
+    nodes = filteredNodes.map((n, i) => {
+      const isFocused = n.id === focusId;
+      const angle = (i / filteredNodes.length) * Math.PI * 2;
+      const radius = isFocused ? 0 : (50 + Math.random() * 30);
 
-    return {
-      ...n,
-      url: targetUrl,
-      x: width / 2 + Math.cos(angle) * radius,
-      y: height / 2 + Math.sin(angle) * radius,
-      vx: isFocused ? 0 : (Math.random() - 0.5) * 0.4,
-      vy: isFocused ? 0 : (Math.random() - 0.5) * 0.4,
-      radius: isFocused ? 20 : n.type === "hub" ? 16 : n.type === "article" ? 10 : n.type === "topic" ? 12 : 8,
-      isFocused
-    };
-  });
+      let targetUrl = n.url;
+      if (!targetUrl) {
+        targetUrl = libraryTypes.includes(n.type) ? `/library/${n.type}s/${n.id}.html` : `/${n.type}s/${n.id}.html`;
+      }
 
-  let nodeMap = new Map(nodes.map(n => [n.id, n]));
-  let links = filteredEdges.map(e => ({
-    source: nodeMap.get(e.source || e.from),
-    target: nodeMap.get(e.target || e.to)
-  })).filter(l => l.source && l.target);
+      return {
+        ...n,
+        url: targetUrl,
+        x: width / 2 + Math.cos(angle) * radius,
+        y: height / 2 + Math.sin(angle) * radius,
+        vx: isFocused ? 0 : (Math.random() - 0.5) * 0.4,
+        vy: isFocused ? 0 : (Math.random() - 0.5) * 0.4,
+        radius: isFocused ? 20 : n.type === "hub" ? 16 : n.type === "article" ? 10 : n.type === "topic" ? 12 : 8,
+        isFocused,
+        expanded: false
+      };
+    });
+
+    nodeMap = new Map(nodes.map(n => [n.id, n]));
+    links = filteredEdges.map(e => ({
+      source: nodeMap.get(e.source || e.from),
+      target: nodeMap.get(e.target || e.to)
+    })).filter(l => l.source && l.target);
+  }
+
+  buildInitialGraph();
+
+  function resetGraphLayout() {
+    searchQuery = "";
+    if (searchInput) searchInput.value = "";
+    hoveredNode = null;
+    draggedNode = null;
+    if (tooltip) tooltip.style.display = "none";
+    buildInitialGraph();
+  }
+
+  const resetBtn = document.getElementById("graph-reset-btn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      resetGraphLayout();
+    });
+  }
 
   let hoveredNode = null;
   let draggedNode = null;
@@ -352,7 +374,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     // Only act on quick click without dragging (distance < 15px and duration < 800ms)
     if (hoveredNode && moveDist < 15 && clickDuration < 800) {
       if (hoveredNode.id === 'hub-global' && focusType === 'global') {
-          window.location.href = '/articles/manifesto.html';
+          openNodeDrawer(hoveredNode);
       } else if (hoveredNode.id === 'hub-global' && focusType === 'full') {
           if (!hoveredNode.expanded) {
               hoveredNode.expanded = true;
@@ -423,12 +445,8 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       } else if (hoveredNode.id === 'hub-core-values' && (focusType === 'global' || focusType === 'full')) {
           if (!hoveredNode.expanded) {
               hoveredNode.expanded = true;
-              const topicIds = ['politics', 'gender-studies', 'worldview', 'philosophy'];
+              const topicIds = ['connection', 'systems-thinking', 'philosophy', 'worldview'];
               const nodesToSpawn = data.nodes.filter(n => topicIds.includes(n.id));
-              // Also add the manifesto
-              nodesToSpawn.push({
-                  id: 'manifesto-node', label: 'The Manifesto', type: 'article', url: '/articles/manifesto.html', radius: 12
-              });
               nodesToSpawn.forEach(t => {
                   if (!nodeMap.has(t.id)) {
                       const angle = Math.random() * Math.PI * 2;
@@ -452,7 +470,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
               });
           } else {
               hoveredNode.expanded = false;
-              const spawnIds = ['politics', 'gender-studies', 'worldview', 'philosophy', 'manifesto-node'];
+              const spawnIds = ['connection', 'systems-thinking', 'philosophy', 'worldview'];
               nodes = nodes.filter(n => !spawnIds.includes(n.id));
               links = links.filter(l => !spawnIds.includes(l.source.id) && !spawnIds.includes(l.target.id));
               spawnIds.forEach(id => nodeMap.delete(id));
@@ -534,14 +552,12 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
           if (!hoveredNode.expanded) {
               hoveredNode.expanded = true;
               const topicIds = ['health-and-fitness', 'personal-growth', 'career', 'parenting'];
-              const topics = data.nodes.filter(n => topicIds.includes(n.id));
-              const shitList = data.nodes.filter(n => n.type === 'shit-list');
-              const nodesToSpawn = [...topics, ...shitList];
+              const nodesToSpawn = data.nodes.filter(n => topicIds.includes(n.id));
               
               nodesToSpawn.forEach(t => {
                   if (!nodeMap.has(t.id)) {
                       const angle = Math.random() * Math.PI * 2;
-                      let targetUrl = t.url || `/topics/${t.id}.html`; // shit-list nodes usually have t.url
+                      let targetUrl = t.url || `/topics/${t.id}.html`;
                       const newNode = {
                           ...t,
                           url: targetUrl,
@@ -601,36 +617,6 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
               nodes = nodes.filter(n => !libIds.includes(n.id));
               links = links.filter(l => !libIds.includes(l.source.id) && !libIds.includes(l.target.id));
               libIds.forEach(id => nodeMap.delete(id));
-          }
-      } else if (hoveredNode.id === 'hub-soapbox' && (focusType === 'global' || focusType === 'full')) {
-          if (!hoveredNode.expanded) {
-              hoveredNode.expanded = true;
-              const soapboxNodes = [
-                  { id: 'soapbox-shit-list', label: 'The Shit List', type: 'project', url: '/shit-list/', radius: 12, summary: 'Companies and people who have earned their place on the list' },
-                  { id: 'soapbox-opinions', label: 'Opinions & Rants', type: 'article', url: '/articles/', radius: 12, summary: 'Hot takes and unfiltered commentary' }
-              ];
-              soapboxNodes.forEach(t => {
-                  if (!nodeMap.has(t.id)) {
-                      const angle = Math.random() * Math.PI * 2;
-                      const newNode = {
-                          ...t,
-                          x: hoveredNode.x + Math.cos(angle) * 120,
-                          y: hoveredNode.y + Math.sin(angle) * 120,
-                          vx: (Math.random() - 0.5) * 0.5,
-                          vy: (Math.random() - 0.5) * 0.5,
-                          isFocused: false
-                      };
-                      nodes.push(newNode);
-                      nodeMap.set(t.id, newNode);
-                      links.push({ source: hoveredNode, target: newNode });
-                  }
-              });
-          } else {
-              hoveredNode.expanded = false;
-              const soapboxIds = ['soapbox-shit-list', 'soapbox-opinions'];
-              nodes = nodes.filter(n => !soapboxIds.includes(n.id));
-              links = links.filter(l => !soapboxIds.includes(l.source.id) && !soapboxIds.includes(l.target.id));
-              soapboxIds.forEach(id => nodeMap.delete(id));
           }
       } else if (hoveredNode.id === 'hub-rabbit-hole' && (focusType === 'global' || focusType === 'full')) {
           if (!hoveredNode.expanded) {
@@ -1331,7 +1317,7 @@ async function openNodeDrawer(node) {
       'hub-life-experiences': { title: 'Life Experiences', desc: 'Growth, history, and things that grind my gears.', url: null, color: 'var(--accent-cyan)' },
       'hub-workshop': { title: 'The Workshop', desc: 'Projects, tools, tech, and experiments.', url: null, color: 'var(--accent-blue)' },
       'hub-connections': { title: 'Social Media', desc: 'Where to find me online across various platforms.', url: null, color: 'var(--accent-red)' },
-      'hub-soapbox': { title: 'The Soapbox', desc: 'Candid opinions, hot takes, and the companies that have earned my frustration.', url: null, color: 'var(--accent-orange)' },
+      'hub-global': { title: 'Thoms Foolery', desc: 'The Digital Garden of Jonathan Thoms. An evolving network of interconnected engineering essays, digital field guides, and interactive tools.', url: '/graph/', color: 'var(--accent-cyan)' },
       'hub-rabbit-hole': { title: 'The Rabbit Hole', desc: 'Deep dives, obsessions, and the topics I can\'t stop thinking about.', url: null, color: 'var(--accent-cyan)' },
       'hub-blueprints': { title: 'The Blueprint Room', desc: 'Systems, workflows, and the way I think about building things.', url: null, color: 'var(--accent-blue)' },
       'hub-archive': { title: 'Career File', desc: 'Work history, skills, and the professional journey so far.', url: '/resume/', color: 'var(--accent-purple)' },

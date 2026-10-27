@@ -95,8 +95,11 @@
       </a>
     </div>
     <div id="graph-canvas" class="graph-canvas" data-focus-type="global" style="height: 500px; width: 100%; background: var(--bg-card); position: relative;">
-      <div style="position: absolute; top: 16px; right: 16px; z-index: 100;">
-        <input type="text" id="graph-search" placeholder="Search the map..." style="padding: 0.65rem 1rem; border-radius: 8px; border: 1px solid var(--accent-cyan); background: rgba(11, 15, 25, 0.85); color: #fff; width: 220px; font-size: 0.9rem; backdrop-filter: blur(6px); box-shadow: 0 4px 12px rgba(0,0,0,0.4); outline: none;">
+      <div style="position: absolute; top: 16px; right: 16px; z-index: 100; display: flex; align-items: center; gap: 8px;">
+        <input type="text" id="graph-search" placeholder="Search the map..." style="padding: 0.65rem 1rem; border-radius: 8px; border: 1px solid var(--accent-cyan); background: rgba(11, 15, 25, 0.85); color: #fff; width: 200px; font-size: 0.9rem; backdrop-filter: blur(6px); box-shadow: 0 4px 12px rgba(0,0,0,0.4); outline: none;">
+        <button id="graph-reset-btn" type="button" title="Reset Graph Layout" style="padding: 0.65rem 0.9rem; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(11, 15, 25, 0.85); color: var(--accent-cyan); font-size: 0.85rem; font-weight: 600; cursor: pointer; backdrop-filter: blur(6px); box-shadow: 0 4px 12px rgba(0,0,0,0.4); display: inline-flex; align-items: center; gap: 0.35rem; transition: all 0.2s;">
+          ↺ Reset
+        </button>
       </div>
     </div>
   </section>
@@ -147,24 +150,19 @@
       <div style="background: var(--bg-card); padding: 1.5rem; border: 1px solid var(--border-color); border-radius: 8px;">
         <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1.25rem;">
           <li style="border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">
-            <div style="font-size: 0.8rem; color: var(--accent-emerald); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Latest Release • v1.4.1 (Oct 26, 2026)</div>
-            <div style="font-weight: 600; color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.3rem;">Four Live Deep Dives, Dedicated Server Manual, Sports Momentum Exporters &amp; Dragonwilds Ch. 8</div>
-            <div style="color: var(--text-muted); font-size: 0.9rem;">Sleep Apnea &amp; Retinal Recovery, Akira Ransomware 14-Day Mine Rebuild, Standardized French Oral Exam, and Decoupled Discord Bot Architecture. Full 26 NFL metrics telemetry, MLB postseason momentum, and Dragonwilds Ascension Shards.</div>
+            <div style="font-size: 0.8rem; color: var(--accent-emerald); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Live Now • v1.4.1</div>
+            <div style="font-weight: 600; color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.3rem;">Four Live Deep Dives &amp; Tools</div>
+            <div style="color: var(--text-muted); font-size: 0.9rem;">Medical advocacy, Akira recovery, French exam prep, autonomous Discord bot, and Dragonwilds progression.</div>
           </li>
           <li style="border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">
-            <div style="font-size: 0.8rem; color: var(--accent-cyan); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Upcoming Drop • v1.5.0 (Nov 2, 2026)</div>
-            <div style="font-weight: 600; color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.3rem;">Ocarina Multi-Measure Audio, Official Server Ops &amp; Fishing Guide</div>
-            <div style="color: var(--text-muted); font-size: 0.9rem;">Interactive Web Audio ocarina engine expansion with multi-measure song arrangements, official Jagex dedicated server hosting operations manual, and advanced fishing &amp; bait crafting compendium.</div>
-          </li>
-          <li style="border-bottom: 1px dashed var(--border-color); padding-bottom: 1rem;">
-            <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Next Phase • Industrial Telemetry &amp; Infrastructure</div>
-            <div style="font-weight: 600; color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.3rem;">Fluorspar Mine SCADA &amp; Proxmox Homelab</div>
-            <div style="color: var(--text-muted); font-size: 0.9rem;">Deep technical post-mortems on industrial telemetry networks, Datto disaster recovery protocols, and isolated homelab virtualization infrastructure.</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Next Phase • Early 2027</div>
+            <div style="font-weight: 600; color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.3rem;">Industrial Telemetry &amp; IT Chronicles</div>
+            <div style="color: var(--text-muted); font-size: 0.9rem;">Deep technical case studies on CFI fluorspar mine telemetry, Akira ransomware recovery, and Proxmox virtualization.</div>
           </li>
           <li>
-            <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Long-Term Vision</div>
-            <div style="font-weight: 600; color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.3rem;">The 3D Digital Garden &amp; Full Knowledge Web</div>
-            <div style="color: var(--text-muted); font-size: 0.9rem;">Connecting the full backlog into an interactive multi-dimensional web of systems thinking, digital garden notes, and open-source starter kits.</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Long-Term</div>
+            <div style="font-weight: 600; color: var(--text-main); font-size: 1.05rem; margin-bottom: 0.3rem;">The Full Knowledge Graph</div>
+            <div style="color: var(--text-muted); font-size: 0.9rem;">Connecting the full backlog into an interactive 3D web of systems thinking, digital garden notes, and open-source starter kits.</div>
           </li>
         </ul>
       </div>

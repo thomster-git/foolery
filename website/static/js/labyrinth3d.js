@@ -197,8 +197,7 @@ function init3D(data) {
         { id: 'lib-creators', label: 'Creators', type: 'library', url: '/library/#creators', summary: 'People who inspire me' },
         { id: 'proj-active', label: 'Active Projects', type: 'project', url: '/projects/#active', summary: 'Current projects in active development' },
         { id: 'proj-drawing', label: 'Drawing Board', type: 'project', url: '/projects/#drawing-board', summary: 'Concepts and ideas in the early stages' },
-        { id: 'proj-completed', label: 'Case Studies', type: 'project', url: '/projects/#case-studies', summary: 'Completed projects and post-mortems' },
-        { id: 'manifesto-node', label: 'The Manifesto', type: 'article', url: '/articles/manifesto.html', summary: 'The foundational document' }
+        { id: 'proj-completed', label: 'Case Studies', type: 'project', url: '/projects/#case-studies', summary: 'Completed projects and post-mortems' }
     ];
     data.nodes.push(...extraNodes);
     
