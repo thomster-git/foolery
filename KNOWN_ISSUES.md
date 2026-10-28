@@ -40,10 +40,10 @@ Currently, only 5 melodies have visual badge artwork mapped in `loadOotSong()` (
 - `oot-bolero`: `/images/website-assets/fire-medal.svg` ✅
 
 **Assets Needed to Create / Source in `website/static/images/website-assets/`:**
-- [ ] **`water-medal.svg`**: Water Medallion (for `oot-serenade` / Serenade of Water)
-- [ ] **`shadow-medal.svg`**: Shadow Medallion (for `oot-nocturne` / Nocturne of Shadow)
-- [ ] **`spirit-medal.svg`**: Spirit Medallion (for `oot-requiem` / Requiem of Spirit)
-- [ ] **`light-medal.svg`**: Light Medallion (for `oot-prelude` / Prelude of Light)
+- [x] **`water-medallion.svg`**: Water Medallion (for `oot-serenade` / Serenade of Water) ✅
+- [x] **`shadow-medallion.svg`**: Shadow Medallion (for `oot-nocturne` / Nocturne of Shadow) ✅
+- [ ] **`spirit-medallion.svg`**: Spirit Medallion (for `oot-requiem` / Requiem of Spirit)
+- [x] **`light-medallion.svg`**: Light Medallion (for `oot-prelude` / Prelude of Light) ✅
 - [ ] **`sun-symbol.svg`**: Sun emblem / dawn icon (for `oot-sun` / Sun's Song)
 - [ ] **`time-symbol.svg`**: Ocarina of Time / Temple of Time icon (for `oot-time` / Song of Time)
 - [ ] **`storms-symbol.svg`**: Windmill / storm cloud icon (for `oot-storms` / Song of Storms)
