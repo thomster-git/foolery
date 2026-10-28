@@ -149,9 +149,8 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
 
   } else if (focusType === 'global' || focusType === 'full') {
     // Homepage Interactive Knowledge Graph & Full Digital Garden Map:
-    // Focus strictly on published content (articles, topics, themes, projects, software/library)
-    // Filter out raw tags and category stubs so the visualization is clean, beautiful, and purposeful
-    const contentNodes = data.nodes.filter(n => n.type !== 'tag' && n.type !== 'library-category');
+    // Focus strictly on published articles, projects, topics, and themes (excluding library items and raw tags)
+    const contentNodes = data.nodes.filter(n => n.type !== 'tag' && n.type !== 'library-category' && !libraryTypes.includes(n.type));
     const contentIds = new Set(contentNodes.map(n => n.id));
 
     // Central Digital Garden Core Anchor
@@ -216,8 +215,8 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     }));
     focusId = hubNodeId;
   } else {
-    // Default fallback: all non-tag published content
-    filteredNodes = data.nodes.filter(n => n.type !== 'tag' && n.type !== 'library-category');
+    // Default fallback: all non-tag, non-library published content
+    filteredNodes = data.nodes.filter(n => n.type !== 'tag' && n.type !== 'library-category' && !libraryTypes.includes(n.type));
     const cIds = new Set(filteredNodes.map(n => n.id));
     filteredEdges = (data.edges || []).filter(e => {
       const from = e.source || e.from;
@@ -241,19 +240,52 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     return `/${n.type}s/${n.id}.html`;
   };
 
-  // Find all real published content children connected to a category
+  // Find all real published content children connected to a category (articles & projects)
   function getCategoryChildren(catId) {
     const connectedEdges = (data.edges || []).filter(e => {
-      const from = e.source || e.from;
-      const to = e.target || e.to;
+      const from = e.source?.id || e.source || e.from?.id || e.from;
+      const to = e.target?.id || e.target || e.to?.id || e.to;
       return (from === catId || to === catId) && e.relation !== 'tags';
     });
     const childIds = new Set(connectedEdges.map(e => {
-      const from = e.source || e.from;
-      const to = e.target || e.to;
+      const from = e.source?.id || e.source || e.from?.id || e.from;
+      const to = e.target?.id || e.target || e.to?.id || e.to;
       return from === catId ? to : from;
     }));
-    return (data.nodes || []).filter(n => childIds.has(n.id) && n.id !== catId && n.type !== 'tag' && n.type !== 'library-category');
+    return (data.nodes || []).filter(n =>
+      childIds.has(n.id) &&
+      n.id !== catId &&
+      (n.type === 'article' || n.type === 'project')
+    );
+  }
+
+  // Synchronize links for all currently visible nodes in the graph
+  function syncLinksForVisibleNodes() {
+    const visibleIds = new Set(nodes.map(n => n.id));
+    const newLinks = [];
+    const seen = new Set();
+
+    filteredEdges.forEach(e => {
+      const fromId = e.source?.id || e.source || e.from?.id || e.from;
+      const toId = e.target?.id || e.target || e.to?.id || e.to;
+      if (visibleIds.has(fromId) && visibleIds.has(toId)) {
+        const sourceNode = nodeMap.get(fromId);
+        const targetNode = nodeMap.get(toId);
+        if (sourceNode && targetNode) {
+          const key = fromId < toId ? `${fromId}-${toId}` : `${toId}-${fromId}`;
+          if (!seen.has(key)) {
+            seen.add(key);
+            newLinks.push({
+              source: sourceNode,
+              target: targetNode,
+              relation: e.relation || 'connected'
+            });
+          }
+        }
+      }
+    });
+
+    links = newLinks;
   }
 
   function toggleCategoryExpansion(catNode, children) {
@@ -261,7 +293,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     const cy = height / 2;
 
     if (!catNode.expanded) {
-      // EXPAND: sprout connected articles/nodes outward from category
+      // EXPAND: sprout connected articles/projects outward from category
       catNode.expanded = true;
       const count = children.length;
       const baseAngle = Math.atan2(catNode.y - cy, catNode.x - cx);
@@ -292,22 +324,10 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
           nodes.push(childNode);
           nodeMap.set(child.id, childNode);
         }
-
-        // Connect link between category and child
-        const linkExists = links.some(l =>
-          (l.source === catNode && l.target === childNode) ||
-          (l.target === catNode && l.source === childNode)
-        );
-        if (!linkExists && childNode) {
-          links.push({
-            source: catNode,
-            target: childNode,
-            relation: 'expansion'
-          });
-        }
       });
 
       catNode.spawnedNodeIds = spawnedIds;
+      syncLinksForVisibleNodes();
 
     } else {
       // COLLAPSE: retract children back into category
@@ -319,18 +339,12 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
         const stillClaimed = nodes.some(n => n !== catNode && n.expanded && (n.spawnedNodeIds || []).includes(id));
         if (!stillClaimed) {
           nodes = nodes.filter(n => n.id !== id);
-          links = links.filter(l => l.source.id !== id && l.target.id !== id);
           nodeMap.delete(id);
-        } else {
-          // Remove only the link from this category
-          links = links.filter(l => !(
-            (l.source === catNode && l.target.id === id) ||
-            (l.target === catNode && l.source.id === id)
-          ));
         }
       });
 
       catNode.spawnedNodeIds = [];
+      syncLinksForVisibleNodes();
     }
   }
 
@@ -416,10 +430,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     }
 
     nodeMap = new Map(nodes.map(n => [n.id, n]));
-    links = filteredEdges.map(e => ({
-      source: nodeMap.get(e.source || e.from),
-      target: nodeMap.get(e.target || e.to)
-    })).filter(l => l.source && l.target);
+    syncLinksForVisibleNodes();
   }
 
   buildInitialGraph();

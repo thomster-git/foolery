@@ -7,6 +7,7 @@ status: active
 summary: Exploring acoustic resonance, 12-hole ocarina pitch control, Web Audio synthesis, and melodic transcription.
 themes:
   - systems-thinking
+  - connection
   - craftsmanship
   - curiosity
 tags:

@@ -13,6 +13,7 @@ tags:
 topics:
   - audhd
   - technology
+  - music
 related:
   - project-atlas
   - building-a-comprehensive-discord-ecosystem

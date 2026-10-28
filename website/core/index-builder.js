@@ -700,7 +700,8 @@ export default class IndexBuilder {
 
         const cardsHtml = (type === "library" || folder === "shit-list" || folder === "projects" || folder === "articles") ? cards : `<div class="card-grid">${cards}</div>`;
 
-        const graphHtml = folder === "shit-list" ? "" : `
+        const isExcludedGraph = folder === "shit-list" || folder === "library" || folder.startsWith("library/") || type === "library";
+        const graphHtml = isExcludedGraph ? "" : `
 <section class="graph-container">
     <h2>Interactive ${title} Knowledge Graph</h2>
     <div id="graph-canvas" class="graph-canvas" data-focus-type="${type}" data-focus-tag=""></div>

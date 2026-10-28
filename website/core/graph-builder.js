@@ -23,8 +23,9 @@ export default class GraphBuilder {
         
         const tags = new Set();
 
-        // Only include non-draft content in the knowledge graph
-        const publishedContent = content.filter(obj => obj.metadata?.status !== "draft");
+        // Exclude library items from the knowledge graph for the time being
+        const libraryTypes = new Set(["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "tv-show"]);
+        const publishedContent = content.filter(obj => obj.metadata?.status !== "draft" && !libraryTypes.has(obj.metadata?.type));
         const publishedIds = new Set(publishedContent.map(obj => obj.metadata.id));
 
         publishedContent.forEach(object => {
@@ -67,16 +68,6 @@ export default class GraphBuilder {
                 });
             }
 
-            // Synthesize Library Category edges
-            const libraryTypes = ["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "music", "tv-show"];
-            if (libraryTypes.includes(object.metadata.type)) {
-                graph.edges.push({
-                    source: `hub-${object.metadata.type}`,
-                    target: object.metadata.id,
-                    relation: 'category'
-                });
-            }
-
         });
         
         // Add tag nodes
@@ -87,32 +78,6 @@ export default class GraphBuilder {
                 type: 'tag',
                 url: `/tags/${tag}.html`,
                 summary: `Content tagged with ${tag}`
-            });
-        });
-
-        // Add Library Category Hub nodes only if they have published items
-        const activeLibraryTypes = new Set(
-            publishedContent
-                .filter(obj => ["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "music", "tv-show"].includes(obj.metadata.type))
-                .map(obj => obj.metadata.type)
-        );
-
-        const getLibraryPlural = (t) => {
-            if (t === "company") return "companies";
-            if (["hardware", "software", "music", "documentation"].includes(t)) return t;
-            return `${t}s`;
-        };
-
-        activeLibraryTypes.forEach(type => {
-            const slug = getLibraryPlural(type);
-            const label = slug.charAt(0).toUpperCase() + slug.slice(1);
-            graph.nodes.push({
-                id: `hub-${type}`,
-                label: label,
-                type: 'library-category',
-                url: `/library/${slug}/`,
-                summary: `Collection of ${label} in the Library`,
-                isLibrary: true
             });
         });
 
