@@ -638,58 +638,64 @@ document.addEventListener('DOMContentLoaded', async () => {
             ctx.strokeRect(30, 20, 1540, 860);
         }
 
-        // Header Title
+        // Header Title (Line 1: clean title, guaranteed never to overlap badges)
         ctx.textAlign = 'left';
         ctx.textBaseline = 'alphabetic';
-        ctx.font = 'bold 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+        ctx.font = 'bold 22px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
         ctx.fillStyle = '#0f172a';
-        ctx.fillText(`MLB Momentum Tracker — ${metricText}`, 60, 60);
+        ctx.fillText(`MLB Momentum Tracker — ${metricText}`, 60, 52);
 
-        // Subtitle
-        ctx.font = '500 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+        // Header Subtitle & Filter/Team Context (Line 2: baseline y=82)
+        ctx.font = '500 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
         ctx.fillStyle = '#64748b';
-        ctx.fillText(`Regular Season Trajectory • ${teamSubtitle}`, 60, 85);
 
-        // Highlight Badge
+        const filterName = filterVal !== 'all' ? divisionSelect.options[divisionSelect.selectedIndex].text : '';
+
         if (team) {
-            let badgeX = 60 + ctx.measureText(`Regular Season Trajectory • ${teamSubtitle}`).width + 25;
+            const prefix = filterName ? `Regular Season Trajectory • ${filterName} • ` : `Regular Season Trajectory • `;
+            ctx.fillText(prefix, 60, 82);
+            let badgeX = 60 + ctx.measureText(prefix).width + 6;
+
             const badgeText = team.name;
             ctx.font = 'bold 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
             const textWidth = ctx.measureText(badgeText).width;
             const badgeW = textWidth + 30;
             const badgeH = 22;
-            const badgeY = 70;
+            const badgeY = 67;
 
             ctx.fillStyle = '#f1f5f9';
             ctx.strokeStyle = team.color;
             ctx.lineWidth = 1.5;
             if (typeof ctx.roundRect === 'function') {
                 ctx.beginPath();
-                ctx.roundRect(badgeX, badgeY - 14, badgeW, badgeH, 11);
+                ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 11);
                 ctx.fill();
                 ctx.stroke();
             } else {
-                ctx.fillRect(badgeX, badgeY - 14, badgeW, badgeH);
-                ctx.strokeRect(badgeX, badgeY - 14, badgeW, badgeH);
+                ctx.fillRect(badgeX, badgeY, badgeW, badgeH);
+                ctx.strokeRect(badgeX, badgeY, badgeW, badgeH);
             }
 
             ctx.fillStyle = team.color;
             ctx.beginPath();
-            ctx.arc(badgeX + 11, badgeY - 3, 5, 0, Math.PI * 2);
+            ctx.arc(badgeX + 11, badgeY + 11, 4.5, 0, Math.PI * 2);
             ctx.fill();
 
             ctx.fillStyle = '#0f172a';
-            ctx.fillText(badgeText, badgeX + 22, badgeY);
+            ctx.fillText(badgeText, badgeX + 21, 82);
+        } else {
+            const subtitleText = filterName ? `Regular Season Trajectory • ${filterName}` : 'Regular Season Trajectory • All 30 MLB Teams';
+            ctx.fillText(subtitleText, 60, 82);
         }
 
         // Watermark branding
         ctx.textAlign = 'right';
         ctx.font = 'bold 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
         ctx.fillStyle = '#0284c7';
-        ctx.fillText('THOMS FOOLERY | PROJECT ATLAS', 1530, 58);
+        ctx.fillText('THOMS FOOLERY | PROJECT ATLAS', 1530, 52);
         ctx.font = '400 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
         ctx.fillStyle = '#94a3b8';
-        ctx.fillText('thomsfoolery.com/tools/baseball-trend-analyzer', 1530, 78);
+        ctx.fillText('thomsfoolery.com/tools/baseball-trend-analyzer', 1530, 76);
         ctx.textAlign = 'left';
 
         // Draw Chart

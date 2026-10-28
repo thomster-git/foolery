@@ -836,10 +836,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             },
             grid: {
-                left: '3%',
+                left: 55,
                 right: '4%',
                 bottom: '12%',
-                top: '10%',
+                top: 48,
                 containLabel: true
             },
             xAxis: {
@@ -861,9 +861,15 @@ document.addEventListener('DOMContentLoaded', () => {
             yAxis: {
                 type: 'value',
                 name: metricLabels[selectedMetric],
+                nameLocation: 'end',
+                nameTextStyle: {
+                    color: '#94A3B8',
+                    fontFamily: 'JetBrains Mono, monospace',
+                    align: 'left',
+                    padding: [0, 0, 8, 0]
+                },
                 min: yBounds.min,
                 max: yBounds.max,
-                nameTextStyle: { color: '#94A3B8', fontFamily: 'JetBrains Mono, monospace' },
                 splitLine: { lineStyle: { color: 'rgba(255,255,255,0.07)' } },
                 axisLabel: { color: '#94A3B8', fontFamily: 'JetBrains Mono, monospace' }
             },
@@ -1017,7 +1023,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             },
             grid: {
-                left: '6%',
+                left: 65,
                 right: '8%',
                 bottom: '10%',
                 top: '12%',
