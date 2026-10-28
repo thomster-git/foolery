@@ -149,8 +149,8 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
 
   } else if (focusType === 'global' || focusType === 'full') {
     // Homepage Interactive Knowledge Graph & Full Digital Garden Map:
-    // Focus strictly on published articles, projects, topics, and themes (excluding library items and raw tags)
-    const contentNodes = data.nodes.filter(n => n.type !== 'tag' && n.type !== 'library-category' && !libraryTypes.includes(n.type));
+    // Focus strictly on published articles, projects, topics, and themes (excluding library items, raw tags, and draft topics like AuDHD)
+    const contentNodes = data.nodes.filter(n => n.type !== 'tag' && n.type !== 'library-category' && !libraryTypes.includes(n.type) && n.id !== 'audhd');
     const contentIds = new Set(contentNodes.map(n => n.id));
 
     // Central Digital Garden Core Anchor
@@ -216,7 +216,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     focusId = hubNodeId;
   } else {
     // Default fallback: all non-tag, non-library published content
-    filteredNodes = data.nodes.filter(n => n.type !== 'tag' && n.type !== 'library-category' && !libraryTypes.includes(n.type));
+    filteredNodes = data.nodes.filter(n => n.type !== 'tag' && n.type !== 'library-category' && !libraryTypes.includes(n.type) && n.id !== 'audhd');
     const cIds = new Set(filteredNodes.map(n => n.id));
     filteredEdges = (data.edges || []).filter(e => {
       const from = e.source || e.from;
@@ -365,7 +365,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     filteredNodes.forEach(n => {
       if (n.id === focusId) {
         centerNode = n;
-      } else if (n.type === 'topic' || n.type === 'theme') {
+      } else if ((n.type === 'topic' || n.type === 'theme') && n.id !== 'audhd') {
         ring1.push(n);
       } else {
         ring2.push(n);

@@ -1,9 +1,9 @@
 ---
-stage: "teaser"
+stage: "full"
 id: audhd
 title: AuDHD
 type: topic
-status: active
+status: draft
 summary: Personal discoveries, reflections, and strategies on navigating Autism and ADHD as an adult — from ADHD medication revealing sensory needs that were always there, to Autistic Burnout, autigender identity, and learning what my nervous system actually needs vs. what I trained it to tolerate.
 themes:
   - identity

@@ -3,7 +3,6 @@ import glob
 
 files = [
     'content/topics/technology.md',
-    'content/topics/audhd.md',
     'content/themes/connection.md',
     'content/themes/systems-thinking.md',
     'content/projects/project-atlas.md'

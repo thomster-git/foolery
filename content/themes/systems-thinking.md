@@ -11,7 +11,7 @@ tags:
   - complexity
 topics:
   - technology
-  - audhd
+  - music
 related:
   - building-a-comprehensive-discord-ecosystem
   - project-atlas

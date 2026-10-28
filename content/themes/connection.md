@@ -11,7 +11,6 @@ tags:
   - knowledge
 
 topics:
-  - audhd
   - technology
   - music
 related:
