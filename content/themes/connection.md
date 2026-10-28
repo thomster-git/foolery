@@ -8,7 +8,7 @@ summary: Finding meaningful relationships between technology, people, personal e
 tags:
   - relationships
   - community
-  - knowledge  - billy-talent
+  - knowledge
 
 topics:
   - audhd

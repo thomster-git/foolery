@@ -95,28 +95,44 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
   const libraryTypes = ["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "music", "tv-show"];
 
   // Filter for local neighborhood graph if focusId, focusType, or focusTag is specified
-  let filteredNodes = data.nodes;
-  let filteredEdges = data.edges || [];
+  let filteredNodes = [];
+  let filteredEdges = [];
 
   if (focusId) {
+    // Focused on a specific content item (e.g. article, topic, theme, project)
     const connectedNodeIds = new Set([focusId]);
-    filteredEdges.forEach(e => {
+    (data.edges || []).forEach(e => {
       const from = e.source || e.from;
       const to = e.target || e.to;
       if (from === focusId) connectedNodeIds.add(to);
       if (to === focusId) connectedNodeIds.add(from);
     });
 
-    filteredNodes = data.nodes.filter(n => connectedNodeIds.has(n.id));
-    filteredEdges = filteredEdges.filter(e => {
+    // Exclude raw tags from article/project graphs when substantive content connections exist
+    const hasSubstantiveConnections = (data.edges || []).some(e => {
       const from = e.source || e.from;
       const to = e.target || e.to;
-      return connectedNodeIds.has(from) && connectedNodeIds.has(to);
+      return (from === focusId || to === focusId) && e.relation !== 'tags';
     });
+
+    filteredNodes = data.nodes.filter(n => {
+      if (!connectedNodeIds.has(n.id)) return false;
+      if (hasSubstantiveConnections && n.type === 'tag') return false;
+      return true;
+    });
+
+    const activeNodeIds = new Set(filteredNodes.map(n => n.id));
+    filteredEdges = (data.edges || []).filter(e => {
+      const from = e.source || e.from;
+      const to = e.target || e.to;
+      return activeNodeIds.has(from) && activeNodeIds.has(to) && (!hasSubstantiveConnections || e.relation !== 'tags');
+    });
+
   } else if (focusTag) {
+    // Focused on a specific tag page (#tag)
     const tagNodeId = `tag-${focusTag}`;
     const connectedNodeIds = new Set([tagNodeId]);
-    filteredEdges.forEach(e => {
+    (data.edges || []).forEach(e => {
       const from = e.source || e.from;
       const to = e.target || e.to;
       if (from === tagNodeId) connectedNodeIds.add(to);
@@ -124,90 +140,65 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     });
 
     filteredNodes = data.nodes.filter(n => connectedNodeIds.has(n.id));
-    filteredEdges = filteredEdges.filter(e => {
+    const activeNodeIds = new Set(filteredNodes.map(n => n.id));
+    filteredEdges = (data.edges || []).filter(e => {
       const from = e.source || e.from;
       const to = e.target || e.to;
-      return connectedNodeIds.has(from) && connectedNodeIds.has(to);
-    });
-  
-  } else if (focusType === 'full') {
-    const hubNode = { id: 'hub-global', label: 'Thoms Foolery', type: 'hub', url: null, summary: 'The Digital Garden' };
-    filteredNodes = [hubNode];
-    filteredEdges = [];
-    focusId = 'hub-global';
-  } else if (focusType === 'global') {
-    const hubNode = { id: 'hub-global', label: 'Thoms Foolery', type: 'hub', url: null, summary: 'The Digital Garden' };
-    
-    // Core Philosophy & Life
-    const coreValuesNode = { id: 'hub-core-values', label: 'Core Values', type: 'hub', url: null, summary: 'Philosophy and Beliefs' };
-    const passionsNode = { id: 'hub-passions', label: 'Passions', type: 'hub', url: null, summary: 'Interests and Hobbies' };
-    const lifeExperiencesNode = { id: 'hub-life-experiences', label: 'Life Experiences', type: 'hub', url: null, summary: 'Growth and History' };
-    const connectionsNode = { id: 'hub-connections', label: 'Social Media', type: 'hub', url: null, summary: 'Find me around the web' };
-    
-    // Thematic Areas
-    const libraryNode = { id: 'hub-library', label: 'The Library', type: 'hub', url: null, summary: 'Knowledge and Books' };
-    const workshopNode = { id: 'hub-workshop', label: 'The Workshop', type: 'hub', url: null, summary: 'Software and Code' };
-    const forgeNode = { id: 'hub-forge', label: 'The Forge', type: 'hub', url: '/projects/', summary: 'Projects and Builds' };
-    const rabbitHoleNode = { id: 'hub-rabbit-hole', label: 'The Rabbit Hole', type: 'hub', url: null, summary: 'Fixations and Deep Dives' };
-    const blueprintsNode = { id: 'hub-blueprints', label: 'The Blueprint Room', type: 'hub', url: null, summary: 'Systems and Workflows' };
-    const archiveNode = { id: 'hub-archive', label: 'Career File', type: 'hub', url: '/resume/', summary: 'Work History and Skills' };
-    
-    const publishedArticles = (data.nodes || []).filter(n => n.type === 'article');
-    
-    filteredNodes = [
-        hubNode, coreValuesNode, passionsNode, lifeExperiencesNode, connectionsNode,
-        libraryNode, workshopNode, forgeNode, rabbitHoleNode, blueprintsNode, archiveNode,
-        ...publishedArticles
-    ];
-    
-    filteredEdges = [
-        { source: 'hub-global', target: 'hub-core-values' },
-        { source: 'hub-global', target: 'hub-passions' },
-        { source: 'hub-global', target: 'hub-life-experiences' },
-        { source: 'hub-global', target: 'hub-connections' },
-        { source: 'hub-global', target: 'hub-library' },
-        { source: 'hub-global', target: 'hub-workshop' },
-        { source: 'hub-global', target: 'hub-forge' },
-        { source: 'hub-global', target: 'hub-rabbit-hole' },
-        { source: 'hub-global', target: 'hub-blueprints' },
-        { source: 'hub-global', target: 'hub-archive' }
-    ];
-
-    publishedArticles.forEach(a => {
-        if (a.id === 'building-a-comprehensive-discord-ecosystem' || a.id === 'my-story-with-the-akira-ransomware-attack') {
-            filteredEdges.push({ source: 'hub-workshop', target: a.id });
-        } else {
-            filteredEdges.push({ source: 'hub-life-experiences', target: a.id });
-        }
+      return activeNodeIds.has(from) && activeNodeIds.has(to);
     });
 
-    if (data.edges) {
-        data.edges.forEach(e => {
-            const from = e.source || e.from;
-            const to = e.target || e.to;
-            const isFromArticle = publishedArticles.some(a => a.id === from);
-            const isToArticle = publishedArticles.some(a => a.id === to);
-            if (isFromArticle && isToArticle) {
-                filteredEdges.push(e);
-            }
+  } else if (focusType === 'global' || focusType === 'full') {
+    // Homepage Interactive Knowledge Graph & Full Digital Garden Map:
+    // Focus strictly on published content (articles, topics, themes, projects, software/library)
+    // Filter out raw tags and category stubs so the visualization is clean, beautiful, and purposeful
+    const contentNodes = data.nodes.filter(n => n.type !== 'tag' && n.type !== 'library-category');
+    const contentIds = new Set(contentNodes.map(n => n.id));
+
+    // Central Digital Garden Core Anchor
+    const rootHub = {
+      id: 'hub-global',
+      label: 'Thoms Foolery',
+      type: 'hub',
+      url: '/graph/',
+      summary: 'The Digital Garden — Explore connected essays, systems, and projects'
+    };
+
+    filteredNodes = [rootHub, ...contentNodes];
+
+    // Connect root hub to main pillars (topics and themes)
+    const pillarEdges = [];
+    contentNodes.forEach(n => {
+      if (n.type === 'topic' || n.type === 'theme') {
+        pillarEdges.push({
+          source: 'hub-global',
+          target: n.id,
+          relation: 'pillar'
         });
-    }
+      }
+    });
 
+    // Real published content edges
+    const realEdges = (data.edges || []).filter(e => {
+      const from = e.source || e.from;
+      const to = e.target || e.to;
+      return contentIds.has(from) && contentIds.has(to) && e.relation !== 'tags';
+    });
+
+    filteredEdges = [...pillarEdges, ...realEdges];
     focusId = 'hub-global';
-  } else if (focusType) {
 
+  } else if (focusType) {
+    // Category index pages (e.g. /articles/, /topics/, /projects/, /library/)
     let baseNodes;
     let hubTitle = "Hub";
     if (focusType === "library") {
-      // For Library, only connect the library-category hubs to the main Library hub
-      baseNodes = data.nodes.filter(n => n.type === 'library-category');
+      baseNodes = data.nodes.filter(n => libraryTypes.includes(n.type));
       hubTitle = "Library";
     } else {
       baseNodes = data.nodes.filter(n => n.type === focusType);
       hubTitle = focusType.charAt(0).toUpperCase() + focusType.slice(1) + (focusType.endsWith('s') ? '' : 's');
     }
     
-    // Create a central Hub Node
     const hubNodeId = `hub-${focusType}`;
     const hubNode = {
       id: hubNodeId,
@@ -217,17 +208,22 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       summary: `Central hub for all ${hubTitle}`
     };
     
-    filteredNodes = [...baseNodes, hubNode];
-    
-    // Create direct edges from hub to all baseNodes
+    filteredNodes = [hubNode, ...baseNodes];
     filteredEdges = baseNodes.map(n => ({
       source: hubNodeId,
       target: n.id,
       relation: 'hub-connection'
     }));
-    
-    // Set focus to the central hub
     focusId = hubNodeId;
+  } else {
+    // Default fallback: all non-tag published content
+    filteredNodes = data.nodes.filter(n => n.type !== 'tag' && n.type !== 'library-category');
+    const cIds = new Set(filteredNodes.map(n => n.id));
+    filteredEdges = (data.edges || []).filter(e => {
+      const from = e.source || e.from;
+      const to = e.target || e.to;
+      return cIds.has(from) && cIds.has(to) && e.relation !== 'tags';
+    });
   }
 
   let nodes = [];
@@ -235,27 +231,86 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
   let links = [];
 
   function buildInitialGraph() {
-    nodes = filteredNodes.map((n, i) => {
-      const isFocused = n.id === focusId;
-      const angle = (i / filteredNodes.length) * Math.PI * 2;
-      const radius = isFocused ? 0 : (50 + Math.random() * 30);
-
-      let targetUrl = n.url;
-      if (!targetUrl) {
-        targetUrl = libraryTypes.includes(n.type) ? `/library/${n.type}s/${n.id}.html` : `/${n.type}s/${n.id}.html`;
+    // Safe URL resolver to prevent 404s
+    const resolveUrl = (n) => {
+      if (n.url) return n.url;
+      if (n.id === 'hub-global') return '/graph/';
+      if (libraryTypes.includes(n.type)) {
+        const libPlural = ["hardware", "software", "music", "documentation"].includes(n.type) ? n.type : `${n.type}s`;
+        return `/library/${libPlural}/${n.id}.html`;
       }
+      return `/${n.type}s/${n.id}.html`;
+    };
 
-      return {
-        ...n,
-        url: targetUrl,
-        x: width / 2 + Math.cos(angle) * radius,
-        y: height / 2 + Math.sin(angle) * radius,
-        vx: isFocused ? 0 : (Math.random() - 0.5) * 0.4,
-        vy: isFocused ? 0 : (Math.random() - 0.5) * 0.4,
-        radius: isFocused ? 20 : n.type === "hub" ? 16 : n.type === "article" ? 10 : n.type === "topic" ? 12 : 8,
-        isFocused,
+    const cx = width / 2;
+    const cy = height / 2;
+    const minDim = Math.min(width, height);
+
+    // Layout hierarchy rings for clean, non-overlapping spacing:
+    // Center: focusId node (e.g. hub-global)
+    // Ring 1: Topics & Themes (Pillars)
+    // Ring 2: Articles, Projects, Software (Content Nodes)
+    const ring1 = [];
+    const ring2 = [];
+    let centerNode = null;
+
+    filteredNodes.forEach(n => {
+      if (n.id === focusId) {
+        centerNode = n;
+      } else if (n.type === 'topic' || n.type === 'theme') {
+        ring1.push(n);
+      } else {
+        ring2.push(n);
+      }
+    });
+
+    const r1 = Math.max(120, minDim * 0.28);
+    const r2 = Math.max(200, minDim * 0.44);
+
+    nodes = [];
+
+    if (centerNode) {
+      nodes.push({
+        ...centerNode,
+        url: resolveUrl(centerNode),
+        x: cx,
+        y: cy,
+        vx: 0,
+        vy: 0,
+        radius: centerNode.id === 'hub-global' ? 22 : 18,
+        isFocused: true,
         expanded: false
-      };
+      });
+    }
+
+    ring1.forEach((n, i) => {
+      const angle = (i / Math.max(1, ring1.length)) * Math.PI * 2 - Math.PI / 2;
+      nodes.push({
+        ...n,
+        url: resolveUrl(n),
+        x: cx + Math.cos(angle) * r1,
+        y: cy + Math.sin(angle) * r1,
+        vx: (Math.random() - 0.5) * 0.15,
+        vy: (Math.random() - 0.5) * 0.15,
+        radius: n.type === 'topic' ? 13 : 12,
+        isFocused: false,
+        expanded: false
+      });
+    });
+
+    ring2.forEach((n, i) => {
+      const angle = (i / Math.max(1, ring2.length)) * Math.PI * 2 + Math.PI / 4;
+      nodes.push({
+        ...n,
+        url: resolveUrl(n),
+        x: cx + Math.cos(angle) * r2,
+        y: cy + Math.sin(angle) * r2,
+        vx: (Math.random() - 0.5) * 0.15,
+        vy: (Math.random() - 0.5) * 0.15,
+        radius: n.type === 'article' ? 14 : 11,
+        isFocused: false,
+        expanded: false
+      });
     });
 
     nodeMap = new Map(nodes.map(n => [n.id, n]));
@@ -352,11 +407,12 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       tooltip.style.left = (mx + 15) + "px";
       tooltip.style.top = (my - 10) + "px";
       const isDrawerType = drawerTypes && drawerTypes.has(hoveredNode.type);
+      const actionText = hoveredNode.type === 'article' ? 'Click to read article →' : (isDrawerType ? 'Click to preview in panel ↗' : 'Click to view page →');
       tooltip.innerHTML = `
-        <div style="font-weight:600; color:#38bdf8;">${escapeHtml(hoveredNode.label || hoveredNode.id)}</div>
-        <div style="font-size:10px; text-transform:uppercase; color:#818cf8; margin-top:2px;">${escapeHtml(hoveredNode.type)}</div>
-        ${hoveredNode.summary ? `<div style="font-size:11px; color:#94a3b8; margin-top:4px;">${escapeHtml(hoveredNode.summary.slice(0, 90))}...</div>` : ''}
-        <div style="font-size:10px; color:#34d399; margin-top:6px;">${isDrawerType ? 'Preview in panel ↗' : 'Click to view page →'}</div>
+        <div style="font-weight:700; color:#38bdf8; font-size:13px;">${escapeHtml(hoveredNode.label || hoveredNode.id)}</div>
+        <div style="font-size:10px; text-transform:uppercase; color:#818cf8; margin-top:2px; font-weight:600;">${escapeHtml(hoveredNode.type)}</div>
+        ${hoveredNode.summary ? `<div style="font-size:11px; color:#94a3b8; margin-top:4px; line-height:1.4;">${escapeHtml(hoveredNode.summary.slice(0, 110))}...</div>` : ''}
+        <div style="font-size:10px; color:#34d399; margin-top:6px; font-weight:600;">${actionText}</div>
       `;
     } else {
       tooltip.style.display = "none";
@@ -373,342 +429,18 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
 
     // Only act on quick click without dragging (distance < 15px and duration < 800ms)
     if (hoveredNode && moveDist < 15 && clickDuration < 800) {
-      if (hoveredNode.id === 'hub-global' && focusType === 'global') {
+      if (hoveredNode.id === 'hub-global') {
+        if (focusType === 'global') {
+          window.location.href = '/graph/';
+        } else {
           openNodeDrawer(hoveredNode);
-      } else if (hoveredNode.id === 'hub-global' && focusType === 'full') {
-          if (!hoveredNode.expanded) {
-              hoveredNode.expanded = true;
-              const branches = [
-                  { id: 'hub-core-values', label: 'Core Values', type: 'hub', url: null, summary: 'Philosophy and Beliefs', radius: 16 },
-                  { id: 'hub-passions', label: 'Passions', type: 'hub', url: null, summary: 'Interests and Hobbies', radius: 16 },
-                  { id: 'hub-life-experiences', label: 'Life Experiences', type: 'hub', url: null, summary: 'Growth and History', radius: 16 },
-                  { id: 'hub-workshop', label: 'The Workshop', type: 'hub', url: null, summary: 'Projects and Tech', radius: 16 },
-                  { id: 'hub-library', label: 'The Library', type: 'hub', url: null, summary: 'Knowledge and Books', radius: 16 },
-                  { id: 'hub-connections', label: 'Social Media', type: 'hub', url: null, summary: 'Find me around the web', radius: 16 }
-              ];
-              branches.forEach(t => {
-                  if (!nodeMap.has(t.id)) {
-                      const angle = Math.random() * Math.PI * 2;
-                      const newNode = {
-                          ...t,
-                          x: hoveredNode.x + Math.cos(angle) * 150,
-                          y: hoveredNode.y + Math.sin(angle) * 150,
-                          vx: (Math.random() - 0.5) * 0.5,
-                          vy: (Math.random() - 0.5) * 0.5,
-                          isFocused: false
-                      };
-                      nodes.push(newNode);
-                      nodeMap.set(t.id, newNode);
-                      links.push({ source: hoveredNode, target: newNode });
-                  }
-              });
-          } else {
-              hoveredNode.expanded = false;
-          const branchIds = ['hub-core-values', 'hub-passions', 'hub-life-experiences', 'hub-workshop', 'hub-library', 'hub-connections'];
-              nodes = nodes.filter(n => !branchIds.includes(n.id));
-              links = links.filter(l => !branchIds.includes(l.source.id) && !branchIds.includes(l.target.id));
-              branchIds.forEach(id => nodeMap.delete(id));
-          }
-      } else if (hoveredNode.id === 'hub-connections' && (focusType === 'global' || focusType === 'full')) {
-          if (!hoveredNode.expanded) {
-              hoveredNode.expanded = true;
-              const socials = [
-                  { id: 'social-twitter', label: 'X / Twitter', type: 'website', url: 'https://x.com/ThomsFoolery', radius: 10 },
-                  { id: 'social-twitch', label: 'Twitch', type: 'website', url: 'https://www.twitch.tv/thomsfooiery', radius: 10 },
-                  { id: 'social-youtube', label: 'YouTube', type: 'website', url: 'https://www.youtube.com/@Thoms.Foolery', radius: 10 },
-                  { id: 'social-linkedin', label: 'LinkedIn', type: 'website', url: 'https://www.linkedin.com/in/jonathan-thoms-a43b65a4/', radius: 10 },
-                  { id: 'social-discord', label: 'Discord', type: 'website', url: 'https://discord.gg/84c7ut6cg6', radius: 10 }
-              ];
-              socials.forEach(t => {
-                  if (!nodeMap.has(t.id)) {
-                      const angle = Math.random() * Math.PI * 2;
-                      const newNode = {
-                          ...t,
-                          x: hoveredNode.x + Math.cos(angle) * 100,
-                          y: hoveredNode.y + Math.sin(angle) * 100,
-                          vx: (Math.random() - 0.5) * 0.5,
-                          vy: (Math.random() - 0.5) * 0.5,
-                          isFocused: false
-                      };
-                      nodes.push(newNode);
-                      nodeMap.set(t.id, newNode);
-                      links.push({ source: hoveredNode, target: newNode });
-                  }
-              });
-          } else {
-              hoveredNode.expanded = false;
-              const socialIds = ['social-twitter', 'social-twitch', 'social-youtube', 'social-linkedin', 'social-discord'];
-              nodes = nodes.filter(n => !socialIds.includes(n.id));
-              links = links.filter(l => !socialIds.includes(l.source.id) && !socialIds.includes(l.target.id));
-              socialIds.forEach(id => nodeMap.delete(id));
-          }
-      } else if (hoveredNode.id === 'hub-core-values' && (focusType === 'global' || focusType === 'full')) {
-          if (!hoveredNode.expanded) {
-              hoveredNode.expanded = true;
-              const topicIds = ['connection', 'systems-thinking', 'philosophy', 'worldview'];
-              const nodesToSpawn = data.nodes.filter(n => topicIds.includes(n.id));
-              nodesToSpawn.forEach(t => {
-                  if (!nodeMap.has(t.id)) {
-                      const angle = Math.random() * Math.PI * 2;
-                      let targetUrl = t.url || `/topics/${t.id}.html`;
-                      const newNode = {
-                          ...t,
-                          url: targetUrl,
-                          x: hoveredNode.x + Math.cos(angle) * 180,
-                          y: hoveredNode.y + Math.sin(angle) * 180,
-                          vx: (Math.random() - 0.5) * 0.66,
-                          vy: (Math.random() - 0.5) * 0.66,
-                          radius: 12,
-                          isFocused: false
-                      };
-                      nodes.push(newNode);
-                      nodeMap.set(t.id, newNode);
-                      links.push({ source: hoveredNode, target: newNode });
-                  } else {
-                      links.push({ source: hoveredNode, target: nodeMap.get(t.id) });
-                  }
-              });
-          } else {
-              hoveredNode.expanded = false;
-              const spawnIds = ['connection', 'systems-thinking', 'philosophy', 'worldview'];
-              nodes = nodes.filter(n => !spawnIds.includes(n.id));
-              links = links.filter(l => !spawnIds.includes(l.source.id) && !spawnIds.includes(l.target.id));
-              spawnIds.forEach(id => nodeMap.delete(id));
-          }
-      } else if (hoveredNode.id === 'hub-workshop' && (focusType === 'global' || focusType === 'full')) {
-          if (!hoveredNode.expanded) {
-              hoveredNode.expanded = true;
-              const projectNodes = [
-                  { id: 'proj-active', label: 'Active Projects', type: 'project', url: '/projects/#active', radius: 10, summary: 'Current projects in active development' },
-                  { id: 'proj-drawing', label: 'Drawing Board', type: 'project', url: '/projects/#drawing-board', radius: 10, summary: 'Concepts and ideas in the early stages' },
-                  { id: 'proj-completed', label: 'Case Studies', type: 'project', url: '/projects/#case-studies', radius: 10, summary: 'Completed projects and post-mortems' }
-              ];
-              const topicIds = ['technology', 'self-hosting', 'home-lab', 'homelab'];
-              const topics = data.nodes.filter(n => topicIds.includes(n.id));
-              const nodesToSpawn = [...projectNodes, ...topics];
-              
-              nodesToSpawn.forEach(t => {
-                  if (!nodeMap.has(t.id)) {
-                      const angle = Math.random() * Math.PI * 2;
-                      let targetUrl = t.url || `/topics/${t.id}.html`;
-                      const newNode = {
-                          ...t,
-                          url: targetUrl,
-                          x: hoveredNode.x + Math.cos(angle) * 160,
-                          y: hoveredNode.y + Math.sin(angle) * 160,
-                          vx: (Math.random() - 0.5) * 0.5,
-                          vy: (Math.random() - 0.5) * 0.5,
-                          radius: t.type === 'topic' ? 12 : 10,
-                          isFocused: false
-                      };
-                      nodes.push(newNode);
-                      nodeMap.set(t.id, newNode);
-                      links.push({ source: hoveredNode, target: newNode });
-                  } else {
-                      links.push({ source: hoveredNode, target: nodeMap.get(t.id) });
-                  }
-              });
-          } else {
-              hoveredNode.expanded = false;
-              const spawnIds = ['proj-active', 'proj-drawing', 'proj-completed', 'technology', 'self-hosting', 'home-lab', 'homelab'];
-              nodes = nodes.filter(n => !spawnIds.includes(n.id));
-              links = links.filter(l => !spawnIds.includes(l.source.id) && !spawnIds.includes(l.target.id));
-              spawnIds.forEach(id => nodeMap.delete(id));
-          }
-      } else if (hoveredNode.id === 'hub-passions' && (focusType === 'global' || focusType === 'full')) {
-          if (!hoveredNode.expanded) {
-              hoveredNode.expanded = true;
-              const topicIds = ['photography', 'audio-engineering', 'baseball', 'gaming', 'collecting', 'drawing', 'music', 'video-editing'];
-              const nodesToSpawn = data.nodes.filter(n => topicIds.includes(n.id));
-              nodesToSpawn.forEach(t => {
-                  if (!nodeMap.has(t.id)) {
-                      const angle = Math.random() * Math.PI * 2;
-                      let targetUrl = t.url || `/topics/${t.id}.html`;
-                      const newNode = {
-                          ...t,
-                          url: targetUrl,
-                          x: hoveredNode.x + Math.cos(angle) * 150,
-                          y: hoveredNode.y + Math.sin(angle) * 150,
-                          vx: (Math.random() - 0.5) * 0.5,
-                          vy: (Math.random() - 0.5) * 0.5,
-                          radius: 12,
-                          isFocused: false
-                      };
-                      nodes.push(newNode);
-                      nodeMap.set(t.id, newNode);
-                      links.push({ source: hoveredNode, target: newNode });
-                  } else {
-                      links.push({ source: hoveredNode, target: nodeMap.get(t.id) });
-                  }
-              });
-          } else {
-              hoveredNode.expanded = false;
-              const topicIds = ['photography', 'audio-engineering', 'baseball', 'gaming', 'collecting', 'drawing', 'music', 'video-editing'];
-              nodes = nodes.filter(n => !topicIds.includes(n.id));
-              links = links.filter(l => !topicIds.includes(l.source.id) && !topicIds.includes(l.target.id));
-              topicIds.forEach(id => nodeMap.delete(id));
-          }
-      } else if (hoveredNode.id === 'hub-life-experiences' && (focusType === 'global' || focusType === 'full')) {
-          if (!hoveredNode.expanded) {
-              hoveredNode.expanded = true;
-              const topicIds = ['health-and-fitness', 'personal-growth', 'career', 'parenting'];
-              const nodesToSpawn = data.nodes.filter(n => topicIds.includes(n.id));
-              
-              nodesToSpawn.forEach(t => {
-                  if (!nodeMap.has(t.id)) {
-                      const angle = Math.random() * Math.PI * 2;
-                      let targetUrl = t.url || `/topics/${t.id}.html`;
-                      const newNode = {
-                          ...t,
-                          url: targetUrl,
-                          x: hoveredNode.x + Math.cos(angle) * 170,
-                          y: hoveredNode.y + Math.sin(angle) * 170,
-                          vx: (Math.random() - 0.5) * 0.6,
-                          vy: (Math.random() - 0.5) * 0.6,
-                          radius: t.type === 'topic' ? 12 : 10,
-                          isFocused: false
-                      };
-                      nodes.push(newNode);
-                      nodeMap.set(t.id, newNode);
-                      links.push({ source: hoveredNode, target: newNode });
-                  } else {
-                      links.push({ source: hoveredNode, target: nodeMap.get(t.id) });
-                  }
-              });
-              // Store what we added so we can collapse it later
-              hoveredNode.spawnedIds = nodesToSpawn.map(n => n.id);
-          } else {
-              hoveredNode.expanded = false;
-              const toRemove = hoveredNode.spawnedIds || [];
-              nodes = nodes.filter(n => !toRemove.includes(n.id));
-              links = links.filter(l => !toRemove.includes(l.source.id) && !toRemove.includes(l.target.id));
-              toRemove.forEach(id => nodeMap.delete(id));
-          }
-      } else if (hoveredNode.id === 'hub-library' && (focusType === 'global' || focusType === 'full')) {
-          if (!hoveredNode.expanded) {
-              hoveredNode.expanded = true;
-              const libraryNodes = [
-                  { id: 'lib-books', label: 'Books', type: 'library', url: '/library/#books', radius: 10, summary: 'Books I have read or am reading' },
-                  { id: 'lib-hardware', label: 'Hardware', type: 'library', url: '/library/#hardware', radius: 10, summary: 'Physical tools and equipment' },
-                  { id: 'lib-software', label: 'Software', type: 'library', url: '/library/#software', radius: 10, summary: 'Apps and programs I use' },
-                  { id: 'lib-tools', label: 'Tools', type: 'library', url: '/library/#tools', radius: 10, summary: 'Digital and physical utilities' },
-                  { id: 'lib-games', label: 'Games', type: 'library', url: '/library/#games', radius: 10, summary: 'Video games and board games' },
-                  { id: 'lib-creators', label: 'Creators', type: 'library', url: '/library/#creators', radius: 10, summary: 'People who inspire me' }
-              ];
-              libraryNodes.forEach(t => {
-                  if (!nodeMap.has(t.id)) {
-                      const angle = Math.random() * Math.PI * 2;
-                      const newNode = {
-                          ...t,
-                          x: hoveredNode.x + Math.cos(angle) * 120,
-                          y: hoveredNode.y + Math.sin(angle) * 120,
-                          vx: (Math.random() - 0.5) * 0.5,
-                          vy: (Math.random() - 0.5) * 0.5,
-                          isFocused: false
-                      };
-                      nodes.push(newNode);
-                      nodeMap.set(t.id, newNode);
-                      links.push({ source: hoveredNode, target: newNode });
-                  }
-              });
-          } else {
-              hoveredNode.expanded = false;
-              const libIds = ['lib-books', 'lib-hardware', 'lib-software', 'lib-tools', 'lib-games', 'lib-creators'];
-              nodes = nodes.filter(n => !libIds.includes(n.id));
-              links = links.filter(l => !libIds.includes(l.source.id) && !libIds.includes(l.target.id));
-              libIds.forEach(id => nodeMap.delete(id));
-          }
-      } else if (hoveredNode.id === 'hub-rabbit-hole' && (focusType === 'global' || focusType === 'full')) {
-          if (!hoveredNode.expanded) {
-              hoveredNode.expanded = true;
-              const topicIds = ['gaming', 'baseball', 'collecting', 'music', 'photography'];
-              const nodesToSpawn = data.nodes.filter(n => topicIds.includes(n.id));
-              nodesToSpawn.forEach(t => {
-                  if (!nodeMap.has(t.id)) {
-                      const angle = Math.random() * Math.PI * 2;
-                      const newNode = {
-                          ...t,
-                          url: t.url || `/topics/${t.id}.html`,
-                          x: hoveredNode.x + Math.cos(angle) * 130,
-                          y: hoveredNode.y + Math.sin(angle) * 130,
-                          vx: (Math.random() - 0.5) * 0.5,
-                          vy: (Math.random() - 0.5) * 0.5,
-                          radius: 12,
-                          isFocused: false
-                      };
-                      nodes.push(newNode);
-                      nodeMap.set(t.id, newNode);
-                      links.push({ source: hoveredNode, target: newNode });
-                  } else {
-                      links.push({ source: hoveredNode, target: nodeMap.get(t.id) });
-                  }
-              });
-              hoveredNode.spawnedIds = nodesToSpawn.map(n => n.id);
-          } else {
-              hoveredNode.expanded = false;
-              const toRemove = hoveredNode.spawnedIds || [];
-              nodes = nodes.filter(n => !toRemove.includes(n.id));
-              links = links.filter(l => !toRemove.includes(l.source.id) && !toRemove.includes(l.target.id));
-              toRemove.forEach(id => nodeMap.delete(id));
-          }
-      } else if (hoveredNode.id === 'hub-resume') {
-          openNodeDrawer(hoveredNode);
+        }
+      } else if (drawerTypes.has(hoveredNode.type)) {
+        openNodeDrawer(hoveredNode);
       } else if (hoveredNode.url) {
-          if (focusType === 'full' && hoveredNode.type !== 'hub') {
-              if (!hoveredNode.expanded) {
-                  hoveredNode.expanded = true;
-                  const connectedEdges = data.edges.filter(e => (e.source || e.from) === hoveredNode.id || (e.target || e.to) === hoveredNode.id);
-                  const neighborIds = connectedEdges.map(e => (e.source || e.from) === hoveredNode.id ? (e.target || e.to) : (e.source || e.from));
-                  
-                  const neighbors = data.nodes.filter(n => neighborIds.includes(n.id));
-                  let addedNeighbors = [];
-                  neighbors.forEach(neighbor => {
-                      if (!nodeMap.has(neighbor.id)) {
-                          const angle = Math.random() * Math.PI * 2;
-                          let targetUrl = neighbor.url;
-                          if (!targetUrl) {
-                              targetUrl = libraryTypes.includes(neighbor.type) ? `/library/${neighbor.type}s/${neighbor.id}.html` : `/${neighbor.type}s/${neighbor.id}.html`;
-                          }
-                          const newNode = {
-                              ...neighbor,
-                              url: targetUrl,
-                              x: hoveredNode.x + Math.cos(angle) * 150,
-                              y: hoveredNode.y + Math.sin(angle) * 150,
-                              vx: (Math.random() - 0.5) * 1.0,
-                              vy: (Math.random() - 0.5) * 1.0,
-                              radius: neighbor.type === "article" ? 10 : neighbor.type === "topic" ? 12 : 8,
-                              isFocused: false
-                          };
-                          nodes.push(newNode);
-                          nodeMap.set(neighbor.id, newNode);
-                          links.push({ source: hoveredNode, target: newNode });
-                          addedNeighbors.push(neighbor.id);
-                      } else {
-                          // Connect existing nodes
-                          const exists = links.some(l => (l.source === hoveredNode && l.target === nodeMap.get(neighbor.id)) || (l.target === hoveredNode && l.source === nodeMap.get(neighbor.id)));
-                          if (!exists) links.push({ source: hoveredNode, target: nodeMap.get(neighbor.id) });
-                      }
-                  });
-                  // Store what we added so we can collapse it later
-                  hoveredNode.spawnedIds = addedNeighbors;
-              } else {
-                  hoveredNode.expanded = false;
-                  const toRemove = hoveredNode.spawnedIds || [];
-                  nodes = nodes.filter(n => !toRemove.includes(n.id));
-                  links = links.filter(l => !toRemove.includes(l.source.id) && !toRemove.includes(l.target.id));
-                  toRemove.forEach(id => nodeMap.delete(id));
-              }
-              // Always open the drawer if it's a drawer type
-              if (drawerTypes.has(hoveredNode.type)) {
-                  openNodeDrawer(hoveredNode);
-              }
-          } else {
-              if (drawerTypes.has(hoveredNode.type)) {
-                  openNodeDrawer(hoveredNode);
-              } else {
-                  window.location.href = hoveredNode.url;
-              }
-          }
+        window.location.href = hoveredNode.url;
+      } else {
+        openNodeDrawer(hoveredNode);
       }
     }
   });
@@ -775,6 +507,31 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     });
     ctx.shadowBlur = 0;
 
+    // Soft node-node repulsion to prevent overlap and maintain label legibility
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i];
+        const b = nodes[j];
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const dist = Math.hypot(dx, dy) || 1;
+        const minDist = a.radius + b.radius + 60;
+        if (dist < minDist) {
+          const force = ((minDist - dist) / minDist) * 0.2;
+          const nx = (dx / dist) * force;
+          const ny = (dy / dist) * force;
+          if (a !== draggedNode && !a.isFocused) {
+            a.x -= nx;
+            a.y -= ny;
+          }
+          if (b !== draggedNode && !b.isFocused) {
+            b.x += nx;
+            b.y += ny;
+          }
+        }
+      }
+    }
+
     // Sort nodes to ensure proper z-index (drawn from bottom to top)
     nodes.sort((a, b) => {
       const getLayer = n => n.id === 'hub-global' ? 3 : (n.type === 'hub' ? 2 : 1);
@@ -785,14 +542,17 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     nodes.forEach(n => {
       if (!n.isFocused && n !== draggedNode) {
         if (n === hoveredNode) {
-            n.vx *= 0.5; // Dampen speed heavily while hovering
-            n.vy *= 0.5;
+          n.vx *= 0.5; // Dampen speed heavily while hovering
+          n.vy *= 0.5;
         }
         n.x += n.vx;
         n.y += n.vy;
 
-        if (n.x < 20 || n.x > width - 20) n.vx *= -1;
-        if (n.y < 20 || n.y > height - 20) n.vy *= -1;
+        const pad = n.radius + 24;
+        if (n.x < pad) { n.x = pad; n.vx = Math.abs(n.vx); }
+        else if (n.x > width - pad) { n.x = width - pad; n.vx = -Math.abs(n.vx); }
+        if (n.y < pad) { n.y = pad; n.vy = Math.abs(n.vy); }
+        else if (n.y > height - pad) { n.y = height - pad; n.vy = -Math.abs(n.vy); }
       }
 
       const isActive = n === activeNode;
@@ -800,9 +560,9 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       
       let isSearchMatch = false;
       if (searchQuery) {
-          isSearchMatch = (n.label && n.label.toLowerCase().includes(searchQuery)) || 
-                          (n.id && n.id.toLowerCase().includes(searchQuery)) || 
-                          (n.type && n.type.toLowerCase().includes(searchQuery));
+        isSearchMatch = (n.label && n.label.toLowerCase().includes(searchQuery)) || 
+                        (n.id && n.id.toLowerCase().includes(searchQuery)) || 
+                        (n.type && n.type.toLowerCase().includes(searchQuery));
       }
       
       const isDimmed = (activeNode && !isActive && !isNeighbor) || (searchQuery && !isSearchMatch);
@@ -818,49 +578,66 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       const isDark = document.documentElement.getAttribute("data-theme") === "dark";
       const textColorPrimary = isDark ? "#ffffff" : "#0f172a";
       const textColorSecondary = isDark ? "#94a3b8" : "#475569";
-      const neighborColor = "#38bdf8";
+
+      // Type-specific color palette for visual hierarchy and clarity
+      const typeColors = {
+        hub: "#38bdf8",       // Bright Sky Blue (central garden hub)
+        article: "#60a5fa",   // Slate Blue (in-depth essays)
+        topic: "#34d399",     // Mint Emerald (pillar curiosity topics)
+        theme: "#f59e0b",     // Warm Amber (philosophical themes)
+        project: "#a855f7",   // Purple (tools & systems)
+        software: "#ec4899",  // Pink (library tools)
+        library: "#ec4899"
+      };
+      const nodeColor = typeColors[n.type] || (n.id === 'hub-global' ? "#38bdf8" : "#818cf8");
 
       if (isActive || isSearchHighlight) {
         ctx.fillStyle = textColorPrimary;
-        ctx.shadowColor = "#38bdf8";
+        ctx.shadowColor = nodeColor;
         ctx.shadowBlur = 22;
       } else if (isNeighbor) {
-        ctx.fillStyle = neighborColor;
-        ctx.shadowColor = "#38bdf8";
+        ctx.fillStyle = nodeColor;
+        ctx.shadowColor = nodeColor;
         ctx.shadowBlur = 14;
       } else if (n.isFocused) {
-        ctx.fillStyle = neighborColor;
+        ctx.fillStyle = "#38bdf8";
         ctx.shadowColor = "#38bdf8";
         ctx.shadowBlur = 18;
       } else {
-        ctx.fillStyle = n.type === "article" ? "#818cf8" : n.type === "topic" ? "#34d399" : "#c084fc";
+        ctx.fillStyle = nodeColor;
         ctx.shadowBlur = 0;
       }
       ctx.fill();
       ctx.shadowBlur = 0;
 
+      // Label text: truncate long titles when not active to prevent canvas clutter
+      let labelText = n.label || n.title || n.id;
+      if (!isActive && labelText.length > 28) {
+        labelText = labelText.slice(0, 26) + "…";
+      }
+
       // Node label with font expansion & contrast boost
       if (isActive) {
         ctx.fillStyle = textColorPrimary;
-        ctx.font = "bold 20px Outfit, system-ui, sans-serif";
+        ctx.font = "bold 16px Outfit, system-ui, sans-serif";
         if (isDark) {
-          ctx.shadowColor = "#38bdf8";
+          ctx.shadowColor = nodeColor;
           ctx.shadowBlur = 10;
         } else {
           ctx.shadowBlur = 0;
         }
       } else if (isNeighbor) {
-        ctx.fillStyle = neighborColor;
-        ctx.font = "bold 16px Outfit, system-ui, sans-serif";
+        ctx.fillStyle = nodeColor;
+        ctx.font = "600 13px Outfit, system-ui, sans-serif";
       } else if (n.isFocused || n.type === 'hub') {
         ctx.fillStyle = textColorPrimary;
-        ctx.font = "bold 16px Outfit, system-ui, sans-serif";
+        ctx.font = "bold 14px Outfit, system-ui, sans-serif";
       } else {
         ctx.fillStyle = textColorSecondary;
-        ctx.font = "14px Outfit, system-ui, sans-serif";
+        ctx.font = "12px Outfit, system-ui, sans-serif";
       }
 
-      ctx.fillText(n.label || n.title || n.id, n.x + r + 8, n.y + 5);
+      ctx.fillText(labelText, n.x + r + 8, n.y + 4);
       ctx.shadowBlur = 0;
       ctx.globalAlpha = 1.0;
     });
@@ -1226,7 +1003,17 @@ async function openNodeDrawer(node) {
   document.getElementById("node-drawer-summary").textContent = node.summary || "";
   document.getElementById("node-drawer-body").innerHTML = `<div class="drawer-loading">Loading content…</div>`;
   document.getElementById("node-drawer-related").innerHTML = "";
-  document.getElementById("node-drawer-full-link").href = node.url;
+
+  const fullLink = document.getElementById("node-drawer-full-link");
+  if (fullLink) {
+    if (node.url) {
+      fullLink.href = node.url;
+      fullLink.style.display = "inline-flex";
+    } else {
+      fullLink.removeAttribute("href");
+      fullLink.style.display = "none";
+    }
+  }
 
   drawer.classList.add("open");
   drawer.setAttribute("aria-hidden", "false");
@@ -1336,6 +1123,11 @@ async function openNodeDrawer(node) {
       return;
   }
 
+  if (!node.url) {
+    document.getElementById("node-drawer-body").innerHTML = `<div class="drawer-content-body"><p style="color: var(--text-muted); line-height: 1.6;">${node.summary ? escapeHtml(node.summary) : "Overview available in the knowledge graph."}</p></div>`;
+    return;
+  }
+
   // Fetch the page content and extract the meaningful body
   try {
     const res = await fetch(node.url);
@@ -1375,7 +1167,7 @@ async function openNodeDrawer(node) {
     }
 
   } catch (err) {
-    document.getElementById("node-drawer-body").innerHTML = `<p class="drawer-empty">Unable to load preview. <a href="${node.url}">Visit page directly</a>.</p>`;
+    document.getElementById("node-drawer-body").innerHTML = `<p class="drawer-empty">Unable to load preview.${node.url ? ` <a href="${node.url}">Visit page directly</a>.` : ''}</p>`;
   }
 }
 

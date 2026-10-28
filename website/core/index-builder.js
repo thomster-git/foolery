@@ -645,13 +645,20 @@ export default class IndexBuilder {
         const headerPartial = await fs.readFile(path.join(this.partials, "header.html"), "utf8");
         const footerPartial = await fs.readFile(path.join(this.partials, "footer.html"), "utf8");
 
+        const graphHtml = `
+<section class="graph-container">
+    <h2>Interactive #${tagSlug} Knowledge Graph</h2>
+    <div id="graph-canvas" class="graph-canvas" data-focus-type="tag" data-focus-tag="${tagSlug}"></div>
+</section>`;
+
         const contentHtml = this.renderer.render(layoutTemplate, {
             title,
             type,
             description,
             count,
             cards,
-            focus_tag: tagSlug
+            focus_tag: tagSlug,
+            graph_html: graphHtml
         });
 
         const fullHtml = this.renderer.render(baseTemplate, {

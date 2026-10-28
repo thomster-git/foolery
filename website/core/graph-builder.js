@@ -97,14 +97,21 @@ export default class GraphBuilder {
                 .map(obj => obj.metadata.type)
         );
 
+        const getLibraryPlural = (t) => {
+            if (t === "company") return "companies";
+            if (["hardware", "software", "music", "documentation"].includes(t)) return t;
+            return `${t}s`;
+        };
+
         activeLibraryTypes.forEach(type => {
-            const plural = type.charAt(0).toUpperCase() + type.slice(1) + "s";
+            const slug = getLibraryPlural(type);
+            const label = slug.charAt(0).toUpperCase() + slug.slice(1);
             graph.nodes.push({
                 id: `hub-${type}`,
-                label: plural,
+                label: label,
                 type: 'library-category',
-                url: `/library/${type}s/`,
-                summary: `Collection of ${plural} in the Library`,
+                url: `/library/${slug}/`,
+                summary: `Collection of ${label} in the Library`,
                 isLibrary: true
             });
         });
