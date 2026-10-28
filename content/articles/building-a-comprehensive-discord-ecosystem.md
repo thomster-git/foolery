@@ -944,6 +944,6 @@ By precisely identifying why Discord communities stagnate — no passive content
   </ul>
   <div class="callout-actions">
     <a href="/sponsors/" class="callout-btn-primary">Book an Advisory Session / Explore Sponsorships →</a>
-    <span class="callout-contact">or reach out directly at <strong>jonathan@thoms.email</strong></span>
+    <span class="callout-contact">or reach out directly at <a href="mailto:social@thomsfoolery.com"><strong>social@thomsfoolery.com</strong></a></span>
   </div>
 </div>
