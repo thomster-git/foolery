@@ -230,26 +230,120 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
   let nodeMap = new Map();
   let links = [];
 
-  function buildInitialGraph() {
-    // Safe URL resolver to prevent 404s
-    const resolveUrl = (n) => {
-      if (n.url) return n.url;
-      if (n.id === 'hub-global') return '/graph/';
-      if (libraryTypes.includes(n.type)) {
-        const libPlural = ["hardware", "software", "music", "documentation"].includes(n.type) ? n.type : `${n.type}s`;
-        return `/library/${libPlural}/${n.id}.html`;
-      }
-      return `/${n.type}s/${n.id}.html`;
-    };
+  // Safe URL resolver to prevent 404s
+  const resolveUrl = (n) => {
+    if (n.url) return n.url;
+    if (n.id === 'hub-global') return '/graph/';
+    if (libraryTypes.includes(n.type)) {
+      const libPlural = ["hardware", "software", "music", "documentation"].includes(n.type) ? n.type : `${n.type}s`;
+      return `/library/${libPlural}/${n.id}.html`;
+    }
+    return `/${n.type}s/${n.id}.html`;
+  };
 
+  // Find all real published content children connected to a category
+  function getCategoryChildren(catId) {
+    const connectedEdges = (data.edges || []).filter(e => {
+      const from = e.source || e.from;
+      const to = e.target || e.to;
+      return (from === catId || to === catId) && e.relation !== 'tags';
+    });
+    const childIds = new Set(connectedEdges.map(e => {
+      const from = e.source || e.from;
+      const to = e.target || e.to;
+      return from === catId ? to : from;
+    }));
+    return (data.nodes || []).filter(n => childIds.has(n.id) && n.id !== catId && n.type !== 'tag' && n.type !== 'library-category');
+  }
+
+  function toggleCategoryExpansion(catNode, children) {
+    const cx = width / 2;
+    const cy = height / 2;
+
+    if (!catNode.expanded) {
+      // EXPAND: sprout connected articles/nodes outward from category
+      catNode.expanded = true;
+      const count = children.length;
+      const baseAngle = Math.atan2(catNode.y - cy, catNode.x - cx);
+      const spread = Math.min(Math.PI * 0.85, Math.PI * 0.22 * Math.max(2, count));
+      const startAngle = count > 1 ? baseAngle - spread / 2 : baseAngle;
+      const angleStep = count > 1 ? spread / (count - 1) : 0;
+
+      const spawnedIds = [];
+
+      children.forEach((child, i) => {
+        spawnedIds.push(child.id);
+        let childNode = nodeMap.get(child.id);
+
+        if (!childNode) {
+          const childAngle = count === 1 ? baseAngle : startAngle + i * angleStep;
+          const dist = 115 + (i % 2) * 22; // Staggered radial distance for clean label positioning
+          childNode = {
+            ...child,
+            url: resolveUrl(child),
+            x: catNode.x + Math.cos(childAngle) * dist,
+            y: catNode.y + Math.sin(childAngle) * dist,
+            vx: Math.cos(childAngle) * 0.12,
+            vy: Math.sin(childAngle) * 0.12,
+            radius: child.type === 'article' ? 13 : 11,
+            isFocused: false,
+            expanded: false
+          };
+          nodes.push(childNode);
+          nodeMap.set(child.id, childNode);
+        }
+
+        // Connect link between category and child
+        const linkExists = links.some(l =>
+          (l.source === catNode && l.target === childNode) ||
+          (l.target === catNode && l.source === childNode)
+        );
+        if (!linkExists && childNode) {
+          links.push({
+            source: catNode,
+            target: childNode,
+            relation: 'expansion'
+          });
+        }
+      });
+
+      catNode.spawnedNodeIds = spawnedIds;
+
+    } else {
+      // COLLAPSE: retract children back into category
+      catNode.expanded = false;
+      const toRemove = catNode.spawnedNodeIds || [];
+
+      toRemove.forEach(id => {
+        // Only remove if no OTHER expanded category is still claiming this node
+        const stillClaimed = nodes.some(n => n !== catNode && n.expanded && (n.spawnedNodeIds || []).includes(id));
+        if (!stillClaimed) {
+          nodes = nodes.filter(n => n.id !== id);
+          links = links.filter(l => l.source.id !== id && l.target.id !== id);
+          nodeMap.delete(id);
+        } else {
+          // Remove only the link from this category
+          links = links.filter(l => !(
+            (l.source === catNode && l.target.id === id) ||
+            (l.target === catNode && l.source.id === id)
+          ));
+        }
+      });
+
+      catNode.spawnedNodeIds = [];
+    }
+  }
+
+  function buildInitialGraph() {
     const cx = width / 2;
     const cy = height / 2;
     const minDim = Math.min(width, height);
+    const isGlobalOrFull = focusType === 'global' || focusType === 'full';
 
     // Layout hierarchy rings for clean, non-overlapping spacing:
     // Center: focusId node (e.g. hub-global)
-    // Ring 1: Topics & Themes (Pillars)
-    // Ring 2: Articles, Projects, Software (Content Nodes)
+    // Ring 1: Category bubbles (Topics & Themes)
+    // Ring 2: Content Nodes (Articles, Projects, Software) - hidden by default if isGlobalOrFull
     const ring1 = [];
     const ring2 = [];
     let centerNode = null;
@@ -264,7 +358,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       }
     });
 
-    const r1 = Math.max(120, minDim * 0.28);
+    const r1 = Math.max(130, minDim * 0.32);
     const r2 = Math.max(200, minDim * 0.44);
 
     nodes = [];
@@ -285,33 +379,41 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
 
     ring1.forEach((n, i) => {
       const angle = (i / Math.max(1, ring1.length)) * Math.PI * 2 - Math.PI / 2;
+      const children = getCategoryChildren(n.id);
+      const articleCount = children.filter(c => c.type === 'article').length;
       nodes.push({
         ...n,
         url: resolveUrl(n),
         x: cx + Math.cos(angle) * r1,
         y: cy + Math.sin(angle) * r1,
-        vx: (Math.random() - 0.5) * 0.15,
-        vy: (Math.random() - 0.5) * 0.15,
-        radius: n.type === 'topic' ? 13 : 12,
+        vx: (Math.random() - 0.5) * 0.12,
+        vy: (Math.random() - 0.5) * 0.12,
+        radius: n.type === 'topic' ? 14 : 13,
         isFocused: false,
-        expanded: false
+        expanded: false,
+        displayCount: articleCount || children.length,
+        spawnedNodeIds: []
       });
     });
 
-    ring2.forEach((n, i) => {
-      const angle = (i / Math.max(1, ring2.length)) * Math.PI * 2 + Math.PI / 4;
-      nodes.push({
-        ...n,
-        url: resolveUrl(n),
-        x: cx + Math.cos(angle) * r2,
-        y: cy + Math.sin(angle) * r2,
-        vx: (Math.random() - 0.5) * 0.15,
-        vy: (Math.random() - 0.5) * 0.15,
-        radius: n.type === 'article' ? 14 : 11,
-        isFocused: false,
-        expanded: false
+    // In global/full graph, articles are hidden within the category bubbles by default.
+    // In specific single-category views, ring2 nodes are shown.
+    if (!isGlobalOrFull) {
+      ring2.forEach((n, i) => {
+        const angle = (i / Math.max(1, ring2.length)) * Math.PI * 2 + Math.PI / 4;
+        nodes.push({
+          ...n,
+          url: resolveUrl(n),
+          x: cx + Math.cos(angle) * r2,
+          y: cy + Math.sin(angle) * r2,
+          vx: (Math.random() - 0.5) * 0.15,
+          vy: (Math.random() - 0.5) * 0.15,
+          radius: n.type === 'article' ? 14 : 11,
+          isFocused: false,
+          expanded: false
+        });
       });
-    });
+    }
 
     nodeMap = new Map(nodes.map(n => [n.id, n]));
     links = filteredEdges.map(e => ({
@@ -407,12 +509,29 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       tooltip.style.left = (mx + 15) + "px";
       tooltip.style.top = (my - 10) + "px";
       const isDrawerType = drawerTypes && drawerTypes.has(hoveredNode.type);
-      const actionText = hoveredNode.type === 'article' ? 'Click to read article →' : (isDrawerType ? 'Click to preview in panel ↗' : 'Click to view page →');
+      const isCategory = hoveredNode.type === 'topic' || hoveredNode.type === 'theme';
+      const children = isCategory ? getCategoryChildren(hoveredNode.id) : [];
+      const articleCount = children.filter(c => c.type === 'article').length;
+
+      let actionText = '';
+      if (hoveredNode.type === 'article') {
+        actionText = 'Click to read article →';
+      } else if (isCategory && children.length > 0) {
+        actionText = hoveredNode.expanded
+          ? 'Click to collapse articles ▲'
+          : `Click to expand ${articleCount || children.length} article${(articleCount || children.length) > 1 ? 's' : ''} ▼`;
+      } else if (isDrawerType) {
+        actionText = 'Click to preview in panel ↗';
+      } else {
+        actionText = 'Click to view page →';
+      }
+
       tooltip.innerHTML = `
         <div style="font-weight:700; color:#38bdf8; font-size:13px;">${escapeHtml(hoveredNode.label || hoveredNode.id)}</div>
         <div style="font-size:10px; text-transform:uppercase; color:#818cf8; margin-top:2px; font-weight:600;">${escapeHtml(hoveredNode.type)}</div>
         ${hoveredNode.summary ? `<div style="font-size:11px; color:#94a3b8; margin-top:4px; line-height:1.4;">${escapeHtml(hoveredNode.summary.slice(0, 110))}...</div>` : ''}
         <div style="font-size:10px; color:#34d399; margin-top:6px; font-weight:600;">${actionText}</div>
+        ${isCategory && children.length > 0 ? '<div style="font-size:9px; color:#64748b; margin-top:2px;">Double-click to view category info</div>' : ''}
       `;
     } else {
       tooltip.style.display = "none";
@@ -435,9 +554,28 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
         } else {
           openNodeDrawer(hoveredNode);
         }
+      } else if (hoveredNode.type === 'topic' || hoveredNode.type === 'theme') {
+        const children = getCategoryChildren(hoveredNode.id);
+        if (children.length > 0) {
+          toggleCategoryExpansion(hoveredNode, children);
+        } else {
+          openNodeDrawer(hoveredNode);
+        }
+      } else if (hoveredNode.type === 'article' && hoveredNode.url) {
+        window.location.href = hoveredNode.url;
       } else if (drawerTypes.has(hoveredNode.type)) {
         openNodeDrawer(hoveredNode);
       } else if (hoveredNode.url) {
+        window.location.href = hoveredNode.url;
+      } else {
+        openNodeDrawer(hoveredNode);
+      }
+    }
+  });
+
+  canvas.addEventListener("dblclick", () => {
+    if (hoveredNode) {
+      if (hoveredNode.type === 'article' && hoveredNode.url) {
         window.location.href = hoveredNode.url;
       } else {
         openNodeDrawer(hoveredNode);
@@ -610,10 +748,31 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       ctx.fill();
       ctx.shadowBlur = 0;
 
+      // Category expansion indicator ring
+      if (n.expanded) {
+        ctx.strokeStyle = "#38bdf8";
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, r + 5, 0, Math.PI * 2);
+        ctx.stroke();
+      } else if (n.displayCount > 0) {
+        // Subtle dotted indicator ring for categories with hidden articles
+        ctx.strokeStyle = "rgba(56, 189, 248, 0.45)";
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([3, 4]);
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, r + 4, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
       // Label text: truncate long titles when not active to prevent canvas clutter
       let labelText = n.label || n.title || n.id;
       if (!isActive && labelText.length > 28) {
         labelText = labelText.slice(0, 26) + "…";
+      }
+      if (!n.expanded && n.displayCount > 0) {
+        labelText += ` (${n.displayCount})`;
       }
 
       // Node label with font expansion & contrast boost
