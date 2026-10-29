@@ -38,17 +38,17 @@
 
             <!-- Quick Preset Controls -->
             <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
+                <button class="preset-btn active" data-preset="season-2026" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; font-weight: 700; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
+                    🌱 2026 Season Grid (Round 1)
+                </button>
                 <button class="preset-btn" data-preset="las-vegas" style="background: rgba(6, 182, 212, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-weight: 700; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
-                    ⚡ Clinch Window (Round 22)
+                    ⚡ Clinch Window Demo (Round 22)
                 </button>
                 <button class="preset-btn" data-preset="mid-season" style="background: rgba(168, 85, 247, 0.15); border: 1px solid var(--accent-purple); color: var(--accent-purple); font-weight: 700; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
-                    🏁 Mid-Season (Round 16)
-                </button>
-                <button class="preset-btn" data-preset="early-season" style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 600; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
-                    🌱 Early Season (Round 4)
+                    🏁 Mid-Season Demo (Round 16)
                 </button>
                 <button id="btn-reset-data" style="background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; font-weight: 600; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
-                    🔄 Reset
+                    🔄 Reset (2026 Start)
                 </button>
             </div>
         </div>
@@ -326,8 +326,48 @@
 
     // 2026 Grid Data Presets
     const PRESETS = {
+        'season-2026': {
+            round: 1, // Round 1 of 24 (Australian GP) - Official 2026 Grid
+            drivers: [
+                { id: 'ver', name: 'Max Verstappen', code: 'VER', team: 'Red Bull Racing', points: 0, wins: 0 },
+                { id: 'law', name: 'Liam Lawson', code: 'LAW', team: 'Red Bull Racing', points: 0, wins: 0 },
+                { id: 'nor', name: 'Lando Norris', code: 'NOR', team: 'McLaren', points: 0, wins: 0 },
+                { id: 'pia', name: 'Oscar Piastri', code: 'PIA', team: 'McLaren', points: 0, wins: 0 },
+                { id: 'lec', name: 'Charles Leclerc', code: 'LEC', team: 'Ferrari', points: 0, wins: 0 },
+                { id: 'ham', name: 'Lewis Hamilton', code: 'HAM', team: 'Ferrari', points: 0, wins: 0 },
+                { id: 'rus', name: 'George Russell', code: 'RUS', team: 'Mercedes', points: 0, wins: 0 },
+                { id: 'ant', name: 'Kimi Antonelli', code: 'ANT', team: 'Mercedes', points: 0, wins: 0 },
+                { id: 'alo', name: 'Fernando Alonso', code: 'ALO', team: 'Aston Martin', points: 0, wins: 0 },
+                { id: 'str', name: 'Lance Stroll', code: 'STR', team: 'Aston Martin', points: 0, wins: 0 },
+                { id: 'gas', name: 'Pierre Gasly', code: 'GAS', team: 'Alpine', points: 0, wins: 0 },
+                { id: 'doo', name: 'Jack Doohan', code: 'DOO', team: 'Alpine', points: 0, wins: 0 },
+                { id: 'oco', name: 'Esteban Ocon', code: 'OCO', team: 'Haas F1 Team', points: 0, wins: 0 },
+                { id: 'bea', name: 'Oliver Bearman', code: 'BEA', team: 'Haas F1 Team', points: 0, wins: 0 },
+                { id: 'tsu', name: 'Yuki Tsunoda', code: 'TSU', team: 'Racing Bulls', points: 0, wins: 0 },
+                { id: 'had', name: 'Isack Hadjar', code: 'HAD', team: 'Racing Bulls', points: 0, wins: 0 },
+                { id: 'alb', name: 'Alexander Albon', code: 'ALB', team: 'Williams', points: 0, wins: 0 },
+                { id: 'sai', name: 'Carlos Sainz', code: 'SAI', team: 'Williams', points: 0, wins: 0 },
+                { id: 'hul', name: 'Nico Hülkenberg', code: 'HUL', team: 'Audi', points: 0, wins: 0 },
+                { id: 'bor', name: 'Gabriel Bortoleto', code: 'BOR', team: 'Audi', points: 0, wins: 0 },
+                { id: 'per', name: 'Sergio Pérez', code: 'PER', team: 'Cadillac F1 Team', points: 0, wins: 0 },
+                { id: 'bot', name: 'Valtteri Bottas', code: 'BOT', team: 'Cadillac F1 Team', points: 0, wins: 0 }
+            ],
+            constructors: [
+                { id: 'mclaren', name: 'McLaren', points: 0, wins: 0 },
+                { id: 'ferrari', name: 'Ferrari', points: 0, wins: 0 },
+                { id: 'redbull', name: 'Red Bull Racing', points: 0, wins: 0 },
+                { id: 'mercedes', name: 'Mercedes', points: 0, wins: 0 },
+                { id: 'aston', name: 'Aston Martin', points: 0, wins: 0 },
+                { id: 'alpine', name: 'Alpine', points: 0, wins: 0 },
+                { id: 'haas', name: 'Haas F1 Team', points: 0, wins: 0 },
+                { id: 'racingbulls', name: 'Racing Bulls', points: 0, wins: 0 },
+                { id: 'williams', name: 'Williams', points: 0, wins: 0 },
+                { id: 'audi', name: 'Audi', points: 0, wins: 0 },
+                { id: 'cadillac', name: 'Cadillac F1 Team', points: 0, wins: 0 }
+            ]
+        },
         'las-vegas': {
-            round: 22, // Round 22 of 24 (Las Vegas) - Clinch Window
+            round: 22, // Round 22 of 24 (Las Vegas) - Clinch Window Demo
             drivers: [
                 { id: 'ver', name: 'Max Verstappen', code: 'VER', team: 'Red Bull Racing', points: 393, wins: 8 },
                 { id: 'nor', name: 'Lando Norris', code: 'NOR', team: 'McLaren', points: 331, wins: 3 },
@@ -448,9 +488,9 @@
         }
     };
 
-    let currentRound = 22;
-    let drivers = JSON.parse(JSON.stringify(PRESETS['las-vegas'].drivers));
-    let constructors = JSON.parse(JSON.stringify(PRESETS['las-vegas'].constructors));
+    let currentRound = 1;
+    let drivers = JSON.parse(JSON.stringify(PRESETS['season-2026'].drivers));
+    let constructors = JSON.parse(JSON.stringify(PRESETS['season-2026'].constructors));
 
     // ----------------------------------------------------
     // Points Remaining Engine
@@ -930,7 +970,10 @@
     });
 
     document.getElementById('btn-reset-data').addEventListener('click', () => {
-        const data = PRESETS['las-vegas'];
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+        const seasonBtn = document.querySelector('[data-preset="season-2026"]');
+        if (seasonBtn) seasonBtn.classList.add('active');
+        const data = PRESETS['season-2026'];
         currentRound = data.round;
         roundSelect.value = currentRound;
         drivers = JSON.parse(JSON.stringify(data.drivers));

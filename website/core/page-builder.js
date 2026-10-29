@@ -70,6 +70,7 @@ export default class PageBuilder {
         await this.buildF1ChampionshipCalculator();
         await this.buildStreamSchedule();
         await this.buildSponsorsPage();
+        await this.buildArticleRedirects();
         
         await this.buildWishlistPage(content.filter(x => x.metadata.type === "wishlist"));
 
@@ -487,6 +488,32 @@ export default class PageBuilder {
 
         await fs.writeFile(path.join(folder, "index.html"), html);
         await fs.writeFile(path.join(this.output, "tools", "stream-schedule.html"), html);
+    }
+
+    // Consolidated Article Redirects
+    async buildArticleRedirects() {
+        const redirects = [
+            {
+                slug: "my-story-with-everything-is-connected",
+                target: "/articles/manifesto.html",
+                title: "Everything Is Connected: The Project Atlas Manifesto"
+            }
+        ];
+
+        const articlesDir = path.join(this.output, "articles");
+        await fs.mkdir(articlesDir, { recursive: true });
+
+        for (const item of redirects) {
+            const redirectHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>${item.title} - Thoms Foolery</title><link rel="canonical" href="https://thomsfoolery.com${item.target}"><meta http-equiv="refresh" content="0; url=${item.target}"><script>window.location.replace('${item.target}');</script></head><body><p>Redirecting to <a href="${item.target}">${item.title}</a>...</p></body></html>`;
+            
+            // Output to /articles/[slug].html
+            await fs.writeFile(path.join(articlesDir, `${item.slug}.html`), redirectHtml);
+            
+            // Output to /articles/[slug]/index.html
+            const subFolder = path.join(articlesDir, item.slug);
+            await fs.mkdir(subFolder, { recursive: true });
+            await fs.writeFile(path.join(subFolder, "index.html"), redirectHtml);
+        }
     }
 
     // NHL Trend Analyzer

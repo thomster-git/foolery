@@ -38,16 +38,11 @@
 
             <!-- Header Action Toolbar -->
             <div style="display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center;">
-                <!-- Timezone Selector -->
-                <div style="display: flex; align-items: center; gap: 0.45rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.4rem 0.8rem; border-radius: var(--radius-sm);">
-                    <label for="tz-select" style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">🕒 Timezone:</label>
-                    <select id="tz-select" style="background: transparent; border: none; color: var(--accent-cyan); font-weight: 800; font-size: 0.88rem; outline: none; cursor: pointer;">
-                        <option value="LOCAL">My Local Time (Auto)</option>
-                        <option value="America/St_Johns" selected>Newfoundland (NL Time)</option>
-                        <option value="America/New_York">US / Eastern (ET)</option>
-                        <option value="America/Los_Angeles">US / Pacific (PT)</option>
-                        <option value="UTC">UTC (Universal)</option>
-                    </select>
+                <!-- Local Timezone Badge (Read-Only) -->
+                <div style="display: flex; align-items: center; gap: 0.45rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.45rem 0.85rem; border-radius: var(--radius-sm);">
+                    <span style="font-size: 0.9rem;">🌐</span>
+                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Your Local Time:</span>
+                    <span id="detected-tz-name" style="color: var(--accent-cyan); font-weight: 800; font-size: 0.88rem;">--</span>
                 </div>
 
                 <!-- Export .ics iCal Button -->
@@ -60,9 +55,14 @@
                     <span>💬</span> Share Snippet
                 </button>
 
-                <!-- Planner Mode Toggle -->
-                <button id="btn-toggle-planner" class="btn" style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 700; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0.9rem; border-radius: var(--radius-sm); cursor: pointer;" title="Toggle editable mode to add, update, or cancel streams">
+                <!-- Planner Mode Toggle (Protected by Dev Password) -->
+                <button id="btn-toggle-planner" class="btn" style="display: none; background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 700; align-items: center; gap: 0.4rem; padding: 0.5rem 0.9rem; border-radius: var(--radius-sm); cursor: pointer;" title="Toggle editable mode to add, update, or cancel streams">
                     <span>✏️</span> Planner Mode
+                </button>
+
+                <!-- Streamer / Dev Login -->
+                <button id="btn-streamer-login" style="background: transparent; border: 1px solid transparent; color: var(--text-muted); font-size: 0.75rem; cursor: pointer; padding: 0.3rem 0.5rem; border-radius: 4px; opacity: 0.5; transition: opacity 0.2s;" title="Streamer &amp; Developer Mode Access">
+                    🔒 Streamer Login
                 </button>
             </div>
         </header>
@@ -115,6 +115,9 @@
             <div id="planner-actions" style="display: none; align-items: center; gap: 0.5rem;">
                 <button id="btn-add-stream" style="background: var(--accent-emerald); color: #000; font-weight: 800; padding: 0.45rem 1rem; border-radius: var(--radius-sm); border: none; cursor: pointer; font-size: 0.85rem;">
                     ➕ Add Stream
+                </button>
+                <button id="btn-copy-schedule-json" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; font-weight: 700; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.82rem; cursor: pointer;" title="Copy entire schedule config as JSON to paste into codebase">
+                    📋 Copy Schedule JSON
                 </button>
                 <button id="btn-reset-presets" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; font-weight: 700; padding: 0.45rem 0.8rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem;">
                     Reset Presets
@@ -414,11 +417,28 @@
     }
 
     let streams = loadSchedule();
-    let currentTz = 'America/St_Johns';
+    const localTz = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+    let currentTz = localTz;
     let currentView = 'week';
     let currentCategory = 'all';
     let plannerMode = false;
     let selectedMonth = new Date(2026, 10, 1); // Nov 2026
+
+    // Populate detected local timezone in read-only header badge
+    (function initTzBadge() {
+        const detectedEl = document.getElementById('detected-tz-name');
+        if (detectedEl) {
+            try {
+                const now = new Date();
+                const tzAbbr = new Intl.DateTimeFormat('en-US', { timeZone: localTz, timeZoneName: 'short' })
+                    .formatToParts(now)
+                    .find(p => p.type === 'timeZoneName')?.value || '';
+                detectedEl.textContent = `${localTz} ${tzAbbr ? '(' + tzAbbr + ')' : ''}`.trim();
+            } catch (e) {
+                detectedEl.textContent = localTz;
+            }
+        }
+    })();
 
     /**
      * Converts wall-clock Newfoundland Time (YYYY, MM, DD, HH, mm) into exact UTC Date.
@@ -1039,13 +1059,59 @@
     });
 
     // ----------------------------------------------------
+    // Streamer Auth & Planner Mode Access
+    // ----------------------------------------------------
+    function checkAuthStatus() {
+        const isAuth = sessionStorage.getItem('thoms_auth') === 'true';
+        const plannerBtn = document.getElementById('btn-toggle-planner');
+        const loginBtn = document.getElementById('btn-streamer-login');
+        if (isAuth) {
+            if (plannerBtn) plannerBtn.style.display = 'inline-flex';
+            if (loginBtn) loginBtn.style.display = 'none';
+        } else {
+            if (plannerBtn) plannerBtn.style.display = 'none';
+            if (loginBtn) loginBtn.style.display = 'inline-block';
+        }
+    }
+    checkAuthStatus();
+
+    const streamerLoginBtn = document.getElementById('btn-streamer-login');
+    if (streamerLoginBtn) {
+        streamerLoginBtn.addEventListener('click', () => {
+            const pass = prompt('Enter Streamer / Developer Password:');
+            if (pass === 'connected') {
+                sessionStorage.setItem('thoms_auth', 'true');
+                checkAuthStatus();
+                // Automatically activate planner mode once logged in
+                if (!plannerMode) {
+                    const plannerBtn = document.getElementById('btn-toggle-planner');
+                    if (plannerBtn) plannerBtn.click();
+                }
+            } else if (pass !== null) {
+                alert('Incorrect password.');
+            }
+        });
+    }
+
+    const copyScheduleBtn = document.getElementById('btn-copy-schedule-json');
+    if (copyScheduleBtn) {
+        copyScheduleBtn.addEventListener('click', () => {
+            const jsonText = JSON.stringify(streams, null, 2);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(jsonText).then(() => {
+                    alert('📋 Schedule JSON copied to clipboard!\nYou can paste this directly into DEFAULT_SCHEDULE in stream-schedule.html.');
+                }).catch(() => {
+                    prompt('Copy your Schedule JSON below:', jsonText);
+                });
+            } else {
+                prompt('Copy your Schedule JSON below:', jsonText);
+            }
+        });
+    }
+
+    // ----------------------------------------------------
     // Toolbar Event Listeners
     // ----------------------------------------------------
-    document.getElementById('tz-select').addEventListener('change', (e) => {
-        currentTz = e.target.value;
-        updateActiveView();
-    });
-
     document.querySelectorAll('.view-tab-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.view-tab-btn').forEach(b => {

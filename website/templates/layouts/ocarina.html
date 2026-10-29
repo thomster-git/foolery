@@ -644,6 +644,100 @@
     --oot-note-font: 1.75rem;
   }
 
+  /* OoT Display Header Styling */
+  .oot-song-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .oot-song-title-group {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .oot-song-emblem {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 14px rgba(0,0,0,0.6));
+    opacity: 0.95;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+  .oot-song-emblem:hover {
+    transform: scale(1.08) rotate(2deg);
+  }
+  .oot-song-title-texts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    text-align: left;
+  }
+  .oot-song-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+  .oot-triforce-icon {
+    width: 22px;
+    height: 22px;
+    opacity: 0.9;
+  }
+  .oot-song-hero-title {
+    color: var(--text-bright);
+    margin: 0;
+    font-size: 2.15rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+  }
+  .oot-song-header-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .oot-n64-info {
+    color: var(--text-muted);
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin-bottom: 1.75rem;
+    letter-spacing: 1.5px;
+    font-family: var(--font-mono, monospace);
+  }
+
+  @media (max-width: 680px) {
+    .oot-song-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .oot-song-title-group {
+      gap: 0.85rem;
+    }
+    .oot-song-emblem {
+      width: 52px;
+      height: 52px;
+    }
+    .oot-song-hero-title {
+      font-size: 1.6rem;
+    }
+    .oot-song-header-actions {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+
   #oot-display .song-notes {
     display: flex;
     flex-direction: column;
@@ -1440,12 +1534,27 @@
     box-shadow: 0 0 12px rgba(6, 182, 212, 0.6) !important;
   }
 
-  /* Compact Display Container in Popout */
+  /* Prominent Display Container in Popout */
   html.oot-popout-active #oot-display {
-    padding: 1.25rem 1rem !important;
+    padding: 1.5rem 1.75rem !important;
     margin-bottom: 1rem !important;
     min-height: auto !important;
-    border-radius: 12px !important;
+    border-radius: 14px !important;
+  }
+  html.oot-popout-active .oot-song-header {
+    margin-bottom: 1.25rem !important;
+    padding-bottom: 0.85rem !important;
+  }
+  html.oot-popout-active .oot-song-emblem {
+    width: 80px !important;
+    height: 80px !important;
+  }
+  html.oot-popout-active .oot-song-hero-title {
+    font-size: 2.35rem !important;
+  }
+  html.oot-popout-active .oot-n64-info {
+    font-size: 1.45rem !important;
+    margin-bottom: 1.5rem !important;
   }
 
   /* Transparent Glass HUD styles for OBS Browser Source */
@@ -2495,39 +2604,44 @@ function loadOotSong(id, btn) {
   }
 
   let songSvg = '';
-  if (id === 'oot-zelda') songSvg = '<img src="/images/website-assets/royal-crest.svg" alt="Royal Crest" style="width: 32px; opacity: 0.6;">';
-  else if (id === 'oot-sun') songSvg = '<img src="/images/website-assets/sun.svg" alt="Sun\'s Song" style="width: 32px; opacity: 0.6;">';
-  else if (id === 'oot-time') songSvg = '<img src="/images/website-assets/master-sword.svg" alt="Song of Time" style="width: 32px; opacity: 0.6;">';
-  else if (id === 'oot-minuet') songSvg = '<img src="/images/website-assets/forest-medal.svg" alt="Forest Medallion" style="width: 32px; opacity: 0.6;">';
-  else if (id === 'oot-bolero') songSvg = '<img src="/images/website-assets/fire-medal.svg" alt="Fire Medallion" style="width: 32px; opacity: 0.6;">';
-  else if (id === 'oot-epona') songSvg = '<img src="/images/website-assets/epona.svg" alt="Epona" style="width: 32px; opacity: 0.6;">';
-  else if (id === 'oot-saria') songSvg = '<img src="/images/website-assets/sarias-Song.svg" alt="Saria" style="width: 32px; opacity: 0.6;">';
-  else if (id === 'oot-serenade') songSvg = '<img src="/images/website-assets/water-medallion.svg" alt="Water Medallion" style="width: 32px; opacity: 0.6;">';
-  else if (id === 'oot-nocturne') songSvg = '<img src="/images/website-assets/shadow-medallion.svg" alt="Shadow Medallion" style="width: 32px; opacity: 0.6;">';
-  else if (id === 'oot-prelude') songSvg = '<img src="/images/website-assets/light-medallion.svg" alt="Light Medallion" style="width: 32px; opacity: 0.6;">';
-  else if (id === 'oot-requiem') songSvg = '<img src="/images/website-assets/spirit-medallion.svg" alt="Spirit Medallion" style="width: 32px; opacity: 0.6;">';
-  else if (id === 'oot-storms') songSvg = '<img src="/images/website-assets/storms.svg" alt="Song of Storms" style="width: 32px; opacity: 0.6;">';
-  else if (id === 'oot-scarecrow') songSvg = '<img src="/images/website-assets/scarecrow.svg" alt="Scarecrow\'s Song" style="width: 32px; opacity: 0.6;">';
+  if (id === 'oot-zelda') songSvg = '<img src="/images/website-assets/royal-crest.svg" alt="Royal Crest" class="oot-song-emblem">';
+  else if (id === 'oot-sun') songSvg = '<img src="/images/website-assets/sun.svg" alt="Sun\'s Song" class="oot-song-emblem">';
+  else if (id === 'oot-time') songSvg = '<img src="/images/website-assets/master-sword.svg" alt="Song of Time" class="oot-song-emblem">';
+  else if (id === 'oot-minuet') songSvg = '<img src="/images/website-assets/forest-medal.svg" alt="Forest Medallion" class="oot-song-emblem">';
+  else if (id === 'oot-bolero') songSvg = '<img src="/images/website-assets/fire-medal.svg" alt="Fire Medallion" class="oot-song-emblem">';
+  else if (id === 'oot-epona') songSvg = '<img src="/images/website-assets/epona.svg" alt="Epona" class="oot-song-emblem">';
+  else if (id === 'oot-saria') songSvg = '<img src="/images/website-assets/sarias-Song.svg" alt="Saria" class="oot-song-emblem">';
+  else if (id === 'oot-serenade') songSvg = '<img src="/images/website-assets/water-medallion.svg" alt="Water Medallion" class="oot-song-emblem">';
+  else if (id === 'oot-nocturne') songSvg = '<img src="/images/website-assets/shadow-medallion.svg" alt="Shadow Medallion" class="oot-song-emblem">';
+  else if (id === 'oot-prelude') songSvg = '<img src="/images/website-assets/light-medallion.svg" alt="Light Medallion" class="oot-song-emblem">';
+  else if (id === 'oot-requiem') songSvg = '<img src="/images/website-assets/spirit-medallion.svg" alt="Spirit Medallion" class="oot-song-emblem">';
+  else if (id === 'oot-storms') songSvg = '<img src="/images/website-assets/storms.svg" alt="Song of Storms" class="oot-song-emblem">';
+  else if (id === 'oot-scarecrow') songSvg = '<img src="/images/website-assets/scarecrow.svg" alt="Scarecrow\'s Song" class="oot-song-emblem">';
 
   display.innerHTML = `
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.75rem;">
-      <div style="display: flex; align-items: center; gap: 1rem;">
-        <img src="/images/website-assets/triforce.svg" alt="Triforce" style="width: 24px; opacity: 0.6;">
-        <h3 style="color: var(--text-main); margin: 0; font-size: 1.35rem;">${song.title}</h3>
+    <div class="oot-song-header">
+      <div class="oot-song-title-group">
         ${songSvg}
+        <div class="oot-song-title-texts">
+          <div class="oot-song-eyebrow">
+            <img src="/images/website-assets/triforce.svg" alt="Triforce" class="oot-triforce-icon">
+            <span>Ocarina of Time Melody</span>
+          </div>
+          <h2 class="oot-song-hero-title">${song.title}</h2>
+        </div>
       </div>
-      <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+      <div class="oot-song-header-actions">
         <div class="oot-zoom-bar">
           <span class="oot-zoom-label">🔍 Zoom:</span>
           <button type="button" class="oot-zoom-pill" data-zoom="compact" onclick="setOotZoom('compact')" title="Compact size (170px)">1x</button>
           <button type="button" class="oot-zoom-pill" data-zoom="standard" onclick="setOotZoom('standard')" title="Large size (250px)">1.5x</button>
           <button type="button" class="oot-zoom-pill" data-zoom="jumbo" onclick="setOotZoom('jumbo')" title="Jumbo size (330px)">2x</button>
         </div>
-        <button class="preview-btn" onclick="previewOotMelody('${id}')" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.35rem 0.85rem; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: bold; transition: all 0.2s;">▶ Preview Melody</button>
-        <button class="practice-btn" onclick="startPracticeMode('oot')" style="background: var(--accent-emerald); border: none; color: #000; padding: 0.35rem 0.85rem; border-radius: 6px; cursor: pointer; font-size: 0.82rem; font-weight: bold; transition: background 0.2s;">🎙️ Practice Mode</button>
+        <button class="preview-btn" onclick="previewOotMelody('${id}')" style="background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.45rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.2s;">▶ Preview Melody</button>
+        <button class="practice-btn" onclick="startPracticeMode('oot')" style="background: var(--accent-emerald); border: none; color: #000; padding: 0.45rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: background 0.2s;">🎙️ Practice Mode</button>
       </div>
     </div>
-    <p style="color: var(--text-muted); font-size: 1.25rem; font-weight: bold; margin-bottom: 1.75rem;">N64: ${song.info}</p>
+    <p class="oot-n64-info">N64: ${song.info}</p>
     <div class="song-notes">${notesHtml}</div>
   `;
 

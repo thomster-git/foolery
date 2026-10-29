@@ -974,53 +974,283 @@
         ctx.restore();
     }
 
+    function getMittPosition(progress) {
+        // While pitch is in flight (< 0.88), keep glove at neutral ready position in middle of strike zone
+        const neutralX = 0.0;
+        const neutralY = 2.2;
+        if (!state.pitchTrajectory || state.phase === 'READY' || state.phase === 'WINDUP' || progress < 0.88) {
+            return { x: neutralX, y: neutralY };
+        }
+        // Smoothly snap to catch position in the last split-second (0.88 to 1.0)
+        const t = Math.min(1.0, (progress - 0.88) / 0.12);
+        const smooth = t * t * (3 - 2 * t);
+        return {
+            x: neutralX + (state.mittTarget.x - neutralX) * smooth,
+            y: neutralY + (state.mittTarget.y - neutralY) * smooth
+        };
+    }
+
     function drawBatter() {
         const isRHH = (state.batterHandedness === 'RHH');
-        // RHH stands on Left from Umpire POV (X = -2.6); LHH stands on Right (X = +2.6)
-        const bx = isRHH ? -2.5 : 2.5;
-        const feet = camera.project(bx, 0, 0);
-        const knees = camera.project(bx, 1.5, 0);
-        const head = camera.project(bx, 5.3, 0);
+        // RHH stands on Left (X = -2.6); LHH stands on Right (X = +2.6)
+        const bx = isRHH ? -2.6 : 2.6;
+        const bz = -0.3; // straddling plate
+        const dir = isRHH ? 1 : -1; // 1 facing right (toward plate), -1 facing left
 
-        if (!feet || !head) return;
+        // Key anatomical projection points
+        const ground = camera.project(bx, 0, bz);
+        const ankles = camera.project(bx, 0.4, bz);
+        const knees = camera.project(bx, 1.6, bz);
+        const waist = camera.project(bx, 3.2, bz);
+        const chest = camera.project(bx, 4.4, bz);
+        const shoulders = camera.project(bx, 4.9, bz);
+        const neck = camera.project(bx, 5.2, bz);
+        const head = camera.project(bx, 5.7, bz);
+
+        if (!ground || !head) return;
 
         ctx.save();
-        // Batter legs
-        ctx.fillStyle = '#1e293b';
+
+        // 1. Chalk Batter's Box on dirt
+        const boxNearL = camera.project(isRHH ? -3.8 : 1.4, 0, 1.8);
+        const boxNearR = camera.project(isRHH ? -1.4 : 3.8, 0, 1.8);
+        const boxFarR = camera.project(isRHH ? -1.4 : 3.8, 0, -2.2);
+        const boxFarL = camera.project(isRHH ? -3.8 : 1.4, 0, -2.2);
+        if (boxNearL && boxNearR && boxFarR && boxFarL) {
+            ctx.beginPath();
+            ctx.moveTo(boxNearL.px, boxNearL.py);
+            ctx.lineTo(boxNearR.px, boxNearR.py);
+            ctx.lineTo(boxFarR.px, boxFarR.py);
+            ctx.lineTo(boxFarL.px, boxFarL.py);
+            ctx.closePath();
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        // 2. Ground shadow under batter
         ctx.beginPath();
-        ctx.ellipse(feet.px, (feet.py + knees.py) / 2, 16, (feet.py - knees.py) / 2, 0, 0, Math.PI * 2);
+        ctx.ellipse(ground.px, ground.py, 38, 14, 0, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
         ctx.fill();
 
-        // Torso & Jersey
-        ctx.fillStyle = '#334155';
-        ctx.beginPath();
-        ctx.ellipse(head.px, head.py + 40, 24, 35, 0, 0, Math.PI * 2);
-        ctx.fill();
+        // Stance offsets (athletic crouch, front foot forward toward pitcher)
+        const backLegX = bx - (0.45 * dir);
+        const frontLegX = bx + (0.55 * dir);
+        const pBackFoot = camera.project(backLegX, 0, bz - 0.2);
+        const pBackKnee = camera.project(backLegX + (0.1 * dir), 1.5, bz - 0.1);
+        const pFrontFoot = camera.project(frontLegX, 0, bz + 0.3);
+        const pFrontKnee = camera.project(frontLegX - (0.1 * dir), 1.5, bz + 0.2);
+        const pHip = camera.project(bx, 3.1, bz);
 
-        // Batting Helmet
-        ctx.fillStyle = '#0284c7';
-        ctx.beginPath();
-        ctx.arc(head.px, head.py + 8, 14, 0, Math.PI * 2);
-        ctx.fill();
+        // 3. Legs & Baseball Pants (White/gray with piping)
+        ctx.strokeStyle = '#0f172a'; // Cleats
+        ctx.lineWidth = 10;
+        ctx.lineCap = 'round';
+        if (pBackFoot && pBackKnee && pHip) {
+            // Back leg
+            ctx.beginPath();
+            ctx.moveTo(pBackFoot.px, pBackFoot.py);
+            ctx.lineTo(pBackKnee.px, pBackKnee.py);
+            ctx.lineTo(pHip.px, pHip.py);
+            ctx.strokeStyle = '#e2e8f0'; // Gray/white pants
+            ctx.lineWidth = 20;
+            ctx.stroke();
+            // Piping stripe
+            ctx.beginPath();
+            ctx.moveTo(pBackKnee.px - (2 * dir), pBackKnee.py);
+            ctx.lineTo(pHip.px - (2 * dir), pHip.py);
+            ctx.strokeStyle = '#0284c7';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+            // Cleat
+            ctx.beginPath();
+            ctx.ellipse(pBackFoot.px, pBackFoot.py, 10, 6, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#0f172a';
+            ctx.fill();
+        }
 
-        // Angled Bat cocked over shoulder
-        ctx.strokeStyle = '#d97706';
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.moveTo(head.px, head.py + 32);
-        const batDir = isRHH ? -32 : 32;
-        ctx.lineTo(head.px + batDir, head.py - 35);
-        ctx.stroke();
+        if (pFrontFoot && pFrontKnee && pHip) {
+            // Front leg
+            ctx.beginPath();
+            ctx.moveTo(pFrontFoot.px, pFrontFoot.py);
+            ctx.lineTo(pFrontKnee.px, pFrontKnee.py);
+            ctx.lineTo(pHip.px, pHip.py);
+            ctx.strokeStyle = '#f1f5f9';
+            ctx.lineWidth = 20;
+            ctx.stroke();
+            // Piping stripe
+            ctx.beginPath();
+            ctx.moveTo(pFrontKnee.px + (2 * dir), pFrontKnee.py);
+            ctx.lineTo(pHip.px + (2 * dir), pHip.py);
+            ctx.strokeStyle = '#0284c7';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+            // Cleat
+            ctx.beginPath();
+            ctx.ellipse(pFrontFoot.px, pFrontFoot.py, 11, 6, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#0f172a';
+            ctx.fill();
+        }
+
+        // 4. Belt & Waistline
+        if (waist) {
+            ctx.beginPath();
+            ctx.ellipse(waist.px, waist.py, 22, 9, 0, 0, Math.PI * 2);
+            ctx.fillStyle = '#0284c7'; // Blue belt
+            ctx.fill();
+        }
+
+        // 5. Torso & Jersey (Turned slightly toward pitcher/plate)
+        if (chest && waist) {
+            ctx.beginPath();
+            ctx.moveTo(waist.px - 18, waist.py);
+            ctx.lineTo(waist.px + 18, waist.py);
+            ctx.lineTo(chest.px + 24, chest.py);
+            ctx.lineTo(chest.px - 24, chest.py);
+            ctx.closePath();
+            ctx.fillStyle = '#1e293b'; // Navy/charcoal jersey
+            ctx.fill();
+            ctx.strokeStyle = '#0f172a';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Jersey Back Number outline
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = 'bold 16px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('24', chest.px - (4 * dir), chest.py + 10);
+        }
+
+        // 6. Arms & Hands holding bat
+        // Back arm: elbow up high
+        const pBackElbow = camera.project(bx - (1.1 * dir), 4.7, bz - 0.4);
+        const pHands = camera.project(bx - (0.6 * dir), 4.8, bz - 0.2);
+        const pFrontElbow = camera.project(bx + (0.3 * dir), 4.1, bz + 0.1);
+
+        if (shoulders && pBackElbow && pHands && pFrontElbow) {
+            // Back arm (tricep/bicep)
+            ctx.beginPath();
+            ctx.moveTo(shoulders.px - (14 * dir), shoulders.py);
+            ctx.lineTo(pBackElbow.px, pBackElbow.py);
+            ctx.lineTo(pHands.px, pHands.py);
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 11;
+            ctx.stroke();
+
+            // Front arm (reaching across)
+            ctx.beginPath();
+            ctx.moveTo(shoulders.px + (14 * dir), shoulders.py + 4);
+            ctx.lineTo(pFrontElbow.px, pFrontElbow.py);
+            ctx.lineTo(pHands.px, pHands.py);
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 11;
+            ctx.stroke();
+
+            // Batting Gloves (White/Cyan)
+            ctx.beginPath();
+            ctx.arc(pHands.px, pHands.py, 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#f8fafc';
+            ctx.fill();
+            ctx.strokeStyle = '#0284c7';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // 7. Realistic Baseball Bat (Held cocked back over shoulder)
+            // Bat angle: points back & slightly upward (~65 deg)
+            const batAngle = isRHH ? -Math.PI * 0.38 : -Math.PI * 0.62;
+            const batLen = 65;
+            const tipX = pHands.px + Math.cos(batAngle) * batLen;
+            const tipY = pHands.py + Math.sin(batAngle) * batLen;
+
+            // Bat knob & handle (tapered)
+            ctx.beginPath();
+            ctx.moveTo(pHands.px - Math.cos(batAngle) * 8, pHands.py - Math.sin(batAngle) * 8);
+            ctx.lineTo(tipX, tipY);
+            ctx.strokeStyle = '#d97706'; // Maple wood
+            ctx.lineWidth = 7;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            // Bat barrel (thicker top portion)
+            const barrelStartX = pHands.px + Math.cos(batAngle) * 25;
+            const barrelStartY = pHands.py + Math.sin(batAngle) * 25;
+            ctx.beginPath();
+            ctx.moveTo(barrelStartX, barrelStartY);
+            ctx.lineTo(tipX, tipY);
+            ctx.strokeStyle = '#b45309'; // Dark maple finish
+            ctx.lineWidth = 11;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            // Grip tape on handle
+            ctx.beginPath();
+            ctx.moveTo(pHands.px - Math.cos(batAngle) * 6, pHands.py - Math.sin(batAngle) * 6);
+            ctx.lineTo(barrelStartX, barrelStartY);
+            ctx.strokeStyle = '#0f172a'; // Black grip tape
+            ctx.lineWidth = 6;
+            ctx.stroke();
+        }
+
+        // 8. Head & Batting Helmet
+        if (head && neck) {
+            // Neck
+            ctx.beginPath();
+            ctx.moveTo(neck.px, neck.py);
+            ctx.lineTo(head.px, head.py);
+            ctx.strokeStyle = '#d4a373'; // Skin tone
+            ctx.lineWidth = 12;
+            ctx.stroke();
+
+            // Face profile (facing pitcher / home plate)
+            ctx.beginPath();
+            ctx.arc(head.px + (4 * dir), head.py - 2, 10, 0, Math.PI * 2);
+            ctx.fillStyle = '#d4a373';
+            ctx.fill();
+
+            // Batting Helmet (Matte Blue shell)
+            ctx.beginPath();
+            ctx.arc(head.px, head.py - 6, 15, Math.PI * 0.8, Math.PI * 2.2);
+            ctx.fillStyle = '#0284c7';
+            ctx.fill();
+
+            // Helmet Ear Flap (protecting side facing home plate)
+            ctx.beginPath();
+            ctx.ellipse(head.px + (5 * dir), head.py + 4, 9, 13, 0.1 * dir, 0, Math.PI * 2);
+            ctx.fillStyle = '#0369a1';
+            ctx.fill();
+
+            // Helmet Visor / Bill (pointing toward pitcher)
+            ctx.beginPath();
+            ctx.moveTo(head.px + (8 * dir), head.py - 8);
+            ctx.lineTo(head.px + (22 * dir), head.py - 5);
+            ctx.lineTo(head.px + (14 * dir), head.py - 2);
+            ctx.closePath();
+            ctx.fillStyle = '#0284c7';
+            ctx.fill();
+        }
+
         ctx.restore();
     }
 
     function drawCatcherMitt() {
-        const mx = state.mittTarget.x;
-        const my = state.mittTarget.y;
-        const p = camera.project(mx, my, -0.9);
+        const mittPos = getMittPosition(state.flightProgress);
+        const p = camera.project(mittPos.x, mittPos.y, -0.9);
         if (!p) return;
 
         ctx.save();
+        // Catcher forearm connection (anchoring glove into screen)
+        const armBase = camera.project(mittPos.x * 0.7, 0.4, -0.9);
+        if (armBase) {
+            ctx.beginPath();
+            ctx.moveTo(p.px, p.py + 25);
+            ctx.lineTo(armBase.px, camera.height);
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 26;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        }
+
         // Dark leather mitt
         ctx.beginPath();
         ctx.ellipse(p.px, p.py, 38, 44, 0, 0, Math.PI * 2);
@@ -1030,11 +1260,28 @@
         ctx.lineWidth = 4;
         ctx.stroke();
 
-        // Pocket circle
+        // Webbing
+        ctx.fillStyle = '#4a200a';
+        ctx.beginPath();
+        ctx.ellipse(p.px - 14, p.py - 12, 16, 20, -0.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Deep pocket recess
         ctx.beginPath();
         ctx.arc(p.px, p.py - 4, 18, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0,0,0,0.45)';
+        ctx.fillStyle = 'rgba(0,0,0,0.55)';
         ctx.fill();
+
+        // Leather lacing details
+        ctx.strokeStyle = '#854d0e';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(p.px - 22, p.py - 18);
+        ctx.lineTo(p.px - 8, p.py - 24);
+        ctx.moveTo(p.px - 18, p.py - 8);
+        ctx.lineTo(p.px - 4, p.py - 14);
+        ctx.stroke();
+
         ctx.restore();
     }
 
@@ -1085,6 +1332,11 @@
     }
 
     function drawBaseball(traj, progress, time) {
+        // The ball disappears once it hits the catcher's glove!
+        if (progress >= 1.0) {
+            return;
+        }
+
         const curTime = traj.tf * progress;
         const pos = getPitchPosition(traj, curTime);
         const p = camera.project(pos.x, pos.y, pos.z);
@@ -1138,6 +1390,21 @@
         ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
         ctx.lineWidth = 3.5;
         ctx.stroke();
+
+        // If in verdict review, draw the pitch location marker right on the strike zone plane (Z = 0)
+        if (state.phase === 'VERDICT') {
+            const crossPos = getPitchPosition(traj, traj.tf * 0.98);
+            const crossProj = camera.project(crossPos.x, crossPos.y, 0);
+            if (crossProj) {
+                ctx.beginPath();
+                ctx.arc(crossProj.px, crossProj.py, 7, 0, Math.PI * 2);
+                ctx.fillStyle = state.trueVerdict.isTrueStrike ? '#22c55e' : '#ef4444';
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+        }
         ctx.restore();
     }
 
