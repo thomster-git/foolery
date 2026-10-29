@@ -19,8 +19,9 @@ tags:
   - keel-systems
 related:
   - my-story-with-the-akira-ransomware-attack
+  - sensible-infrastructure-and-white-box-servers
   - keel-systems
-  - audhd-and-systems-thinking
+  - manifesto
 ---
 
 This section is currently under construction.

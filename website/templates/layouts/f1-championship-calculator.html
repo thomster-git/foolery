@@ -1,0 +1,975 @@
+<div class="page-container" style="width: 100%;">
+    <div class="content-wrapper tool-layout" style="width: 100%; max-width: 1300px; margin: 1.5rem auto; padding: 0 1rem;">
+        
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "F1 Championship Clinch & Elimination Calculator",
+          "url": "https://thomsfoolery.com/tools/f1-championship-calculator/",
+          "applicationCategory": "SportsApplication",
+          "operatingSystem": "Any",
+          "offers": {
+            "@type": "Offer",
+            "price": "0"
+          },
+          "description": "Calculate exact mathematical eliminations and clinch scenarios for the Formula 1 Drivers and Constructors Championships across standard and sprint race weekends."
+        }
+        </script>
+
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs" style="margin-bottom: 1.5rem;">
+            <a href="/">Home</a> &gt;
+            <a href="/tools/">Tools</a> &gt;
+            <span>F1 Championship Calculator</span>
+        </div>
+
+        <!-- Top Header & Rules Banner -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: 1.5rem;">
+            <div>
+                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem;">
+                    <span style="font-size: 2rem;">🏎️</span>
+                    <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--accent-cyan); margin: 0;">F1 Championship Calculator</h1>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0;">
+                    Mathematical elimination and title clinch scenario engine for Formula 1 Drivers (WDC) and Constructors (WCC).
+                </p>
+            </div>
+
+            <!-- Quick Preset Controls -->
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
+                <button class="preset-btn" data-preset="las-vegas" style="background: rgba(6, 182, 212, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-weight: 700; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
+                    ⚡ Clinch Window (Round 22)
+                </button>
+                <button class="preset-btn" data-preset="mid-season" style="background: rgba(168, 85, 247, 0.15); border: 1px solid var(--accent-purple); color: var(--accent-purple); font-weight: 700; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
+                    🏁 Mid-Season (Round 16)
+                </button>
+                <button class="preset-btn" data-preset="early-season" style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 600; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
+                    🌱 Early Season (Round 4)
+                </button>
+                <button id="btn-reset-data" style="background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; font-weight: 600; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
+                    🔄 Reset
+                </button>
+            </div>
+        </div>
+
+        <!-- FIA Regulations & Calendar Status Bar -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+            <!-- Current Round Selector -->
+            <div style="display: flex; align-items: center; gap: 0.6rem;">
+                <label for="round-select" style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Current Round:</label>
+                <select id="round-select" style="background: var(--bg-dark); color: var(--accent-cyan); font-weight: 800; font-size: 0.95rem; border: 1px solid var(--border-color); padding: 0.45rem 0.8rem; border-radius: var(--radius-sm); cursor: pointer;">
+                    <!-- Populated dynamically via JS -->
+                </select>
+            </div>
+
+            <!-- Points remaining metrics pill -->
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; font-size: 0.85rem;">
+                <div>
+                    <span style="color: var(--text-muted);">Max WDC Points Left:</span>
+                    <strong id="metric-wdc-left" style="color: var(--accent-cyan); font-family: var(--font-mono); margin-left: 4px;">83 pts</strong>
+                </div>
+                <div>
+                    <span style="color: var(--text-muted);">Max WCC Points Left:</span>
+                    <strong id="metric-wcc-left" style="color: var(--accent-purple); font-family: var(--font-mono); margin-left: 4px;">144 pts</strong>
+                </div>
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; color: #10b981; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.78rem;">
+                    ✓ FIA Rules: Fastest Lap Point Abolished
+                </div>
+            </div>
+        </div>
+
+        <!-- Highlight Clinch Alert Banner (Appears when a clinch is possible this weekend) -->
+        <div id="clinch-alert-banner" style="display: none; background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(168, 85, 247, 0.15)); border: 1px solid var(--accent-cyan); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem;">
+                        <span style="font-size: 1.4rem;">🏆</span>
+                        <strong style="color: var(--accent-cyan); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">CHAMPIONSHIP CLINCH WINDOW ACTIVE</strong>
+                    </div>
+                    <h2 id="clinch-alert-title" style="margin: 0; font-size: 1.35rem; color: var(--text-bright);">Max Verstappen can win the 2026 World Championship this weekend!</h2>
+                    <p id="clinch-alert-desc" style="color: var(--text-muted); font-size: 0.9rem; margin: 0.3rem 0 0;">Leader holds sufficient point margin. Review scenarios below.</p>
+                </div>
+                <button id="btn-jump-scenarios" style="background: var(--accent-cyan); color: #000; font-weight: 800; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer;">
+                    View Clinch Scenarios ➔
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs: Drivers (WDC), Constructors (WCC), Clinch Scenarios, Weekend Simulator -->
+        <div style="display: flex; gap: 0.4rem; border-bottom: 1px solid var(--border-color); margin-bottom: 1.5rem; overflow-x: auto;">
+            <button class="nav-tab-btn active" data-tab="wdc" style="padding: 0.6rem 1.2rem; background: transparent; border: none; border-bottom: 3px solid var(--accent-cyan); color: var(--accent-cyan); font-weight: 800; cursor: pointer; white-space: nowrap;">
+                🏎️ Drivers' Championship (WDC)
+            </button>
+            <button class="nav-tab-btn" data-tab="wcc" style="padding: 0.6rem 1.2rem; background: transparent; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-weight: 700; cursor: pointer; white-space: nowrap;">
+                🏁 Constructors' Championship (WCC)
+            </button>
+            <button class="nav-tab-btn" data-tab="scenarios" style="padding: 0.6rem 1.2rem; background: transparent; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-weight: 700; cursor: pointer; white-space: nowrap;">
+                📊 Clinch Scenarios Engine
+            </button>
+            <button class="nav-tab-btn" data-tab="simulator" style="padding: 0.6rem 1.2rem; background: transparent; border: none; border-bottom: 3px solid transparent; color: var(--text-muted); font-weight: 700; cursor: pointer; white-space: nowrap;">
+                🎲 Race Weekend Simulator
+            </button>
+        </div>
+
+        <!-- Tab 1: Drivers Championship (WDC) Table -->
+        <div id="tab-wdc" class="tab-pane">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.8rem;">
+                <div style="font-size: 0.9rem; color: var(--text-muted);">
+                    Drivers in <span style="color: #10b981; font-weight: 700;">GREEN</span> are mathematically in contention. Drivers in <span style="color: #ef4444; font-weight: 700;">GREY</span> are mathematically eliminated.
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-dim);">
+                    * Countback rule applied on points tie (most GP wins)
+                </div>
+            </div>
+
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">
+                            <th style="padding: 0.75rem 1rem;">Pos</th>
+                            <th style="padding: 0.75rem 1rem;">Driver</th>
+                            <th style="padding: 0.75rem 1rem;">Team</th>
+                            <th style="padding: 0.75rem 1rem; text-align: right;">Points</th>
+                            <th style="padding: 0.75rem 1rem; text-align: right;">Wins</th>
+                            <th style="padding: 0.75rem 1rem; text-align: right;">Deficit</th>
+                            <th style="padding: 0.75rem 1rem; text-align: right;">Max Possible</th>
+                            <th style="padding: 0.75rem 1rem; text-align: center;">Championship Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wdc-table-body">
+                        <!-- Populated dynamically via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab 2: Constructors Championship (WCC) Table -->
+        <div id="tab-wcc" class="tab-pane" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.8rem;">
+                <div style="font-size: 0.9rem; color: var(--text-muted);">
+                    Teams in <span style="color: #10b981; font-weight: 700;">GREEN</span> can still win the Constructors title. Eliminated teams are greyed out.
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-dim);">
+                    Max 43 pts in standard GP (1-2 finish) | Max 58 pts in Sprint GP
+                </div>
+            </div>
+
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.92rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.2); color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">
+                            <th style="padding: 0.75rem 1rem;">Pos</th>
+                            <th style="padding: 0.75rem 1rem;">Team</th>
+                            <th style="padding: 0.75rem 1rem; text-align: right;">Points</th>
+                            <th style="padding: 0.75rem 1rem; text-align: right;">Wins</th>
+                            <th style="padding: 0.75rem 1rem; text-align: right;">Deficit</th>
+                            <th style="padding: 0.75rem 1rem; text-align: right;">Max Possible</th>
+                            <th style="padding: 0.75rem 1rem; text-align: center;">Championship Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wcc-table-body">
+                        <!-- Populated dynamically via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab 3: Clinch Scenarios Engine -->
+        <div id="tab-scenarios" class="tab-pane" style="display: none;">
+            <div id="scenarios-content">
+                <!-- Dynamically rendered scenarios breakdown -->
+            </div>
+        </div>
+
+        <!-- Tab 4: Interactive Race Weekend Simulator -->
+        <div id="tab-simulator" class="tab-pane" style="display: none;">
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.2rem; color: var(--accent-cyan);">Simulate Upcoming Weekend Finishes</h3>
+                        <p style="color: var(--text-muted); font-size: 0.88rem; margin: 0.2rem 0 0;">Pick hypothetical finishing positions for drivers to calculate the immediate championship impact.</p>
+                    </div>
+                    <button id="btn-apply-simulation" style="background: var(--accent-emerald); color: #000; font-weight: 800; border: none; padding: 0.6rem 1.4rem; border-radius: 6px; cursor: pointer;">
+                        ▶️ Run Simulation
+                    </button>
+                </div>
+
+                <!-- Simulation Finish Selectors Grid -->
+                <div id="sim-selectors-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.8rem; margin-bottom: 1rem;">
+                    <!-- Injected via JS -->
+                </div>
+
+                <div id="sim-results-output" style="display: none; background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; margin-top: 1rem;">
+                    <h4 style="margin: 0 0 0.5rem; color: var(--accent-cyan);">Simulation Outcome</h4>
+                    <div id="sim-summary-text" style="font-size: 0.95rem; line-height: 1.5;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Explainer & Regulations Reference Card -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin-top: 2rem; font-size: 0.88rem; line-height: 1.6; color: var(--text-muted);">
+            <strong style="color: var(--accent-purple); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; display: block; margin-bottom: 0.4rem;">Championship Math & Rules Engine</strong>
+            • <strong>Grand Prix Points:</strong> 25 (1st), 18 (2nd), 15 (3rd), 12 (4th), 10 (5th), 8 (6th), 6 (7th), 4 (8th), 2 (9th), 1 (10th).<br>
+            • <strong>Sprint Points:</strong> 8, 7, 6, 5, 4, 3, 2, 1 (Top 8 finishers).<br>
+            • <strong>Fastest Lap:</strong> 0 points (Fastest lap bonus point rule officially eliminated by FIA for 2025/2026).<br>
+            • <strong>Elimination Criterion:</strong> If a driver's current points + all remaining achievable points is strictly less than the leader's points (or tied with losing countback), they are mathematically eliminated.
+        </div>
+
+    </div>
+</div>
+
+<style>
+/* F1 Championship Calculator Table & Card Styling */
+.driver-row-eliminated, .team-row-eliminated {
+    opacity: 0.45;
+    background: rgba(15, 23, 42, 0.3) !important;
+}
+.driver-row-eliminated td, .team-row-eliminated td {
+    color: var(--text-dim) !important;
+}
+.driver-row-eliminated .driver-name, .team-row-eliminated .team-name {
+    text-decoration: line-through;
+    text-decoration-color: #ef4444;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+.status-active {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+}
+.status-eliminated {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+.status-clinched {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #000;
+    font-weight: 900;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+
+.scenario-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: 100px 1fr 1fr;
+    gap: 1.25rem;
+    align-items: center;
+}
+@media (max-width: 768px) {
+    .scenario-card {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+}
+</style>
+
+<script>
+(function() {
+    // ----------------------------------------------------
+    // F1 Sporting Regulations & Points System
+    // ----------------------------------------------------
+    const GP_POINTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
+    const SPRINT_POINTS = [8, 7, 6, 5, 4, 3, 2, 1];
+    const WCC_GP_MAX = 43;      // 1-2 finish (25 + 18)
+    const WCC_SPRINT_MAX = 15;  // Sprint 1-2 finish (8 + 7)
+
+    function getGPPoints(pos) {
+        return (pos >= 1 && pos <= 10) ? GP_POINTS[pos - 1] : 0;
+    }
+    function getSprintPoints(pos) {
+        return (pos >= 1 && pos <= 8) ? SPRINT_POINTS[pos - 1] : 0;
+    }
+
+    // 24-Race Calendar Structure
+    const CALENDAR = [
+        { round: 1, name: 'Australian GP', circuit: 'Melbourne', hasSprint: false },
+        { round: 2, name: 'Chinese GP', circuit: 'Shanghai', hasSprint: true },
+        { round: 3, name: 'Japanese GP', circuit: 'Suzuka', hasSprint: false },
+        { round: 4, name: 'Bahrain GP', circuit: 'Sakhir', hasSprint: false },
+        { round: 5, name: 'Saudi Arabian GP', circuit: 'Jeddah', hasSprint: false },
+        { round: 6, name: 'Miami GP', circuit: 'Miami', hasSprint: true },
+        { round: 7, name: 'Emilia Romagna GP', circuit: 'Imola', hasSprint: false },
+        { round: 8, name: 'Monaco GP', circuit: 'Monaco', hasSprint: false },
+        { round: 9, name: 'Spanish GP', circuit: 'Barcelona', hasSprint: false },
+        { round: 10, name: 'Canadian GP', circuit: 'Montreal', hasSprint: false },
+        { round: 11, name: 'Austrian GP', circuit: 'Red Bull Ring', hasSprint: false },
+        { round: 12, name: 'British GP', circuit: 'Silverstone', hasSprint: false },
+        { round: 13, name: 'Belgian GP', circuit: 'Spa-Francorchamps', hasSprint: true },
+        { round: 14, name: 'Hungarian GP', circuit: 'Hungaroring', hasSprint: false },
+        { round: 15, name: 'Dutch GP', circuit: 'Zandvoort', hasSprint: false },
+        { round: 16, name: 'Italian GP', circuit: 'Monza', hasSprint: false },
+        { round: 17, name: 'Azerbaijan GP', circuit: 'Baku', hasSprint: false },
+        { round: 18, name: 'Singapore GP', circuit: 'Marina Bay', hasSprint: false },
+        { round: 19, name: 'United States GP', circuit: 'Austin', hasSprint: true },
+        { round: 20, name: 'Mexico City GP', circuit: 'Autódromo Hermanos Rodríguez', hasSprint: false },
+        { round: 21, name: 'São Paulo GP', circuit: 'Interlagos', hasSprint: true },
+        { round: 22, name: 'Las Vegas GP', circuit: 'Las Vegas Strip', hasSprint: false },
+        { round: 23, name: 'Qatar GP', circuit: 'Lusail', hasSprint: true },
+        { round: 24, name: 'Abu Dhabi GP', circuit: 'Yas Marina', hasSprint: false }
+    ];
+
+    // 2026 Grid Data Presets
+    const PRESETS = {
+        'las-vegas': {
+            round: 22, // Round 22 of 24 (Las Vegas) - Clinch Window
+            drivers: [
+                { id: 'ver', name: 'Max Verstappen', code: 'VER', team: 'Red Bull Racing', points: 393, wins: 8 },
+                { id: 'nor', name: 'Lando Norris', code: 'NOR', team: 'McLaren', points: 331, wins: 3 },
+                { id: 'lec', name: 'Charles Leclerc', code: 'LEC', team: 'Ferrari', points: 307, wins: 3 },
+                { id: 'pia', name: 'Oscar Piastri', code: 'PIA', team: 'McLaren', points: 262, wins: 2 },
+                { id: 'sai', name: 'Carlos Sainz', code: 'SAI', team: 'Williams', points: 244, wins: 2 },
+                { id: 'ham', name: 'Lewis Hamilton', code: 'HAM', team: 'Ferrari', points: 190, wins: 2 },
+                { id: 'rus', name: 'George Russell', code: 'RUS', team: 'Mercedes', points: 192, wins: 1 },
+                { id: 'ant', name: 'Kimi Antonelli', code: 'ANT', team: 'Mercedes', points: 98, wins: 0 },
+                { id: 'alo', name: 'Fernando Alonso', code: 'ALO', team: 'Aston Martin', points: 62, wins: 0 },
+                { id: 'hul', name: 'Nico Hülkenberg', code: 'HUL', team: 'Audi', points: 35, wins: 0 },
+                { id: 'gas', name: 'Pierre Gasly', code: 'GAS', team: 'Alpine', points: 26, wins: 0 },
+                { id: 'tsu', name: 'Yuki Tsunoda', code: 'TSU', team: 'Racing Bulls', points: 28, wins: 0 },
+                { id: 'str', name: 'Lance Stroll', code: 'STR', team: 'Aston Martin', points: 24, wins: 0 },
+                { id: 'oco', name: 'Esteban Ocon', code: 'OCO', team: 'Haas F1 Team', points: 23, wins: 0 },
+                { id: 'alb', name: 'Alexander Albon', code: 'ALB', team: 'Williams', points: 12, wins: 0 },
+                { id: 'bea', name: 'Oliver Bearman', code: 'BEA', team: 'Haas F1 Team', points: 7, wins: 0 },
+                { id: 'had', name: 'Isack Hadjar', code: 'HAD', team: 'Red Bull Racing', points: 8, wins: 0 },
+                { id: 'law', name: 'Liam Lawson', code: 'LAW', team: 'Racing Bulls', points: 4, wins: 0 },
+                { id: 'col', name: 'Franco Colapinto', code: 'COL', team: 'Alpine', points: 5, wins: 0 },
+                { id: 'bor', name: 'Gabriel Bortoleto', code: 'BOR', team: 'Audi', points: 2, wins: 0 },
+                { id: 'per', name: 'Sergio Pérez', code: 'PER', team: 'Cadillac F1 Team', points: 1, wins: 0 },
+                { id: 'bot', name: 'Valtteri Bottas', code: 'BOT', team: 'Cadillac F1 Team', points: 0, wins: 0 }
+            ],
+            constructors: [
+                { id: 'mclaren', name: 'McLaren', points: 593, wins: 5 },
+                { id: 'ferrari', name: 'Ferrari', points: 551, wins: 5 },
+                { id: 'redbull', name: 'Red Bull Racing', points: 401, wins: 8 },
+                { id: 'mercedes', name: 'Mercedes', points: 290, wins: 1 },
+                { id: 'williams', name: 'Williams', points: 256, wins: 2 },
+                { id: 'aston', name: 'Aston Martin', points: 86, wins: 0 },
+                { id: 'haas', name: 'Haas F1 Team', points: 30, wins: 0 },
+                { id: 'audi', name: 'Audi', points: 37, wins: 0 },
+                { id: 'racingbulls', name: 'Racing Bulls', points: 32, wins: 0 },
+                { id: 'alpine', name: 'Alpine', points: 31, wins: 0 },
+                { id: 'cadillac', name: 'Cadillac F1 Team', points: 1, wins: 0 }
+            ]
+        },
+        'mid-season': {
+            round: 16, // Round 16 of 24 (Monza)
+            drivers: [
+                { id: 'ver', name: 'Max Verstappen', code: 'VER', team: 'Red Bull Racing', points: 303, wins: 7 },
+                { id: 'nor', name: 'Lando Norris', code: 'NOR', team: 'McLaren', points: 241, wins: 2 },
+                { id: 'lec', name: 'Charles Leclerc', code: 'LEC', team: 'Ferrari', points: 217, wins: 2 },
+                { id: 'pia', name: 'Oscar Piastri', code: 'PIA', team: 'McLaren', points: 197, wins: 1 },
+                { id: 'sai', name: 'Carlos Sainz', code: 'SAI', team: 'Williams', points: 184, wins: 1 },
+                { id: 'ham', name: 'Lewis Hamilton', code: 'HAM', team: 'Ferrari', points: 164, wins: 2 },
+                { id: 'rus', name: 'George Russell', code: 'RUS', team: 'Mercedes', points: 128, wins: 1 },
+                { id: 'ant', name: 'Kimi Antonelli', code: 'ANT', team: 'Mercedes', points: 70, wins: 0 },
+                { id: 'alo', name: 'Fernando Alonso', code: 'ALO', team: 'Aston Martin', points: 50, wins: 0 },
+                { id: 'tsu', name: 'Yuki Tsunoda', code: 'TSU', team: 'Racing Bulls', points: 22, wins: 0 },
+                { id: 'hul', name: 'Nico Hülkenberg', code: 'HUL', team: 'Audi', points: 22, wins: 0 },
+                { id: 'str', name: 'Lance Stroll', code: 'STR', team: 'Aston Martin', points: 18, wins: 0 },
+                { id: 'gas', name: 'Pierre Gasly', code: 'GAS', team: 'Alpine', points: 14, wins: 0 },
+                { id: 'oco', name: 'Esteban Ocon', code: 'OCO', team: 'Haas F1 Team', points: 16, wins: 0 },
+                { id: 'alb', name: 'Alexander Albon', code: 'ALB', team: 'Williams', points: 8, wins: 0 },
+                { id: 'had', name: 'Isack Hadjar', code: 'HAD', team: 'Red Bull Racing', points: 6, wins: 0 },
+                { id: 'bea', name: 'Oliver Bearman', code: 'BEA', team: 'Haas F1 Team', points: 5, wins: 0 },
+                { id: 'col', name: 'Franco Colapinto', code: 'COL', team: 'Alpine', points: 4, wins: 0 },
+                { id: 'law', name: 'Liam Lawson', code: 'LAW', team: 'Racing Bulls', points: 2, wins: 0 },
+                { id: 'bor', name: 'Gabriel Bortoleto', code: 'BOR', team: 'Audi', points: 0, wins: 0 },
+                { id: 'per', name: 'Sergio Pérez', code: 'PER', team: 'Cadillac F1 Team', points: 0, wins: 0 },
+                { id: 'bot', name: 'Valtteri Bottas', code: 'BOT', team: 'Cadillac F1 Team', points: 0, wins: 0 }
+            ],
+            constructors: [
+                { id: 'mclaren', name: 'McLaren', points: 438, wins: 3 },
+                { id: 'ferrari', name: 'Ferrari', points: 381, wins: 4 },
+                { id: 'redbull', name: 'Red Bull Racing', points: 309, wins: 7 },
+                { id: 'mercedes', name: 'Mercedes', points: 198, wins: 1 },
+                { id: 'williams', name: 'Williams', points: 192, wins: 1 },
+                { id: 'aston', name: 'Aston Martin', points: 68, wins: 0 },
+                { id: 'racingbulls', name: 'Racing Bulls', points: 24, wins: 0 },
+                { id: 'audi', name: 'Audi', points: 22, wins: 0 },
+                { id: 'haas', name: 'Haas F1 Team', points: 21, wins: 0 },
+                { id: 'alpine', name: 'Alpine', points: 18, wins: 0 },
+                { id: 'cadillac', name: 'Cadillac F1 Team', points: 0, wins: 0 }
+            ]
+        },
+        'early-season': {
+            round: 4, // Round 4 of 24 (Bahrain)
+            drivers: [
+                { id: 'ver', name: 'Max Verstappen', code: 'VER', team: 'Red Bull Racing', points: 68, wins: 2 },
+                { id: 'nor', name: 'Lando Norris', code: 'NOR', team: 'McLaren', points: 56, wins: 1 },
+                { id: 'lec', name: 'Charles Leclerc', code: 'LEC', team: 'Ferrari', points: 52, wins: 0 },
+                { id: 'pia', name: 'Oscar Piastri', code: 'PIA', team: 'McLaren', points: 38, wins: 0 },
+                { id: 'ham', name: 'Lewis Hamilton', code: 'HAM', team: 'Ferrari', points: 35, wins: 0 },
+                { id: 'sai', name: 'Carlos Sainz', code: 'SAI', team: 'Williams', points: 30, wins: 0 },
+                { id: 'rus', name: 'George Russell', code: 'RUS', team: 'Mercedes', points: 28, wins: 0 },
+                { id: 'ant', name: 'Kimi Antonelli', code: 'ANT', team: 'Mercedes', points: 16, wins: 0 },
+                { id: 'alo', name: 'Fernando Alonso', code: 'ALO', team: 'Aston Martin', points: 10, wins: 0 },
+                { id: 'str', name: 'Lance Stroll', code: 'STR', team: 'Aston Martin', points: 6, wins: 0 },
+                { id: 'hul', name: 'Nico Hülkenberg', code: 'HUL', team: 'Audi', points: 4, wins: 0 },
+                { id: 'tsu', name: 'Yuki Tsunoda', code: 'TSU', team: 'Racing Bulls', points: 3, wins: 0 },
+                { id: 'oco', name: 'Esteban Ocon', code: 'OCO', team: 'Haas F1 Team', points: 2, wins: 0 },
+                { id: 'alb', name: 'Alexander Albon', code: 'ALB', team: 'Williams', points: 1, wins: 0 },
+                { id: 'gas', name: 'Pierre Gasly', code: 'GAS', team: 'Alpine', points: 0, wins: 0 },
+                { id: 'had', name: 'Isack Hadjar', code: 'HAD', team: 'Red Bull Racing', points: 0, wins: 0 },
+                { id: 'bea', name: 'Oliver Bearman', code: 'BEA', team: 'Haas F1 Team', points: 0, wins: 0 },
+                { id: 'col', name: 'Franco Colapinto', code: 'COL', team: 'Alpine', points: 0, wins: 0 },
+                { id: 'law', name: 'Liam Lawson', code: 'LAW', team: 'Racing Bulls', points: 0, wins: 0 },
+                { id: 'bor', name: 'Gabriel Bortoleto', code: 'BOR', team: 'Audi', points: 0, wins: 0 },
+                { id: 'per', name: 'Sergio Pérez', code: 'PER', team: 'Cadillac F1 Team', points: 0, wins: 0 },
+                { id: 'bot', name: 'Valtteri Bottas', code: 'BOT', team: 'Cadillac F1 Team', points: 0, wins: 0 }
+            ],
+            constructors: [
+                { id: 'mclaren', name: 'McLaren', points: 94, wins: 1 },
+                { id: 'ferrari', name: 'Ferrari', points: 87, wins: 0 },
+                { id: 'redbull', name: 'Red Bull Racing', points: 68, wins: 2 },
+                { id: 'mercedes', name: 'Mercedes', points: 44, wins: 0 },
+                { id: 'williams', name: 'Williams', points: 31, wins: 0 },
+                { id: 'aston', name: 'Aston Martin', points: 16, wins: 0 },
+                { id: 'audi', name: 'Audi', points: 4, wins: 0 },
+                { id: 'racingbulls', name: 'Racing Bulls', points: 3, wins: 0 },
+                { id: 'haas', name: 'Haas F1 Team', points: 2, wins: 0 },
+                { id: 'alpine', name: 'Alpine', points: 0, wins: 0 },
+                { id: 'cadillac', name: 'Cadillac F1 Team', points: 0, wins: 0 }
+            ]
+        }
+    };
+
+    let currentRound = 22;
+    let drivers = JSON.parse(JSON.stringify(PRESETS['las-vegas'].drivers));
+    let constructors = JSON.parse(JSON.stringify(PRESETS['las-vegas'].constructors));
+
+    // ----------------------------------------------------
+    // Points Remaining Engine
+    // ----------------------------------------------------
+    function calculatePointsRemaining(fromRound) {
+        let wdcFuture = 0;
+        let wccFuture = 0;
+        for (let i = fromRound; i < CALENDAR.length; i++) {
+            const ev = CALENDAR[i];
+            wdcFuture += ev.hasSprint ? 33 : 25;
+            wccFuture += ev.hasSprint ? 58 : 43;
+        }
+        const curEv = CALENDAR[fromRound - 1];
+        const wdcCurrent = curEv ? (curEv.hasSprint ? 33 : 25) : 0;
+        const wccCurrent = curEv ? (curEv.hasSprint ? 58 : 43) : 0;
+
+        return {
+            wdcCurrent,
+            wdcFuture,
+            wdcTotal: wdcCurrent + wdcFuture,
+            wccCurrent,
+            wccFuture,
+            wccTotal: wccCurrent + wccFuture
+        };
+    }
+
+    // ----------------------------------------------------
+    // Render Functions & Elimination Engine
+    // ----------------------------------------------------
+    function updateAllViews() {
+        const rem = calculatePointsRemaining(currentRound);
+
+        // Update Top Metrics
+        document.getElementById('metric-wdc-left').innerText = `${rem.wdcTotal} pts`;
+        document.getElementById('metric-wcc-left').innerText = `${rem.wccTotal} pts`;
+
+        renderWDCTable(rem.wdcTotal);
+        renderWCCTable(rem.wccTotal);
+        renderClinchScenarios(rem);
+        renderSimulatorSelectors();
+    }
+
+    function renderWDCTable(remMaxPoints) {
+        // Sort descending by points, then wins
+        drivers.sort((a, b) => {
+            if (b.points !== a.points) return b.points - a.points;
+            return (b.wins || 0) - (a.wins || 0);
+        });
+
+        const leader = drivers[0];
+        const tbody = document.getElementById('wdc-table-body');
+        tbody.innerHTML = '';
+
+        drivers.forEach((d, idx) => {
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid var(--border-color)';
+            tr.style.transition = 'background 0.15s';
+
+            const maxPossible = d.points + remMaxPoints;
+            const deficit = leader.points - d.points;
+            const isLeader = (idx === 0);
+
+            // Elimination logic
+            let isEliminated = false;
+            let statusBadge = '';
+
+            if (isLeader) {
+                // Check if already clinched
+                const closestRival = drivers[1];
+                if (closestRival && (closestRival.points + remMaxPoints < leader.points)) {
+                    statusBadge = '<span class="status-badge status-clinched">🏆 WORLD CHAMPION</span>';
+                } else {
+                    statusBadge = '<span class="status-badge status-active">👑 LEADER</span>';
+                }
+            } else {
+                if (maxPossible < leader.points) {
+                    isEliminated = true;
+                    statusBadge = `<span class="status-badge status-eliminated">ELIMINATED (-${leader.points - maxPossible} pts)</span>`;
+                } else if (maxPossible === leader.points) {
+                    // Tie countback check
+                    const remainingGPs = CALENDAR.slice(currentRound - 1).length;
+                    if ((d.wins + remainingGPs) < leader.wins) {
+                        isEliminated = true;
+                        statusBadge = '<span class="status-badge status-eliminated">ELIMINATED (COUNTBACK)</span>';
+                    } else {
+                        statusBadge = '<span class="status-badge status-active">IN CONTENTION</span>';
+                    }
+                } else {
+                    statusBadge = '<span class="status-badge status-active">IN CONTENTION</span>';
+                }
+            }
+
+            if (isEliminated) {
+                tr.className = 'driver-row-eliminated';
+            }
+
+            tr.innerHTML = `
+                <td style="padding: 0.75rem 1rem; font-weight: 800; font-family: var(--font-mono);">${idx + 1}</td>
+                <td style="padding: 0.75rem 1rem;">
+                    <strong class="driver-name" style="color: ${isEliminated ? 'var(--text-dim)' : 'var(--text-bright)'}; font-size: 1rem;">${d.name}</strong>
+                    <span style="font-size: 0.75rem; color: var(--text-muted); margin-left: 4px; font-family: var(--font-mono);">${d.code}</span>
+                </td>
+                <td style="padding: 0.75rem 1rem; color: var(--text-muted);">${d.team}</td>
+                <td style="padding: 0.75rem 1rem; text-align: right; font-weight: 800; font-family: var(--font-mono); color: var(--accent-cyan); font-size: 1.05rem;">
+                    <input type="number" class="edit-points-input" data-driver="${d.id}" value="${d.points}" style="width: 65px; background: transparent; border: 1px dashed rgba(255,255,255,0.2); color: inherit; font-family: inherit; font-size: inherit; font-weight: inherit; text-align: right; padding: 2px 4px; border-radius: 4px;">
+                </td>
+                <td style="padding: 0.75rem 1rem; text-align: right; font-family: var(--font-mono); font-weight: 700;">${d.wins}</td>
+                <td style="padding: 0.75rem 1rem; text-align: right; font-family: var(--font-mono); color: ${deficit === 0 ? 'var(--accent-cyan)' : 'var(--text-muted)'};">${deficit === 0 ? 'LEADER' : `-${deficit}`}</td>
+                <td style="padding: 0.75rem 1rem; text-align: right; font-family: var(--font-mono); font-weight: 700; color: ${isEliminated ? 'var(--text-dim)' : '#38bdf8'};">${maxPossible}</td>
+                <td style="padding: 0.75rem 1rem; text-align: center;">${statusBadge}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Add inline input change listeners
+        document.querySelectorAll('.edit-points-input').forEach(input => {
+            input.addEventListener('change', (e) => {
+                const dId = e.target.getAttribute('data-driver');
+                const val = parseInt(e.target.value, 10) || 0;
+                const d = drivers.find(x => x.id === dId);
+                if (d) {
+                    d.points = val;
+                    updateAllViews();
+                }
+            });
+        });
+    }
+
+    function renderWCCTable(remMaxPoints) {
+        constructors.sort((a, b) => b.points - a.points);
+        const leader = constructors[0];
+        const tbody = document.getElementById('wcc-table-body');
+        tbody.innerHTML = '';
+
+        constructors.forEach((team, idx) => {
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid var(--border-color)';
+            tr.style.transition = 'background 0.15s';
+
+            const maxPossible = team.points + remMaxPoints;
+            const deficit = leader.points - team.points;
+            const isLeader = (idx === 0);
+            let isEliminated = false;
+            let statusBadge = '';
+
+            if (isLeader) {
+                const rival = constructors[1];
+                if (rival && (rival.points + remMaxPoints < leader.points)) {
+                    statusBadge = '<span class="status-badge status-clinched">🏆 CHAMPIONS</span>';
+                } else {
+                    statusBadge = '<span class="status-badge status-active">👑 LEADER</span>';
+                }
+            } else {
+                if (maxPossible < leader.points) {
+                    isEliminated = true;
+                    statusBadge = `<span class="status-badge status-eliminated">ELIMINATED (-${leader.points - maxPossible} pts)</span>`;
+                } else {
+                    statusBadge = '<span class="status-badge status-active">IN CONTENTION</span>';
+                }
+            }
+
+            if (isEliminated) {
+                tr.className = 'team-row-eliminated';
+            }
+
+            tr.innerHTML = `
+                <td style="padding: 0.75rem 1rem; font-weight: 800; font-family: var(--font-mono);">${idx + 1}</td>
+                <td style="padding: 0.75rem 1rem;">
+                    <strong class="team-name" style="color: ${isEliminated ? 'var(--text-dim)' : 'var(--text-bright)'}; font-size: 1rem;">${team.name}</strong>
+                </td>
+                <td style="padding: 0.75rem 1rem; text-align: right; font-weight: 800; font-family: var(--font-mono); color: var(--accent-purple); font-size: 1.05rem;">
+                    <input type="number" class="edit-team-points-input" data-team="${team.id}" value="${team.points}" style="width: 70px; background: transparent; border: 1px dashed rgba(255,255,255,0.2); color: inherit; font-family: inherit; font-size: inherit; font-weight: inherit; text-align: right; padding: 2px 4px; border-radius: 4px;">
+                </td>
+                <td style="padding: 0.75rem 1rem; text-align: right; font-family: var(--font-mono); font-weight: 700;">${team.wins}</td>
+                <td style="padding: 0.75rem 1rem; text-align: right; font-family: var(--font-mono); color: ${deficit === 0 ? 'var(--accent-purple)' : 'var(--text-muted)'};">${deficit === 0 ? 'LEADER' : `-${deficit}`}</td>
+                <td style="padding: 0.75rem 1rem; text-align: right; font-family: var(--font-mono); font-weight: 700; color: ${isEliminated ? 'var(--text-dim)' : '#c084fc'};">${maxPossible}</td>
+                <td style="padding: 0.75rem 1rem; text-align: center;">${statusBadge}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        document.querySelectorAll('.edit-team-points-input').forEach(input => {
+            input.addEventListener('change', (e) => {
+                const tId = e.target.getAttribute('data-team');
+                const val = parseInt(e.target.value, 10) || 0;
+                const t = constructors.find(x => x.id === tId);
+                if (t) {
+                    t.points = val;
+                    updateAllViews();
+                }
+            });
+        });
+    }
+
+    // ----------------------------------------------------
+    // Clinch Scenarios Engine
+    // ----------------------------------------------------
+    function renderClinchScenarios(rem) {
+        const leader = drivers[0];
+        const rivals = drivers.slice(1).filter(d => (d.points + rem.wdcTotal) >= leader.points);
+        const closestRival = rivals[0];
+
+        const container = document.getElementById('scenarios-content');
+        const alertBanner = document.getElementById('clinch-alert-banner');
+
+        if (!closestRival) {
+            // Already clinched!
+            alertBanner.style.display = 'block';
+            document.getElementById('clinch-alert-title').innerText = `${leader.name} has already mathematically CLINCHED the Drivers' World Championship!`;
+            document.getElementById('clinch-alert-desc').innerText = `No rival can match ${leader.name}'s point total.`;
+            container.innerHTML = `
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: var(--radius-md); padding: 2rem; text-align: center;">
+                    <h2 style="color: #34d399; margin: 0 0 0.5rem;">🏆 CHAMPIONSHIP DECIDED</h2>
+                    <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">${leader.name} cannot be caught under any mathematical permutation of the remaining races.</p>
+                </div>
+            `;
+            return;
+        }
+
+        const delta = leader.points - closestRival.points;
+        const event = CALENDAR[currentRound - 1];
+        const futureGPs = CALENDAR.slice(currentRound).length;
+
+        // Is clinch feasible this weekend?
+        // Feasible if delta + weekendMax >= futureRemaining
+        const isFeasible = (delta + rem.wdcCurrent >= rem.wdcFuture);
+
+        if (!isFeasible) {
+            alertBanner.style.display = 'none';
+            container.innerHTML = `
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 2rem; text-align: center;">
+                    <span style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">⏳</span>
+                    <h3 style="color: var(--text-bright); margin: 0 0 0.5rem;">Title Cannot Be Clinched at the ${event.name}</h3>
+                    <p style="color: var(--text-muted); max-width: 650px; margin: 0 auto; line-height: 1.6;">
+                        Even if <strong>${leader.name}</strong> scores maximum points (${rem.wdcCurrent} pts) and <strong>${closestRival.name}</strong> scores 0 pts, the lead would be <strong>${delta + rem.wdcCurrent} pts</strong>, which is less than the <strong>${rem.wdcFuture} pts</strong> remaining after this weekend.
+                    </p>
+                    <div style="margin-top: 1.5rem; display: inline-flex; gap: 1rem; background: rgba(0,0,0,0.25); padding: 0.8rem 1.4rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                        <div><span style="color: var(--text-muted);">Current Gap:</span> <strong style="color: var(--accent-cyan); font-family: var(--font-mono);">${delta} pts</strong></div>
+                        <div><span style="color: var(--text-muted);">Max Gap After Weekend:</span> <strong style="color: var(--accent-cyan); font-family: var(--font-mono);">${delta + rem.wdcCurrent} pts</strong></div>
+                        <div><span style="color: var(--text-muted);">Required for Clinch:</span> <strong style="color: #f87171; font-family: var(--font-mono);">${rem.wdcFuture} pts</strong></div>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        // Clinch is feasible! Show alert banner
+        alertBanner.style.display = 'block';
+        document.getElementById('clinch-alert-title').innerText = `${leader.name} can clinch the Drivers' World Championship at the ${event.name}!`;
+        document.getElementById('clinch-alert-desc').innerText = `Current margin: +${delta} pts. Points remaining after this weekend: ${rem.wdcFuture} pts.`;
+
+        let scenariosHtml = `
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.25rem; color: var(--accent-cyan);">Clinch Scenarios: ${event.name} (Round ${currentRound})</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0.2rem 0 0;">
+                            Formula: <code>(Leader Points + Weekend Score) - (Rival Points + Weekend Score) &ge; ${rem.wdcFuture} pts</code>
+                        </p>
+                    </div>
+                    <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.4rem 0.9rem; border-radius: 6px; font-weight: 800; font-family: var(--font-mono); font-size: 0.9rem;">
+                        Magic Lead: &ge; ${rem.wdcFuture} pts
+                    </div>
+                </div>
+
+                <div style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1.2rem;">
+                    Showing required finish pairings between Leader (${leader.name}) and primary rival (${closestRival.name}):
+                </div>
+
+                <div class="scenarios-list">
+        `;
+
+        // Check each leader position P1 to P10 and P11+
+        const positions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+
+        positions.forEach(lPos => {
+            const lPts = getGPPoints(lPos);
+            const posLabel = lPos <= 10 ? `P${lPos}` : 'P11+ / DNF';
+
+            // Countback tiebreaker analysis
+            const hypLeaderWins = (leader.wins || 0) + (lPos === 1 ? 1 : 0);
+            const rivalMaxWins = (closestRival.wins || 0) + futureGPs + (lPos !== 1 ? 1 : 0);
+            const epsilon = hypLeaderWins > rivalMaxWins ? 0 : 1;
+
+            const ceiling = delta + lPts - rem.wdcFuture - epsilon;
+
+            if (ceiling < 0) {
+                scenariosHtml += `
+                    <div class="scenario-card" style="opacity: 0.65;">
+                        <div>
+                            <span style="font-weight: 800; font-size: 1.2rem; font-family: var(--font-mono); color: var(--text-dim);">${posLabel}</span>
+                            <span style="display: block; font-size: 0.75rem; color: var(--text-dim); font-family: var(--font-mono);">${lPts} pts</span>
+                        </div>
+                        <div>
+                            <strong style="color: #f87171; display: block; margin-bottom: 2px;">❌ Cannot Clinch Title</strong>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">Points earned are insufficient to mathematically seal the championship this weekend.</span>
+                        </div>
+                        <div>
+                            <strong style="color: #34d399; display: block; margin-bottom: 2px;">Title Fight Stays Alive</strong>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">${closestRival.code} keeps mathematical hopes alive into next round.</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                const possible = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].filter(p => p !== lPos);
+                const allowed = possible.filter(p => getGPPoints(p) <= ceiling);
+
+                let clinchDesc = '';
+                let preventDesc = '';
+
+                if (allowed.length === possible.length) {
+                    clinchDesc = `<strong>Guaranteed Title!</strong> Clinches regardless of ${closestRival.code}'s finishing position.`;
+                    preventDesc = `Cannot prevent clinch (${closestRival.code} is mathematically out of contention).`;
+                } else {
+                    const bestAllowed = allowed[0];
+                    if (bestAllowed === 11) {
+                        clinchDesc = `<strong>${closestRival.code} finishes P11 or lower</strong> (scores 0 points).`;
+                    } else {
+                        clinchDesc = `<strong>${closestRival.code} finishes P${bestAllowed} or lower</strong> (&le; ${getGPPoints(bestAllowed)} pts).`;
+                    }
+
+                    const prevent = possible.filter(p => getGPPoints(p) > ceiling);
+                    const worstPrevent = prevent[prevent.length - 1];
+                    if (prevent.length === 1) {
+                        preventDesc = `<strong>${closestRival.code} must finish P${worstPrevent}</strong> to keep title alive.`;
+                    } else if (worstPrevent === 10) {
+                        preventDesc = `<strong>${closestRival.code} must score at least 1 pt</strong> (P10 or higher).`;
+                    } else {
+                        preventDesc = `<strong>${closestRival.code} must finish P${worstPrevent} or higher</strong> (&ge; ${getGPPoints(worstPrevent)} pts).`;
+                    }
+                }
+
+                scenariosHtml += `
+                    <div class="scenario-card" style="border-left: 4px solid var(--accent-cyan);">
+                        <div>
+                            <span style="font-weight: 800; font-size: 1.25rem; font-family: var(--font-mono); color: var(--accent-cyan);">${posLabel}</span>
+                            <span style="display: block; font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">${lPts} pts</span>
+                        </div>
+                        <div>
+                            <strong style="color: #34d399; display: block; margin-bottom: 2px;">🏆 Circumstances to Win Championship:</strong>
+                            <span style="font-size: 0.88rem; color: var(--text-main);">${clinchDesc}</span>
+                        </div>
+                        <div>
+                            <strong style="color: #f87171; display: block; margin-bottom: 2px;">🛑 What Rival Must Do to PREVENT It:</strong>
+                            <span style="font-size: 0.88rem; color: var(--text-main);">${preventDesc}</span>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+
+        scenariosHtml += `
+                </div>
+            </div>
+        `;
+
+        container.innerHTML = scenariosHtml;
+    }
+
+    // ----------------------------------------------------
+    // Race Weekend Simulator
+    // ----------------------------------------------------
+    function renderSimulatorSelectors() {
+        const grid = document.getElementById('sim-selectors-grid');
+        grid.innerHTML = '';
+
+        // Generate selectors for top 10 positions
+        for (let p = 1; p <= 10; p++) {
+            const div = document.createElement('div');
+            div.style.background = 'rgba(0,0,0,0.2)';
+            div.style.border = '1px solid var(--border-color)';
+            div.style.padding = '0.5rem 0.8rem';
+            div.style.borderRadius = '6px';
+
+            const defaultDriver = drivers[p - 1] ? drivers[p - 1].id : '';
+
+            div.innerHTML = `
+                <label style="display: block; font-size: 0.75rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 0.2rem; font-family: var(--font-mono);">POSITION P${p} (${getGPPoints(p)} pts)</label>
+                <select class="sim-pos-select" data-pos="${p}" style="width: 100%; background: var(--bg-dark); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.35rem; border-radius: 4px; font-size: 0.85rem;">
+                    ${drivers.map(d => `<option value="${d.id}" ${d.id === defaultDriver ? 'selected' : ''}>${d.code} - ${d.name}</option>`).join('')}
+                </select>
+            `;
+            grid.appendChild(div);
+        }
+    }
+
+    function runSimulation() {
+        const posSelects = document.querySelectorAll('.sim-pos-select');
+        const simulatedFinishes = [];
+        const seenDrivers = new Set();
+
+        posSelects.forEach(sel => {
+            const pos = parseInt(sel.getAttribute('data-pos'), 10);
+            const driverId = sel.value;
+            if (!seenDrivers.has(driverId)) {
+                seenDrivers.add(driverId);
+                simulatedFinishes.push({ driverId, pos, pts: getGPPoints(pos) });
+            }
+        });
+
+        // Apply simulated points clone
+        const simDrivers = JSON.parse(JSON.stringify(drivers));
+        simulatedFinishes.forEach(fin => {
+            const d = simDrivers.find(x => x.id === fin.driverId);
+            if (d) {
+                d.points += fin.pts;
+                if (fin.pos === 1) d.wins = (d.wins || 0) + 1;
+            }
+        });
+
+        simDrivers.sort((a, b) => b.points - a.points);
+        const newLeader = simDrivers[0];
+        const nextRound = Math.min(CALENDAR.length, currentRound + 1);
+        const nextRem = calculatePointsRemaining(nextRound);
+
+        // Check who got eliminated
+        const newlyEliminated = [];
+        simDrivers.slice(1).forEach(d => {
+            const wasAlive = (d.points + calculatePointsRemaining(currentRound).wdcTotal) >= drivers[0].points;
+            const nowEliminated = (d.points + nextRem.wdcTotal) < newLeader.points;
+            if (wasAlive && nowEliminated) {
+                newlyEliminated.push(d.name);
+            }
+        });
+
+        const output = document.getElementById('sim-results-output');
+        const summary = document.getElementById('sim-summary-text');
+        output.style.display = 'block';
+
+        let html = `<strong>New Championship Leader:</strong> ${newLeader.name} (${newLeader.points} pts)<br>`;
+        if (simDrivers[1] && (simDrivers[1].points + nextRem.wdcTotal) < newLeader.points) {
+            html += `<span style="color: #fbbf24; font-weight: 800; font-size: 1.1rem; display: block; margin-top: 0.4rem;">🏆 CHAMPIONSHIP CLINCHED! ${newLeader.name} is the 2026 World Champion!</span>`;
+        } else {
+            html += `<span style="color: #38bdf8;">Lead over P2 (${simDrivers[1].name}): +${newLeader.points - simDrivers[1].points} pts. Points remaining: ${nextRem.wdcTotal} pts.</span><br>`;
+        }
+
+        if (newlyEliminated.length > 0) {
+            html += `<span style="color: #f87171; display: block; margin-top: 0.4rem;"><strong>Newly Eliminated Drivers this weekend:</strong> ${newlyEliminated.join(', ')}</span>`;
+        } else {
+            html += `<span style="color: var(--text-muted); display: block; margin-top: 0.4rem;">No additional contenders were eliminated this weekend.</span>`;
+        }
+
+        summary.innerHTML = html;
+    }
+
+    // ----------------------------------------------------
+    // Event Listeners & Tab Navigation
+    // ----------------------------------------------------
+    // Populate Round Select
+    const roundSelect = document.getElementById('round-select');
+    CALENDAR.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.round;
+        opt.innerText = `R${c.round}: ${c.name} (${c.circuit})${c.hasSprint ? ' ⚡ SPRINT' : ''}`;
+        if (c.round === currentRound) opt.selected = true;
+        roundSelect.appendChild(opt);
+    });
+
+    roundSelect.addEventListener('change', (e) => {
+        currentRound = parseInt(e.target.value, 10);
+        updateAllViews();
+    });
+
+    // Preset Buttons
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const pKey = e.currentTarget.getAttribute('data-preset');
+            const data = PRESETS[pKey];
+            if (data) {
+                currentRound = data.round;
+                roundSelect.value = currentRound;
+                drivers = JSON.parse(JSON.stringify(data.drivers));
+                constructors = JSON.parse(JSON.stringify(data.constructors));
+                updateAllViews();
+            }
+        });
+    });
+
+    document.getElementById('btn-reset-data').addEventListener('click', () => {
+        const data = PRESETS['las-vegas'];
+        currentRound = data.round;
+        roundSelect.value = currentRound;
+        drivers = JSON.parse(JSON.stringify(data.drivers));
+        constructors = JSON.parse(JSON.stringify(data.constructors));
+        updateAllViews();
+    });
+
+    document.getElementById('btn-jump-scenarios').addEventListener('click', () => {
+        switchTab('scenarios');
+    });
+
+    document.getElementById('btn-apply-simulation').addEventListener('click', runSimulation);
+
+    // Tab Switching
+    function switchTab(tabId) {
+        document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+            if (btn.getAttribute('data-tab') === tabId) {
+                btn.classList.add('active');
+                btn.style.borderBottomColor = 'var(--accent-cyan)';
+                btn.style.color = 'var(--accent-cyan)';
+            } else {
+                btn.classList.remove('active');
+                btn.style.borderBottomColor = 'transparent';
+                btn.style.color = 'var(--text-muted)';
+            }
+        });
+
+        document.querySelectorAll('.tab-pane').forEach(p => {
+            p.style.display = (p.id === `tab-${tabId}`) ? 'block' : 'none';
+        });
+    }
+
+    document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            switchTab(e.currentTarget.getAttribute('data-tab'));
+        });
+    });
+
+    // Initial render
+    updateAllViews();
+})();
+</script>

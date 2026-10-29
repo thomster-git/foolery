@@ -42,12 +42,12 @@ Currently, only 5 melodies have visual badge artwork mapped in `loadOotSong()` (
 **Assets Needed to Create / Source in `website/static/images/website-assets/`:**
 - [x] **`water-medallion.svg`**: Water Medallion (for `oot-serenade` / Serenade of Water) ✅
 - [x] **`shadow-medallion.svg`**: Shadow Medallion (for `oot-nocturne` / Nocturne of Shadow) ✅
-- [ ] **`spirit-medallion.svg`**: Spirit Medallion (for `oot-requiem` / Requiem of Spirit)
+- [x] **`spirit-medallion.svg`**: Spirit Medallion (for `oot-requiem` / Requiem of Spirit) ✅
 - [x] **`light-medallion.svg`**: Light Medallion (for `oot-prelude` / Prelude of Light) ✅
-- [ ] **`sun-symbol.svg`**: Sun emblem / dawn icon (for `oot-sun` / Sun's Song)
-- [ ] **`time-symbol.svg`**: Ocarina of Time / Temple of Time icon (for `oot-time` / Song of Time)
-- [ ] **`storms-symbol.svg`**: Windmill / storm cloud icon (for `oot-storms` / Song of Storms)
-- [ ] **`scarecrow.svg`**: Pierre & Bonooru straw hat icon (for `oot-scarecrow` / Scarecrow's Song)
+- [x] **`sun.svg`**: Sun emblem / dawn icon (for `oot-sun` / Sun's Song) ✅
+- [x] **`master-sword.svg`**: Master Sword icon (for `oot-time` / Song of Time) ✅
+- [x] **`storms.svg`**: Windmill / storm cloud icon (for `oot-storms` / Song of Storms) ✅
+- [x] **`scarecrow.svg`**: Pierre & Bonooru straw hat icon (for `oot-scarecrow` / Scarecrow's Song) ✅
 
 ---
 
@@ -58,7 +58,7 @@ The goal is to compose/add **complete, multi-measure playable pieces** in the ma
 
 - [ ] **Ocarina of Time Start Menu / Title Screen Theme**
   - *Structure:* The iconic introductory piano & ocarina duet that plays when the N64 game boots up. Needs full A and B melodies arranged for Alto C.
-- [ ] **Saria's Song (Lost Woods Theme)**
+- [x] **Saria's Song (Lost Woods Theme)** ✅
   - *Structure:* Extended beyond the opening `F5-A5-B5 F5-A5-B5` cue to include the playful syncopated bridge and looping chorus.
 - [ ] **Song of Time (Temple of Time Choral Theme)**
   - *Structure:* Extended beyond the 6-note cue into the full solemn Dorian hymn.

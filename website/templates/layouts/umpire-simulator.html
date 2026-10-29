@@ -1,0 +1,1205 @@
+<div class="page-container" style="width: 100%;">
+    <div class="content-wrapper tool-layout" style="width: 100%; max-width: 1200px; margin: 1.5rem auto; padding: 0 1rem;">
+        
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "Interactive Baseball Umpire Simulator",
+          "url": "https://thomsfoolery.com/tools/umpire-simulator/",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Any",
+          "offers": {
+            "@type": "Offer",
+            "price": "0"
+          },
+          "description": "Step behind the plate in 3D perspective and test your strike zone accuracy against realistic 95mph fastballs, sharp sliders, and looping curveballs."
+        }
+        </script>
+
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs" style="margin-bottom: 1.5rem;">
+            <a href="/">Home</a> &gt;
+            <a href="/tools/">Tools</a> &gt;
+            <span>Umpire Simulator</span>
+        </div>
+
+        <!-- Header -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.5rem; margin-bottom: 1.5rem;">
+            <div>
+                <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem;">
+                    <span style="font-size: 2rem;">⚾</span>
+                    <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--accent-cyan); margin: 0;">MLB Umpire Simulator</h1>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0;">
+                    Step into the crouch behind home plate. Read the pitch out of the hand, track its flight, and call Strike or Ball.
+                </p>
+            </div>
+
+            <!-- Header Quick Stats Pill -->
+            <div style="display: flex; gap: 0.8rem; align-items: center;">
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.4rem 0.9rem; border-radius: var(--radius-sm); text-align: center;">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display: block;">Accuracy</span>
+                    <span id="quick-acc" style="font-size: 1.3rem; font-weight: 800; color: var(--accent-cyan);">100%</span>
+                </div>
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.4rem 0.9rem; border-radius: var(--radius-sm); text-align: center;">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display: block;">Pitches</span>
+                    <span id="quick-pitches" style="font-size: 1.3rem; font-weight: 800; color: var(--text-bright);">0</span>
+                </div>
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.4rem 0.9rem; border-radius: var(--radius-sm); text-align: center;">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display: block;">Streak</span>
+                    <span id="quick-streak" style="font-size: 1.3rem; font-weight: 800; color: #10b981;">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulator Viewport & Primary Interactive Container -->
+        <div style="position: relative; background: #070b14; border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4); margin-bottom: 1.5rem;">
+            
+            <!-- Canvas Container -->
+            <div style="position: relative; width: 100%; aspect-ratio: 16/9; max-height: 600px; min-height: 380px;">
+                <canvas id="umpire-canvas" style="width: 100%; height: 100%; display: block; cursor: crosshair;"></canvas>
+
+                <!-- In-Canvas HUD: Radar Gun Display -->
+                <div id="radar-hud" style="position: absolute; top: 1.2rem; right: 1.2rem; background: rgba(0, 0, 0, 0.75); border: 1px solid rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); padding: 0.5rem 1rem; border-radius: 8px; text-align: right; pointer-events: none;">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); letter-spacing: 1px; font-weight: 700;">STATCAST RADAR</div>
+                    <div id="radar-mph" style="font-family: var(--font-mono); font-size: 1.8rem; font-weight: 900; color: #fbbf24; line-height: 1;">-- <span style="font-size: 0.9rem; color: #94a3b8;">MPH</span></div>
+                    <div id="radar-pitch-name" style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700;">Ready</div>
+                </div>
+
+                <!-- In-Canvas Verdict Banner (Overlaid right as pitch crosses) -->
+                <div id="verdict-banner" style="display: none; position: absolute; top: 18%; left: 50%; transform: translate(-50%, -50%); padding: 0.8rem 2rem; border-radius: 12px; font-family: var(--font-sans); font-size: 1.8rem; font-weight: 900; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); text-align: center; pointer-events: none; z-index: 20; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div id="verdict-title">STRIKE!</div>
+                    <div id="verdict-subtitle" style="font-size: 0.95rem; font-weight: 600; margin-top: 0.2rem; opacity: 0.95;"></div>
+                </div>
+
+                <!-- Call Prompt / Big Action Overlay during CALL_WINDOW -->
+                <div id="call-prompt-overlay" style="display: none; position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%); z-index: 25; text-align: center;">
+                    <div style="color: #fff; font-weight: 800; font-size: 1.1rem; text-shadow: 0 2px 6px #000; margin-bottom: 0.6rem;">MAKE YOUR CALL!</div>
+                    <div style="display: flex; gap: 1rem; justify-content: center;">
+                        <button id="overlay-btn-strike" style="background: #ef4444; color: white; border: 2px solid #b91c1c; font-size: 1.2rem; font-weight: 900; padding: 0.7rem 1.8rem; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); transition: transform 0.1s;">
+                            🔴 STRIKE <kbd style="background: rgba(0,0,0,0.3); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">S</kbd>
+                        </button>
+                        <button id="overlay-btn-ball" style="background: #10b981; color: white; border: 2px solid #047857; font-size: 1.2rem; font-weight: 900; padding: 0.7rem 1.8rem; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); transition: transform 0.1s;">
+                            🟢 BALL <kbd style="background: rgba(0,0,0,0.3); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">B</kbd>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pitch Delivery Action Button (When idle / ready) -->
+                <div id="pitch-action-overlay" style="position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); z-index: 15;">
+                    <button id="btn-throw-pitch" style="background: var(--accent-cyan); color: #000; border: none; font-size: 1.1rem; font-weight: 900; padding: 0.75rem 2rem; border-radius: 30px; cursor: pointer; box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4); display: inline-flex; align-items: center; gap: 0.5rem; transition: transform 0.15s, background 0.15s;">
+                        <span>⚾</span> THROW PITCH <kbd style="background: rgba(0,0,0,0.15); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Space</kbd>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Direct Control Bar underneath the Canvas -->
+            <div style="background: rgba(15, 23, 42, 0.95); border-top: 1px solid var(--border-color); padding: 0.8rem 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+                
+                <!-- Left: Call Buttons -->
+                <div style="display: flex; gap: 0.6rem; align-items: center;">
+                    <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-right: 0.2rem;">CALL:</span>
+                    <button id="btn-call-strike" class="btn" style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; font-weight: 800; padding: 0.45rem 1rem; border-radius: 6px; cursor: pointer;">
+                        🔴 Strike (S)
+                    </button>
+                    <button id="btn-call-ball" class="btn" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; font-weight: 800; padding: 0.45rem 1rem; border-radius: 6px; cursor: pointer;">
+                        🟢 Ball (B)
+                    </button>
+                    <button id="btn-next-pitch" class="btn" style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-bright); font-weight: 700; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; display: none;">
+                        Next Pitch ⏭️ (Space)
+                    </button>
+                </div>
+
+                <!-- Right: Practice & Visual Toggles -->
+                <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center;">
+                    <!-- Speed Mode -->
+                    <div style="display: flex; align-items: center; gap: 0.35rem;">
+                        <label for="speed-select" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">SPEED:</label>
+                        <select id="speed-select" style="background: var(--bg-dark); color: var(--text-bright); border: 1px solid var(--border-color); padding: 0.35rem 0.5rem; border-radius: 4px; font-size: 0.82rem; cursor: pointer;">
+                            <option value="1.0">Game Speed (100%)</option>
+                            <option value="0.75">Practice (75%)</option>
+                            <option value="0.5">Slow-Mo (50%)</option>
+                        </select>
+                    </div>
+
+                    <!-- Batter Stance -->
+                    <div style="display: flex; align-items: center; gap: 0.35rem;">
+                        <label for="batter-select" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">BATTER:</label>
+                        <select id="batter-select" style="background: var(--bg-dark); color: var(--text-bright); border: 1px solid var(--border-color); padding: 0.35rem 0.5rem; border-radius: 4px; font-size: 0.82rem; cursor: pointer;">
+                            <option value="RHH">Right-Handed</option>
+                            <option value="LHH">Left-Handed</option>
+                        </select>
+                    </div>
+
+                    <!-- Pitch Selection -->
+                    <div style="display: flex; align-items: center; gap: 0.35rem;">
+                        <label for="pitch-type-select" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">PITCH:</label>
+                        <select id="pitch-type-select" style="background: var(--bg-dark); color: var(--text-bright); border: 1px solid var(--border-color); padding: 0.35rem 0.5rem; border-radius: 4px; font-size: 0.82rem; cursor: pointer;">
+                            <option value="RANDOM">🎲 Random Arsenal</option>
+                            <option value="FASTBALL">🔥 4-Seam Fastball (95 mph)</option>
+                            <option value="SLIDER">🌪️ Slider (85 mph)</option>
+                            <option value="CURVEBALL">🪝 12-6 Curveball (78 mph)</option>
+                            <option value="CHANGEUP">🍃 Circle Changeup (84 mph)</option>
+                        </select>
+                    </div>
+
+                    <!-- Strike Zone Overlay Toggle -->
+                    <label style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 700; cursor: pointer;">
+                        <input type="checkbox" id="chk-show-zone" style="cursor: pointer;">
+                        Show Box in Flight
+                    </label>
+
+                    <!-- Pitch Trail Toggle -->
+                    <label style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 700; cursor: pointer;">
+                        <input type="checkbox" id="chk-show-trail" checked style="cursor: pointer;">
+                        Pitch Trail
+                    </label>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Lower Section: Statcast Pitch Breakdown & Comprehensive Umpire Scorecard -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            
+            <!-- Pitch Breakdown & Statcast Card -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.6rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.2rem;">📡</span>
+                        <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-bright);">Statcast Pitch Breakdown</h3>
+                    </div>
+                    <span id="stat-subzone-badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); font-weight: 800; font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">Awaiting Pitch</span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem;">
+                    <div>
+                        <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Pitch Type</div>
+                        <div id="stat-pitch-type" style="font-size: 1.1rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">--</div>
+                    </div>
+                    <div>
+                        <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Release Velocity</div>
+                        <div id="stat-velo" style="font-size: 1.1rem; font-weight: 800; color: #fbbf24; margin-top: 2px;">--</div>
+                    </div>
+                    <div>
+                        <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Horizontal Break (pfx_x)</div>
+                        <div id="stat-pfx-x" style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">--</div>
+                    </div>
+                    <div>
+                        <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Induced Vertical Drop (IVB)</div>
+                        <div id="stat-pfx-z" style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">--</div>
+                    </div>
+                    <div>
+                        <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Spin Rate & Tilt</div>
+                        <div id="stat-spin" style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">--</div>
+                    </div>
+                    <div>
+                        <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Zone Edge Margin</div>
+                        <div id="stat-margin" style="font-size: 1rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">--</div>
+                    </div>
+                </div>
+
+                <div style="background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.8rem; font-size: 0.85rem; line-height: 1.5; color: var(--text-muted);">
+                    <strong style="color: var(--accent-cyan); display: block; margin-bottom: 0.2rem;">Rulebook Collision:</strong>
+                    Official MLB rules stipulate that if any 1.45" radius boundary of the sphere contacts the 17" pentagonal prism over home plate, the pitch is a legal strike.
+                </div>
+            </div>
+
+            <!-- Umpire Scorecard & Evaluation Analytics -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.6rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="font-size: 1.2rem;">📋</span>
+                        <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-bright);">Umpire Scorecard</h3>
+                    </div>
+                    <button id="btn-reset-scorecard" style="background: none; border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; cursor: pointer;">Reset Scorecard</button>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1.2rem;">
+                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; text-align: center;">
+                        <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Overall Acc</div>
+                        <div id="sc-overall-acc" style="font-size: 1.3rem; font-weight: 900; color: var(--accent-cyan); margin-top: 2px;">100%</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; text-align: center;">
+                        <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Strike Acc</div>
+                        <div id="sc-strike-acc" style="font-size: 1.3rem; font-weight: 900; color: #f87171; margin-top: 2px;">--</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; text-align: center;">
+                        <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Ball Acc</div>
+                        <div id="sc-ball-acc" style="font-size: 1.3rem; font-weight: 900; color: #34d399; margin-top: 2px;">--</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; text-align: center;">
+                        <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Shadow Zone</div>
+                        <div id="sc-shadow-acc" style="font-size: 1.3rem; font-weight: 900; color: #fbbf24; margin-top: 2px;">--</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; text-align: center;">
+                        <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Net Run Favor</div>
+                        <div id="sc-favor" style="font-size: 1.3rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">0.00</div>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; text-align: center;">
+                        <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Total Pitches</div>
+                        <div id="sc-total-count" style="font-size: 1.3rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">0</div>
+                    </div>
+                </div>
+
+                <!-- Recent Call History Reel -->
+                <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700; margin-bottom: 0.4rem;">Recent Pitches</div>
+                <div id="recent-pitches-reel" style="display: flex; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.4rem; min-height: 40px; align-items: center;">
+                    <span style="font-size: 0.8rem; color: var(--text-dim);">No pitches thrown yet. Press Throw Pitch to begin!</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<style>
+/* Responsive canvas styling */
+#umpire-canvas {
+    touch-action: none;
+}
+.call-badge-chip {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    font-family: var(--font-mono);
+    white-space: nowrap;
+}
+.call-correct {
+    background: rgba(34, 197, 94, 0.2);
+    border: 1px solid #22c55e;
+    color: #4ade80;
+}
+.call-wrong {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid #ef4444;
+    color: #f87171;
+}
+</style>
+
+<script>
+(function() {
+    // ----------------------------------------------------
+    // Web Audio Synthesizer for Leather Pop & Umpire Calls
+    // ----------------------------------------------------
+    let audioCtx = null;
+    function getAudioContext() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        return audioCtx;
+    }
+
+    function playCatcherPop(pitchSpeedMph = 95) {
+        try {
+            const ctx = getAudioContext();
+            const now = ctx.currentTime;
+            
+            // Noise burst for leather impact
+            const bufferSize = ctx.sampleRate * 0.08;
+            const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.2));
+            }
+            const noise = ctx.createBufferSource();
+            noise.buffer = buffer;
+
+            const filter = ctx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(800 + (pitchSpeedMph * 5), now);
+
+            const gain = ctx.createGain();
+            gain.gain.setValueAtTime(0.7, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(ctx.destination);
+            noise.start(now);
+        } catch(e) {}
+    }
+
+    function playVerdictSound(isCorrect) {
+        try {
+            const ctx = getAudioContext();
+            const now = ctx.currentTime;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            if (isCorrect) {
+                // Cheerful chime
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(587.33, now); // D5
+                osc.frequency.setValueAtTime(880.00, now + 0.08); // A5
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+            } else {
+                // Low thud
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(160, now);
+                osc.frequency.exponentialRampToValueAtTime(70, now + 0.25);
+                gain.gain.setValueAtTime(0.25, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+            }
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(now);
+            osc.stop(now + 0.35);
+        } catch(e) {}
+    }
+
+    // ----------------------------------------------------
+    // Baseball Physics & Pitch Arsenal (Statcast Models)
+    // ----------------------------------------------------
+    const PITCH_ARSENAL = {
+        FASTBALL: {
+            name: '4-Seam Fastball',
+            velo: 95.0,
+            rpm: 2350,
+            pfx_x: -7.5,
+            pfx_z: 17.5,
+            ay_drag: 26.0,
+            tilt: '12:45'
+        },
+        SLIDER: {
+            name: 'Slider',
+            velo: 85.0,
+            rpm: 2450,
+            pfx_x: 8.0,
+            pfx_z: 2.5,
+            ay_drag: 22.0,
+            tilt: '9:00'
+        },
+        CURVEBALL: {
+            name: '12-6 Curveball',
+            velo: 78.0,
+            rpm: 2600,
+            pfx_x: 1.5,
+            pfx_z: -14.0,
+            ay_drag: 20.0,
+            tilt: '6:00'
+        },
+        CHANGEUP: {
+            name: 'Circle Changeup',
+            velo: 84.0,
+            rpm: 1750,
+            pfx_x: -14.5,
+            pfx_z: 6.5,
+            ay_drag: 22.0,
+            tilt: '2:15'
+        }
+    };
+
+    const GRAVITY = 32.174; // ft/s^2
+    const BALL_RADIUS = 1.45 / 12.0; // 0.12083 ft (2.9" diameter)
+    const HALF_PLATE_WIDTH = 8.5 / 12.0; // 0.7083 ft (17" width)
+    const CORNER_Z = -8.5 / 12.0; // -0.7083 ft
+    const APEX_Z = -17.0 / 12.0; // -1.4167 ft
+    const SZ_BOT = 1.5; // ft (knees)
+    const SZ_TOP = 3.5; // ft (chest midpoint)
+
+    function solvePitchTrajectory(pitchConfig, targetX, targetY, isRHP = true, speedMultiplier = 1.0) {
+        const v0 = (pitchConfig.velo * speedMultiplier) * 1.467; // ft/s
+        const z0 = 54.0; // release distance (ft)
+        const y0 = 6.0;  // release height (ft)
+        const x0 = isRHP ? -1.8 : 1.8;
+        const ay_drag = pitchConfig.ay_drag;
+
+        const disc = v0 * v0 - 2 * ay_drag * z0;
+        const tf = (v0 - Math.sqrt(Math.max(0.001, disc))) / ay_drag;
+
+        const mult = isRHP ? 1.0 : -1.0;
+        const ax = ((pitchConfig.pfx_x * mult) / 12.0) / (0.5 * tf * tf);
+        const ay = ((pitchConfig.pfx_z) / 12.0) / (0.5 * tf * tf) - GRAVITY;
+
+        const vx0 = (targetX - x0 - 0.5 * ax * tf * tf) / tf;
+        const vy0 = (targetY - y0 - 0.5 * ay * tf * tf) / tf;
+        const vz0 = -v0;
+
+        return {
+            x0, y0, z0,
+            vx0, vy0, vz0,
+            ax, ay, az: ay_drag,
+            tf,
+            config: pitchConfig,
+            targetX, targetY,
+            isRHP
+        };
+    }
+
+    function getPitchPosition(traj, t) {
+        return {
+            x: traj.x0 + traj.vx0 * t + 0.5 * traj.ax * t * t,
+            y: traj.y0 + traj.vy0 * t + 0.5 * traj.ay * t * t,
+            z: traj.z0 + traj.vz0 * t + 0.5 * traj.az * t * t
+        };
+    }
+
+    // ----------------------------------------------------
+    // True Verdict: Swept Sphere Collision with Pentagonal Prism
+    // ----------------------------------------------------
+    function evaluateVerdict(trajectory) {
+        const steps = 120;
+        let isStrike = false;
+        let minMargin = Infinity;
+        let crossingPoint = null;
+
+        for (let i = 0; i <= steps; i++) {
+            const t = (trajectory.tf * 0.88) + (trajectory.tf * 0.22) * (i / steps);
+            const pos = getPitchPosition(trajectory, t);
+
+            if (pos.z <= (0.0 + BALL_RADIUS) && pos.z >= (APEX_Z - BALL_RADIUS)) {
+                if (!crossingPoint && pos.z <= 0.0) {
+                    crossingPoint = { ...pos, t };
+                }
+
+                // Vertical check
+                const inY = (pos.y >= (SZ_BOT - BALL_RADIUS)) && (pos.y <= (SZ_TOP + BALL_RADIUS));
+                let inHoriz = false;
+
+                if (inY) {
+                    // Front rectangular section
+                    if (pos.z >= CORNER_Z && pos.z <= 0.0) {
+                        inHoriz = Math.abs(pos.x) <= (HALF_PLATE_WIDTH + BALL_RADIUS);
+                    }
+                    // Front edge cap
+                    else if (pos.z > 0.0 && pos.z <= BALL_RADIUS) {
+                        const dx = Math.max(0, Math.abs(pos.x) - HALF_PLATE_WIDTH);
+                        inHoriz = Math.hypot(dx, pos.z) <= BALL_RADIUS;
+                    }
+                    // Rear angled bevel
+                    else if (pos.z < CORNER_Z && pos.z >= (APEX_Z - BALL_RADIUS)) {
+                        const distToBevel = (Math.abs(pos.x) - (pos.z - APEX_Z)) / Math.SQRT2;
+                        inHoriz = distToBevel <= BALL_RADIUS;
+                    }
+                }
+
+                if (inY && inHoriz) {
+                    isStrike = true;
+                }
+
+                // Margin to 2D front rectangle
+                const dx = Math.max(0, Math.abs(pos.x) - HALF_PLATE_WIDTH);
+                const dy = Math.max(0, SZ_BOT - pos.y, pos.y - SZ_TOP);
+                const margin = Math.hypot(dx, dy) - BALL_RADIUS;
+                if (margin < minMargin) {
+                    minMargin = margin;
+                }
+            }
+        }
+
+        const marginInches = minMargin * 12.0;
+        let subZone = 'HEART';
+        if (marginInches < -1.45) subZone = 'HEART';
+        else if (marginInches <= 1.45) subZone = 'SHADOW'; // Borderline edge pitch
+        else if (marginInches <= 4.35) subZone = 'CHASE';
+        else subZone = 'WASTE';
+
+        return {
+            isTrueStrike: isStrike,
+            crossingPoint: crossingPoint || getPitchPosition(trajectory, trajectory.tf),
+            marginInches: marginInches,
+            subZone: subZone
+        };
+    }
+
+    // ----------------------------------------------------
+    // Perspective Camera & Canvas Viewport
+    // ----------------------------------------------------
+    class PerspectiveCamera {
+        constructor() {
+            this.x = 0.0;
+            this.y = 3.85; // ft (umpire eye level in crouch)
+            this.z = -5.20; // ft (behind plate)
+            this.pitchAngle = -5.5 * (Math.PI / 180);
+            this.cosPitch = Math.cos(this.pitchAngle);
+            this.sinPitch = Math.sin(this.pitchAngle);
+            this.fovY = 60 * (Math.PI / 180);
+        }
+
+        update(w, h) {
+            this.width = w;
+            this.height = h;
+            this.fy = (h / 2.0) / Math.tan(this.fovY / 2.0);
+            this.cx = w / 2.0;
+            this.cy = h * 0.40; // horizon at 40%
+        }
+
+        project(wx, wy, wz) {
+            const dx = wx - this.x;
+            const dy = wy - this.y;
+            const dz = wz - this.z;
+
+            const yCam = dy * this.cosPitch - dz * this.sinPitch;
+            const zCam = dy * this.sinPitch + dz * this.cosPitch;
+
+            if (zCam <= 0.1) return null;
+
+            const scale = this.fy / zCam;
+            return {
+                px: this.cx + dx * scale,
+                py: this.cy - yCam * scale,
+                scale: scale,
+                zCam: zCam
+            };
+        }
+    }
+
+    // ----------------------------------------------------
+    // Simulation State & Game Loop
+    // ----------------------------------------------------
+    const canvas = document.getElementById('umpire-canvas');
+    const ctx = canvas.getContext('2d');
+    const camera = new PerspectiveCamera();
+
+    let state = {
+        phase: 'READY', // 'READY', 'WINDUP', 'IN_FLIGHT', 'CALL_WINDOW', 'VERDICT'
+        pitchTrajectory: null,
+        trueVerdict: null,
+        flightProgress: 0.0,
+        startTime: 0,
+        windupDuration: 1000, // ms
+        flightDuration: 400,  // ms (computed from physics)
+        userCall: null,
+        isReplay: false,
+        streak: 0,
+        // Configs
+        speedSetting: 1.0,
+        batterHandedness: 'RHH',
+        pitchTypeSetting: 'RANDOM',
+        showZoneInFlight: false,
+        showTrail: true,
+        mittTarget: { x: 0.0, y: 2.5 }
+    };
+
+    const scorecard = {
+        total: 0,
+        correct: 0,
+        calledStrikes: 0,
+        correctStrikes: 0,
+        calledBalls: 0,
+        correctBalls: 0,
+        shadowPitches: 0,
+        correctShadow: 0,
+        netFavor: 0.0,
+        history: []
+    };
+
+    function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.resetTransform ? ctx.resetTransform() : ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(dpr, dpr);
+        camera.update(rect.width, rect.height);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // ----------------------------------------------------
+    // Generator: Random Statcast Pitch Targets
+    // ----------------------------------------------------
+    function generateTargetLocation() {
+        // Generates realistic target distributions:
+        // ~50% edge/borderline pitches to challenge the umpire, ~30% in zone, ~20% clear chase
+        const roll = Math.random();
+        let targetX, targetY;
+
+        if (roll < 0.50) {
+            // Shadow / Borderline pitch (within 2-3 inches of edge)
+            const edgeSide = Math.random();
+            if (edgeSide < 0.25) {
+                // Left edge
+                targetX = -HALF_PLATE_WIDTH + (Math.random() * 0.4 - 0.2);
+                targetY = SZ_BOT + Math.random() * (SZ_TOP - SZ_BOT);
+            } else if (edgeSide < 0.50) {
+                // Right edge
+                targetX = HALF_PLATE_WIDTH + (Math.random() * 0.4 - 0.2);
+                targetY = SZ_BOT + Math.random() * (SZ_TOP - SZ_BOT);
+            } else if (edgeSide < 0.75) {
+                // High edge
+                targetX = (Math.random() * 2 - 1) * HALF_PLATE_WIDTH;
+                targetY = SZ_TOP + (Math.random() * 0.4 - 0.2);
+            } else {
+                // Low edge (knees)
+                targetX = (Math.random() * 2 - 1) * HALF_PLATE_WIDTH;
+                targetY = SZ_BOT + (Math.random() * 0.4 - 0.2);
+            }
+        } else if (roll < 0.80) {
+            // Heart of strike zone
+            targetX = (Math.random() * 2 - 1) * (HALF_PLATE_WIDTH * 0.7);
+            targetY = SZ_BOT + 0.3 + Math.random() * (SZ_TOP - SZ_BOT - 0.6);
+        } else {
+            // Clear Ball (Chase/Waste)
+            const angle = Math.random() * Math.PI * 2;
+            const r = 1.0 + Math.random() * 0.8;
+            targetX = Math.cos(angle) * r;
+            targetY = 2.5 + Math.sin(angle) * r;
+        }
+
+        return { x: targetX, y: targetY };
+    }
+
+    function throwNewPitch() {
+        getAudioContext(); // user gesture unlock
+        
+        // Pitch configuration
+        let pKey = state.pitchTypeSetting;
+        if (pKey === 'RANDOM') {
+            const keys = Object.keys(PITCH_ARSENAL);
+            pKey = keys[Math.floor(Math.random() * keys.length)];
+        }
+        const pitchConfig = PITCH_ARSENAL[pKey] || PITCH_ARSENAL.FASTBALL;
+
+        const target = generateTargetLocation();
+        state.mittTarget = { ...target };
+
+        const isRHP = Math.random() > 0.3; // mostly RHP
+        const traj = solvePitchTrajectory(pitchConfig, target.x, target.y, isRHP, state.speedSetting);
+        const verdict = evaluateVerdict(traj);
+
+        state.pitchTrajectory = traj;
+        state.trueVerdict = verdict;
+        state.flightProgress = 0.0;
+        state.flightDuration = (traj.tf / state.speedSetting) * 1000; // ms
+        state.userCall = null;
+        state.isReplay = false;
+        state.phase = 'WINDUP';
+        state.startTime = performance.now();
+
+        // UI Updates
+        document.getElementById('radar-mph').innerHTML = `${pitchConfig.velo} <span style="font-size: 0.9rem; color: #94a3b8;">MPH</span>`;
+        document.getElementById('radar-pitch-name').innerText = pitchConfig.name;
+        document.getElementById('pitch-action-overlay').style.display = 'none';
+        document.getElementById('call-prompt-overlay').style.display = 'none';
+        document.getElementById('verdict-banner').style.display = 'none';
+        document.getElementById('btn-next-pitch').style.display = 'none';
+    }
+
+    function makeCall(callType) {
+        if (state.phase !== 'CALL_WINDOW' && state.phase !== 'IN_FLIGHT') {
+            return;
+        }
+
+        state.userCall = callType;
+        state.phase = 'VERDICT';
+        state.isReplay = true;
+
+        const isCorrect = (callType === (state.trueVerdict.isTrueStrike ? 'STRIKE' : 'BALL'));
+        if (isCorrect) {
+            state.streak++;
+        } else {
+            state.streak = 0;
+        }
+
+        playVerdictSound(isCorrect);
+        recordScorecard(callType, state.trueVerdict, state.pitchTrajectory);
+        displayVerdict(isCorrect, callType, state.trueVerdict);
+
+        // Show Next Pitch button
+        document.getElementById('call-prompt-overlay').style.display = 'none';
+        document.getElementById('btn-next-pitch').style.display = 'inline-block';
+        document.getElementById('pitch-action-overlay').style.display = 'block';
+        document.getElementById('btn-throw-pitch').innerHTML = '<span>⏭️</span> NEXT PITCH <kbd style="background: rgba(0,0,0,0.15); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Space</kbd>';
+    }
+
+    function displayVerdict(isCorrect, userCall, trueVerdict) {
+        const banner = document.getElementById('verdict-banner');
+        const title = document.getElementById('verdict-title');
+        const sub = document.getElementById('verdict-subtitle');
+
+        banner.style.display = 'block';
+        if (isCorrect) {
+            banner.style.background = 'rgba(34, 197, 94, 0.95)';
+            banner.style.color = '#ffffff';
+            banner.style.border = '2px solid #16a34a';
+            title.innerText = 'CORRECT CALL!';
+            sub.innerText = `You called ${userCall} — Pitch was truly a ${trueVerdict.isTrueStrike ? 'STRIKE' : 'BALL'}`;
+        } else {
+            banner.style.background = 'rgba(239, 68, 68, 0.95)';
+            banner.style.color = '#ffffff';
+            banner.style.border = '2px solid #b91c1c';
+            title.innerText = 'MISSED CALL!';
+            sub.innerText = `You called ${userCall} — Pitch was truly a ${trueVerdict.isTrueStrike ? 'STRIKE' : 'BALL'}`;
+        }
+
+        // Statcast Breakdown Card update
+        const traj = state.pitchTrajectory;
+        document.getElementById('stat-subzone-badge').innerText = trueVerdict.subZone;
+        document.getElementById('stat-pitch-type').innerText = traj.config.name;
+        document.getElementById('stat-velo').innerText = `${traj.config.velo} mph`;
+        document.getElementById('stat-pfx-x').innerText = `${traj.config.pfx_x > 0 ? '+' : ''}${traj.config.pfx_x.toFixed(1)} inches`;
+        document.getElementById('stat-pfx-z').innerText = `${traj.config.pfx_z > 0 ? '+' : ''}${traj.config.pfx_z.toFixed(1)} inches`;
+        document.getElementById('stat-spin').innerText = `${traj.config.rpm} RPM (${traj.config.tilt})`;
+
+        const marginText = trueVerdict.marginInches <= 0 
+            ? `${Math.abs(trueVerdict.marginInches).toFixed(1)}" Inside Zone` 
+            : `${trueVerdict.marginInches.toFixed(1)}" Outside Zone`;
+        document.getElementById('stat-margin').innerText = marginText;
+    }
+
+    function recordScorecard(userCall, trueVerdict, traj) {
+        scorecard.total++;
+        const isCorrect = (userCall === (trueVerdict.isTrueStrike ? 'STRIKE' : 'BALL'));
+        if (isCorrect) scorecard.correct++;
+
+        if (userCall === 'STRIKE') {
+            scorecard.calledStrikes++;
+            if (trueVerdict.isTrueStrike) scorecard.correctStrikes++;
+            else scorecard.netFavor -= 0.14; // Missed ball favors pitcher
+        } else {
+            scorecard.calledBalls++;
+            if (!trueVerdict.isTrueStrike) scorecard.correctBalls++;
+            else scorecard.netFavor += 0.14; // Missed strike favors batter
+        }
+
+        if (trueVerdict.subZone === 'SHADOW') {
+            scorecard.shadowPitches++;
+            if (isCorrect) scorecard.correctShadow++;
+        }
+
+        scorecard.history.unshift({
+            call: userCall,
+            trueStrike: trueVerdict.isTrueStrike,
+            isCorrect: isCorrect,
+            name: traj.config.name,
+            velo: traj.config.velo,
+            subZone: trueVerdict.subZone
+        });
+        if (scorecard.history.length > 15) scorecard.history.pop();
+
+        updateScorecardUI();
+    }
+
+    function updateScorecardUI() {
+        const acc = scorecard.total ? ((scorecard.correct / scorecard.total) * 100).toFixed(1) : '100.0';
+        document.getElementById('quick-acc').innerText = `${acc}%`;
+        document.getElementById('quick-pitches').innerText = scorecard.total;
+        document.getElementById('quick-streak').innerText = state.streak;
+
+        document.getElementById('sc-overall-acc').innerText = `${acc}%`;
+        document.getElementById('sc-strike-acc').innerText = scorecard.calledStrikes 
+            ? `${((scorecard.correctStrikes / scorecard.calledStrikes) * 100).toFixed(0)}%` : '--';
+        document.getElementById('sc-ball-acc').innerText = scorecard.calledBalls 
+            ? `${((scorecard.correctBalls / scorecard.calledBalls) * 100).toFixed(0)}%` : '--';
+        document.getElementById('sc-shadow-acc').innerText = scorecard.shadowPitches 
+            ? `${((scorecard.correctShadow / scorecard.shadowPitches) * 100).toFixed(0)}%` : '--';
+        document.getElementById('sc-favor').innerText = (scorecard.netFavor > 0 ? '+' : '') + scorecard.netFavor.toFixed(2);
+        document.getElementById('sc-total-count').innerText = scorecard.total;
+
+        // Render Recent History Reel
+        const reel = document.getElementById('recent-pitches-reel');
+        reel.innerHTML = '';
+        scorecard.history.forEach((h, idx) => {
+            const chip = document.createElement('div');
+            chip.className = `call-badge-chip ${h.isCorrect ? 'call-correct' : 'call-wrong'}`;
+            chip.innerText = `#${scorecard.total - idx} ${h.call} (${h.trueStrike ? 'K' : 'B'})`;
+            chip.title = `${h.name} @ ${h.velo}mph - ${h.subZone}`;
+            reel.appendChild(chip);
+        });
+    }
+
+    // ----------------------------------------------------
+    // Main Canvas Render Pipeline
+    // ----------------------------------------------------
+    function render(time) {
+        requestAnimationFrame(render);
+        const w = camera.width;
+        const h = camera.height;
+        ctx.clearRect(0, 0, w, h);
+
+        // State Machine Update
+        if (state.phase === 'WINDUP') {
+            const elapsed = time - state.startTime;
+            if (elapsed >= state.windupDuration) {
+                state.phase = 'IN_FLIGHT';
+                state.startTime = time;
+            }
+        } else if (state.phase === 'IN_FLIGHT') {
+            const elapsed = time - state.startTime;
+            state.flightProgress = Math.min(1.0, elapsed / state.flightDuration);
+
+            // Halfway or closer, open call prompt if user hasn't called
+            if (state.flightProgress >= 0.50 && !state.userCall) {
+                document.getElementById('call-prompt-overlay').style.display = 'block';
+            }
+
+            if (state.flightProgress >= 1.0) {
+                playCatcherPop(state.pitchTrajectory.config.velo);
+                state.phase = 'CALL_WINDOW';
+                state.startTime = time;
+            }
+        } else if (state.phase === 'CALL_WINDOW') {
+            const elapsed = time - state.startTime;
+            // 2.5 seconds timeout if user never calls
+            if (elapsed > 2500 && !state.userCall) {
+                makeCall('BALL'); // default timeout
+            }
+        }
+
+        // Draw Scene Layers Back-to-Front
+        drawStadium();
+        drawMound(time);
+        drawBatter();
+        drawHomePlate();
+        drawCatcherMitt();
+
+        // Strike Zone display
+        const shouldDrawZone = state.showZoneInFlight || state.phase === 'VERDICT' || state.isReplay;
+        if (shouldDrawZone) {
+            drawStrikeZone(state.phase === 'VERDICT' && state.trueVerdict?.isTrueStrike);
+        }
+
+        // Baseball & Pitch Trail
+        if (state.pitchTrajectory && (state.phase === 'IN_FLIGHT' || state.phase === 'CALL_WINDOW' || state.phase === 'VERDICT')) {
+            if (state.showTrail) {
+                drawPitchTrail(state.pitchTrajectory, state.flightProgress);
+            }
+            drawBaseball(state.pitchTrajectory, state.flightProgress, time);
+        }
+    }
+
+    function drawStadium() {
+        // Sky
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, camera.cy);
+        skyGrad.addColorStop(0, '#060d1d');
+        skyGrad.addColorStop(1, '#111d38');
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, camera.width, camera.cy);
+
+        // Centerfield batter's eye wall
+        ctx.fillStyle = '#050a14';
+        ctx.fillRect(camera.cx - 240, camera.cy - 75, 480, 75);
+
+        // Grass field
+        const grassGrad = ctx.createLinearGradient(0, camera.cy, 0, camera.height);
+        grassGrad.addColorStop(0, '#114224');
+        grassGrad.addColorStop(0.35, '#0d331c');
+        grassGrad.addColorStop(1, '#051b0d');
+        ctx.fillStyle = grassGrad;
+        ctx.fillRect(0, camera.cy, camera.width, camera.height - camera.cy);
+    }
+
+    function drawMound(time) {
+        const moundProj = camera.project(0, 0.833, 59.08);
+        if (!moundProj) return;
+
+        // Dirt circle
+        ctx.save();
+        ctx.beginPath();
+        ctx.ellipse(moundProj.px, moundProj.py + 4, 85 * (moundProj.scale / 15), 24 * (moundProj.scale / 15), 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#6d280d';
+        ctx.fill();
+        ctx.strokeStyle = '#853210';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // White Pitcher's rubber
+        const rL = camera.project(-1.0, 0.833, 59.08);
+        const rR = camera.project(1.0, 0.833, 59.08);
+        if (rL && rR) {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(rL.px, rL.py - 2, rR.px - rL.px, 3);
+        }
+
+        // Pitcher silhouette with fluid delivery animation
+        const px = state.pitchTrajectory ? state.pitchTrajectory.x0 : -1.8;
+        const pFeet = camera.project(px, 0.833, 59.08);
+        const pHead = camera.project(px, 6.4, 59.08);
+
+        if (pFeet && pHead) {
+            ctx.fillStyle = '#1e293b';
+            // Simple animated pitcher delivery silhouette
+            let armOffset = 0;
+            if (state.phase === 'WINDUP') {
+                const prog = (time - state.startTime) / state.windupDuration;
+                armOffset = Math.sin(prog * Math.PI) * 15;
+            }
+            ctx.beginPath();
+            ctx.arc(pHead.px, pHead.py + 8, 8, 0, Math.PI * 2); // head
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.ellipse(pHead.px, pHead.py + 25, 10, 18, 0, 0, Math.PI * 2); // torso
+            ctx.fill();
+
+            // Pitching arm
+            ctx.beginPath();
+            ctx.moveTo(pHead.px, pHead.py + 20);
+            ctx.lineTo(pHead.px + 12 + armOffset, pHead.py + 10 - armOffset);
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+        }
+        ctx.restore();
+    }
+
+    function drawHomePlate() {
+        const v1 = camera.project(-0.7083, 0, 0.0);
+        const v2 = camera.project(0.7083, 0, 0.0);
+        const v3 = camera.project(0.7083, 0, CORNER_Z);
+        const v4 = camera.project(0.0, 0, APEX_Z);
+        const v5 = camera.project(-0.7083, 0, CORNER_Z);
+
+        if (!v1 || !v2 || !v3 || !v4 || !v5) return;
+
+        ctx.save();
+        // Black outline border
+        ctx.beginPath();
+        ctx.moveTo(v1.px, v1.py);
+        ctx.lineTo(v2.px, v2.py);
+        ctx.lineTo(v3.px, v3.py);
+        ctx.lineTo(v4.px, v4.py);
+        ctx.lineTo(v5.px, v5.py);
+        ctx.closePath();
+        ctx.fillStyle = '#0f172a';
+        ctx.lineWidth = 6;
+        ctx.strokeStyle = '#020617';
+        ctx.stroke();
+
+        // White rubber surface
+        ctx.fillStyle = '#f8fafc';
+        ctx.fill();
+        ctx.restore();
+    }
+
+    function drawBatter() {
+        const isRHH = (state.batterHandedness === 'RHH');
+        // RHH stands on Left from Umpire POV (X = -2.6); LHH stands on Right (X = +2.6)
+        const bx = isRHH ? -2.5 : 2.5;
+        const feet = camera.project(bx, 0, 0);
+        const knees = camera.project(bx, 1.5, 0);
+        const head = camera.project(bx, 5.3, 0);
+
+        if (!feet || !head) return;
+
+        ctx.save();
+        // Batter legs
+        ctx.fillStyle = '#1e293b';
+        ctx.beginPath();
+        ctx.ellipse(feet.px, (feet.py + knees.py) / 2, 16, (feet.py - knees.py) / 2, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Torso & Jersey
+        ctx.fillStyle = '#334155';
+        ctx.beginPath();
+        ctx.ellipse(head.px, head.py + 40, 24, 35, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Batting Helmet
+        ctx.fillStyle = '#0284c7';
+        ctx.beginPath();
+        ctx.arc(head.px, head.py + 8, 14, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Angled Bat cocked over shoulder
+        ctx.strokeStyle = '#d97706';
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(head.px, head.py + 32);
+        const batDir = isRHH ? -32 : 32;
+        ctx.lineTo(head.px + batDir, head.py - 35);
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    function drawCatcherMitt() {
+        const mx = state.mittTarget.x;
+        const my = state.mittTarget.y;
+        const p = camera.project(mx, my, -0.9);
+        if (!p) return;
+
+        ctx.save();
+        // Dark leather mitt
+        ctx.beginPath();
+        ctx.ellipse(p.px, p.py, 38, 44, 0, 0, Math.PI * 2);
+        ctx.fillStyle = '#3b1807';
+        ctx.fill();
+        ctx.strokeStyle = '#1d0b03';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Pocket circle
+        ctx.beginPath();
+        ctx.arc(p.px, p.py - 4, 18, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0,0,0,0.45)';
+        ctx.fill();
+        ctx.restore();
+    }
+
+    function drawStrikeZone(isLitStrike = false) {
+        // Front plane (Z = 0)
+        const tl = camera.project(-HALF_PLATE_WIDTH, SZ_TOP, 0);
+        const tr = camera.project(HALF_PLATE_WIDTH, SZ_TOP, 0);
+        const br = camera.project(HALF_PLATE_WIDTH, SZ_BOT, 0);
+        const bl = camera.project(-HALF_PLATE_WIDTH, SZ_BOT, 0);
+
+        if (!tl || !tr || !br || !bl) return;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(tl.px, tl.py);
+        ctx.lineTo(tr.px, tr.py);
+        ctx.lineTo(br.px, br.py);
+        ctx.lineTo(bl.px, bl.py);
+        ctx.closePath();
+
+        // Translucent fill
+        ctx.fillStyle = isLitStrike ? 'rgba(34, 197, 94, 0.28)' : 'rgba(255, 255, 255, 0.08)';
+        ctx.fill();
+
+        // Outline
+        ctx.strokeStyle = isLitStrike ? '#22c55e' : 'rgba(255, 255, 255, 0.7)';
+        ctx.lineWidth = isLitStrike ? 3 : 2;
+        ctx.stroke();
+
+        // 3x3 Grid
+        const w = tr.px - tl.px;
+        const h = bl.py - tl.py;
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = isLitStrike ? 'rgba(34, 197, 94, 0.6)' : 'rgba(255, 255, 255, 0.4)';
+        for (let c = 1; c <= 2; c++) {
+            ctx.beginPath();
+            ctx.moveTo(tl.px + (w / 3) * c, tl.py);
+            ctx.lineTo(tl.px + (w / 3) * c, bl.py);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(tl.px, tl.py + (h / 3) * c);
+            ctx.lineTo(tr.px, tl.py + (h / 3) * c);
+            ctx.stroke();
+        }
+        ctx.restore();
+    }
+
+    function drawBaseball(traj, progress, time) {
+        const curTime = traj.tf * progress;
+        const pos = getPitchPosition(traj, curTime);
+        const p = camera.project(pos.x, pos.y, pos.z);
+        if (!p) return;
+
+        const rPx = Math.max(2.5, BALL_RADIUS * p.scale);
+
+        ctx.save();
+        // 3D sphere gradient lighting
+        const grad = ctx.createRadialGradient(
+            p.px - rPx * 0.35, p.py - rPx * 0.35, rPx * 0.1,
+            p.px, p.py, rPx
+        );
+        grad.addColorStop(0, '#ffffff');
+        grad.addColorStop(0.7, '#e2e8f0');
+        grad.addColorStop(1, '#94a3b8');
+
+        ctx.beginPath();
+        ctx.arc(p.px, p.py, rPx, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.shadowColor = 'rgba(0,0,0,0.5)';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+
+        // Spinning red seams blur
+        if (rPx > 6) {
+            ctx.beginPath();
+            ctx.ellipse(p.px, p.py, rPx * 0.72, rPx * 0.45, (curTime * 50) % Math.PI, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(239, 68, 68, 0.75)';
+            ctx.lineWidth = Math.max(1, rPx * 0.15);
+            ctx.stroke();
+        }
+        ctx.restore();
+    }
+
+    function drawPitchTrail(traj, progress) {
+        const samples = 40;
+        const currentSteps = Math.floor(samples * progress);
+        if (currentSteps < 2) return;
+
+        ctx.save();
+        ctx.beginPath();
+        for (let i = 0; i <= currentSteps; i++) {
+            const t = traj.tf * (i / samples);
+            const pos = getPitchPosition(traj, t);
+            const proj = camera.project(pos.x, pos.y, pos.z);
+            if (!proj) continue;
+            if (i === 0) ctx.moveTo(proj.px, proj.py);
+            else ctx.lineTo(proj.px, proj.py);
+        }
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+        ctx.lineWidth = 3.5;
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    // ----------------------------------------------------
+    // User Controls & Event Listeners
+    // ----------------------------------------------------
+    document.getElementById('btn-throw-pitch').addEventListener('click', throwNewPitch);
+    document.getElementById('btn-next-pitch').addEventListener('click', throwNewPitch);
+
+    document.getElementById('btn-call-strike').addEventListener('click', () => makeCall('STRIKE'));
+    document.getElementById('btn-call-ball').addEventListener('click', () => makeCall('BALL'));
+    document.getElementById('overlay-btn-strike').addEventListener('click', () => makeCall('STRIKE'));
+    document.getElementById('overlay-btn-ball').addEventListener('click', () => makeCall('BALL'));
+
+    document.getElementById('speed-select').addEventListener('change', (e) => {
+        state.speedSetting = parseFloat(e.target.value);
+    });
+    document.getElementById('batter-select').addEventListener('change', (e) => {
+        state.batterHandedness = e.target.value;
+    });
+    document.getElementById('pitch-type-select').addEventListener('change', (e) => {
+        state.pitchTypeSetting = e.target.value;
+    });
+    document.getElementById('chk-show-zone').addEventListener('change', (e) => {
+        state.showZoneInFlight = e.target.checked;
+    });
+    document.getElementById('chk-show-trail').addEventListener('change', (e) => {
+        state.showTrail = e.target.checked;
+    });
+
+    document.getElementById('btn-reset-scorecard').addEventListener('click', () => {
+        scorecard.total = 0;
+        scorecard.correct = 0;
+        scorecard.calledStrikes = 0;
+        scorecard.correctStrikes = 0;
+        scorecard.calledBalls = 0;
+        scorecard.correctBalls = 0;
+        scorecard.shadowPitches = 0;
+        scorecard.correctShadow = 0;
+        scorecard.netFavor = 0.0;
+        scorecard.history = [];
+        state.streak = 0;
+        updateScorecardUI();
+    });
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+
+        if (e.code === 'Space') {
+            e.preventDefault();
+            if (state.phase === 'READY' || state.phase === 'VERDICT') {
+                throwNewPitch();
+            }
+        } else if (e.key === 's' || e.key === 'S') {
+            makeCall('STRIKE');
+        } else if (e.key === 'b' || e.key === 'B') {
+            makeCall('BALL');
+        }
+    });
+
+    // Start Animation Loop
+    requestAnimationFrame(render);
+})();
+</script>

@@ -18,28 +18,46 @@
     }
     </script>
 
-    <div class="breadcrumbs" style="margin-bottom: 2rem;">
+    <script>
+    // Immediate check for popout / overlay mode to prevent flash of site chrome
+    (function() {
+      try {
+        var p = window.location.search || '';
+        var h = window.location.hash || '';
+        var path = window.location.pathname || '';
+        var isPopout = p.indexOf('popout=oot') !== -1 || p.indexOf('overlay=') !== -1 || p.indexOf('stream=') !== -1 || h === '#popout' || path.indexOf('/overlay') !== -1 || path.indexOf('/stream') !== -1;
+        if (isPopout) {
+          document.documentElement.classList.add('oot-popout-active');
+          var params = new URLSearchParams(window.location.search);
+          var bgParam = params.get('bg') || localStorage.getItem('ocarina_overlay_bg') || 'transparent';
+          document.documentElement.setAttribute('data-overlay-bg', bgParam);
+        }
+      } catch(e) {}
+    })();
+    </script>
+
+    <div class="breadcrumbs ocarina-site-chrome" style="margin-bottom: 2rem;">
       <a href="/">Home</a> &gt;
       <a href="/tools/">Tools</a> &gt;
       <span>Ocarina Practice</span>
     </div>
 
-    <div style="text-align: center; margin-bottom: 2.5rem;">
+    <div class="ocarina-header-block ocarina-site-chrome" style="text-align: center; margin-bottom: 2.5rem;">
       <h1 style="font-size: 2.5rem; color: var(--accent-cyan); margin-bottom: 0.5rem;">🎵 Ocarina Practice Hub</h1>
       <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1rem;">Ocarina tuner and fingering chart</p>
     </div>
 
-    <div style="background: rgba(168, 85, 247, 0.05); border-left: 4px solid var(--accent-purple); padding: 1.5rem; margin-bottom: 2.5rem; text-align: left; font-size: 0.95rem; line-height: 1.6; border-radius: 0 var(--radius-md) var(--radius-md) 0;">
+    <div class="ocarina-atlas-connection ocarina-site-chrome" style="background: rgba(168, 85, 247, 0.05); border-left: 4px solid var(--accent-purple); padding: 1.5rem; margin-bottom: 2.5rem; text-align: left; font-size: 0.95rem; line-height: 1.6; border-radius: 0 var(--radius-md) var(--radius-md) 0;">
         <strong style="color: var(--accent-purple); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; display: block; margin-bottom: 0.5rem;">The Atlas Connection</strong>
         This tool is a small experiment in using the Web Audio API for browser-based pitch detection, turning a musical hobby into an interactive coding project.
     </div>
 
-    <div style="text-align: center; margin-bottom: 2.5rem;">
+    <div class="ocarina-share-block ocarina-site-chrome" style="text-align: center; margin-bottom: 2.5rem;">
       <button class="share-btn" data-title="Ocarina Practice Tool & Tuner" data-text="Check out this interactive Ocarina Practice Tool at Thoms Foolery. 🎵" data-url="https://thomsfoolery.com/tools/ocarina/" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.8rem; font-size: 0.85rem; font-family: monospace; background: rgba(168, 85, 247, 0.1); color: var(--accent-purple); border: 1px solid var(--accent-purple); border-radius: 4px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='var(--accent-purple)'; this.style.color='white';" onmouseout="this.style.background='rgba(168, 85, 247, 0.1)'; this.style.color='var(--accent-purple)';"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg> Share Tool</button>
     </div>
 
     <!-- Tabs -->
-    <div style="display: flex; gap: 0; margin-bottom: 0; border-bottom: 2px solid var(--border-color);">
+    <div class="oc-tab-bar ocarina-site-chrome" style="display: flex; gap: 0; margin-bottom: 0; border-bottom: 2px solid var(--border-color);">
       <button class="oc-tab active" data-tab="chart" onclick="switchTab('chart')">📊 Finger Chart</button>
       <button class="oc-tab" data-tab="tuner" onclick="switchTab('tuner')">🎙️ Live Tuner</button>
       <button class="oc-tab" data-tab="songs" onclick="switchTab('songs')">📖 Songbook</button>
@@ -184,7 +202,75 @@
 
     <!-- ==================== OOT MELODIES TAB ==================== -->
     <div id="tab-oot" class="oc-panel" style="display: none; padding-top: 2rem;">
-      <p style="color: var(--text-muted); text-align: center; margin-bottom: 1.5rem;">
+
+      <!-- Standard Hub Streamer Banner (Visible in normal hub mode) -->
+      <div class="oot-stream-bar">
+        <div class="oot-stream-bar-info">
+          <span class="oot-stream-icon">📺</span>
+          <div>
+            <strong>OBS Stream Overlay Mode</strong>
+            <span class="oot-stream-desc">Cast interactive Zelda OoT fingering charts & melody audio directly into OBS Studio while streaming.</span>
+          </div>
+        </div>
+        <div class="oot-stream-bar-actions">
+          <button type="button" class="oot-popout-btn" onclick="openOotPopout()" title="Open clean, frameless pop-out window for streaming / Window Capture">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            Pop Out for Stream
+          </button>
+          <button type="button" class="oot-copy-url-btn" onclick="copyObsSourceUrl(this)" title="Copy direct URL for OBS Browser Source">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            Copy OBS URL
+          </button>
+        </div>
+      </div>
+
+      <!-- Stream Overlay HUD (Visible only in Pop-out / OBS Overlay mode) -->
+      <div class="oot-overlay-hud">
+        <div class="oot-hud-left">
+          <div class="oot-hud-badge">
+            <img src="/images/website-assets/triforce.svg" alt="Triforce" class="oot-hud-triforce">
+            <span class="oot-hud-title">ZELDA OoT</span>
+            <span class="oot-hud-tag">STREAM OVERLAY</span>
+          </div>
+          <a href="/tools/ocarina/#oot" target="_blank" class="oot-hud-hub-link" title="Open full Ocarina Practice Tool in standard browser tab">Full Hub ↗</a>
+        </div>
+
+        <div class="oot-hud-controls">
+          <!-- Background Mode Toggle -->
+          <div class="oot-hud-group" title="Select background style for OBS">
+            <span class="oot-hud-group-label">BG</span>
+            <div class="oot-pill-cluster">
+              <button type="button" class="oot-hud-pill oot-bg-btn" data-bg="dark" onclick="setOverlayBackground('dark')" title="Dark Obsidian (Best for Window Capture)">Dark</button>
+              <button type="button" class="oot-hud-pill oot-bg-btn active" data-bg="transparent" onclick="setOverlayBackground('transparent')" title="Transparent / Alpha Glass (Best for OBS Browser Source)">Transparent</button>
+              <button type="button" class="oot-hud-pill oot-bg-btn" data-bg="green" onclick="setOverlayBackground('green')" title="Chroma Key Green (#00FF00)">Green</button>
+            </div>
+          </div>
+
+          <!-- Controller Visibility Toggle -->
+          <div class="oot-hud-group" title="Toggle N64 Interactive Controller Pad">
+            <button type="button" id="oot-controller-toggle-btn" class="oot-hud-pill" onclick="toggleN64Controller()" title="Show or hide N64 controller pad graphic">
+              🎮 Controller: OFF
+            </button>
+          </div>
+
+          <!-- Zoom Selector -->
+          <div class="oot-hud-group" title="Adjust fingering chart diagram size">
+            <span class="oot-hud-group-label">Zoom</span>
+            <div class="oot-pill-cluster">
+              <button type="button" class="oot-hud-pill oot-zoom-pill-hud" data-zoom="compact" onclick="setOotZoom('compact')" title="Compact (170px)">1x</button>
+              <button type="button" class="oot-hud-pill oot-zoom-pill-hud" data-zoom="standard" onclick="setOotZoom('standard')" title="Standard (250px)">1.5x</button>
+              <button type="button" class="oot-hud-pill oot-zoom-pill-hud" data-zoom="jumbo" onclick="setOotZoom('jumbo')" title="Jumbo (330px)">2x</button>
+            </div>
+          </div>
+
+          <!-- Direct Copy OBS URL -->
+          <button type="button" class="oot-hud-pill oot-hud-copy-btn" onclick="copyObsSourceUrl(this)" title="Copy direct OBS Browser Source URL">
+            📋 Copy URL
+          </button>
+        </div>
+      </div>
+
+      <p class="oot-tab-intro" style="color: var(--text-muted); text-align: center; margin-bottom: 1.5rem;">
         The short activation melodies used in Ocarina of Time. These are transposed specifically for a 12-hole Alto C Ocarina.
       </p>
 
@@ -198,7 +284,7 @@
       </div>
 
       <!-- ==================== INTERACTIVE N64 CONTROLLER PAD ==================== -->
-      <div class="n64-controller-wrapper">
+      <div class="n64-controller-wrapper" id="n64-controller-panel">
         <div class="n64-controller-header">
           <div class="n64-badge">
             <span>🎮</span>
@@ -286,7 +372,7 @@
       </div>
     </div>
 
-      <div style="text-align: left; max-width: 800px; margin: 4rem auto 2rem auto; line-height: 1.7; color: var(--text-main);">
+      <div class="ocarina-methodology-section ocarina-site-chrome" style="text-align: left; max-width: 800px; margin: 4rem auto 2rem auto; line-height: 1.7; color: var(--text-main);">
         <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--accent-cyan);">Methodology: How This Tool Works</h2>
         
         <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">The Autocorrelation Tuner</h3>
@@ -301,7 +387,7 @@
       </div>
 
       <!-- Recommended Hardware / Instrument Spotlight -->
-      <section class="ocarina-hardware-card" style="margin: 3.5rem auto 1rem auto; max-width: 800px; background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.85)); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: 0 8px 24px -4px rgba(0,0,0,0.25);">
+      <section class="ocarina-hardware-card ocarina-site-chrome" style="margin: 3.5rem auto 1rem auto; max-width: 800px; background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.85)); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2rem; box-shadow: 0 8px 24px -4px rgba(0,0,0,0.25);">
         <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--accent-cyan); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">
           <span>🎶</span> Tested Instrument Recommendation
         </div>
@@ -342,7 +428,7 @@
 </div>
 
 <!-- ==================== STYLES ==================== -->
-{{suggestions-cta}}
+<div class="ocarina-suggestions-wrapper ocarina-site-chrome">{{suggestions-cta}}</div>
 
 <style>
   .oc-tab {
@@ -1040,6 +1126,383 @@
     0% { box-shadow: 0 0 10px rgba(52, 211, 153, 0.4); border-color: #34d399; }
     100% { box-shadow: 0 0 25px rgba(250, 204, 21, 0.8); border-color: #facc15; }
   }
+
+  /* ============================================================
+     OBS Stream Overlay & Pop-Out Mode
+     ============================================================ */
+
+  /* Normal Mode: Stream Bar on OoT Tab */
+  .oot-stream-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(168, 85, 247, 0.08));
+    border: 1px solid rgba(6, 182, 212, 0.35);
+    border-radius: var(--radius-md, 10px);
+    padding: 0.85rem 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
+  .oot-stream-bar-info {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    color: var(--text-main);
+    font-size: 0.95rem;
+  }
+  .oot-stream-icon {
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+  .oot-stream-desc {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.15rem;
+  }
+  .oot-stream-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-shrink: 0;
+  }
+  .oot-popout-btn {
+    background: linear-gradient(135deg, #06b6d4, #2563eb);
+    color: #fff;
+    border: none;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.55rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 10px rgba(6, 182, 212, 0.3);
+    font-family: inherit;
+  }
+  .oot-popout-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(6, 182, 212, 0.5);
+    filter: brightness(1.1);
+  }
+  .oot-copy-url-btn {
+    background: rgba(15, 23, 42, 0.6);
+    color: var(--accent-cyan);
+    border: 1px solid rgba(6, 182, 212, 0.4);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 0.55rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  .oot-copy-url-btn:hover {
+    background: rgba(6, 182, 212, 0.15);
+    border-color: var(--accent-cyan);
+  }
+  .btn-copied {
+    background: #10b981 !important;
+    color: #000 !important;
+    border-color: #10b981 !important;
+    font-weight: 700 !important;
+  }
+
+  /* Stream Overlay HUD (Only shown in Popout Mode) */
+  .oot-overlay-hud {
+    display: none; /* hidden in normal site mode */
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95));
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  }
+  .oot-hud-left {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .oot-hud-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .oot-hud-triforce {
+    width: 18px;
+    height: 18px;
+  }
+  .oot-hud-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--text-bright, #fff);
+    letter-spacing: 0.05em;
+  }
+  .oot-hud-tag {
+    background: rgba(6, 182, 212, 0.2);
+    color: var(--accent-cyan);
+    border: 1px solid rgba(6, 182, 212, 0.4);
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .oot-hud-hub-link {
+    font-size: 0.78rem;
+    color: var(--text-dim, #94a3b8);
+    text-decoration: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    padding-left: 0.75rem;
+    transition: color 0.2s;
+  }
+  .oot-hud-hub-link:hover {
+    color: var(--accent-cyan);
+  }
+  .oot-hud-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+  .oot-hud-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .oot-hud-group-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-dim, #94a3b8);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .oot-pill-cluster {
+    display: inline-flex;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 2px;
+  }
+  .oot-hud-pill {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.55rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: inherit;
+  }
+  .oot-hud-pill:hover {
+    color: var(--text-bright, #fff);
+    background: rgba(255, 255, 255, 0.08);
+  }
+  .oot-hud-pill.active {
+    background: var(--accent-cyan);
+    color: #000;
+    box-shadow: 0 1px 6px rgba(6, 182, 212, 0.4);
+  }
+  #oot-controller-toggle-btn {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  #oot-controller-toggle-btn.active {
+    background: rgba(16, 185, 129, 0.25);
+    border-color: #10b981;
+    color: #34d399;
+  }
+  .oot-hud-copy-btn {
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    color: var(--accent-cyan);
+  }
+  .oot-hud-copy-btn:hover {
+    background: var(--accent-cyan);
+    color: #000;
+  }
+
+  /* ============================================================
+     ACTIVE POPOUT / OBS OVERLAY STATE
+     ============================================================ */
+  html.oot-popout-active,
+  html.oot-popout-active body {
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 100vh !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+  html.oot-popout-active::-webkit-scrollbar,
+  html.oot-popout-active body::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* Background themes */
+  html.oot-popout-active,
+  html.oot-popout-active[data-overlay-bg="dark"],
+  html.oot-popout-active[data-overlay-bg="dark"] body {
+    background: #0b0f19 !important;
+    background-color: #0b0f19 !important;
+  }
+
+  html.oot-popout-active[data-overlay-bg="transparent"],
+  html.oot-popout-active[data-overlay-bg="transparent"] body {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+
+  html.oot-popout-active[data-overlay-bg="green"],
+  html.oot-popout-active[data-overlay-bg="green"] body {
+    background: #00FF00 !important;
+    background-color: #00FF00 !important;
+  }
+
+  /* Strip outer site chrome */
+  html.oot-popout-active .site-header,
+  html.oot-popout-active header,
+  html.oot-popout-active .site-footer,
+  html.oot-popout-active footer,
+  html.oot-popout-active #search-modal,
+  html.oot-popout-active .ocarina-site-chrome,
+  html.oot-popout-active .oot-stream-bar,
+  html.oot-popout-active .oot-tab-intro,
+  html.oot-popout-active #tab-chart,
+  html.oot-popout-active #tab-tuner,
+  html.oot-popout-active #tab-songs {
+    display: none !important;
+  }
+
+  /* Show the overlay HUD */
+  html.oot-popout-active .oot-overlay-hud {
+    display: flex !important;
+  }
+
+  /* Maximize container space */
+  html.oot-popout-active .page-container,
+  html.oot-popout-active .content-wrapper,
+  html.oot-popout-active .article-content,
+  html.oot-popout-active #main-content,
+  html.oot-popout-active .article-layout {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  html.oot-popout-active #tab-oot {
+    display: block !important;
+    padding: 0.6rem 0.85rem 1.25rem 0.85rem !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Streamlined Song Buttons in Popout */
+  html.oot-popout-active #oot-buttons-container {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 0.4rem !important;
+    margin-bottom: 0.85rem !important;
+  }
+  html.oot-popout-active #oot-buttons-container .song-btn {
+    padding: 0.38rem 0.75rem !important;
+    font-size: 0.82rem !important;
+    border-radius: 6px !important;
+    white-space: nowrap !important;
+  }
+  html.oot-popout-active #oot-buttons-container .song-btn.active {
+    background: var(--accent-cyan) !important;
+    color: #000 !important;
+    font-weight: 800 !important;
+    border-color: var(--accent-cyan) !important;
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.6) !important;
+  }
+
+  /* Compact Display Container in Popout */
+  html.oot-popout-active #oot-display {
+    padding: 1.25rem 1rem !important;
+    margin-bottom: 1rem !important;
+    min-height: auto !important;
+    border-radius: 12px !important;
+  }
+
+  /* Transparent Glass HUD styles for OBS Browser Source */
+  html.oot-popout-active[data-overlay-bg="transparent"] .oot-overlay-hud {
+    background: rgba(11, 15, 25, 0.82) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  }
+  html.oot-popout-active[data-overlay-bg="transparent"] #oot-buttons-container .song-btn {
+    background: rgba(15, 23, 42, 0.8) !important;
+    backdrop-filter: blur(8px) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+  html.oot-popout-active[data-overlay-bg="transparent"] #oot-buttons-container .song-btn.active {
+    background: var(--accent-cyan) !important;
+    color: #000 !important;
+    border-color: var(--accent-cyan) !important;
+  }
+  html.oot-popout-active[data-overlay-bg="transparent"] #oot-display {
+    background: rgba(11, 15, 25, 0.85) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(56, 189, 248, 0.4) !important;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6) !important;
+  }
+  html.oot-popout-active[data-overlay-bg="transparent"] .n64-controller-wrapper {
+    background: rgba(11, 15, 25, 0.85) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  }
+
+  /* Green Screen Chroma Adjustments */
+  html.oot-popout-active[data-overlay-bg="green"] #oot-display,
+  html.oot-popout-active[data-overlay-bg="green"] .oot-overlay-hud,
+  html.oot-popout-active[data-overlay-bg="green"] .n64-controller-wrapper {
+    background: #0b1120 !important;
+    box-shadow: none !important;
+  }
+
+  @media (max-width: 768px) {
+    .oot-stream-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .oot-stream-bar-actions {
+      width: 100%;
+      justify-content: flex-start;
+    }
+    .oot-overlay-hud {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+    }
+    .oot-hud-controls {
+      justify-content: space-between;
+    }
+  }
 </style>
 
 <!-- ==================== JAVASCRIPT ==================== -->
@@ -1629,6 +2092,34 @@ let SONGS = {
       { n: 'D6', dur: 'q' }, { n: 'B5', dur: 'q' }, { n: 'A5', dur: 'q' }, { n: 'B5', dur: 'q' }, { n: 'A5', dur: 'h' }
     ],
   },
+  'sarias-song': {
+    title: "Saria's Song (Full Version)",
+    info: "The complete Lost Woods melody with its playful upbeat progression and bridge, arranged for Alto C.",
+    notes: [
+      { n: 'F5' }, { n: 'A5' }, { n: 'B5' }, { break: true },
+      { n: 'F5' }, { n: 'A5' }, { n: 'B5' }, { break: true },
+      { n: 'F5' }, { n: 'A5' }, { n: 'B5' }, { n: 'E6' }, { n: 'D6' }, { break: true },
+      { n: 'B5' }, { n: 'C6' }, { n: 'B5' }, { n: 'G5' }, { n: 'E5' }, { break: true },
+      { n: 'D5' }, { n: 'E5' }, { n: 'G5' }, { n: 'E5' }, { break: true },
+      
+      { n: 'F5' }, { n: 'A5' }, { n: 'B5' }, { break: true },
+      { n: 'F5' }, { n: 'A5' }, { n: 'B5' }, { break: true },
+      { n: 'F5' }, { n: 'A5' }, { n: 'B5' }, { n: 'E6' }, { n: 'D6' }, { break: true },
+      { n: 'B5' }, { n: 'C6' }, { n: 'E6' }, { n: 'C6' }, { n: 'G5' }, { break: true },
+      { n: 'C6' }, { n: 'G5' }, { n: 'D5' }, { n: 'E5' }, { break: true },
+      
+      { n: 'D5' }, { n: 'E5' }, { n: 'F5' }, { n: 'G5' }, { n: 'A5' }, { n: 'B5' }, { break: true },
+      { n: 'C6' }, { n: 'B5' }, { n: 'E5' }, { break: true },
+      { n: 'D5' }, { n: 'E5' }, { n: 'F5' }, { n: 'G5' }, { n: 'A5' }, { n: 'B5' }, { break: true },
+      { n: 'C6' }, { n: 'D6' }, { n: 'E6' }, { break: true },
+      
+      { n: 'D5' }, { n: 'E5' }, { n: 'F5' }, { n: 'G5' }, { n: 'A5' }, { n: 'B5' }, { break: true },
+      { n: 'C6' }, { n: 'B5' }, { n: 'E5' }, { break: true },
+      { n: 'D5' }, { n: 'C5' }, { n: 'E5' }, { n: 'D5' }, { n: 'G5' }, { n: 'F5' }, { n: 'A5' }, { n: 'G5' }, { break: true },
+      { n: 'B5' }, { n: 'A5' }, { n: 'C6' }, { n: 'B5' }, { n: 'D6' }, { n: 'C6' }, { break: true },
+      { n: 'E6' }, { n: 'F6' }, { n: 'D6' }, { n: 'E6' }
+    ]
+  },
   'littleroot': {
     title: "Littleroot Town",
     info: "A peaceful starting town theme from Pokémon Ruby/Sapphire/Emerald.",
@@ -1725,12 +2216,19 @@ function loadSong(id, btn) {
   const display = document.getElementById('song-display');
   const notesHtml = generateNotesHtml(song.notes);
 
+  let songBadge = '';
+  if (id === 'zeldas-lullaby') songBadge = '<img src="/images/website-assets/royal-crest.svg" alt="Royal Crest" style="width: 28px; opacity: 0.6;">';
+  else if (id === 'eponas-song') songBadge = '<img src="/images/website-assets/epona.svg" alt="Epona" style="width: 28px; opacity: 0.6;">';
+  else if (id === 'sarias-song') songBadge = '<img src="/images/website-assets/sarias-Song.svg" alt="Saria" style="width: 28px; opacity: 0.6;">';
+
   display.innerHTML = `
-    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.25rem;">
-      <h3 style="color: var(--text-main); margin: 0;">${song.title}</h3>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem; flex-wrap: wrap; gap: 0.5rem;">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <h3 style="color: var(--text-main); margin: 0;">${song.title}</h3>
+        ${songBadge}
+      </div>
       <div>
         <button class="practice-btn" onclick="startPracticeMode('builtin')" style="background: var(--accent-emerald); border: none; color: #000; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold; margin-right: 0.5rem; transition: background 0.2s;">🎙️ Practice Mode</button>
-        
       </div>
     </div>
     <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.75rem;">${song.info}</p>
@@ -1830,6 +2328,7 @@ function resolveOcTab(name) {
 }
 
 function getOcTabFromUrl() {
+  if (isOotPopout()) return 'oot';
   const queryTab = new URLSearchParams(window.location.search).get('tab');
   return resolveOcTab(queryTab) || resolveOcTab(window.location.hash) || OC_DEFAULT_TAB;
 }
@@ -1944,7 +2443,7 @@ function applyOotZoom() {
   display.classList.remove('oot-zoom-compact', 'oot-zoom-standard', 'oot-zoom-jumbo');
   display.classList.add(`oot-zoom-${currentOotZoom}`);
 
-  document.querySelectorAll('.oot-zoom-pill').forEach(btn => {
+  document.querySelectorAll('.oot-zoom-pill, .oot-zoom-pill-hud').forEach(btn => {
     if (btn.getAttribute('data-zoom') === currentOotZoom) {
       btn.classList.add('active');
     } else {
@@ -1997,6 +2496,8 @@ function loadOotSong(id, btn) {
 
   let songSvg = '';
   if (id === 'oot-zelda') songSvg = '<img src="/images/website-assets/royal-crest.svg" alt="Royal Crest" style="width: 32px; opacity: 0.6;">';
+  else if (id === 'oot-sun') songSvg = '<img src="/images/website-assets/sun.svg" alt="Sun\'s Song" style="width: 32px; opacity: 0.6;">';
+  else if (id === 'oot-time') songSvg = '<img src="/images/website-assets/master-sword.svg" alt="Song of Time" style="width: 32px; opacity: 0.6;">';
   else if (id === 'oot-minuet') songSvg = '<img src="/images/website-assets/forest-medal.svg" alt="Forest Medallion" style="width: 32px; opacity: 0.6;">';
   else if (id === 'oot-bolero') songSvg = '<img src="/images/website-assets/fire-medal.svg" alt="Fire Medallion" style="width: 32px; opacity: 0.6;">';
   else if (id === 'oot-epona') songSvg = '<img src="/images/website-assets/epona.svg" alt="Epona" style="width: 32px; opacity: 0.6;">';
@@ -2004,7 +2505,9 @@ function loadOotSong(id, btn) {
   else if (id === 'oot-serenade') songSvg = '<img src="/images/website-assets/water-medallion.svg" alt="Water Medallion" style="width: 32px; opacity: 0.6;">';
   else if (id === 'oot-nocturne') songSvg = '<img src="/images/website-assets/shadow-medallion.svg" alt="Shadow Medallion" style="width: 32px; opacity: 0.6;">';
   else if (id === 'oot-prelude') songSvg = '<img src="/images/website-assets/light-medallion.svg" alt="Light Medallion" style="width: 32px; opacity: 0.6;">';
-  else if (id === 'oot-requiem') songSvg = '<img src="/images/website-assets/spirit-medallion.svg" alt="Spirit Medallion" style="width: 32px; opacity: 0.6;" onerror="this.style.display=\'none\'">';
+  else if (id === 'oot-requiem') songSvg = '<img src="/images/website-assets/spirit-medallion.svg" alt="Spirit Medallion" style="width: 32px; opacity: 0.6;">';
+  else if (id === 'oot-storms') songSvg = '<img src="/images/website-assets/storms.svg" alt="Song of Storms" style="width: 32px; opacity: 0.6;">';
+  else if (id === 'oot-scarecrow') songSvg = '<img src="/images/website-assets/scarecrow.svg" alt="Scarecrow\'s Song" style="width: 32px; opacity: 0.6;">';
 
   display.innerHTML = `
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.75rem;">
@@ -2249,6 +2752,128 @@ function saveCustomTab() {
 }
 
 // ============================================================
+// OBS STREAM OVERLAY & POP-OUT ENGINE
+// ============================================================
+
+function isOotPopout() {
+  try {
+    const p = window.location.search || '';
+    const h = window.location.hash || '';
+    const path = window.location.pathname || '';
+    return p.indexOf('popout=oot') !== -1 || p.indexOf('overlay=') !== -1 || p.indexOf('stream=') !== -1 || h === '#popout' || path.indexOf('/overlay') !== -1 || path.indexOf('/stream') !== -1;
+  } catch(e) {
+    return false;
+  }
+}
+
+function openOotPopout() {
+  const w = 860;
+  const h = 720;
+  const left = Math.max(0, Math.floor((window.screen.width - w) / 2));
+  const top = Math.max(0, Math.floor((window.screen.height - h) / 2));
+  const url = '/tools/ocarina/?popout=oot';
+  const win = window.open(
+    url,
+    'OoTOcarinaOverlay',
+    `width=${w},height=${h},top=${top},left=${left},menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=yes`
+  );
+  if (win) {
+    win.focus();
+  }
+}
+
+function copyObsSourceUrl(btn) {
+  const origin = window.location.origin || 'https://www.thomsfoolery.com';
+  const isTransparent = document.documentElement.getAttribute('data-overlay-bg') === 'transparent';
+  const bgParam = isTransparent ? '&bg=transparent' : '';
+  const url = `${origin}/tools/ocarina/?popout=oot${bgParam}`;
+  
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => {
+      showCopiedFeedback(btn);
+    }).catch(() => {
+      prompt('Copy OBS Browser Source URL:', url);
+    });
+  } else {
+    prompt('Copy OBS Browser Source URL:', url);
+  }
+}
+
+function showCopiedFeedback(btn) {
+  if (!btn) return;
+  const originalHtml = btn.innerHTML;
+  btn.innerHTML = '<span>✓</span> Copied OBS URL!';
+  btn.classList.add('btn-copied');
+  setTimeout(() => {
+    btn.innerHTML = originalHtml;
+    btn.classList.remove('btn-copied');
+  }, 2200);
+}
+
+function setOverlayBackground(mode) {
+  document.documentElement.setAttribute('data-overlay-bg', mode);
+  try { localStorage.setItem('ocarina_overlay_bg', mode); } catch(e) {}
+  document.querySelectorAll('.oot-bg-btn').forEach(btn => {
+    if (btn.getAttribute('data-bg') === mode) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+
+let n64ControllerVisible = true;
+function initN64ControllerState() {
+  if (isOotPopout()) {
+    const params = new URLSearchParams(window.location.search);
+    const urlShow = params.get('controller');
+    if (urlShow === '1' || urlShow === 'true') {
+      n64ControllerVisible = true;
+    } else if (urlShow === '0' || urlShow === 'false') {
+      n64ControllerVisible = false;
+    } else {
+      // In popout mode, default to compact (false) unless stored otherwise
+      try {
+        const stored = localStorage.getItem('ocarina_popout_controller');
+        n64ControllerVisible = stored === 'true';
+      } catch(e) {
+        n64ControllerVisible = false;
+      }
+    }
+  } else {
+    n64ControllerVisible = true;
+  }
+  applyN64ControllerVisibility();
+}
+
+function toggleN64Controller() {
+  n64ControllerVisible = !n64ControllerVisible;
+  try { localStorage.setItem('ocarina_popout_controller', String(n64ControllerVisible)); } catch(e) {}
+  applyN64ControllerVisibility();
+}
+
+function applyN64ControllerVisibility() {
+  const panel = document.getElementById('n64-controller-panel');
+  const btn = document.getElementById('oot-controller-toggle-btn');
+  if (panel) {
+    if (isOotPopout()) {
+      panel.style.display = n64ControllerVisible ? 'block' : 'none';
+    } else {
+      panel.style.display = 'block';
+    }
+  }
+  if (btn) {
+    if (n64ControllerVisible) {
+      btn.classList.add('active');
+      btn.textContent = '🎮 Controller: ON';
+    } else {
+      btn.classList.remove('active');
+      btn.textContent = '🎮 Controller: OFF';
+    }
+  }
+}
+
+// ============================================================
 // INIT
 // ============================================================
 
@@ -2282,10 +2907,27 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSong(id, firstBtn);
   }
 
-  const firstOotBtn = document.querySelector('#oot-buttons-container .song-btn');
-  if (firstOotBtn) {
-    const ootId = firstOotBtn.getAttribute('data-oot');
-    loadOotSong(ootId, firstOotBtn);
+  // Check URL song parameter (e.g. ?song=oot-zelda or ?popout=oot&song=oot-saria)
+  const params = new URLSearchParams(window.location.search);
+  const songParam = params.get('song');
+  if (songParam && OOT_MELODIES[songParam]) {
+    const targetOotBtn = document.querySelector(`[data-oot="${songParam}"]`);
+    if (targetOotBtn) loadOotSong(songParam, targetOotBtn);
+  } else {
+    const firstOotBtn = document.querySelector('#oot-buttons-container .song-btn');
+    if (firstOotBtn) {
+      const ootId = firstOotBtn.getAttribute('data-oot');
+      loadOotSong(ootId, firstOotBtn);
+    }
+  }
+
+  // If in popout/overlay mode, initialize overlay state and theme
+  if (isOotPopout()) {
+    document.documentElement.classList.add('oot-popout-active');
+    document.body.classList.add('oot-popout-active');
+    const bgParam = params.get('bg') || (function() { try { return localStorage.getItem('ocarina_overlay_bg'); } catch(e) { return null; } })() || 'transparent';
+    setOverlayBackground(bgParam);
+    initN64ControllerState();
   }
 
   // Direct linking via hash (#tuner, #songs, #oot) or query param (?tab=oot)

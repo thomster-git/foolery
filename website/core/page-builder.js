@@ -66,6 +66,9 @@ export default class PageBuilder {
         await this.buildTwitterDb();
         await this.buildOcarinaPage();
         await this.buildTierList();
+        await this.buildUmpireSimulator();
+        await this.buildF1ChampionshipCalculator();
+        await this.buildStreamSchedule();
         await this.buildSponsorsPage();
         
         await this.buildWishlistPage(content.filter(x => x.metadata.type === "wishlist"));
@@ -261,15 +264,17 @@ export default class PageBuilder {
 
         // Dedicated direct URL aliases for each Ocarina tab (matching /tools/dragonwilds-profile/)
         const ocarinaTabs = [
-            { slug: "chart", hash: "#chart", title: "Ocarina Fingering Chart" },
-            { slug: "tuner", hash: "#tuner", title: "Ocarina Live Pitch Tuner" },
-            { slug: "songs", hash: "#songs", title: "Ocarina Songbook" },
-            { slug: "songbook", hash: "#songs", title: "Ocarina Songbook" },
-            { slug: "oot", hash: "#oot", title: "Ocarina of Time Melodies" }
+            { slug: "chart", target: "/tools/ocarina/#chart", title: "Ocarina Fingering Chart" },
+            { slug: "tuner", target: "/tools/ocarina/#tuner", title: "Ocarina Live Pitch Tuner" },
+            { slug: "songs", target: "/tools/ocarina/#songs", title: "Ocarina Songbook" },
+            { slug: "songbook", target: "/tools/ocarina/#songs", title: "Ocarina Songbook" },
+            { slug: "oot", target: "/tools/ocarina/#oot", title: "Ocarina of Time Melodies" },
+            { slug: "overlay", target: "/tools/ocarina/?popout=oot&bg=transparent", title: "OoT Melodies Stream Overlay" },
+            { slug: "stream", target: "/tools/ocarina/?popout=oot&bg=transparent", title: "OoT Melodies Stream Overlay" }
         ];
 
         for (const tab of ocarinaTabs) {
-            const targetPath = `/tools/ocarina/${tab.hash}`;
+            const targetPath = tab.target || `/tools/ocarina/${tab.hash}`;
             const redirectHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>${tab.title} - Thoms Foolery</title><link rel="canonical" href="https://thomsfoolery.com${targetPath}"><meta http-equiv="refresh" content="0; url=${targetPath}"><script>window.location.replace('${targetPath}');</script></head><body><p>Redirecting to <a href="${targetPath}">${tab.title}</a>...</p></body></html>`;
 
             const aliasName = `ocarina-${tab.slug}`;
@@ -425,6 +430,63 @@ export default class PageBuilder {
 
         await fs.writeFile(path.join(folder, "index.html"), html);
         await fs.writeFile(path.join(this.output, "tools", "tier-list.html"), html);
+    }
+
+    // Umpire Simulator
+    async buildUmpireSimulator() {
+        const folder = path.join(this.output, "tools", "umpire-simulator");
+        await fs.mkdir(folder, { recursive: true });
+
+        const template = await this.loadLayout("umpire-simulator.html");
+        const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const suggestionsCta = await this.loadPartial("suggestions-cta.html");
+        
+        let html = await this.wrapPage(
+            this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
+            "MLB Umpire Simulator",
+            { description: "Interactive 3D baseball umpire simulator behind home plate with realistic pitch physics and Statcast pitch breakdown.", path: "/tools/umpire-simulator/", ogType: "website" }
+        );
+
+        await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(path.join(this.output, "tools", "umpire-simulator.html"), html);
+    }
+
+    // F1 Championship Calculator
+    async buildF1ChampionshipCalculator() {
+        const folder = path.join(this.output, "tools", "f1-championship-calculator");
+        await fs.mkdir(folder, { recursive: true });
+
+        const template = await this.loadLayout("f1-championship-calculator.html");
+        const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const suggestionsCta = await this.loadPartial("suggestions-cta.html");
+        
+        let html = await this.wrapPage(
+            this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
+            "F1 Championship Clinch & Elimination Calculator",
+            { description: "Mathematical elimination and championship clinch scenarios calculator for Formula 1 Drivers and Constructors.", path: "/tools/f1-championship-calculator/", ogType: "website" }
+        );
+
+        await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(path.join(this.output, "tools", "f1-championship-calculator.html"), html);
+    }
+
+    // Stream Schedule Calendar
+    async buildStreamSchedule() {
+        const folder = path.join(this.output, "tools", "stream-schedule");
+        await fs.mkdir(folder, { recursive: true });
+
+        const template = await this.loadLayout("stream-schedule.html");
+        const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const suggestionsCta = await this.loadPartial("suggestions-cta.html");
+        
+        let html = await this.wrapPage(
+            this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
+            "Live Stream Schedule",
+            { description: "Interactive broadcast schedule calendar for Jonathan Thoms with automatic Newfoundland time conversion and iCal export.", path: "/tools/stream-schedule/", ogType: "website" }
+        );
+
+        await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(path.join(this.output, "tools", "stream-schedule.html"), html);
     }
 
     // NHL Trend Analyzer

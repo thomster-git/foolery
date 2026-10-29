@@ -145,3 +145,7 @@ content/media/
 content/fitness/
 scratch/
 /Dragonwilds_Server_Hosting_Guide.pdf
+
+# Inkscape autosaves
+*.svg.20*
+*.svg.*.svg
