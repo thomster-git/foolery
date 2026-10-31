@@ -519,8 +519,8 @@
     class PerspectiveCamera {
         constructor() {
             this.x = 0.0;
-            this.y = 3.85; // ft (umpire eye level in crouch)
-            this.z = -5.20; // ft (behind plate)
+            this.y = 4.4; // ft (umpire eye level in crouch)
+            this.z = -9.5; // ft (behind plate, behind the catcher)
             this.pitchAngle = -5.5 * (Math.PI / 180);
             this.cosPitch = Math.cos(this.pitchAngle);
             this.sinPitch = Math.sin(this.pitchAngle);
@@ -811,6 +811,157 @@
     }
 
     // ----------------------------------------------------
+    // Rendering helpers (math, shading, 3D-aware primitives)
+    // ----------------------------------------------------
+    const clamp01 = (v) => Math.max(0, Math.min(1, v));
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const smoothstep = (e0, e1, x) => {
+        const t = clamp01((x - e0) / (e1 - e0));
+        return t * t * (3 - 2 * t);
+    };
+    const P = (x, y, z) => camera.project(x, y, z);
+
+    function mulberry32(seed) {
+        return function() {
+            seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+            let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+    }
+
+    // Mix a #rrggbb color toward white (amt > 0) or black (amt < 0)
+    function shade(hex, amt) {
+        const n = parseInt(hex.slice(1), 16);
+        let r = (n >> 16) & 255, gg = (n >> 8) & 255, b = n & 255;
+        const t = amt < 0 ? 0 : 255, a = Math.abs(amt);
+        r = Math.round(r + (t - r) * a);
+        gg = Math.round(gg + (t - gg) * a);
+        b = Math.round(b + (t - b) * a);
+        return `rgb(${r},${gg},${b})`;
+    }
+
+    // Tapered, filled limb (capsule) with widths given in world feet; lit from upper-left
+    function limb(a, b, w0, w1, color, g = ctx) {
+        if (!a || !b) return;
+        const r0 = Math.max(0.6, w0 * a.scale / 2);
+        const r1 = Math.max(0.6, w1 * b.scale / 2);
+        const dx = b.px - a.px, dy = b.py - a.py;
+        const ang = Math.atan2(dy, dx);
+        g.beginPath();
+        g.arc(a.px, a.py, r0, ang + Math.PI / 2, ang + Math.PI * 1.5);
+        g.arc(b.px, b.py, r1, ang - Math.PI / 2, ang + Math.PI / 2);
+        g.closePath();
+        const len = Math.hypot(dx, dy) || 1;
+        let nx = -dy / len, ny = dx / len;
+        if (nx > 0 || (nx === 0 && ny > 0)) { nx = -nx; ny = -ny; }
+        const mx = (a.px + b.px) / 2, my = (a.py + b.py) / 2, r = (r0 + r1) / 2;
+        const gr = g.createLinearGradient(mx + nx * r, my + ny * r, mx - nx * r, my - ny * r);
+        gr.addColorStop(0, shade(color, 0.28));
+        gr.addColorStop(0.45, color);
+        gr.addColorStop(1, shade(color, -0.38));
+        g.fillStyle = gr;
+        g.fill();
+    }
+
+    // Shaded sphere (head, glove, joints) with radius in world feet
+    function blob(p, radiusFt, color, g = ctx) {
+        if (!p) return;
+        const r = Math.max(0.8, radiusFt * p.scale);
+        const gr = g.createRadialGradient(p.px - r * 0.35, p.py - r * 0.4, r * 0.1, p.px, p.py, r);
+        gr.addColorStop(0, shade(color, 0.35));
+        gr.addColorStop(0.6, color);
+        gr.addColorStop(1, shade(color, -0.45));
+        g.beginPath();
+        g.arc(p.px, p.py, r, 0, Math.PI * 2);
+        g.fillStyle = gr;
+        g.fill();
+    }
+
+    function projAll(arr) {
+        const out = [];
+        for (const q of arr) {
+            const p = camera.project(q[0], q[1], q[2]);
+            if (!p) return null;
+            out.push(p);
+        }
+        return out;
+    }
+
+    function polyPath(g, pts) {
+        g.beginPath();
+        pts.forEach((p, i) => { if (i) g.lineTo(p.px, p.py); else g.moveTo(p.px, p.py); });
+        g.closePath();
+    }
+
+    // Circle on a horizontal plane, projected into the camera (clamped so it never crosses behind the lens)
+    function circlePoly(cx, y, cz, r, n = 56, minZ = -6.4) {
+        const pts = [];
+        for (let i = 0; i < n; i++) {
+            const a = (i / n) * Math.PI * 2;
+            const p = camera.project(cx + Math.cos(a) * r, y, Math.max(minZ, cz + Math.sin(a) * r));
+            if (p) pts.push(p);
+        }
+        return pts;
+    }
+
+    // Flat chalk strip lying on the ground, width in feet
+    function groundStrip(g, x1, z1, x2, z2, wd, fill, y = 0) {
+        const dx = x2 - x1, dz = z2 - z1;
+        const len = Math.hypot(dx, dz) || 1;
+        const nx = (-dz / len) * wd / 2, nz = (dx / len) * wd / 2;
+        const pts = projAll([[x1 + nx, y, z1 + nz], [x2 + nx, y, z2 + nz], [x2 - nx, y, z2 - nz], [x1 - nx, y, z1 - nz]]);
+        if (!pts) return;
+        polyPath(g, pts);
+        g.fillStyle = fill;
+        g.fill();
+    }
+
+    // Two-bone inverse kinematics in 3D (arrays of [x, y, z]); pole picks the bend direction
+    function ik3(s, h, l1, l2, pole) {
+        let ax = h[0] - s[0], ay = h[1] - s[1], az = h[2] - s[2];
+        let d = Math.hypot(ax, ay, az) || 1e-6;
+        const maxD = (l1 + l2) * 0.999;
+        let hx = h[0], hy = h[1], hz = h[2];
+        if (d > maxD) {
+            const k = maxD / d;
+            hx = s[0] + ax * k; hy = s[1] + ay * k; hz = s[2] + az * k;
+            d = maxD;
+        }
+        const ux = (hx - s[0]) / d, uy = (hy - s[1]) / d, uz = (hz - s[2]) / d;
+        const dp = pole[0] * ux + pole[1] * uy + pole[2] * uz;
+        let qx = pole[0] - ux * dp, qy = pole[1] - uy * dp, qz = pole[2] - uz * dp;
+        const ql = Math.hypot(qx, qy, qz) || 1;
+        qx /= ql; qy /= ql; qz /= ql;
+        const a = (l1 * l1 - l2 * l2 + d * d) / (2 * d);
+        const hh = Math.sqrt(Math.max(0, l1 * l1 - a * a));
+        return {
+            joint: [s[0] + ux * a + qx * hh, s[1] + uy * a + qy * hh, s[2] + uz * a + qz * hh],
+            end: [hx, hy, hz]
+        };
+    }
+
+    function sampleKeys(keys, t) {
+        if (t <= keys[0][0]) return keys[0][1].slice();
+        for (let i = 0; i < keys.length - 1; i++) {
+            const a = keys[i], b = keys[i + 1];
+            if (t <= b[0]) {
+                const k = smoothstep(a[0], b[0], t);
+                return [lerp(a[1][0], b[1][0], k), lerp(a[1][1], b[1][1], k), lerp(a[1][2], b[1][2], k)];
+            }
+        }
+        return keys[keys.length - 1][1].slice();
+    }
+
+    // Mound geometry: center z, plateau height and slope
+    const MOUND_Z = 59.8;
+    const RUBBER_Z = 60.5;
+    function moundY(z) {
+        if (z >= 55.3) return 0.83;
+        return Math.max(0, ((z - 50.8) / 4.5) * 0.83);
+    }
+
+    // ----------------------------------------------------
     // Main Canvas Render Pipeline
     // ----------------------------------------------------
     function render(time) {
@@ -868,109 +1019,466 @@
             }
             drawBaseball(state.pitchTrajectory, state.flightProgress, time);
         }
+
+        drawVignette();
     }
 
+    function drawVignette() {
+        const w = camera.width, h = camera.height;
+        const vg = ctx.createRadialGradient(w / 2, h * 0.5, h * 0.3, w / 2, h * 0.5, Math.hypot(w, h) * 0.55);
+        vg.addColorStop(0, 'rgba(0,0,0,0)');
+        vg.addColorStop(0.65, 'rgba(0,0,0,0.18)');
+        vg.addColorStop(1, 'rgba(0,0,0,0.62)');
+        ctx.fillStyle = vg;
+        ctx.fillRect(0, 0, w, h);
+    }
+
+    // The static stadium/field is painted once into an offscreen canvas and re-used each frame
+    let bgCache = null;
+    let bgKey = '';
     function drawStadium() {
-        // Sky
-        const skyGrad = ctx.createLinearGradient(0, 0, 0, camera.cy);
-        skyGrad.addColorStop(0, '#060d1d');
-        skyGrad.addColorStop(1, '#111d38');
-        ctx.fillStyle = skyGrad;
-        ctx.fillRect(0, 0, camera.width, camera.cy);
-
-        // Centerfield batter's eye wall
-        ctx.fillStyle = '#050a14';
-        ctx.fillRect(camera.cx - 240, camera.cy - 75, 480, 75);
-
-        // Grass field
-        const grassGrad = ctx.createLinearGradient(0, camera.cy, 0, camera.height);
-        grassGrad.addColorStop(0, '#114224');
-        grassGrad.addColorStop(0.35, '#0d331c');
-        grassGrad.addColorStop(1, '#051b0d');
-        ctx.fillStyle = grassGrad;
-        ctx.fillRect(0, camera.cy, camera.width, camera.height - camera.cy);
+        const dpr = window.devicePixelRatio || 1;
+        const key = `${camera.width}x${camera.height}@${dpr}`;
+        if (!bgCache || bgKey !== key) {
+            bgCache = document.createElement('canvas');
+            bgCache.width = Math.ceil(camera.width * dpr);
+            bgCache.height = Math.ceil(camera.height * dpr);
+            const g = bgCache.getContext('2d');
+            g.scale(dpr, dpr);
+            paintBackground(g);
+            bgKey = key;
+        }
+        ctx.drawImage(bgCache, 0, 0, camera.width, camera.height);
     }
 
-    function drawMound(time) {
-        const moundProj = camera.project(0, 0.833, 59.08);
-        if (!moundProj) return;
+    function paintBackground(g) {
+        const w = camera.width, h = camera.height;
+        const rnd = mulberry32(7);
+        const hz = camera.project(0, camera.y, 5e4).py; // true horizon line
+        const wallTop = camera.project(0, 9, 420).py;
+        const wallBot = Math.max(camera.project(0, 0, 420).py, wallTop + 7);
 
-        // Dirt circle
-        ctx.save();
-        ctx.beginPath();
-        ctx.ellipse(moundProj.px, moundProj.py + 4, 85 * (moundProj.scale / 15), 24 * (moundProj.scale / 15), 0, 0, Math.PI * 2);
-        ctx.fillStyle = '#6d280d';
-        ctx.fill();
-        ctx.strokeStyle = '#853210';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
+        // Sky
+        const skyGrad = g.createLinearGradient(0, 0, 0, hz);
+        skyGrad.addColorStop(0, '#02060f');
+        skyGrad.addColorStop(0.55, '#0a1530');
+        skyGrad.addColorStop(1, '#223a63');
+        g.fillStyle = skyGrad;
+        g.fillRect(0, 0, w, wallBot);
 
-        // White Pitcher's rubber
-        const rL = camera.project(-1.0, 0.833, 59.08);
-        const rR = camera.project(1.0, 0.833, 59.08);
-        if (rL && rR) {
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(rL.px, rL.py - 2, rR.px - rL.px, 3);
+        // Stands: lower bowl and upper deck, gently arched
+        const lowerTop = wallTop - h * 0.085;
+        const upperTop = wallTop - h * 0.2;
+        const bowl = (top, bottom, c0, c1) => {
+            g.beginPath();
+            g.moveTo(0, top + h * 0.035);
+            g.quadraticCurveTo(w / 2, top - h * 0.035, w, top + h * 0.035);
+            g.lineTo(w, bottom);
+            g.lineTo(0, bottom);
+            g.closePath();
+            const bg = g.createLinearGradient(0, top - h * 0.03, 0, bottom);
+            bg.addColorStop(0, c0);
+            bg.addColorStop(1, c1);
+            g.fillStyle = bg;
+            g.fill();
+        };
+        bowl(upperTop, lowerTop + h * 0.02, '#0a1020', '#101a30');
+        bowl(lowerTop, wallTop, '#0e1730', '#1a2745');
+
+        // Crowd (colored speckle) + seat rows
+        const crowdCols = ['#e2e8f0', '#f87171', '#60a5fa', '#fbbf24', '#94a3b8', '#fb923c', '#a78bfa'];
+        const paintCrowd = (top, bottom, density, alpha) => {
+            for (let y = top + h * 0.02; y < bottom; y += 4.2) {
+                for (let x = 0; x < w; x += 5.2) {
+                    if (rnd() > density) continue;
+                    const archTop = top + h * 0.035 - (1 - Math.pow((x / w) * 2 - 1, 2)) * h * 0.07;
+                    if (y < archTop + 2) continue;
+                    g.globalAlpha = alpha * (0.4 + rnd() * 0.6);
+                    g.fillStyle = crowdCols[Math.floor(rnd() * crowdCols.length)];
+                    g.fillRect(x + rnd() * 3, y + rnd() * 2, 2.2, 2.4);
+                }
+            }
+            g.globalAlpha = 1;
+        };
+        paintCrowd(lowerTop, wallTop, 0.75, 0.55);
+        paintCrowd(upperTop, lowerTop + h * 0.02, 0.45, 0.3);
+        g.strokeStyle = 'rgba(0,0,0,0.35)';
+        g.lineWidth = 1;
+        for (let y = upperTop + h * 0.05; y < wallTop; y += 7) {
+            g.beginPath();
+            g.moveTo(0, y);
+            g.lineTo(w, y);
+            g.stroke();
+        }
+        // Deck rail glow
+        g.fillStyle = 'rgba(148, 163, 184, 0.25)';
+        g.fillRect(0, lowerTop + h * 0.03, w, 2);
+
+        // Stadium light banks with halos
+        const towers = [0.1, 0.28, 0.72, 0.9];
+        towers.forEach((tx, ti) => {
+            const lx = w * tx, ly = upperTop - h * (ti % 2 ? 0.01 : 0.03) + h * 0.03;
+            const halo = g.createRadialGradient(lx, ly, 0, lx, ly, h * 0.28);
+            halo.addColorStop(0, 'rgba(255, 244, 214, 0.42)');
+            halo.addColorStop(0.35, 'rgba(255, 244, 214, 0.1)');
+            halo.addColorStop(1, 'rgba(255, 244, 214, 0)');
+            g.fillStyle = halo;
+            g.fillRect(lx - h * 0.3, ly - h * 0.3, h * 0.6, h * 0.6);
+            g.fillStyle = '#1a2236';
+            g.fillRect(lx - 18, ly - 8, 36, 20);
+            g.fillStyle = '#fff7dc';
+            for (let r = 0; r < 2; r++) for (let c = 0; c < 4; c++) {
+                g.fillRect(lx - 16 + c * 9, ly - 6 + r * 9, 6, 6);
+            }
+        });
+
+        // Outfield wall with yellow top line, and the batter's eye
+        const wallGrad = g.createLinearGradient(0, wallTop, 0, wallBot);
+        wallGrad.addColorStop(0, '#12354a');
+        wallGrad.addColorStop(1, '#091c28');
+        g.fillStyle = wallGrad;
+        g.fillRect(0, wallTop, w, wallBot - wallTop);
+        g.fillStyle = '#facc15';
+        g.fillRect(0, wallTop, w, 1.6);
+
+        const eyeL = camera.project(-55, 0, 420), eyeR = camera.project(55, 0, 420);
+        const eyeTop = camera.project(0, 34, 420).py;
+        if (eyeL && eyeR) {
+            const eg = g.createLinearGradient(0, eyeTop, 0, wallBot);
+            eg.addColorStop(0, '#04070d');
+            eg.addColorStop(1, '#0a1220');
+            g.fillStyle = eg;
+            g.fillRect(eyeL.px, eyeTop, eyeR.px - eyeL.px, wallBot - eyeTop);
+            g.strokeStyle = 'rgba(255,255,255,0.04)';
+            g.lineWidth = 1;
+            for (let x = eyeL.px; x < eyeR.px; x += 7) {
+                g.beginPath();
+                g.moveTo(x, eyeTop);
+                g.lineTo(x, wallBot);
+                g.stroke();
+            }
         }
 
-        // Pitcher silhouette with fluid delivery animation
-        const px = state.pitchTrajectory ? state.pitchTrajectory.x0 : -1.8;
-        const pFeet = camera.project(px, 0.833, 59.08);
-        const pHead = camera.project(px, 6.4, 59.08);
+        // Grass: base + mowing stripes in perspective
+        g.fillStyle = '#114d25';
+        g.fillRect(0, wallBot, w, h - wallBot);
+        const zs = [];
+        for (let z = -6.4; z < 420;) {
+            zs.push(z);
+            z += z < 30 ? 4 : (z < 80 ? 8 : (z < 160 ? 16 : 36));
+        }
+        zs.push(420);
+        for (let i = 0; i < zs.length - 1; i++) {
+            const a = camera.project(0, 0, zs[i]), b = camera.project(0, 0, zs[i + 1]);
+            if (!a || !b) continue;
+            g.fillStyle = (i % 2) ? '#1a6531' : '#14562a';
+            g.fillRect(0, b.py, w, a.py - b.py + 0.5);
+        }
 
-        if (pFeet && pHead) {
-            ctx.fillStyle = '#1e293b';
-            // Simple animated pitcher delivery silhouette
-            let armOffset = 0;
-            if (state.phase === 'WINDUP') {
-                const prog = (time - state.startTime) / state.windupDuration;
-                armOffset = Math.sin(prog * Math.PI) * 15;
+        // Infield dirt: home plate circle, base paths, and the mound circle
+        const dirtCol = '#8a4d26';
+        const plateCirc = circlePoly(0, 0, -0.7, 13, 72);
+        const specks = (cx, cz, r, count, seed) => {
+            const rr = mulberry32(seed);
+            for (let i = 0; i < count; i++) {
+                const a = rr() * Math.PI * 2, d = Math.sqrt(rr()) * r;
+                const p = camera.project(cx + Math.cos(a) * d, 0, Math.max(-6.0, cz + Math.sin(a) * d));
+                if (!p) continue;
+                g.globalAlpha = 0.25 + rr() * 0.3;
+                g.fillStyle = rr() > 0.5 ? '#6a3516' : '#b27040';
+                g.fillRect(p.px, p.py, Math.max(0.8, p.scale * 0.05), Math.max(0.8, p.scale * 0.03));
             }
-            ctx.beginPath();
-            ctx.arc(pHead.px, pHead.py + 8, 8, 0, Math.PI * 2); // head
-            ctx.fill();
+            g.globalAlpha = 1;
+        };
+        // Base-path strips (home -> 1B / 3B)
+        [-1, 1].forEach((sgn) => {
+            groundStrip(g, sgn * 1.2, -0.5, sgn * 63.6, 63.1, 7, dirtCol);
+        });
+        if (plateCirc.length > 2) {
+            polyPath(g, plateCirc);
+            g.fillStyle = dirtCol;
+            g.fill();
+            g.strokeStyle = 'rgba(70, 35, 14, 0.7)';
+            g.lineWidth = 1.5;
+            g.stroke();
+        }
+        specks(0, -0.7, 12.5, 1500, 11);
 
-            ctx.beginPath();
-            ctx.ellipse(pHead.px, pHead.py + 25, 10, 18, 0, 0, Math.PI * 2); // torso
-            ctx.fill();
+        // Warm light pool around the plate
+        const pc = camera.project(0, 0, 1);
+        if (pc) {
+            const pool = g.createRadialGradient(pc.px, pc.py - h * 0.1, 0, pc.px, pc.py - h * 0.1, w * 0.55);
+            pool.addColorStop(0, 'rgba(255, 233, 190, 0.17)');
+            pool.addColorStop(1, 'rgba(255, 233, 190, 0)');
+            g.fillStyle = pool;
+            g.fillRect(0, wallBot, w, h - wallBot);
+        }
 
-            // Pitching arm
+        // Pitcher's mound dirt
+        const moundBase = circlePoly(0, 0, MOUND_Z, 9, 56);
+        const moundTop = circlePoly(0, 0.83, MOUND_Z, 4.5, 48);
+        if (moundBase.length > 2) {
+            polyPath(g, moundBase);
+            g.fillStyle = '#7d4422';
+            g.fill();
+        }
+        if (moundTop.length > 2) {
+            polyPath(g, moundTop);
+            const mg = g.createLinearGradient(0, moundTop[0].py - 30, 0, moundTop[0].py + 30);
+            mg.addColorStop(0, '#b0693a');
+            mg.addColorStop(1, '#8f5128');
+            g.fillStyle = mg;
+            g.fill();
+        }
+        // White pitcher's rubber
+        const rub = projAll([[-1, 0.86, RUBBER_Z + 0.25], [1, 0.86, RUBBER_Z + 0.25], [1, 0.86, RUBBER_Z - 0.25], [-1, 0.86, RUBBER_Z - 0.25]]);
+        if (rub) {
+            polyPath(g, rub);
+            g.fillStyle = '#f1f5f9';
+            g.fill();
+        }
+
+        // Foul lines (chalk) from the back point of home plate out to the poles
+        [-1, 1].forEach((sgn) => {
+            groundStrip(g, 0, APEX_Z, sgn * 420, APEX_Z + 420, 0.3, 'rgba(255,255,255,0.9)');
+            const a = camera.project(0, 0, APEX_Z), b = camera.project(sgn * 420, 0, APEX_Z + 420);
+            if (a && b) {
+                g.strokeStyle = 'rgba(255,255,255,0.55)';
+                g.lineWidth = 0.9;
+                g.beginPath();
+                g.moveTo(a.px, a.py);
+                g.lineTo(b.px, b.py);
+                g.stroke();
+            }
+        });
+
+        // Batter's boxes: 4 ft x 6 ft, inner edge 6 in off the plate, centered on the plate
+        [-1, 1].forEach((sgn) => {
+            const xi = sgn * (HALF_PLATE_WIDTH + 0.5), xo = sgn * (HALF_PLATE_WIDTH + 0.5 + 4);
+            const zn = -HALF_PLATE_WIDTH + 3, zf = -HALF_PLATE_WIDTH - 3;
+            const c = 'rgba(255,255,255,0.88)';
+            groundStrip(g, xi, zn + 0.125, xi, zf - 0.125, 0.2, c);
+            groundStrip(g, xo, zn + 0.125, xo, zf - 0.125, 0.2, c);
+            groundStrip(g, xi, zn, xo, zn, 0.2, c);
+            groundStrip(g, xi, zf, xo, zf, 0.2, c);
+        });
+
+        // Atmospheric haze at the horizon & darkening toward the umpire
+        const haze = g.createLinearGradient(0, wallBot - 6, 0, wallBot + h * 0.22);
+        haze.addColorStop(0, 'rgba(90, 130, 150, 0.28)');
+        haze.addColorStop(1, 'rgba(90, 130, 150, 0)');
+        g.fillStyle = haze;
+        g.fillRect(0, wallBot - 6, w, h * 0.24);
+        const dark = g.createLinearGradient(0, h * 0.62, 0, h);
+        dark.addColorStop(0, 'rgba(0,0,0,0)');
+        dark.addColorStop(1, 'rgba(0,0,0,0.45)');
+        g.fillStyle = dark;
+        g.fillRect(0, h * 0.62, w, h * 0.38);
+    }
+
+    // ----------------------------------------------------
+    // Pitcher figure & delivery animation
+    // ----------------------------------------------------
+    const PITCH_HAND_KEYS = [
+        [0.00, [-0.70, -0.90, 0.45]],
+        [0.35, [-0.55, -0.45, 0.55]],
+        [0.55, [0.90, -1.30, -0.80]],
+        [0.75, [1.55, 0.20, -1.35]],
+        [0.90, [1.05, 1.35, 0.30]],
+        [1.00, [0.30, 1.15, 1.85]],
+        [1.25, [-0.30, -0.70, 1.40]],
+        [1.60, [-0.60, -1.30, 0.80]]
+    ];
+    const GLOVE_HAND_KEYS = [
+        [0.00, [-0.70, -0.90, 0.50]],
+        [0.40, [-0.60, -0.50, 0.60]],
+        [0.60, [0.30, 0.10, 1.20]],
+        [0.85, [0.60, 0.20, 1.60]],
+        [1.00, [0.50, -0.20, 1.20]],
+        [1.30, [-0.40, -0.70, 0.50]],
+        [1.60, [-0.60, -0.90, 0.40]]
+    ];
+
+    function drawMound(time) {
+        // Ground shadow of the mound under the pitcher
+        const moundProj = camera.project(0, 0.83, MOUND_Z);
+        if (!moundProj) return;
+
+        const isRHP = state.pitchTrajectory ? state.pitchTrajectory.isRHP : true;
+        const x0 = state.pitchTrajectory ? state.pitchTrajectory.x0 : -1.8;
+
+        // Delivery clock: 0..1 windup (release at 1.0), 1..1.6 follow-through
+        let t = 0;
+        if (state.phase === 'WINDUP') t = clamp01((time - state.startTime) / state.windupDuration);
+        else if (state.phase === 'IN_FLIGHT') t = 1 + 0.6 * clamp01((state.flightProgress * state.flightDuration) / 260);
+        else if (state.phase === 'CALL_WINDOW' || state.phase === 'VERDICT') t = 1.6;
+        else if (time !== undefined) t = 0.02 * Math.sin(time / 600) + 0.02; // idle sway
+
+        const ts = isRHP ? -1 : 1; // screen side of throwing arm
+        const bodyX = x0 - ts * 1.08;
+
+        const hipZ = lerp(60.4, 57.3, smoothstep(0.45, 0.95, t)) - 0.5 * smoothstep(1.0, 1.6, t);
+        const hipY = moundY(hipZ) + 2.95 - 0.3 * smoothstep(0.6, 0.95, t) + 0.1 * smoothstep(0.1, 0.3, t);
+        const lean = 0.1 + 1.1 * smoothstep(0.7, 1.05, t) + 0.5 * smoothstep(1.0, 1.6, t);
+        const shZ = hipZ - lean;
+        const shY = hipY + 1.95 - 0.3 * lean;
+
+        const W = (x, y, z) => [x, y, z];
+        const shT = W(bodyX + ts * 0.78, shY, shZ);
+        const shG = W(bodyX - ts * 0.78, shY, shZ);
+        const hipT = W(bodyX + ts * 0.28, hipY, hipZ);
+        const hipG = W(bodyX - ts * 0.28, hipY, hipZ);
+
+        // Rear (drive) leg stays on the rubber then drags through
+        const rz = lerp(60.45, 59.0, smoothstep(0.7, 1.0, t)) - 1.5 * smoothstep(1.0, 1.6, t);
+        const rearFoot = W(bodyX + ts * 0.32, moundY(rz) + 0.18 + 0.5 * smoothstep(1.2, 1.6, t), rz);
+        // Lead leg: lift, stride, plant
+        const lz = t < 0.45 ? 60.0 - 0.4 * smoothstep(0.25, 0.45, t) : lerp(59.6, 55.2, smoothstep(0.5, 0.92, t));
+        const liftAmt = 1.7 * smoothstep(0.15, 0.4, t) * (1 - smoothstep(0.6, 0.92, t));
+        const leadFoot = W(bodyX - ts * 0.45, moundY(lz) + 0.18 + liftAmt, lz);
+
+        const legR = ik3(hipT, rearFoot, 1.55, 1.55, [ts * 0.4, 0.1, -1]);
+        const legL = ik3(hipG, leadFoot, 1.55, 1.55, [-ts * 0.3, 0.1, -1]);
+
+        // Arms
+        const handT = sampleKeys(PITCH_HAND_KEYS, t);
+        let handTarget = [shT[0] + ts * handT[0], shT[1] + handT[1], shT[2] - handT[2]];
+        const rw = 1 - clamp01(Math.abs(t - 1) / 0.12);
+        if (rw > 0) {
+            const rel = [x0, 6.0, 54.0];
+            handTarget = handTarget.map((v, i) => lerp(v, rel[i], smoothstep(0, 1, rw)));
+        }
+        const handG = sampleKeys(GLOVE_HAND_KEYS, t);
+        const gloveTarget = [shG[0] - ts * handG[0], shG[1] + handG[1], shG[2] - handG[2]];
+        const armT = ik3(shT, handTarget, 1.15, 1.15, [ts * 0.8, -0.5, 0.3]);
+        const armG = ik3(shG, gloveTarget, 1.15, 1.15, [-ts * 0.8, -0.6, 0.2]);
+
+        const pr = (a) => camera.project(a[0], a[1], a[2]);
+        const pHipT = pr(hipT), pHipG = pr(hipG), pShT = pr(shT), pShG = pr(shG);
+        const pRearKnee = pr(legR.joint), pRearAnk = pr(legR.end);
+        const pLeadKnee = pr(legL.joint), pLeadAnk = pr(legL.end);
+        if (!pHipT || !pShT || !pRearAnk || !pLeadAnk) return;
+
+        const jersey = '#97a3b6', sleeve = '#b91c1c', pants = '#e5e7eb', skin = '#c68a5b';
+
+        ctx.save();
+        // Cast shadow on the mound
+        const sh = camera.project(bodyX, moundY(hipZ), hipZ);
+        if (sh) {
             ctx.beginPath();
-            ctx.moveTo(pHead.px, pHead.py + 20);
-            ctx.lineTo(pHead.px + 12 + armOffset, pHead.py + 10 - armOffset);
-            ctx.strokeStyle = '#38bdf8';
-            ctx.lineWidth = 3;
+            ctx.ellipse(sh.px + sh.scale * 0.3, sh.py + 1, sh.scale * 1.5, sh.scale * 0.32, 0, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(30, 12, 4, 0.45)';
+            ctx.fill();
+        }
+
+        // Legs (rear first, then lead)
+        const drawLeg = (hip, knee, ank, footTo) => {
+            limb(hip, knee, 0.6, 0.42, pants);
+            limb(knee, ank, 0.42, 0.28, pants);
+            limb(ank, footTo, 0.3, 0.26, '#1f2937');
+        };
+        const toeOf = (a) => camera.project(a[0], Math.max(0, a[1] - 0.14), a[2] - 0.5);
+        drawLeg(pHipT, pRearKnee, pRearAnk, toeOf(legR.end));
+        drawLeg(pHipG, pLeadKnee, pLeadAnk, toeOf(legL.end));
+
+        // Torso & jersey (thick stroked polygon gives a rounded, filled body)
+        if (pShT && pShG && pHipG) {
+            const torso = ctx.createLinearGradient(pShG.px, 0, pShT.px, 0);
+            torso.addColorStop(0, shade(jersey, 0.2));
+            torso.addColorStop(1, shade(jersey, -0.3));
+            polyPath(ctx, [pShG, pShT, pHipT, pHipG]);
+            ctx.fillStyle = torso;
+            ctx.strokeStyle = torso;
+            ctx.lineJoin = 'round';
+            ctx.lineWidth = Math.max(2, 0.3 * pShT.scale);
+            ctx.fill();
             ctx.stroke();
+            // Belt
+            limb(pHipG, pHipT, 0.14, 0.14, '#111827');
+        }
+
+        // Head with red cap
+        const headW = [bodyX, shY + 0.62, shZ - 0.12 * lean];
+        const pHead = pr(headW);
+        const pNeck = pr([bodyX, shY + 0.1, shZ]);
+        if (pHead && pNeck) {
+            limb(pNeck, pHead, 0.28, 0.26, skin);
+            blob(pHead, 0.33, skin);
+            const r = 0.36 * pHead.scale;
+            ctx.beginPath();
+            ctx.arc(pHead.px, pHead.py - r * 0.1, r, Math.PI * 1.02, Math.PI * 1.98);
+            ctx.closePath();
+            ctx.fillStyle = '#b91c1c';
+            ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(pHead.px, pHead.py - r * 0.05, r * 1.05, r * 0.18, 0, 0, Math.PI);
+            ctx.fillStyle = '#7f1d1d';
+            ctx.fill();
+        }
+
+        // Glove arm then throwing arm
+        const drawArm = (sh0, a) => {
+            const pe = pr(a.joint), ph = pr(a.end);
+            limb(sh0, pe, 0.38, 0.3, sleeve);
+            limb(pe, ph, 0.3, 0.22, skin);
+        };
+        drawArm(pShG, armG);
+        const pGloveHand = pr(armG.end);
+        if (pGloveHand) blob(pGloveHand, 0.3, '#6b3410');
+        drawArm(pShT, armT);
+        const pThrowHand = pr(armT.end);
+        if (pThrowHand) {
+            blob(pThrowHand, 0.14, skin);
+            if (t < 1.0) {
+                const br = Math.max(1.4, BALL_RADIUS * pThrowHand.scale);
+                ctx.beginPath();
+                ctx.arc(pThrowHand.px, pThrowHand.py, br, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+            }
         }
         ctx.restore();
     }
 
     function drawHomePlate() {
-        const v1 = camera.project(-0.7083, 0, 0.0);
-        const v2 = camera.project(0.7083, 0, 0.0);
-        const v3 = camera.project(0.7083, 0, CORNER_Z);
-        const v4 = camera.project(0.0, 0, APEX_Z);
-        const v5 = camera.project(-0.7083, 0, CORNER_Z);
-
-        if (!v1 || !v2 || !v3 || !v4 || !v5) return;
+        const e = 0.09; // black rubber border width (~1 in)
+        const outer = projAll([
+            [-HALF_PLATE_WIDTH - e, 0, e], [HALF_PLATE_WIDTH + e, 0, e],
+            [HALF_PLATE_WIDTH + e, 0, CORNER_Z], [0, 0, APEX_Z - e * 1.5],
+            [-HALF_PLATE_WIDTH - e, 0, CORNER_Z]
+        ]);
+        const top = projAll([
+            [-HALF_PLATE_WIDTH, 0.045, 0.0], [HALF_PLATE_WIDTH, 0.045, 0.0],
+            [HALF_PLATE_WIDTH, 0.045, CORNER_Z], [0, 0.045, APEX_Z],
+            [-HALF_PLATE_WIDTH, 0.045, CORNER_Z]
+        ]);
+        if (!outer || !top) return;
 
         ctx.save();
-        // Black outline border
-        ctx.beginPath();
-        ctx.moveTo(v1.px, v1.py);
-        ctx.lineTo(v2.px, v2.py);
-        ctx.lineTo(v3.px, v3.py);
-        ctx.lineTo(v4.px, v4.py);
-        ctx.lineTo(v5.px, v5.py);
-        ctx.closePath();
-        ctx.fillStyle = '#0f172a';
-        ctx.lineWidth = 6;
+        // Soft contact shadow
+        polyPath(ctx, outer);
+        ctx.shadowColor = 'rgba(0,0,0,0.55)';
+        ctx.shadowBlur = 8;
+        ctx.fillStyle = '#0b0f19';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Black beveled border / raised side face
+        polyPath(ctx, outer);
+        ctx.lineWidth = 1;
         ctx.strokeStyle = '#020617';
         ctx.stroke();
 
         // White rubber surface
-        ctx.fillStyle = '#f8fafc';
+        polyPath(ctx, top);
+        const pg = ctx.createLinearGradient(0, top[0].py, 0, top[3].py);
+        pg.addColorStop(0, '#ffffff');
+        pg.addColorStop(1, '#d9e0ea');
+        ctx.fillStyle = pg;
         ctx.fill();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(15, 23, 42, 0.65)';
+        ctx.stroke();
         ctx.restore();
     }
 
@@ -992,242 +1500,173 @@
 
     function drawBatter() {
         const isRHH = (state.batterHandedness === 'RHH');
-        // RHH stands on Left (X = -2.6); LHH stands on Right (X = +2.6)
-        const bx = isRHH ? -2.6 : 2.6;
-        const bz = -0.3; // straddling plate
+        // RHH stands on Left (X = -2.8); LHH stands on Right (X = +2.8) - inside the 4 ft box
+        const bx = isRHH ? -2.8 : 2.8;
+        const bz = -0.75; // centered on the plate depth
         const dir = isRHH ? 1 : -1; // 1 facing right (toward plate), -1 facing left
 
-        // Key anatomical projection points
-        const ground = camera.project(bx, 0, bz);
-        const ankles = camera.project(bx, 0.4, bz);
-        const knees = camera.project(bx, 1.6, bz);
-        const waist = camera.project(bx, 3.2, bz);
-        const chest = camera.project(bx, 4.4, bz);
-        const shoulders = camera.project(bx, 4.9, bz);
-        const neck = camera.project(bx, 5.2, bz);
-        const head = camera.project(bx, 5.7, bz);
+        // Local rig coordinates [u (toward plate), y (up), v (toward pitcher)] -> world
+        const L = (u, y, v) => [bx + u * dir, y, bz + v];
+        const pt = (a) => camera.project(a[0], a[1], a[2]);
+        const loc = (u, y, v) => pt(L(u, y, v));
 
-        if (!ground || !head) return;
+        const ground = loc(0, 0, 0);
+        const headTop = loc(0.1, 6.0, 0);
+        if (!ground || !headTop) return;
+
+        const pants = '#e8edf4', jersey = '#1b2a4a', skin = '#c68a5b';
+
+        // Stance joints (athletic crouch: ~6 ft tall standing, hips dropped, knees flexed)
+        const hipB = L(-0.28, 2.75, -0.30), hipF = L(0.28, 2.75, 0.30);
+        const ankB = L(-0.55, 0.30, -0.90), ankF = L(0.50, 0.30, 0.90);
+        // Reverse mirror for IK poles (u axis flips for LHH)
+        const legB = ik3(hipB, ankB, 1.45, 1.45, [dir * 0.9, 0.0, -0.2]);
+        const legF = ik3(hipF, ankF, 1.45, 1.45, [dir * 0.9, 0.0, 0.2]);
+
+        const shB = L(-0.45, 4.7, -0.50), shF = L(0.55, 4.58, 0.50);
+        const waistB = L(-0.34, 2.9, -0.38), waistF = L(0.34, 2.9, 0.38);
+        const handsL = [-0.6, 4.95, -0.2];
+        const hands = L(handsL[0], handsL[1], handsL[2]);
+        const armB = ik3(shB, hands, 1.0, 1.0, [dir * -0.35, -0.9, -0.45]);
+        const armF = ik3(shF, hands, 1.0, 1.0, [0, -1, 0.1]);
 
         ctx.save();
-
-        // 1. Chalk Batter's Box on dirt
-        const boxNearL = camera.project(isRHH ? -3.8 : 1.4, 0, 1.8);
-        const boxNearR = camera.project(isRHH ? -1.4 : 3.8, 0, 1.8);
-        const boxFarR = camera.project(isRHH ? -1.4 : 3.8, 0, -2.2);
-        const boxFarL = camera.project(isRHH ? -3.8 : 1.4, 0, -2.2);
-        if (boxNearL && boxNearR && boxFarR && boxFarL) {
-            ctx.beginPath();
-            ctx.moveTo(boxNearL.px, boxNearL.py);
-            ctx.lineTo(boxNearR.px, boxNearR.py);
-            ctx.lineTo(boxFarR.px, boxFarR.py);
-            ctx.lineTo(boxFarL.px, boxFarL.py);
-            ctx.closePath();
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-        }
-
-        // 2. Ground shadow under batter
-        ctx.beginPath();
-        ctx.ellipse(ground.px, ground.py, 38, 14, 0, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
-        ctx.fill();
-
-        // Stance offsets (athletic crouch, front foot forward toward pitcher)
-        const backLegX = bx - (0.45 * dir);
-        const frontLegX = bx + (0.55 * dir);
-        const pBackFoot = camera.project(backLegX, 0, bz - 0.2);
-        const pBackKnee = camera.project(backLegX + (0.1 * dir), 1.5, bz - 0.1);
-        const pFrontFoot = camera.project(frontLegX, 0, bz + 0.3);
-        const pFrontKnee = camera.project(frontLegX - (0.1 * dir), 1.5, bz + 0.2);
-        const pHip = camera.project(bx, 3.1, bz);
-
-        // 3. Legs & Baseball Pants (White/gray with piping)
-        ctx.strokeStyle = '#0f172a'; // Cleats
-        ctx.lineWidth = 10;
         ctx.lineCap = 'round';
-        if (pBackFoot && pBackKnee && pHip) {
-            // Back leg
-            ctx.beginPath();
-            ctx.moveTo(pBackFoot.px, pBackFoot.py);
-            ctx.lineTo(pBackKnee.px, pBackKnee.py);
-            ctx.lineTo(pHip.px, pHip.py);
-            ctx.strokeStyle = '#e2e8f0'; // Gray/white pants
-            ctx.lineWidth = 20;
-            ctx.stroke();
-            // Piping stripe
-            ctx.beginPath();
-            ctx.moveTo(pBackKnee.px - (2 * dir), pBackKnee.py);
-            ctx.lineTo(pHip.px - (2 * dir), pHip.py);
-            ctx.strokeStyle = '#0284c7';
-            ctx.lineWidth = 2.5;
-            ctx.stroke();
-            // Cleat
-            ctx.beginPath();
-            ctx.ellipse(pBackFoot.px, pBackFoot.py, 10, 6, 0, 0, Math.PI * 2);
-            ctx.fillStyle = '#0f172a';
-            ctx.fill();
-        }
+        ctx.lineJoin = 'round';
 
-        if (pFrontFoot && pFrontKnee && pHip) {
-            // Front leg
-            ctx.beginPath();
-            ctx.moveTo(pFrontFoot.px, pFrontFoot.py);
-            ctx.lineTo(pFrontKnee.px, pFrontKnee.py);
-            ctx.lineTo(pHip.px, pHip.py);
-            ctx.strokeStyle = '#f1f5f9';
-            ctx.lineWidth = 20;
-            ctx.stroke();
-            // Piping stripe
-            ctx.beginPath();
-            ctx.moveTo(pFrontKnee.px + (2 * dir), pFrontKnee.py);
-            ctx.lineTo(pHip.px + (2 * dir), pHip.py);
-            ctx.strokeStyle = '#0284c7';
-            ctx.lineWidth = 2.5;
-            ctx.stroke();
-            // Cleat
-            ctx.beginPath();
-            ctx.ellipse(pFrontFoot.px, pFrontFoot.py, 11, 6, 0, 0, Math.PI * 2);
-            ctx.fillStyle = '#0f172a';
-            ctx.fill();
-        }
+        // Ground shadow under batter (soft, stretched away from the lights)
+        const gs = ground.scale;
+        const shadow = ctx.createRadialGradient(ground.px + gs * 0.3, ground.py - gs * 0.1, 0, ground.px + gs * 0.3, ground.py - gs * 0.1, gs * 1.7);
+        shadow.addColorStop(0, 'rgba(0,0,0,0.55)');
+        shadow.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.save();
+        ctx.translate(ground.px, ground.py);
+        ctx.scale(1, 0.32);
+        ctx.translate(-ground.px, -ground.py);
+        ctx.beginPath();
+        ctx.arc(ground.px + gs * 0.3, ground.py - gs * 0.1, gs * 1.7, 0, Math.PI * 2);
+        ctx.fillStyle = shadow;
+        ctx.fill();
+        ctx.restore();
 
-        // 4. Belt & Waistline
-        if (waist) {
-            ctx.beginPath();
-            ctx.ellipse(waist.px, waist.py, 22, 9, 0, 0, Math.PI * 2);
-            ctx.fillStyle = '#0284c7'; // Blue belt
-            ctx.fill();
-        }
+        const drawLeg = (hip, leg, ank, sideSign) => {
+            const pHip = pt(hip), pKnee = pt(leg.joint), pAnk = pt(leg.end);
+            limb(pHip, pKnee, 0.66, 0.46, pants);
+            limb(pKnee, pAnk, 0.46, 0.32, pants);
+            // Blue piping down the outside of the pant leg
+            if (pHip && pKnee && pAnk) {
+                ctx.strokeStyle = '#0ea5e9';
+                ctx.lineWidth = Math.max(1, 0.05 * pKnee.scale);
+                const off = sideSign * dir * 0.2 * pKnee.scale;
+                ctx.beginPath();
+                ctx.moveTo(pHip.px + off, pHip.py + 2);
+                ctx.lineTo(pKnee.px + off * 0.8, pKnee.py);
+                ctx.lineTo(pAnk.px + off * 0.6, pAnk.py);
+                ctx.stroke();
+            }
+            // Sock, then cleat pointing toward the plate
+            const sockLow = pt([leg.end[0], leg.end[1] - 0.18, leg.end[2]]);
+            limb(pAnk, sockLow, 0.32, 0.3, '#16233f');
+            const toe = pt([leg.end[0] + dir * 0.62, 0.06, leg.end[2]]);
+            const heel = pt([leg.end[0] - dir * 0.12, 0.12, leg.end[2]]);
+            limb(heel, toe, 0.34, 0.3, '#0b1220');
+        };
+        // Far (front) leg first, near (back) leg after
+        drawLeg(hipF, legF, ankF, 1);
+        drawLeg(hipB, legB, ankB, -1);
 
-        // 5. Torso & Jersey (Turned slightly toward pitcher/plate)
-        if (chest && waist) {
-            ctx.beginPath();
-            ctx.moveTo(waist.px - 18, waist.py);
-            ctx.lineTo(waist.px + 18, waist.py);
-            ctx.lineTo(chest.px + 24, chest.py);
-            ctx.lineTo(chest.px - 24, chest.py);
-            ctx.closePath();
-            ctx.fillStyle = '#1e293b'; // Navy/charcoal jersey
+        // Front arm (far side, partly hidden behind torso)
+        const pShF = pt(shF), pShB = pt(shB), pHands = pt(hands);
+        limb(pShF, pt(armF.joint), 0.4, 0.3, jersey);
+        limb(pt(armF.joint), pHands, 0.3, 0.22, skin);
+
+        // Torso & jersey: filled shoulder-to-waist shape with rounded, thick edges
+        const pwB = pt(waistB), pwF = pt(waistF);
+        if (pShB && pShF && pwB && pwF) {
+            polyPath(ctx, [pShB, pShF, pwF, pwB]);
+            const tg = ctx.createLinearGradient(pShB.px, 0, pShF.px, 0);
+            tg.addColorStop(0, shade(jersey, 0.22));
+            tg.addColorStop(0.5, jersey);
+            tg.addColorStop(1, shade(jersey, -0.4));
+            ctx.fillStyle = tg;
+            ctx.strokeStyle = tg;
+            ctx.lineWidth = Math.max(3, 0.34 * pShB.scale);
             ctx.fill();
-            ctx.strokeStyle = '#0f172a';
-            ctx.lineWidth = 2;
             ctx.stroke();
 
-            // Jersey Back Number outline
-            ctx.fillStyle = '#38bdf8';
-            ctx.font = 'bold 16px sans-serif';
+            // Jersey hem & belt
+            limb(pwB, pwF, 0.16, 0.16, '#0b1220');
+            ctx.fillStyle = '#d9a441';
+            const bc = { px: (pwB.px + pwF.px) / 2, py: (pwB.py + pwF.py) / 2 };
+            ctx.fillRect(bc.px - 2, bc.py - 2, 4, 4);
+
+            // Jersey back number
+            const nc = { px: (pShB.px + pShF.px) / 2 + 0, py: (pShB.py + pwB.py) / 2 + 0.2 * pShB.scale };
+            ctx.fillStyle = '#e0f2fe';
+            ctx.font = `bold ${Math.max(8, Math.round(0.72 * pShB.scale))}px sans-serif`;
             ctx.textAlign = 'center';
-            ctx.fillText('24', chest.px - (4 * dir), chest.py + 10);
+            ctx.textBaseline = 'middle';
+            ctx.fillText('24', nc.px, nc.py);
+            // Name-plate stripe above the number
+            ctx.fillStyle = 'rgba(224,242,254,0.55)';
+            ctx.fillRect(nc.px - 0.45 * pShB.scale, nc.py - 0.58 * pShB.scale, 0.9 * pShB.scale, Math.max(1, 0.06 * pShB.scale));
         }
 
-        // 6. Arms & Hands holding bat
-        // Back arm: elbow up high
-        const pBackElbow = camera.project(bx - (1.1 * dir), 4.7, bz - 0.4);
-        const pHands = camera.project(bx - (0.6 * dir), 4.8, bz - 0.2);
-        const pFrontElbow = camera.project(bx + (0.3 * dir), 4.1, bz + 0.1);
-
-        if (shoulders && pBackElbow && pHands && pFrontElbow) {
-            // Back arm (tricep/bicep)
+        // Neck, head & batting helmet
+        const pNeckBase = loc(0.05, 4.95, -0.05), pNeckTop = loc(0.1, 5.35, 0);
+        limb(pNeckBase, pNeckTop, 0.36, 0.32, skin);
+        const pHeadC = loc(0.12, 5.55, 0.0);
+        if (pHeadC) {
+            blob(pHeadC, 0.36, skin);
+            // Helmet dome (covers the top/back of the head), rim ends near the ears
+            const hc = loc(0.12, 5.72, 0.0);
+            const r = 0.43 * hc.scale;
+            const hg = ctx.createRadialGradient(hc.px - r * 0.4, hc.py - r * 0.45, r * 0.1, hc.px, hc.py, r * 1.05);
+            hg.addColorStop(0, '#38a5e0');
+            hg.addColorStop(0.5, '#0369a1');
+            hg.addColorStop(1, '#0c2c4a');
             ctx.beginPath();
-            ctx.moveTo(shoulders.px - (14 * dir), shoulders.py);
-            ctx.lineTo(pBackElbow.px, pBackElbow.py);
-            ctx.lineTo(pHands.px, pHands.py);
-            ctx.strokeStyle = '#1e293b';
-            ctx.lineWidth = 11;
-            ctx.stroke();
-
-            // Front arm (reaching across)
-            ctx.beginPath();
-            ctx.moveTo(shoulders.px + (14 * dir), shoulders.py + 4);
-            ctx.lineTo(pFrontElbow.px, pFrontElbow.py);
-            ctx.lineTo(pHands.px, pHands.py);
-            ctx.strokeStyle = '#1e293b';
-            ctx.lineWidth = 11;
-            ctx.stroke();
-
-            // Batting Gloves (White/Cyan)
-            ctx.beginPath();
-            ctx.arc(pHands.px, pHands.py, 8, 0, Math.PI * 2);
-            ctx.fillStyle = '#f8fafc';
+            ctx.arc(hc.px, hc.py, r, 0, Math.PI * 2);
+            ctx.fillStyle = hg;
             ctx.fill();
-            ctx.strokeStyle = '#0284c7';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // 7. Realistic Baseball Bat (Held cocked back over shoulder)
-            // Bat angle: points back & slightly upward (~65 deg)
-            const batAngle = isRHH ? -Math.PI * 0.38 : -Math.PI * 0.62;
-            const batLen = 65;
-            const tipX = pHands.px + Math.cos(batAngle) * batLen;
-            const tipY = pHands.py + Math.sin(batAngle) * batLen;
-
-            // Bat knob & handle (tapered)
+            // Helmet ear-flap on the pitcher-facing side & the bill peeking toward the plate
+            limb(loc(0.42, 5.55, 0.18), loc(0.7, 5.5, 0.16), 0.2, 0.14, '#0a3a5c');
+            // Glossy highlight
             ctx.beginPath();
-            ctx.moveTo(pHands.px - Math.cos(batAngle) * 8, pHands.py - Math.sin(batAngle) * 8);
-            ctx.lineTo(tipX, tipY);
-            ctx.strokeStyle = '#d97706'; // Maple wood
-            ctx.lineWidth = 7;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-
-            // Bat barrel (thicker top portion)
-            const barrelStartX = pHands.px + Math.cos(batAngle) * 25;
-            const barrelStartY = pHands.py + Math.sin(batAngle) * 25;
-            ctx.beginPath();
-            ctx.moveTo(barrelStartX, barrelStartY);
-            ctx.lineTo(tipX, tipY);
-            ctx.strokeStyle = '#b45309'; // Dark maple finish
-            ctx.lineWidth = 11;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-
-            // Grip tape on handle
-            ctx.beginPath();
-            ctx.moveTo(pHands.px - Math.cos(batAngle) * 6, pHands.py - Math.sin(batAngle) * 6);
-            ctx.lineTo(barrelStartX, barrelStartY);
-            ctx.strokeStyle = '#0f172a'; // Black grip tape
-            ctx.lineWidth = 6;
-            ctx.stroke();
+            ctx.ellipse(hc.px - r * 0.3, hc.py - r * 0.5, r * 0.28, r * 0.14, -0.5, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.35)';
+            ctx.fill();
         }
 
-        // 8. Head & Batting Helmet
-        if (head && neck) {
-            // Neck
+        // Back arm (near side): shoulder -> elbow raised out -> hands
+        limb(pShB, pt(armB.joint), 0.44, 0.32, jersey);
+        limb(pt(armB.joint), pHands, 0.32, 0.22, skin);
+
+        // Bat: cocked over the back shoulder, barrel up and angled back
+        const bdl = [-0.62, 0.66, -0.2];
+        const bl = Math.hypot(bdl[0], bdl[1], bdl[2]);
+        const bd = [bdl[0] / bl, bdl[1] / bl, bdl[2] / bl];
+        const knobL = [handsL[0] - bd[0] * 0.45, handsL[1] - bd[1] * 0.45, handsL[2] - bd[2] * 0.45];
+        const bp = (s) => loc(knobL[0] + bd[0] * s, knobL[1] + bd[1] * s, knobL[2] + bd[2] * s);
+        limb(bp(0.0), bp(0.15), 0.17, 0.1, '#111827');
+        limb(bp(0.15), bp(1.05), 0.09, 0.09, '#1f2937'); // black grip tape
+        limb(bp(1.05), bp(1.95), 0.09, 0.23, '#c88a4a'); // taper
+        limb(bp(1.9), bp(2.78), 0.23, 0.23, '#d49a58'); // barrel
+        limb(bp(2.76), bp(2.84), 0.2, 0.15, '#b9793a'); // end cap
+        // Dark finish band on the barrel
+        limb(bp(2.1), bp(2.3), 0.235, 0.235, '#7a4a20');
+
+        // Batting gloves over the bat handle
+        const gloveP = pt(hands);
+        if (gloveP) {
+            blob(gloveP, 0.15, '#f8fafc');
+            const g2 = loc(handsL[0] - 0.05, handsL[1] + 0.2, handsL[2] + 0.02);
+            blob(g2, 0.14, '#e2e8f0');
+            ctx.strokeStyle = '#0ea5e9';
+            ctx.lineWidth = Math.max(1, 0.03 * gloveP.scale);
             ctx.beginPath();
-            ctx.moveTo(neck.px, neck.py);
-            ctx.lineTo(head.px, head.py);
-            ctx.strokeStyle = '#d4a373'; // Skin tone
-            ctx.lineWidth = 12;
+            ctx.arc(gloveP.px, gloveP.py, 0.15 * gloveP.scale, Math.PI * 0.1, Math.PI * 0.9);
             ctx.stroke();
-
-            // Face profile (facing pitcher / home plate)
-            ctx.beginPath();
-            ctx.arc(head.px + (4 * dir), head.py - 2, 10, 0, Math.PI * 2);
-            ctx.fillStyle = '#d4a373';
-            ctx.fill();
-
-            // Batting Helmet (Matte Blue shell)
-            ctx.beginPath();
-            ctx.arc(head.px, head.py - 6, 15, Math.PI * 0.8, Math.PI * 2.2);
-            ctx.fillStyle = '#0284c7';
-            ctx.fill();
-
-            // Helmet Ear Flap (protecting side facing home plate)
-            ctx.beginPath();
-            ctx.ellipse(head.px + (5 * dir), head.py + 4, 9, 13, 0.1 * dir, 0, Math.PI * 2);
-            ctx.fillStyle = '#0369a1';
-            ctx.fill();
-
-            // Helmet Visor / Bill (pointing toward pitcher)
-            ctx.beginPath();
-            ctx.moveTo(head.px + (8 * dir), head.py - 8);
-            ctx.lineTo(head.px + (22 * dir), head.py - 5);
-            ctx.lineTo(head.px + (14 * dir), head.py - 2);
-            ctx.closePath();
-            ctx.fillStyle = '#0284c7';
-            ctx.fill();
         }
 
         ctx.restore();
@@ -1237,50 +1676,107 @@
         const mittPos = getMittPosition(state.flightProgress);
         const p = camera.project(mittPos.x, mittPos.y, -0.9);
         if (!p) return;
+        const s = p.scale;
 
         ctx.save();
-        // Catcher forearm connection (anchoring glove into screen)
-        const armBase = camera.project(mittPos.x * 0.7, 0.4, -0.9);
-        if (armBase) {
-            ctx.beginPath();
-            ctx.moveTo(p.px, p.py + 25);
-            ctx.lineTo(armBase.px, camera.height);
-            ctx.strokeStyle = '#1e293b';
-            ctx.lineWidth = 26;
-            ctx.lineCap = 'round';
-            ctx.stroke();
-        }
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
 
-        // Dark leather mitt
+        // Catcher forearm connection: tapered sleeve running down out of frame, anchoring the glove on-screen
+        const wrist = { px: p.px + mittPos.x * 0 + s * 0.02, py: p.py + s * 0.55, scale: s };
+        const armBase = camera.project(mittPos.x * 0.7, 0.4, -0.9);
+        const baseX = armBase ? armBase.px : p.px;
+        const low = { px: baseX + s * 0.9, py: camera.height + s * 0.8, scale: s * 1.15 };
+        limb(wrist, low, 0.44, 0.8, '#243557');
+        // Sleeve seam highlight
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+        ctx.lineWidth = Math.max(1, s * 0.03);
         ctx.beginPath();
-        ctx.ellipse(p.px, p.py, 38, 44, 0, 0, Math.PI * 2);
-        ctx.fillStyle = '#3b1807';
+        ctx.moveTo(wrist.px - s * 0.05, wrist.py);
+        ctx.lineTo(low.px - s * 0.08, low.py);
+        ctx.stroke();
+
+        // Mitt shadow on the sleeve
+        ctx.beginPath();
+        ctx.ellipse(p.px, p.py + s * 0.62, s * 0.34, s * 0.14, 0, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0,0,0,0.35)';
+        ctx.fill();
+
+        // Back of the catcher's mitt (the umpire sees the back of the glove, pocket faces the pitcher)
+        const mx = (dx) => p.px + dx * s;
+        const my = (dy) => p.py + dy * s;
+        ctx.beginPath();
+        ctx.moveTo(mx(-0.42), my(0.5));
+        ctx.bezierCurveTo(mx(-0.66), my(0.1), mx(-0.62), my(-0.42), mx(-0.26), my(-0.6));
+        ctx.bezierCurveTo(mx(-0.05), my(-0.74), mx(0.36), my(-0.7), mx(0.54), my(-0.32));
+        ctx.bezierCurveTo(mx(0.66), my(0.0), mx(0.6), my(0.32), mx(0.42), my(0.5));
+        ctx.closePath();
+        const mg = ctx.createRadialGradient(mx(-0.2), my(-0.3), s * 0.05, p.px, p.py, s * 0.8);
+        mg.addColorStop(0, '#9a5524');
+        mg.addColorStop(0.55, '#6b3410');
+        mg.addColorStop(1, '#2e1305');
+        ctx.fillStyle = mg;
         ctx.fill();
         ctx.strokeStyle = '#1d0b03';
-        ctx.lineWidth = 4;
+        ctx.lineWidth = Math.max(2, s * 0.06);
         ctx.stroke();
 
-        // Webbing
-        ctx.fillStyle = '#4a200a';
+        // Welting / edge binding
+        ctx.save();
+        ctx.clip();
+        ctx.strokeStyle = 'rgba(210, 150, 80, 0.35)';
+        ctx.lineWidth = Math.max(1, s * 0.035);
         ctx.beginPath();
-        ctx.ellipse(p.px - 14, p.py - 12, 16, 20, -0.2, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Deep pocket recess
-        ctx.beginPath();
-        ctx.arc(p.px, p.py - 4, 18, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0,0,0,0.55)';
-        ctx.fill();
-
-        // Leather lacing details
-        ctx.strokeStyle = '#854d0e';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(p.px - 22, p.py - 18);
-        ctx.lineTo(p.px - 8, p.py - 24);
-        ctx.moveTo(p.px - 18, p.py - 8);
-        ctx.lineTo(p.px - 4, p.py - 14);
+        ctx.moveTo(mx(-0.38), my(0.44));
+        ctx.bezierCurveTo(mx(-0.58), my(0.1), mx(-0.55), my(-0.38), mx(-0.24), my(-0.54));
+        ctx.bezierCurveTo(mx(-0.04), my(-0.66), mx(0.34), my(-0.62), mx(0.48), my(-0.3));
         ctx.stroke();
+
+        // Finger stall ridges
+        ctx.strokeStyle = 'rgba(20, 8, 2, 0.55)';
+        ctx.lineWidth = Math.max(1, s * 0.03);
+        for (let i = -1; i <= 2; i++) {
+            ctx.beginPath();
+            ctx.moveTo(mx(-0.1 + i * 0.2), my(-0.68 + Math.abs(i - 0.5) * 0.05));
+            ctx.quadraticCurveTo(mx(-0.1 + i * 0.2 + 0.03), my(-0.3), mx(-0.08 + i * 0.2), my(-0.06));
+            ctx.stroke();
+        }
+        // Padded palm/heel panel and stitched logo patch
+        ctx.fillStyle = 'rgba(0,0,0,0.18)';
+        ctx.beginPath();
+        ctx.ellipse(p.px + s * 0.02, p.py + s * 0.14, s * 0.34, s * 0.3, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(245, 222, 179, 0.5)';
+        ctx.beginPath();
+        ctx.ellipse(p.px, p.py + s * 0.12, s * 0.17, s * 0.08, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // Thumb tube on the near side
+        limb({ px: mx(-0.5), py: my(0.1), scale: s }, { px: mx(-0.58), py: my(-0.26), scale: s }, 0.2, 0.17, '#5a2a0c');
+
+        // Wrist strap with stitching
+        const strapG = ctx.createLinearGradient(0, my(0.42), 0, my(0.62));
+        strapG.addColorStop(0, '#b8793c');
+        strapG.addColorStop(1, '#6e3d17');
+        ctx.fillStyle = strapG;
+        ctx.beginPath();
+        ctx.moveTo(mx(-0.4), my(0.46));
+        ctx.lineTo(mx(0.4), my(0.46));
+        ctx.lineTo(mx(0.36), my(0.64));
+        ctx.lineTo(mx(-0.36), my(0.64));
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = '#2b1204';
+        ctx.lineWidth = Math.max(1, s * 0.03);
+        ctx.stroke();
+        ctx.strokeStyle = 'rgba(255,235,200,0.7)';
+        ctx.setLineDash([Math.max(2, s * 0.05), Math.max(2, s * 0.04)]);
+        ctx.beginPath();
+        ctx.moveTo(mx(-0.34), my(0.55));
+        ctx.lineTo(mx(0.34), my(0.55));
+        ctx.stroke();
+        ctx.setLineDash([]);
 
         ctx.restore();
     }
@@ -1291,32 +1787,56 @@
         const tr = camera.project(HALF_PLATE_WIDTH, SZ_TOP, 0);
         const br = camera.project(HALF_PLATE_WIDTH, SZ_BOT, 0);
         const bl = camera.project(-HALF_PLATE_WIDTH, SZ_BOT, 0);
+        // Back plane (rear apex of the plate) for a 3D prism read
+        const btl = camera.project(-HALF_PLATE_WIDTH, SZ_TOP, CORNER_Z);
+        const btr = camera.project(HALF_PLATE_WIDTH, SZ_TOP, CORNER_Z);
+        const bbr = camera.project(HALF_PLATE_WIDTH, SZ_BOT, CORNER_Z);
+        const bbl = camera.project(-HALF_PLATE_WIDTH, SZ_BOT, CORNER_Z);
 
         if (!tl || !tr || !br || !bl) return;
 
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(tl.px, tl.py);
-        ctx.lineTo(tr.px, tr.py);
-        ctx.lineTo(br.px, br.py);
-        ctx.lineTo(bl.px, bl.py);
-        ctx.closePath();
+        const main = isLitStrike ? '#22c55e' : '#ffffff';
+        const rgb = isLitStrike ? '34, 197, 94' : '255, 255, 255';
 
-        // Translucent fill
-        ctx.fillStyle = isLitStrike ? 'rgba(34, 197, 94, 0.28)' : 'rgba(255, 255, 255, 0.08)';
+        ctx.save();
+
+        // Back rectangle and connecting depth edges (faint)
+        if (btl && btr && bbr && bbl) {
+            ctx.strokeStyle = `rgba(${rgb}, 0.22)`;
+            ctx.lineWidth = 1;
+            polyPath(ctx, [btl, btr, bbr, bbl]);
+            ctx.stroke();
+            [[tl, btl], [tr, btr], [br, bbr], [bl, bbl]].forEach(([a, b]) => {
+                ctx.beginPath();
+                ctx.moveTo(a.px, a.py);
+                ctx.lineTo(b.px, b.py);
+                ctx.stroke();
+            });
+        }
+
+        polyPath(ctx, [tl, tr, br, bl]);
+
+        // Translucent vertical-gradient fill
+        const fg = ctx.createLinearGradient(0, tl.py, 0, bl.py);
+        fg.addColorStop(0, isLitStrike ? 'rgba(34, 197, 94, 0.36)' : 'rgba(255, 255, 255, 0.12)');
+        fg.addColorStop(1, isLitStrike ? 'rgba(34, 197, 94, 0.18)' : 'rgba(255, 255, 255, 0.03)');
+        ctx.fillStyle = fg;
         ctx.fill();
 
-        // Outline
-        ctx.strokeStyle = isLitStrike ? '#22c55e' : 'rgba(255, 255, 255, 0.7)';
+        // Outline with glow
+        ctx.shadowColor = isLitStrike ? 'rgba(34, 197, 94, 0.9)' : 'rgba(186, 230, 253, 0.6)';
+        ctx.shadowBlur = isLitStrike ? 16 : 8;
+        ctx.strokeStyle = isLitStrike ? main : 'rgba(255, 255, 255, 0.85)';
         ctx.lineWidth = isLitStrike ? 3 : 2;
         ctx.stroke();
+        ctx.shadowBlur = 0;
 
         // 3x3 Grid
         const w = tr.px - tl.px;
         const h = bl.py - tl.py;
         ctx.lineWidth = 1;
         ctx.setLineDash([4, 4]);
-        ctx.strokeStyle = isLitStrike ? 'rgba(34, 197, 94, 0.6)' : 'rgba(255, 255, 255, 0.4)';
+        ctx.strokeStyle = `rgba(${rgb}, ${isLitStrike ? 0.6 : 0.4})`;
         for (let c = 1; c <= 2; c++) {
             ctx.beginPath();
             ctx.moveTo(tl.px + (w / 3) * c, tl.py);
@@ -1328,6 +1848,20 @@
             ctx.lineTo(tr.px, tl.py + (h / 3) * c);
             ctx.stroke();
         }
+        ctx.setLineDash([]);
+
+        // Bold corner brackets
+        const tick = Math.min(Math.abs(w), Math.abs(h)) * 0.16;
+        ctx.strokeStyle = main;
+        ctx.lineWidth = isLitStrike ? 3.5 : 2.5;
+        ctx.lineCap = 'round';
+        [[tl, 1, 1], [tr, -1, 1], [br, -1, -1], [bl, 1, -1]].forEach(([c, sx, sy]) => {
+            ctx.beginPath();
+            ctx.moveTo(c.px + sx * tick, c.py);
+            ctx.lineTo(c.px, c.py);
+            ctx.lineTo(c.px, c.py + sy * tick);
+            ctx.stroke();
+        });
         ctx.restore();
     }
 
@@ -1345,50 +1879,139 @@
         const rPx = Math.max(2.5, BALL_RADIUS * p.scale);
 
         ctx.save();
-        // 3D sphere gradient lighting
+
+        // Ground shadow directly below the ball (depth cue)
+        const gp = camera.project(pos.x, 0, pos.z);
+        if (gp) {
+            const fade = clamp01(1 - pos.y / 9) * 0.38;
+            ctx.beginPath();
+            ctx.ellipse(gp.px, gp.py, rPx * 1.1, Math.max(1, rPx * 0.38), 0, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(0,0,0,${fade.toFixed(3)})`;
+            ctx.fill();
+        }
+
+        // Soft glow around the ball for readability against dirt/stands
+        const glow = ctx.createRadialGradient(p.px, p.py, rPx * 0.8, p.px, p.py, rPx * 3);
+        glow.addColorStop(0, 'rgba(255, 255, 255, 0.25)');
+        glow.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(p.px, p.py, rPx * 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 3D sphere gradient lighting (key light upper-left, cool rim on the shadow side)
         const grad = ctx.createRadialGradient(
-            p.px - rPx * 0.35, p.py - rPx * 0.35, rPx * 0.1,
+            p.px - rPx * 0.4, p.py - rPx * 0.4, rPx * 0.08,
             p.px, p.py, rPx
         );
         grad.addColorStop(0, '#ffffff');
-        grad.addColorStop(0.7, '#e2e8f0');
-        grad.addColorStop(1, '#94a3b8');
+        grad.addColorStop(0.55, '#f1f3f7');
+        grad.addColorStop(0.9, '#b6bfcd');
+        grad.addColorStop(1, '#8993a6');
 
         ctx.beginPath();
         ctx.arc(p.px, p.py, rPx, 0, Math.PI * 2);
         ctx.fillStyle = grad;
         ctx.shadowColor = 'rgba(0,0,0,0.5)';
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 6;
         ctx.fill();
+        ctx.shadowBlur = 0;
 
-        // Spinning red seams blur
-        if (rPx > 6) {
+        // Spinning red seams (classic two-arc baseball stitching), clipped to the sphere
+        if (rPx > 4) {
+            const spin = curTime * traj.config.rpm / 60 * Math.PI * 2 * 0.12;
+            const drawSeams = (angle, alpha) => {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(p.px, p.py, rPx, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.translate(p.px, p.py);
+                ctx.rotate(angle);
+                ctx.strokeStyle = `rgba(200, 30, 40, ${alpha})`;
+                ctx.lineWidth = Math.max(0.8, rPx * 0.1);
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.arc(-rPx * 1.35, 0, rPx * 1.05, -0.9, 0.9);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.arc(rPx * 1.35, 0, rPx * 1.05, Math.PI - 0.9, Math.PI + 0.9);
+                ctx.stroke();
+                if (rPx > 7) {
+                    // Tiny stitch ticks across the seams
+                    ctx.lineWidth = Math.max(0.6, rPx * 0.05);
+                    for (let k = -3; k <= 3; k++) {
+                        const a = k * 0.26;
+                        [[-rPx * 1.35, 0], [rPx * 1.35, Math.PI]].forEach(([cx, base]) => {
+                            const ang = base + a;
+                            const r0 = rPx * 0.98, r1 = rPx * 1.14;
+                            ctx.beginPath();
+                            ctx.moveTo(cx + Math.cos(ang) * r0, Math.sin(ang) * r0);
+                            ctx.lineTo(cx + Math.cos(ang + 0.12) * r1, Math.sin(ang + 0.12) * r1);
+                            ctx.stroke();
+                        });
+                    }
+                }
+                ctx.restore();
+            };
+            drawSeams(spin - 0.35, 0.28); // spin-blur ghost
+            drawSeams(spin, 0.85);
+        }
+
+        // Terminator shading & specular highlight
+        const shadeG = ctx.createRadialGradient(
+            p.px - rPx * 0.45, p.py - rPx * 0.45, rPx * 0.5,
+            p.px - rPx * 0.45, p.py - rPx * 0.45, rPx * 1.5
+        );
+        shadeG.addColorStop(0, 'rgba(0,0,0,0)');
+        shadeG.addColorStop(1, 'rgba(10, 18, 40, 0.5)');
+        ctx.beginPath();
+        ctx.arc(p.px, p.py, rPx, 0, Math.PI * 2);
+        ctx.fillStyle = shadeG;
+        ctx.fill();
+        if (rPx > 4) {
             ctx.beginPath();
-            ctx.ellipse(p.px, p.py, rPx * 0.72, rPx * 0.45, (curTime * 50) % Math.PI, 0, Math.PI * 2);
-            ctx.strokeStyle = 'rgba(239, 68, 68, 0.75)';
-            ctx.lineWidth = Math.max(1, rPx * 0.15);
-            ctx.stroke();
+            ctx.arc(p.px - rPx * 0.38, p.py - rPx * 0.4, rPx * 0.16, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.85)';
+            ctx.fill();
         }
         ctx.restore();
     }
 
     function drawPitchTrail(traj, progress) {
-        const samples = 40;
+        const samples = 48;
         const currentSteps = Math.floor(samples * progress);
         if (currentSteps < 2) return;
 
         ctx.save();
-        ctx.beginPath();
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        // Build projected path once
+        const pts = [];
         for (let i = 0; i <= currentSteps; i++) {
             const t = traj.tf * (i / samples);
             const pos = getPitchPosition(traj, t);
             const proj = camera.project(pos.x, pos.y, pos.z);
-            if (!proj) continue;
-            if (i === 0) ctx.moveTo(proj.px, proj.py);
-            else ctx.lineTo(proj.px, proj.py);
+            if (proj) pts.push(proj);
         }
-        ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
-        ctx.lineWidth = 3.5;
+
+        // Tapered comet trail: faint & thin at release, brighter & thicker at the ball
+        for (let i = 1; i < pts.length; i++) {
+            const k = i / (pts.length - 1);
+            ctx.beginPath();
+            ctx.moveTo(pts[i - 1].px, pts[i - 1].py);
+            ctx.lineTo(pts[i].px, pts[i].py);
+            ctx.strokeStyle = `rgba(56, 189, 248, ${(0.08 + 0.35 * k * k).toFixed(3)})`;
+            ctx.lineWidth = Math.max(1.2, BALL_RADIUS * pts[i].scale * 2 * (0.25 + 0.75 * k));
+            ctx.stroke();
+        }
+        // Bright core line along the most recent stretch
+        const from = Math.max(1, pts.length - 14);
+        ctx.beginPath();
+        ctx.moveTo(pts[from - 1].px, pts[from - 1].py);
+        for (let i = from; i < pts.length; i++) ctx.lineTo(pts[i].px, pts[i].py);
+        ctx.strokeStyle = 'rgba(224, 247, 255, 0.55)';
+        ctx.lineWidth = 1.4;
         ctx.stroke();
 
         // If in verdict review, draw the pitch location marker right on the strike zone plane (Z = 0)
@@ -1396,12 +2019,22 @@
             const crossPos = getPitchPosition(traj, traj.tf * 0.98);
             const crossProj = camera.project(crossPos.x, crossPos.y, 0);
             if (crossProj) {
+                const col = state.trueVerdict.isTrueStrike ? '#22c55e' : '#ef4444';
+                ctx.shadowColor = col;
+                ctx.shadowBlur = 12;
                 ctx.beginPath();
                 ctx.arc(crossProj.px, crossProj.py, 7, 0, Math.PI * 2);
-                ctx.fillStyle = state.trueVerdict.isTrueStrike ? '#22c55e' : '#ef4444';
+                ctx.fillStyle = col;
                 ctx.fill();
+                ctx.shadowBlur = 0;
                 ctx.strokeStyle = '#ffffff';
                 ctx.lineWidth = 2;
+                ctx.stroke();
+                // Ball-sized ring for scale
+                ctx.beginPath();
+                ctx.arc(crossProj.px, crossProj.py, Math.max(8, BALL_RADIUS * crossProj.scale), 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+                ctx.lineWidth = 1;
                 ctx.stroke();
             }
         }

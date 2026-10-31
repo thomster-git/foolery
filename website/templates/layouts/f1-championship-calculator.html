@@ -39,16 +39,10 @@
             <!-- Quick Preset Controls -->
             <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;">
                 <button class="preset-btn active" data-preset="season-2026" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; font-weight: 700; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
-                    🌱 2026 Season Grid (Round 1)
-                </button>
-                <button class="preset-btn" data-preset="las-vegas" style="background: rgba(6, 182, 212, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-weight: 700; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
-                    ⚡ Clinch Window Demo (Round 22)
-                </button>
-                <button class="preset-btn" data-preset="mid-season" style="background: rgba(168, 85, 247, 0.15); border: 1px solid var(--accent-purple); color: var(--accent-purple); font-weight: 700; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
-                    🏁 Mid-Season Demo (Round 16)
+                    🏁 Current 2026 Standings (after R18 USA)
                 </button>
                 <button id="btn-reset-data" style="background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; font-weight: 600; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
-                    🔄 Reset (2026 Start)
+                    🔄 Reset to Current
                 </button>
             </div>
         </div>
@@ -296,199 +290,79 @@
         return (pos >= 1 && pos <= 8) ? SPRINT_POINTS[pos - 1] : 0;
     }
 
-    // 24-Race Calendar Structure
+    // 23-Race 2026 Calendar (6 sprint weekends: China, Miami, Canada, Britain, Netherlands, Singapore)
     const CALENDAR = [
         { round: 1, name: 'Australian GP', circuit: 'Melbourne', hasSprint: false },
         { round: 2, name: 'Chinese GP', circuit: 'Shanghai', hasSprint: true },
         { round: 3, name: 'Japanese GP', circuit: 'Suzuka', hasSprint: false },
-        { round: 4, name: 'Bahrain GP', circuit: 'Sakhir', hasSprint: false },
-        { round: 5, name: 'Saudi Arabian GP', circuit: 'Jeddah', hasSprint: false },
-        { round: 6, name: 'Miami GP', circuit: 'Miami', hasSprint: true },
-        { round: 7, name: 'Emilia Romagna GP', circuit: 'Imola', hasSprint: false },
-        { round: 8, name: 'Monaco GP', circuit: 'Monaco', hasSprint: false },
-        { round: 9, name: 'Spanish GP', circuit: 'Barcelona', hasSprint: false },
-        { round: 10, name: 'Canadian GP', circuit: 'Montreal', hasSprint: false },
-        { round: 11, name: 'Austrian GP', circuit: 'Red Bull Ring', hasSprint: false },
-        { round: 12, name: 'British GP', circuit: 'Silverstone', hasSprint: false },
-        { round: 13, name: 'Belgian GP', circuit: 'Spa-Francorchamps', hasSprint: true },
-        { round: 14, name: 'Hungarian GP', circuit: 'Hungaroring', hasSprint: false },
-        { round: 15, name: 'Dutch GP', circuit: 'Zandvoort', hasSprint: false },
-        { round: 16, name: 'Italian GP', circuit: 'Monza', hasSprint: false },
-        { round: 17, name: 'Azerbaijan GP', circuit: 'Baku', hasSprint: false },
-        { round: 18, name: 'Singapore GP', circuit: 'Marina Bay', hasSprint: false },
-        { round: 19, name: 'United States GP', circuit: 'Austin', hasSprint: true },
-        { round: 20, name: 'Mexico City GP', circuit: 'Autódromo Hermanos Rodríguez', hasSprint: false },
-        { round: 21, name: 'São Paulo GP', circuit: 'Interlagos', hasSprint: true },
-        { round: 22, name: 'Las Vegas GP', circuit: 'Las Vegas Strip', hasSprint: false },
-        { round: 23, name: 'Qatar GP', circuit: 'Lusail', hasSprint: true },
-        { round: 24, name: 'Abu Dhabi GP', circuit: 'Yas Marina', hasSprint: false }
+        { round: 4, name: 'Miami GP', circuit: 'Miami', hasSprint: true },
+        { round: 5, name: 'Canadian GP', circuit: 'Montreal', hasSprint: true },
+        { round: 6, name: 'Monaco GP', circuit: 'Monaco', hasSprint: false },
+        { round: 7, name: 'Barcelona-Catalunya GP', circuit: 'Barcelona', hasSprint: false },
+        { round: 8, name: 'Austrian GP', circuit: 'Red Bull Ring', hasSprint: false },
+        { round: 9, name: 'British GP', circuit: 'Silverstone', hasSprint: true },
+        { round: 10, name: 'Belgian GP', circuit: 'Spa-Francorchamps', hasSprint: false },
+        { round: 11, name: 'Hungarian GP', circuit: 'Hungaroring', hasSprint: false },
+        { round: 12, name: 'Dutch GP', circuit: 'Zandvoort', hasSprint: true },
+        { round: 13, name: 'Italian GP', circuit: 'Monza', hasSprint: false },
+        { round: 14, name: 'Spanish GP', circuit: 'Madring, Madrid', hasSprint: false },
+        { round: 15, name: 'Azerbaijan GP', circuit: 'Baku', hasSprint: false },
+        { round: 16, name: 'Bahrain GP', circuit: 'Sepang (Malaysia)', hasSprint: false },
+        { round: 17, name: 'Singapore GP', circuit: 'Marina Bay', hasSprint: true },
+        { round: 18, name: 'United States GP', circuit: 'Austin', hasSprint: false },
+        { round: 19, name: 'Mexico City GP', circuit: 'Autódromo Hermanos Rodríguez', hasSprint: false },
+        { round: 20, name: 'São Paulo GP', circuit: 'Interlagos', hasSprint: false },
+        { round: 21, name: 'Las Vegas GP', circuit: 'Las Vegas Strip', hasSprint: false },
+        { round: 22, name: 'Qatar GP', circuit: 'Lusail', hasSprint: false },
+        { round: 23, name: 'Abu Dhabi GP', circuit: 'Yas Marina', hasSprint: false }
     ];
 
     // 2026 Grid Data Presets
     const PRESETS = {
         'season-2026': {
-            round: 1, // Round 1 of 24 (Australian GP) - Official 2026 Grid
+            round: 19, // Next race: Round 19 of 23 (Mexico City GP) - standings after Round 18 (United States GP)
             drivers: [
-                { id: 'ver', name: 'Max Verstappen', code: 'VER', team: 'Red Bull Racing', points: 0, wins: 0 },
-                { id: 'law', name: 'Liam Lawson', code: 'LAW', team: 'Red Bull Racing', points: 0, wins: 0 },
-                { id: 'nor', name: 'Lando Norris', code: 'NOR', team: 'McLaren', points: 0, wins: 0 },
-                { id: 'pia', name: 'Oscar Piastri', code: 'PIA', team: 'McLaren', points: 0, wins: 0 },
-                { id: 'lec', name: 'Charles Leclerc', code: 'LEC', team: 'Ferrari', points: 0, wins: 0 },
-                { id: 'ham', name: 'Lewis Hamilton', code: 'HAM', team: 'Ferrari', points: 0, wins: 0 },
-                { id: 'rus', name: 'George Russell', code: 'RUS', team: 'Mercedes', points: 0, wins: 0 },
-                { id: 'ant', name: 'Kimi Antonelli', code: 'ANT', team: 'Mercedes', points: 0, wins: 0 },
-                { id: 'alo', name: 'Fernando Alonso', code: 'ALO', team: 'Aston Martin', points: 0, wins: 0 },
+                { id: 'ant', name: 'Kimi Antonelli', code: 'ANT', team: 'Mercedes', points: 365, wins: 9 },
+                { id: 'rus', name: 'George Russell', code: 'RUS', team: 'Mercedes', points: 242, wins: 3 },
+                { id: 'ham', name: 'Lewis Hamilton', code: 'HAM', team: 'Ferrari', points: 241, wins: 1 },
+                { id: 'ver', name: 'Max Verstappen', code: 'VER', team: 'Red Bull Racing', points: 236, wins: 2 },
+                { id: 'lec', name: 'Charles Leclerc', code: 'LEC', team: 'Ferrari', points: 233, wins: 1 },
+                { id: 'nor', name: 'Lando Norris', code: 'NOR', team: 'McLaren', points: 211, wins: 2 },
+                { id: 'pia', name: 'Oscar Piastri', code: 'PIA', team: 'McLaren', points: 144, wins: 0 },
+                { id: 'had', name: 'Isack Hadjar', code: 'HAD', team: 'Red Bull Racing', points: 105, wins: 0 },
+                { id: 'law', name: 'Liam Lawson', code: 'LAW', team: 'Racing Bulls', points: 77, wins: 0 },
+                { id: 'gas', name: 'Pierre Gasly', code: 'GAS', team: 'Alpine', points: 42, wins: 0 },
+                { id: 'lin', name: 'Arvid Lindblad', code: 'LIN', team: 'Racing Bulls', points: 38, wins: 0 },
+                { id: 'col', name: 'Franco Colapinto', code: 'COL', team: 'Alpine', points: 27, wins: 0 },
+                { id: 'bea', name: 'Oliver Bearman', code: 'BEA', team: 'Haas F1 Team', points: 23, wins: 0 },
+                { id: 'hul', name: 'Nico Hülkenberg', code: 'HUL', team: 'Audi', points: 13, wins: 0 },
+                { id: 'bor', name: 'Gabriel Bortoleto', code: 'BOR', team: 'Audi', points: 10, wins: 0 },
+                { id: 'oco', name: 'Esteban Ocon', code: 'OCO', team: 'Haas F1 Team', points: 7, wins: 0 },
+                { id: 'alo', name: 'Fernando Alonso', code: 'ALO', team: 'Aston Martin', points: 7, wins: 0 },
+                { id: 'sai', name: 'Carlos Sainz', code: 'SAI', team: 'Williams', points: 7, wins: 0 },
+                { id: 'alb', name: 'Alexander Albon', code: 'ALB', team: 'Williams', points: 5, wins: 0 },
+                { id: 'tsu', name: 'Yuki Tsunoda', code: 'TSU', team: 'Racing Bulls', points: 1, wins: 0 },
                 { id: 'str', name: 'Lance Stroll', code: 'STR', team: 'Aston Martin', points: 0, wins: 0 },
-                { id: 'gas', name: 'Pierre Gasly', code: 'GAS', team: 'Alpine', points: 0, wins: 0 },
-                { id: 'doo', name: 'Jack Doohan', code: 'DOO', team: 'Alpine', points: 0, wins: 0 },
-                { id: 'oco', name: 'Esteban Ocon', code: 'OCO', team: 'Haas F1 Team', points: 0, wins: 0 },
-                { id: 'bea', name: 'Oliver Bearman', code: 'BEA', team: 'Haas F1 Team', points: 0, wins: 0 },
-                { id: 'tsu', name: 'Yuki Tsunoda', code: 'TSU', team: 'Racing Bulls', points: 0, wins: 0 },
-                { id: 'had', name: 'Isack Hadjar', code: 'HAD', team: 'Racing Bulls', points: 0, wins: 0 },
-                { id: 'alb', name: 'Alexander Albon', code: 'ALB', team: 'Williams', points: 0, wins: 0 },
-                { id: 'sai', name: 'Carlos Sainz', code: 'SAI', team: 'Williams', points: 0, wins: 0 },
-                { id: 'hul', name: 'Nico Hülkenberg', code: 'HUL', team: 'Audi', points: 0, wins: 0 },
-                { id: 'bor', name: 'Gabriel Bortoleto', code: 'BOR', team: 'Audi', points: 0, wins: 0 },
-                { id: 'per', name: 'Sergio Pérez', code: 'PER', team: 'Cadillac F1 Team', points: 0, wins: 0 },
-                { id: 'bot', name: 'Valtteri Bottas', code: 'BOT', team: 'Cadillac F1 Team', points: 0, wins: 0 }
+                { id: 'bot', name: 'Valtteri Bottas', code: 'BOT', team: 'Cadillac F1 Team', points: 0, wins: 0 },
+                { id: 'per', name: 'Sergio Pérez', code: 'PER', team: 'Cadillac F1 Team', points: 0, wins: 0 }
             ],
             constructors: [
-                { id: 'mclaren', name: 'McLaren', points: 0, wins: 0 },
-                { id: 'ferrari', name: 'Ferrari', points: 0, wins: 0 },
-                { id: 'redbull', name: 'Red Bull Racing', points: 0, wins: 0 },
-                { id: 'mercedes', name: 'Mercedes', points: 0, wins: 0 },
-                { id: 'aston', name: 'Aston Martin', points: 0, wins: 0 },
-                { id: 'alpine', name: 'Alpine', points: 0, wins: 0 },
-                { id: 'haas', name: 'Haas F1 Team', points: 0, wins: 0 },
-                { id: 'racingbulls', name: 'Racing Bulls', points: 0, wins: 0 },
-                { id: 'williams', name: 'Williams', points: 0, wins: 0 },
-                { id: 'audi', name: 'Audi', points: 0, wins: 0 },
-                { id: 'cadillac', name: 'Cadillac F1 Team', points: 0, wins: 0 }
-            ]
-        },
-        'las-vegas': {
-            round: 22, // Round 22 of 24 (Las Vegas) - Clinch Window Demo
-            drivers: [
-                { id: 'ver', name: 'Max Verstappen', code: 'VER', team: 'Red Bull Racing', points: 393, wins: 8 },
-                { id: 'nor', name: 'Lando Norris', code: 'NOR', team: 'McLaren', points: 331, wins: 3 },
-                { id: 'lec', name: 'Charles Leclerc', code: 'LEC', team: 'Ferrari', points: 307, wins: 3 },
-                { id: 'pia', name: 'Oscar Piastri', code: 'PIA', team: 'McLaren', points: 262, wins: 2 },
-                { id: 'sai', name: 'Carlos Sainz', code: 'SAI', team: 'Williams', points: 244, wins: 2 },
-                { id: 'ham', name: 'Lewis Hamilton', code: 'HAM', team: 'Ferrari', points: 190, wins: 2 },
-                { id: 'rus', name: 'George Russell', code: 'RUS', team: 'Mercedes', points: 192, wins: 1 },
-                { id: 'ant', name: 'Kimi Antonelli', code: 'ANT', team: 'Mercedes', points: 98, wins: 0 },
-                { id: 'alo', name: 'Fernando Alonso', code: 'ALO', team: 'Aston Martin', points: 62, wins: 0 },
-                { id: 'hul', name: 'Nico Hülkenberg', code: 'HUL', team: 'Audi', points: 35, wins: 0 },
-                { id: 'gas', name: 'Pierre Gasly', code: 'GAS', team: 'Alpine', points: 26, wins: 0 },
-                { id: 'tsu', name: 'Yuki Tsunoda', code: 'TSU', team: 'Racing Bulls', points: 28, wins: 0 },
-                { id: 'str', name: 'Lance Stroll', code: 'STR', team: 'Aston Martin', points: 24, wins: 0 },
-                { id: 'oco', name: 'Esteban Ocon', code: 'OCO', team: 'Haas F1 Team', points: 23, wins: 0 },
-                { id: 'alb', name: 'Alexander Albon', code: 'ALB', team: 'Williams', points: 12, wins: 0 },
-                { id: 'bea', name: 'Oliver Bearman', code: 'BEA', team: 'Haas F1 Team', points: 7, wins: 0 },
-                { id: 'had', name: 'Isack Hadjar', code: 'HAD', team: 'Red Bull Racing', points: 8, wins: 0 },
-                { id: 'law', name: 'Liam Lawson', code: 'LAW', team: 'Racing Bulls', points: 4, wins: 0 },
-                { id: 'col', name: 'Franco Colapinto', code: 'COL', team: 'Alpine', points: 5, wins: 0 },
-                { id: 'bor', name: 'Gabriel Bortoleto', code: 'BOR', team: 'Audi', points: 2, wins: 0 },
-                { id: 'per', name: 'Sergio Pérez', code: 'PER', team: 'Cadillac F1 Team', points: 1, wins: 0 },
-                { id: 'bot', name: 'Valtteri Bottas', code: 'BOT', team: 'Cadillac F1 Team', points: 0, wins: 0 }
-            ],
-            constructors: [
-                { id: 'mclaren', name: 'McLaren', points: 593, wins: 5 },
-                { id: 'ferrari', name: 'Ferrari', points: 551, wins: 5 },
-                { id: 'redbull', name: 'Red Bull Racing', points: 401, wins: 8 },
-                { id: 'mercedes', name: 'Mercedes', points: 290, wins: 1 },
-                { id: 'williams', name: 'Williams', points: 256, wins: 2 },
-                { id: 'aston', name: 'Aston Martin', points: 86, wins: 0 },
+                { id: 'mercedes', name: 'Mercedes', points: 607, wins: 12 },
+                { id: 'ferrari', name: 'Ferrari', points: 474, wins: 2 },
+                { id: 'redbull', name: 'Red Bull Racing', points: 355, wins: 2 },
+                { id: 'mclaren', name: 'McLaren', points: 355, wins: 2 },
+                { id: 'racingbulls', name: 'Racing Bulls', points: 102, wins: 0 },
+                { id: 'alpine', name: 'Alpine', points: 69, wins: 0 },
                 { id: 'haas', name: 'Haas F1 Team', points: 30, wins: 0 },
-                { id: 'audi', name: 'Audi', points: 37, wins: 0 },
-                { id: 'racingbulls', name: 'Racing Bulls', points: 32, wins: 0 },
-                { id: 'alpine', name: 'Alpine', points: 31, wins: 0 },
-                { id: 'cadillac', name: 'Cadillac F1 Team', points: 1, wins: 0 }
-            ]
-        },
-        'mid-season': {
-            round: 16, // Round 16 of 24 (Monza)
-            drivers: [
-                { id: 'ver', name: 'Max Verstappen', code: 'VER', team: 'Red Bull Racing', points: 303, wins: 7 },
-                { id: 'nor', name: 'Lando Norris', code: 'NOR', team: 'McLaren', points: 241, wins: 2 },
-                { id: 'lec', name: 'Charles Leclerc', code: 'LEC', team: 'Ferrari', points: 217, wins: 2 },
-                { id: 'pia', name: 'Oscar Piastri', code: 'PIA', team: 'McLaren', points: 197, wins: 1 },
-                { id: 'sai', name: 'Carlos Sainz', code: 'SAI', team: 'Williams', points: 184, wins: 1 },
-                { id: 'ham', name: 'Lewis Hamilton', code: 'HAM', team: 'Ferrari', points: 164, wins: 2 },
-                { id: 'rus', name: 'George Russell', code: 'RUS', team: 'Mercedes', points: 128, wins: 1 },
-                { id: 'ant', name: 'Kimi Antonelli', code: 'ANT', team: 'Mercedes', points: 70, wins: 0 },
-                { id: 'alo', name: 'Fernando Alonso', code: 'ALO', team: 'Aston Martin', points: 50, wins: 0 },
-                { id: 'tsu', name: 'Yuki Tsunoda', code: 'TSU', team: 'Racing Bulls', points: 22, wins: 0 },
-                { id: 'hul', name: 'Nico Hülkenberg', code: 'HUL', team: 'Audi', points: 22, wins: 0 },
-                { id: 'str', name: 'Lance Stroll', code: 'STR', team: 'Aston Martin', points: 18, wins: 0 },
-                { id: 'gas', name: 'Pierre Gasly', code: 'GAS', team: 'Alpine', points: 14, wins: 0 },
-                { id: 'oco', name: 'Esteban Ocon', code: 'OCO', team: 'Haas F1 Team', points: 16, wins: 0 },
-                { id: 'alb', name: 'Alexander Albon', code: 'ALB', team: 'Williams', points: 8, wins: 0 },
-                { id: 'had', name: 'Isack Hadjar', code: 'HAD', team: 'Red Bull Racing', points: 6, wins: 0 },
-                { id: 'bea', name: 'Oliver Bearman', code: 'BEA', team: 'Haas F1 Team', points: 5, wins: 0 },
-                { id: 'col', name: 'Franco Colapinto', code: 'COL', team: 'Alpine', points: 4, wins: 0 },
-                { id: 'law', name: 'Liam Lawson', code: 'LAW', team: 'Racing Bulls', points: 2, wins: 0 },
-                { id: 'bor', name: 'Gabriel Bortoleto', code: 'BOR', team: 'Audi', points: 0, wins: 0 },
-                { id: 'per', name: 'Sergio Pérez', code: 'PER', team: 'Cadillac F1 Team', points: 0, wins: 0 },
-                { id: 'bot', name: 'Valtteri Bottas', code: 'BOT', team: 'Cadillac F1 Team', points: 0, wins: 0 }
-            ],
-            constructors: [
-                { id: 'mclaren', name: 'McLaren', points: 438, wins: 3 },
-                { id: 'ferrari', name: 'Ferrari', points: 381, wins: 4 },
-                { id: 'redbull', name: 'Red Bull Racing', points: 309, wins: 7 },
-                { id: 'mercedes', name: 'Mercedes', points: 198, wins: 1 },
-                { id: 'williams', name: 'Williams', points: 192, wins: 1 },
-                { id: 'aston', name: 'Aston Martin', points: 68, wins: 0 },
-                { id: 'racingbulls', name: 'Racing Bulls', points: 24, wins: 0 },
-                { id: 'audi', name: 'Audi', points: 22, wins: 0 },
-                { id: 'haas', name: 'Haas F1 Team', points: 21, wins: 0 },
-                { id: 'alpine', name: 'Alpine', points: 18, wins: 0 },
-                { id: 'cadillac', name: 'Cadillac F1 Team', points: 0, wins: 0 }
-            ]
-        },
-        'early-season': {
-            round: 4, // Round 4 of 24 (Bahrain)
-            drivers: [
-                { id: 'ver', name: 'Max Verstappen', code: 'VER', team: 'Red Bull Racing', points: 68, wins: 2 },
-                { id: 'nor', name: 'Lando Norris', code: 'NOR', team: 'McLaren', points: 56, wins: 1 },
-                { id: 'lec', name: 'Charles Leclerc', code: 'LEC', team: 'Ferrari', points: 52, wins: 0 },
-                { id: 'pia', name: 'Oscar Piastri', code: 'PIA', team: 'McLaren', points: 38, wins: 0 },
-                { id: 'ham', name: 'Lewis Hamilton', code: 'HAM', team: 'Ferrari', points: 35, wins: 0 },
-                { id: 'sai', name: 'Carlos Sainz', code: 'SAI', team: 'Williams', points: 30, wins: 0 },
-                { id: 'rus', name: 'George Russell', code: 'RUS', team: 'Mercedes', points: 28, wins: 0 },
-                { id: 'ant', name: 'Kimi Antonelli', code: 'ANT', team: 'Mercedes', points: 16, wins: 0 },
-                { id: 'alo', name: 'Fernando Alonso', code: 'ALO', team: 'Aston Martin', points: 10, wins: 0 },
-                { id: 'str', name: 'Lance Stroll', code: 'STR', team: 'Aston Martin', points: 6, wins: 0 },
-                { id: 'hul', name: 'Nico Hülkenberg', code: 'HUL', team: 'Audi', points: 4, wins: 0 },
-                { id: 'tsu', name: 'Yuki Tsunoda', code: 'TSU', team: 'Racing Bulls', points: 3, wins: 0 },
-                { id: 'oco', name: 'Esteban Ocon', code: 'OCO', team: 'Haas F1 Team', points: 2, wins: 0 },
-                { id: 'alb', name: 'Alexander Albon', code: 'ALB', team: 'Williams', points: 1, wins: 0 },
-                { id: 'gas', name: 'Pierre Gasly', code: 'GAS', team: 'Alpine', points: 0, wins: 0 },
-                { id: 'had', name: 'Isack Hadjar', code: 'HAD', team: 'Red Bull Racing', points: 0, wins: 0 },
-                { id: 'bea', name: 'Oliver Bearman', code: 'BEA', team: 'Haas F1 Team', points: 0, wins: 0 },
-                { id: 'col', name: 'Franco Colapinto', code: 'COL', team: 'Alpine', points: 0, wins: 0 },
-                { id: 'law', name: 'Liam Lawson', code: 'LAW', team: 'Racing Bulls', points: 0, wins: 0 },
-                { id: 'bor', name: 'Gabriel Bortoleto', code: 'BOR', team: 'Audi', points: 0, wins: 0 },
-                { id: 'per', name: 'Sergio Pérez', code: 'PER', team: 'Cadillac F1 Team', points: 0, wins: 0 },
-                { id: 'bot', name: 'Valtteri Bottas', code: 'BOT', team: 'Cadillac F1 Team', points: 0, wins: 0 }
-            ],
-            constructors: [
-                { id: 'mclaren', name: 'McLaren', points: 94, wins: 1 },
-                { id: 'ferrari', name: 'Ferrari', points: 87, wins: 0 },
-                { id: 'redbull', name: 'Red Bull Racing', points: 68, wins: 2 },
-                { id: 'mercedes', name: 'Mercedes', points: 44, wins: 0 },
-                { id: 'williams', name: 'Williams', points: 31, wins: 0 },
-                { id: 'aston', name: 'Aston Martin', points: 16, wins: 0 },
-                { id: 'audi', name: 'Audi', points: 4, wins: 0 },
-                { id: 'racingbulls', name: 'Racing Bulls', points: 3, wins: 0 },
-                { id: 'haas', name: 'Haas F1 Team', points: 2, wins: 0 },
-                { id: 'alpine', name: 'Alpine', points: 0, wins: 0 },
+                { id: 'audi', name: 'Audi', points: 23, wins: 0 },
+                { id: 'williams', name: 'Williams', points: 12, wins: 0 },
+                { id: 'aston', name: 'Aston Martin', points: 7, wins: 0 },
                 { id: 'cadillac', name: 'Cadillac F1 Team', points: 0, wins: 0 }
             ]
         }
     };
 
-    let currentRound = 1;
+    let currentRound = PRESETS['season-2026'].round;
     let drivers = JSON.parse(JSON.stringify(PRESETS['season-2026'].drivers));
     let constructors = JSON.parse(JSON.stringify(PRESETS['season-2026'].constructors));
 
