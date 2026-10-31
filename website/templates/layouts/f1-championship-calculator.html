@@ -76,17 +76,22 @@
         <!-- Highlight Clinch Alert Banner (Appears when a clinch is possible this weekend) -->
         <div id="clinch-alert-banner" style="display: none; background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(168, 85, 247, 0.15)); border: 1px solid var(--accent-cyan); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                <div>
+                <div style="flex: 1; min-width: 280px;">
                     <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem;">
                         <span style="font-size: 1.4rem;">🏆</span>
                         <strong style="color: var(--accent-cyan); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">CHAMPIONSHIP CLINCH WINDOW ACTIVE</strong>
                     </div>
-                    <h2 id="clinch-alert-title" style="margin: 0; font-size: 1.35rem; color: var(--text-bright);">Max Verstappen can win the 2026 World Championship this weekend!</h2>
-                    <p id="clinch-alert-desc" style="color: var(--text-muted); font-size: 0.9rem; margin: 0.3rem 0 0;">Leader holds sufficient point margin. Review scenarios below.</p>
+                    <h2 id="clinch-alert-title" style="margin: 0; font-size: 1.3rem; color: var(--text-bright);">Kimi Antonelli (WDC) &amp; Mercedes (WCC) can clinch the 2026 World Titles this weekend!</h2>
+                    <p id="clinch-alert-desc" style="color: var(--text-muted); font-size: 0.9rem; margin: 0.35rem 0 0; line-height: 1.5;">Leader holds sufficient point margin. Review Driver &amp; Constructor clinch scenarios below.</p>
                 </div>
-                <button id="btn-jump-scenarios" style="background: var(--accent-cyan); color: #000; font-weight: 800; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer;">
-                    View Clinch Scenarios ➔
-                </button>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
+                    <button id="btn-jump-scenarios" style="background: var(--accent-cyan); color: #000; font-weight: 800; border: none; padding: 0.6rem 1.1rem; border-radius: 6px; cursor: pointer; font-size: 0.88rem;">
+                        🏎️ Driver Scenarios (Antonelli) ➔
+                    </button>
+                    <button id="btn-jump-wcc-scenarios" style="background: var(--accent-purple); color: #fff; font-weight: 800; border: none; padding: 0.6rem 1.1rem; border-radius: 6px; cursor: pointer; font-size: 0.88rem;">
+                        🏁 Constructor Scenarios (Mercedes vs Ferrari) ➔
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -171,6 +176,52 @@
 
         <!-- Tab 3: Clinch Scenarios Engine -->
         <div id="tab-scenarios" class="tab-pane" style="display: none;">
+            <!-- Scenario Selector Controls Bar -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.15rem 1.4rem; margin-bottom: 1.25rem; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1rem;">
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-end; flex: 1;">
+                    <!-- Championship Category Dropdown -->
+                    <div style="min-width: 230px; flex: 1;">
+                        <label for="scenario-category-select" style="display: block; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem;">
+                            Championship Category
+                        </label>
+                        <select id="scenario-category-select" style="width: 100%; background: var(--bg-dark); color: var(--text-bright); font-weight: 800; font-size: 0.92rem; border: 1px solid var(--border-color); padding: 0.55rem 0.8rem; border-radius: var(--radius-sm); cursor: pointer;">
+                            <option value="wcc">🏁 Constructors' Championship (WCC)</option>
+                            <option value="wdc">🏎️ Drivers' Championship (WDC)</option>
+                        </select>
+                    </div>
+
+                    <!-- Driver or Constructor Dropdown -->
+                    <div style="min-width: 250px; flex: 1.2;">
+                        <label id="scenario-entity-label" for="scenario-entity-select" style="display: block; font-size: 0.75rem; font-weight: 800; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem;">
+                            Select Constructor / Driver Focus
+                        </label>
+                        <select id="scenario-entity-select" style="width: 100%; background: var(--bg-dark); color: var(--accent-cyan); font-weight: 800; font-size: 0.92rem; border: 1px solid var(--accent-cyan); padding: 0.55rem 0.8rem; border-radius: var(--radius-sm); cursor: pointer;">
+                            <!-- Populated dynamically via JS -->
+                        </select>
+                    </div>
+
+                    <!-- Rival Matchup Selector -->
+                    <div style="min-width: 230px; flex: 1;">
+                        <label id="scenario-rival-label" for="scenario-rival-select" style="display: block; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.35rem;">
+                            Compare Against Rival
+                        </label>
+                        <select id="scenario-rival-select" style="width: 100%; background: var(--bg-dark); color: var(--text-main); font-weight: 700; font-size: 0.92rem; border: 1px solid var(--border-color); padding: 0.55rem 0.8rem; border-radius: var(--radius-sm); cursor: pointer;">
+                            <!-- Populated dynamically via JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Quick Preset Matchup Pills -->
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                    <button type="button" id="quick-scen-merc-fer" style="background: rgba(168, 85, 247, 0.15); border: 1px solid var(--accent-purple); color: #e9d5ff; font-weight: 800; font-size: 0.8rem; padding: 0.5rem 0.85rem; border-radius: 6px; cursor: pointer;">
+                        🏁 Mercedes vs Ferrari (WCC)
+                    </button>
+                    <button type="button" id="quick-scen-ant-wdc" style="background: rgba(6, 182, 212, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); font-weight: 800; font-size: 0.8rem; padding: 0.5rem 0.85rem; border-radius: 6px; cursor: pointer;">
+                        🏎️ Kimi Antonelli (WDC)
+                    </button>
+                </div>
+            </div>
+
             <div id="scenarios-content">
                 <!-- Dynamically rendered scenarios breakdown -->
             </div>
@@ -560,46 +611,372 @@
     }
 
     // ----------------------------------------------------
-    // Clinch Scenarios Engine
+    // Clinch Scenarios Engine (WDC Drivers & WCC Constructors)
     // ----------------------------------------------------
-    function renderClinchScenarios(rem) {
-        const leader = drivers[0];
-        const rivals = drivers.slice(1).filter(d => (d.points + rem.wdcTotal) >= leader.points);
-        const closestRival = rivals[0];
+    let scenarioCategory = 'wcc';       // 'wcc' or 'wdc'
+    let selectedEntityId = 'mercedes';  // constructor id or driver id
+    let selectedRivalId = 'ferrari';    // rival constructor id or driver id
 
-        const container = document.getElementById('scenarios-content');
+    function syncScenarioSelectors() {
+        const catSelect = document.getElementById('scenario-category-select');
+        const entitySelect = document.getElementById('scenario-entity-select');
+        const rivalSelect = document.getElementById('scenario-rival-select');
+        const entityLabel = document.getElementById('scenario-entity-label');
+        if (!catSelect || !entitySelect || !rivalSelect) return;
+
+        catSelect.value = scenarioCategory;
+
+        // Build unified Driver / Constructor options with optgroups so user can select any Driver or Constructor directly
+        const wccOptions = constructors.map((c, idx) => {
+            const role = idx === 0 ? '👑 Leader' : `P${idx + 1} (${c.points - constructors[0].points} pts)`;
+            return `<option value="wcc:${c.id}" ${scenarioCategory === 'wcc' && selectedEntityId === c.id ? 'selected' : ''}>🏁 ${c.name} — ${c.points} pts (${role})</option>`;
+        }).join('');
+
+        const wdcOptions = drivers.map((d, idx) => {
+            const role = idx === 0 ? '👑 Leader' : `P${idx + 1} (${d.points - drivers[0].points} pts)`;
+            return `<option value="wdc:${d.id}" ${scenarioCategory === 'wdc' && selectedEntityId === d.id ? 'selected' : ''}>🏎️ ${d.name} (${d.team}) — ${d.points} pts (${role})</option>`;
+        }).join('');
+
+        entitySelect.innerHTML = `
+            <optgroup label="🏁 Constructors' Championship (WCC)">
+                ${wccOptions}
+            </optgroup>
+            <optgroup label="🏎️ Drivers' Championship (WDC)">
+                ${wdcOptions}
+            </optgroup>
+        `;
+
+        if (scenarioCategory === 'wcc') {
+            if (entityLabel) entityLabel.innerText = 'Select Constructor or Driver';
+            const leader = constructors[0];
+            // Populate rival select with other constructors
+            const rivalList = constructors.filter(c => c.id !== selectedEntityId);
+            if (!rivalList.some(r => r.id === selectedRivalId)) {
+                selectedRivalId = (selectedEntityId === leader.id)
+                    ? (constructors[1] ? constructors[1].id : leader.id)
+                    : leader.id;
+            }
+            rivalSelect.innerHTML = rivalList.map((c) => {
+                const idx = constructors.findIndex(x => x.id === c.id);
+                return `<option value="${c.id}" ${c.id === selectedRivalId ? 'selected' : ''}>P${idx + 1}: ${c.name} (${c.points} pts, ${c.wins}W)</option>`;
+            }).join('');
+        } else {
+            if (entityLabel) entityLabel.innerText = 'Select Driver or Constructor';
+            const leader = drivers[0];
+            const rivalList = drivers.filter(d => d.id !== selectedEntityId);
+            if (!rivalList.some(r => r.id === selectedRivalId)) {
+                selectedRivalId = (selectedEntityId === leader.id)
+                    ? (drivers[1] ? drivers[1].id : leader.id)
+                    : leader.id;
+            }
+            rivalSelect.innerHTML = rivalList.map((d) => {
+                const idx = drivers.findIndex(x => x.id === d.id);
+                return `<option value="${d.id}" ${d.id === selectedRivalId ? 'selected' : ''}>P${idx + 1}: ${d.name} (${d.code} - ${d.points} pts, ${d.wins}W)</option>`;
+            }).join('');
+        }
+    }
+
+    function updateClinchAlertBanner(rem) {
         const alertBanner = document.getElementById('clinch-alert-banner');
+        const alertTitle = document.getElementById('clinch-alert-title');
+        const alertDesc = document.getElementById('clinch-alert-desc');
+        if (!alertBanner || !alertTitle || !alertDesc) return;
 
-        if (!closestRival) {
-            // Already clinched!
+        const event = CALENDAR[currentRound - 1];
+        const wdcLeader = drivers[0];
+        const wdcRival = drivers[1];
+        const wccLeader = constructors[0];
+        const wccRival = constructors[1];
+
+        const wdcDelta = wdcRival ? (wdcLeader.points - wdcRival.points) : 999;
+        const wccDelta = wccRival ? (wccLeader.points - wccRival.points) : 999;
+
+        const wdcCanClinch = wdcRival && (wdcDelta + rem.wdcCurrent >= rem.wdcFuture);
+        const wccCanClinch = wccRival && (wccDelta + rem.wccCurrent >= rem.wccFuture);
+
+        if (wdcCanClinch || wccCanClinch) {
             alertBanner.style.display = 'block';
-            document.getElementById('clinch-alert-title').innerText = `${leader.name} has already mathematically CLINCHED the Drivers' World Championship!`;
-            document.getElementById('clinch-alert-desc').innerText = `No rival can match ${leader.name}'s point total.`;
+            if (wdcCanClinch && wccCanClinch) {
+                const wccNeed = Math.max(0, rem.wccFuture - wccDelta);
+                alertTitle.innerText = `${wdcLeader.name} (WDC) & ${wccLeader.name} (WCC) can clinch the 2026 World Titles at the ${event.name}!`;
+                alertDesc.innerHTML = `<strong>WCC:</strong> ${wccLeader.name} leads ${wccRival.name} by <strong>+${wccDelta} pts</strong> (${rem.wccFuture} pts left after R${currentRound}) — needs to outscore ${wccRival.name} by <strong>+${wccNeed} pts</strong> this weekend (${wccRival.name} prevents clinch with <strong>5+ pts</strong>). &nbsp;|&nbsp; <strong>WDC:</strong> ${wdcLeader.name} leads ${wdcRival.name} by <strong>+${wdcDelta} pts</strong> (${rem.wdcFuture} pts left after R${currentRound}).`;
+            } else if (wccCanClinch) {
+                const wccNeed = Math.max(0, rem.wccFuture - wccDelta);
+                alertTitle.innerText = `${wccLeader.name} can clinch the 2026 Constructors' Championship at the ${event.name}!`;
+                alertDesc.innerText = `Current lead over ${wccRival.name}: +${wccDelta} pts. Outscoring ${wccRival.name} by ${wccNeed} pts seals the title.`;
+            } else {
+                alertTitle.innerText = `${wdcLeader.name} can clinch the 2026 Drivers' Championship at the ${event.name}!`;
+                alertDesc.innerText = `Current lead over ${wdcRival.name}: +${wdcDelta} pts. Points remaining after this weekend: ${rem.wdcFuture} pts.`;
+            }
+        } else {
+            alertBanner.style.display = 'none';
+        }
+    }
+
+    function renderClinchScenarios(rem) {
+        syncScenarioSelectors();
+        updateClinchAlertBanner(rem);
+
+        if (scenarioCategory === 'wcc') {
+            renderWCCScenarios(rem);
+        } else {
+            renderWDCScenarios(rem);
+        }
+    }
+
+    function renderWCCScenarios(rem) {
+        const container = document.getElementById('scenarios-content');
+        const event = CALENDAR[currentRound - 1];
+        const futureGPs = CALENDAR.slice(currentRound).length;
+
+        const leader = constructors[0];
+        const focusTeam = constructors.find(c => c.id === selectedEntityId) || leader;
+        const rivalFromSelect = constructors.find(c => c.id === selectedRivalId);
+
+        // Determine the primary Leader vs Rival pair to analyze
+        const pairLeader = (focusTeam.id === leader.id) ? leader : leader;
+        const pairRival = (focusTeam.id === leader.id)
+            ? (rivalFromSelect && rivalFromSelect.id !== leader.id ? rivalFromSelect : (constructors[1] || leader))
+            : focusTeam;
+
+        const delta = pairLeader.points - pairRival.points;
+        const alreadyClinched = (pairRival.points + rem.wccTotal) < pairLeader.points;
+
+        // Countback tiebreaker check for WCC
+        const leaderMinWins = pairLeader.wins || 0;
+        const rivalMaxPossibleWins = (pairRival.wins || 0) + futureGPs + 1;
+        const leaderWinsTiebreaker = leaderMinWins > rivalMaxPossibleWins;
+        const epsilon = leaderWinsTiebreaker ? 0 : 1;
+
+        // Magic post-weekend lead required
+        const magicLead = rem.wccFuture + epsilon;
+        const outscoreNeeded = magicLead - delta; // How many points pairLeader must outscore pairRival by this weekend
+        const maxSwingThisWeekend = rem.wccCurrent; // 43 pts standard GP, 58 pts sprint GP
+        const isFeasible = !alreadyClinched && (outscoreNeeded <= maxSwingThisWeekend);
+
+        // Maximum points pairRival can score if pairLeader gets max (43 or 58) and still gets clinched
+        const maxRivalPtsUnderMaxLeader = maxSwingThisWeekend - outscoreNeeded;
+        const guaranteedRivalSurvivalPts = Math.max(0, maxRivalPtsUnderMaxLeader + 1);
+
+        if (alreadyClinched) {
             container.innerHTML = `
-                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: var(--radius-md); padding: 2rem; text-align: center;">
-                    <h2 style="color: #34d399; margin: 0 0 0.5rem;">🏆 CHAMPIONSHIP DECIDED</h2>
-                    <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">${leader.name} cannot be caught under any mathematical permutation of the remaining races.</p>
+                <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid #10b981; border-radius: var(--radius-md); padding: 2rem; text-align: center;">
+                    <h2 style="color: #34d399; margin: 0 0 0.5rem;">🏆 ${pairLeader.name.toUpperCase()} HAS CLINCHED OVER ${pairRival.name.toUpperCase()}</h2>
+                    <p style="color: var(--text-muted); max-width: 680px; margin: 0 auto; line-height: 1.6;">
+                        <strong>${pairLeader.name}</strong> (${pairLeader.points} pts) leads <strong>${pairRival.name}</strong> (${pairRival.points} pts) by <strong>${delta} points</strong> with only <strong>${rem.wccTotal} points</strong> remaining in the season (including this weekend). ${pairRival.name} is mathematically eliminated from catching ${pairLeader.name}.
+                    </p>
                 </div>
             `;
             return;
         }
 
-        const delta = leader.points - closestRival.points;
-        const event = CALENDAR[currentRound - 1];
-        const futureGPs = CALENDAR.slice(currentRound).length;
-
-        // Is clinch feasible this weekend?
-        // Feasible if delta + weekendMax >= futureRemaining
-        const isFeasible = (delta + rem.wdcCurrent >= rem.wdcFuture);
-
         if (!isFeasible) {
-            alertBanner.style.display = 'none';
             container.innerHTML = `
                 <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 2rem; text-align: center;">
                     <span style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">⏳</span>
-                    <h3 style="color: var(--text-bright); margin: 0 0 0.5rem;">Title Cannot Be Clinched at the ${event.name}</h3>
+                    <h3 style="color: var(--text-bright); margin: 0 0 0.5rem;">${pairLeader.name} Cannot Clinch Over ${pairRival.name} at the ${event.name}</h3>
+                    <p style="color: var(--text-muted); max-width: 680px; margin: 0 auto; line-height: 1.6;">
+                        Even if <strong>${pairLeader.name}</strong> scores maximum points (${rem.wccCurrent} pts) and <strong>${pairRival.name}</strong> scores 0 pts, the lead would be <strong>${delta + rem.wccCurrent} pts</strong>, which is short of the <strong>${magicLead} pts</strong> required after this weekend.
+                    </p>
+                    <div style="margin-top: 1.5rem; display: inline-flex; flex-wrap: wrap; gap: 1.2rem; background: rgba(0,0,0,0.25); padding: 0.8rem 1.4rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+                        <div><span style="color: var(--text-muted);">Current Lead:</span> <strong style="color: var(--accent-purple); font-family: var(--font-mono);">${delta} pts</strong></div>
+                        <div><span style="color: var(--text-muted);">Max Lead After R${currentRound}:</span> <strong style="color: var(--accent-purple); font-family: var(--font-mono);">${delta + rem.wccCurrent} pts</strong></div>
+                        <div><span style="color: var(--text-muted);">Required Lead to Clinch:</span> <strong style="color: #f87171; font-family: var(--font-mono);">${magicLead} pts</strong></div>
+                    </div>
+                </div>
+            `;
+            return;
+        }
+
+        // Build Executive Summary Card answering:
+        // 1. Can Mercedes clinch it this weekend?
+        // 2. What does Ferrari have to do to prevent it / keep the title alive?
+        const focusIsRival = (focusTeam.id === pairRival.id);
+        let html = `
+            <!-- Executive Summary: Can Leader Clinch & What Rival Must Do -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
+                <!-- Card 1: How Leader (Mercedes) Clinches This Weekend -->
+                <div style="background: linear-gradient(145deg, rgba(6, 182, 212, 0.12), rgba(15, 23, 42, 0.9)); border: ${!focusIsRival ? '2px solid var(--accent-cyan)' : '1px solid var(--border-color)'}; border-radius: var(--radius-md); padding: 1.4rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem;">
+                        <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-cyan);">
+                            🏆 ${pairLeader.name} Clinch Path (${event.name})
+                        </span>
+                        <span class="status-badge status-active">YES — CAN CLINCH</span>
+                    </div>
+                    <h3 style="margin: 0 0 0.6rem; font-size: 1.2rem; color: var(--text-bright);">
+                        Can ${pairLeader.name} Clinch This Weekend? <span style="color: #34d399;">YES (+${outscoreNeeded} pt swing needed)</span>
+                    </h3>
+                    <p style="font-size: 0.9rem; color: var(--text-main); line-height: 1.55; margin: 0 0 0.9rem;">
+                        <strong>${pairLeader.name}</strong> (${pairLeader.points} pts, ${pairLeader.wins} wins) leads <strong>${pairRival.name}</strong> (${pairRival.points} pts, ${pairRival.wins} wins) by <strong>+${delta} points</strong>. With <strong>${rem.wccFuture} max points</strong> left across the final ${futureGPs} GPs${leaderWinsTiebreaker ? ` and ${pairLeader.name} owning the wins tiebreaker (${pairLeader.wins}W vs max ${rivalMaxPossibleWins}W)` : ''}, ${pairLeader.name} clinches the 2026 Constructors' Championship in R${currentRound} by exiting with a <strong>&ge; ${magicLead}-point lead</strong>:
+                    </p>
+                    <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.88rem; color: var(--text-main); line-height: 1.65;">
+                        ${outscoreNeeded <= 0 ? `
+                            <li><strong>Already ahead of magic number:</strong> ${pairLeader.name} clinches as long as ${pairRival.name} does not outscore them by ${Math.abs(outscoreNeeded) + 1}+ points.</li>
+                        ` : `
+                            <li><strong>Must Outscore ${pairRival.name} by &ge; ${outscoreNeeded} pts:</strong> Maximum team score in a standard GP is <strong>43 pts</strong> (1–2 finish).</li>
+                            ${43 - outscoreNeeded >= 0 ? `<li><strong>If ${pairLeader.name} finishes 1–2 (43 pts):</strong> Clinches WCC if ${pairRival.name} scores <strong>&le; ${43 - outscoreNeeded} pts</strong> (e.g. best single car P8 [4 pts] + P11+, or P9+P10 [3 pts], or lower).</li>` : ''}
+                            ${40 - outscoreNeeded >= 0 ? `<li><strong>If ${pairLeader.name} finishes 1–3 (40 pts):</strong> Clinches WCC if ${pairRival.name} scores <strong>&le; ${40 - outscoreNeeded} pt${(40 - outscoreNeeded) === 1 ? '' : 's'}</strong> (at most P10 [1 pt] + P11+, or both cars outside top 10).</li>` : ''}
+                            <li><strong>If ${pairLeader.name} scores &le; ${outscoreNeeded - 1} pts</strong> (e.g. P1+P4 = 37 pts or P2+P3 = 33 pts): ${pairLeader.name} <strong>cannot clinch</strong> this weekend regardless of ${pairRival.name}'s result.</li>
+                        `}
+                    </ul>
+                </div>
+
+                <!-- Card 2: What Rival (Ferrari) Must Do to Prevent Clinch & Stay Alive -->
+                <div style="background: linear-gradient(145deg, rgba(239, 68, 68, 0.12), rgba(15, 23, 42, 0.9)); border: ${focusIsRival ? '2px solid #f87171' : '1px solid var(--border-color)'}; border-radius: var(--radius-md); padding: 1.4rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.6rem;">
+                        <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #f87171;">
+                            🛑 ${pairRival.name} Survival Guide (${event.name})
+                        </span>
+                        <span class="status-badge" style="background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4);">TARGET: &ge; ${guaranteedRivalSurvivalPts} PTS</span>
+                    </div>
+                    <h3 style="margin: 0 0 0.6rem; font-size: 1.2rem; color: var(--text-bright);">
+                        What Does ${pairRival.name} Have to Do? <span style="color: #fca5a5;">Avoid Losing ${outscoreNeeded}+ Pts</span>
+                    </h3>
+                    <p style="font-size: 0.9rem; color: var(--text-main); line-height: 1.55; margin: 0 0 0.9rem;">
+                        To keep the 2026 Constructors' Championship mathematically alive heading into Round ${Math.min(CALENDAR.length, currentRound + 1)}, <strong>${pairRival.name}</strong> must finish the weekend within <strong>&le; ${magicLead - 1} points</strong> of ${pairLeader.name}. Any of the following keeps ${pairRival.name} alive:
+                    </p>
+                    <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.88rem; color: var(--text-main); line-height: 1.65;">
+                        <li><strong>Guaranteed Prevention (Score &ge; ${guaranteedRivalSurvivalPts} combined pts):</strong> If ${pairRival.name} scores at least <strong>${guaranteedRivalSurvivalPts} points</strong> (e.g. one car finishes <strong>P7 [6 pts] or higher</strong>, OR <strong>P8 + P9 [6 pts]</strong>, OR <strong>P8 + P10 [5 pts]</strong>), ${pairLeader.name} <strong>cannot clinch</strong> even with a 1–2 finish!</li>
+                        ${40 - outscoreNeeded >= 0 ? `<li><strong>Break Up a ${pairLeader.name} 1–2:</strong> If either ${pairRival.name} (or any other team) finishes P1 or P2, ${pairLeader.name}'s ceiling drops to 40 pts (1–3), meaning ${pairRival.name} only needs <strong>&ge; ${40 - outscoreNeeded + 1} pts (P9 or higher)</strong> to survive.</li>` : ''}
+                        <li><strong>Hold ${pairLeader.name} to &le; ${outscoreNeeded - 1} pts:</strong> If ${pairLeader.name} does not finish 1–2 (43 pts) or 1–3 (40 pts) — for instance, if ${pairLeader.name}'s best result is P1+P4 (37 pts) or P2+P3 (33 pts) — <strong>${pairRival.name} stays alive even with 0 points (double DNF)!</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Detailed WCC Finish Combination Matrix -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.22rem; color: var(--accent-purple);">
+                            🏁 Constructors' Clinch Matrix: ${pairLeader.name} vs. ${pairRival.name} — ${event.name} (R${currentRound})
+                        </h3>
+                        <p style="color: var(--text-muted); font-size: 0.88rem; margin: 0.25rem 0 0;">
+                            Current Gap: <strong>+${delta} pts</strong> (${pairLeader.points} vs ${pairRival.points}) &nbsp;|&nbsp; Post-Race Lead Needed: <strong>&ge; ${magicLead} pts</strong> &nbsp;|&nbsp; Net Swing Needed by ${pairLeader.name}: <strong>+${outscoreNeeded} pts</strong>
+                        </p>
+                    </div>
+                    <div style="background: rgba(168, 85, 247, 0.12); border: 1px solid var(--accent-purple); color: #e9d5ff; padding: 0.4rem 0.9rem; border-radius: 6px; font-weight: 800; font-family: var(--font-mono); font-size: 0.88rem;">
+                        Magic Lead: &ge; ${magicLead} pts
+                    </div>
+                </div>
+
+                <div class="scenarios-list">
+        `;
+
+        // Representative two-car constructor finish combinations in a Grand Prix
+        const wccCombos = [
+            { label: 'P1 + P2', sub: '1–2 Finish (Max GP)', pts: 43, occupied: [1, 2] },
+            { label: 'P1 + P3', sub: 'Double Podium (1–3)', pts: 40, occupied: [1, 3] },
+            { label: 'P1 + P4', sub: 'Win + P4', pts: 37, occupied: [1, 4] },
+            { label: 'P1 + P5', sub: 'Win + P5', pts: 35, occupied: [1, 5] },
+            { label: 'P2 + P3', sub: 'Double Podium (2–3)', pts: 33, occupied: [2, 3] },
+            { label: 'P2 + P4', sub: 'P2 + P4 Finish', pts: 30, occupied: [2, 4] },
+            { label: 'P3 + P4', sub: 'P3 + P4 Finish', pts: 27, occupied: [3, 4] },
+            { label: 'P1 + P11+', sub: 'Single Car Win Only', pts: 25, occupied: [1] },
+            { label: 'P5 + P6 (or lower)', sub: 'Midfield / DNF (≤18 pts)', pts: 18, occupied: [5, 6] }
+        ];
+
+        wccCombos.forEach(combo => {
+            const ceiling = delta + combo.pts - magicLead; // Max points pairRival can score for pairLeader to clinch
+            const minPreventPts = ceiling + 1;
+
+            if (ceiling < 0) {
+                html += `
+                    <div class="scenario-card" style="opacity: 0.68;">
+                        <div>
+                            <span style="font-weight: 800; font-size: 1.1rem; font-family: var(--font-mono); color: var(--text-dim);">${combo.label}</span>
+                            <span style="display: block; font-size: 0.75rem; color: var(--text-dim); font-family: var(--font-mono);">${combo.pts} pts (${combo.sub})</span>
+                        </div>
+                        <div>
+                            <strong style="color: #f87171; display: block; margin-bottom: 2px;">❌ ${pairLeader.name} Cannot Clinch WCC</strong>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">Max post-race lead (${delta + combo.pts} pts) is below the ${magicLead}-pt threshold (${Math.abs(ceiling)} pt${Math.abs(ceiling) === 1 ? '' : 's'} short).</span>
+                        </div>
+                        <div>
+                            <strong style="color: #34d399; display: block; margin-bottom: 2px;">✅ ${pairRival.name} Automatically Stays Alive</strong>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">${pairRival.name} survives into R${Math.min(CALENDAR.length, currentRound + 1)} even if both ${pairRival.name} cars score 0 points.</span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                let clinchText = '';
+                let preventText = '';
+
+                if (ceiling === 0) {
+                    clinchText = `<strong>${pairRival.name} must score 0 points</strong> (both cars finish P11 or lower / DNF).`;
+                    preventText = `<strong>${pairRival.name} needs at least 1 point</strong> (at least one car finishes <strong>P10 or higher</strong>).`;
+                } else if (ceiling === 1) {
+                    clinchText = `<strong>${pairRival.name} scores &le; 1 point</strong> (at most one car in <strong>P10 [1 pt]</strong> and the second car P11+, or both P11+).`;
+                    preventText = `<strong>${pairRival.name} must score &ge; 2 points</strong> (e.g. at least one car finishes <strong>P9 [2 pts] or higher</strong>).`;
+                } else if (ceiling === 4) {
+                    clinchText = `<strong>${pairRival.name} scores &le; 4 points</strong> (best car no higher than <strong>P8 [4 pts] + P11+</strong>, or <strong>P9 + P10 [3 pts]</strong>, or lower).`;
+                    preventText = `<strong>${pairRival.name} must score &ge; 5 points</strong> (e.g. one car finishes <strong>P7 [6 pts] or higher</strong>, OR <strong>P8 + P9 [6 pts]</strong>, OR <strong>P8 + P10 [5 pts]</strong>).`;
+                } else {
+                    clinchText = `<strong>${pairRival.name} scores &le; ${ceiling} combined points</strong> this weekend.`;
+                    preventText = `<strong>${pairRival.name} must score &ge; ${minPreventPts} combined points</strong> this weekend to keep the WCC battle alive.`;
+                }
+
+                html += `
+                    <div class="scenario-card" style="border-left: 4px solid var(--accent-purple);">
+                        <div>
+                            <span style="font-weight: 800; font-size: 1.15rem; font-family: var(--font-mono); color: var(--accent-purple);">${combo.label}</span>
+                            <span style="display: block; font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">${combo.pts} pts (${combo.sub})</span>
+                        </div>
+                        <div>
+                            <strong style="color: #34d399; display: block; margin-bottom: 2px;">🏆 How ${pairLeader.name} Clinches WCC:</strong>
+                            <span style="font-size: 0.88rem; color: var(--text-main);">${clinchText}</span>
+                        </div>
+                        <div>
+                            <strong style="color: #f87171; display: block; margin-bottom: 2px;">🛑 What ${pairRival.name} Must Do to Prevent It:</strong>
+                            <span style="font-size: 0.88rem; color: var(--text-main);">${preventText}</span>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+
+        html += `
+                </div>
+            </div>
+        `;
+
+        container.innerHTML = html;
+    }
+
+    function renderWDCScenarios(rem) {
+        const container = document.getElementById('scenarios-content');
+        const leader = drivers[0];
+        const focusDriver = drivers.find(d => d.id === selectedEntityId) || leader;
+        const rivalFromSelect = drivers.find(d => d.id === selectedRivalId);
+
+        const pairLeader = leader;
+        const pairRival = (focusDriver.id === leader.id)
+            ? (rivalFromSelect && rivalFromSelect.id !== leader.id ? rivalFromSelect : (drivers[1] || leader))
+            : focusDriver;
+
+        const delta = pairLeader.points - pairRival.points;
+        const event = CALENDAR[currentRound - 1];
+        const futureGPs = CALENDAR.slice(currentRound).length;
+
+        if ((pairRival.points + rem.wdcTotal) < pairLeader.points) {
+            container.innerHTML = `
+                <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; border-radius: var(--radius-md); padding: 2rem; text-align: center;">
+                    <h2 style="color: #34d399; margin: 0 0 0.5rem;">🏆 ${pairLeader.name.toUpperCase()} HAS MATHEMATICALLY ELIMINATED ${pairRival.name.toUpperCase()}</h2>
+                    <p style="color: var(--text-muted); max-width: 640px; margin: 0 auto;">
+                        ${pairLeader.name} (${pairLeader.points} pts) leads ${pairRival.name} (${pairRival.points} pts) by ${delta} pts with only ${rem.wdcTotal} pts remaining.
+                    </p>
+                </div>
+            `;
+            return;
+        }
+
+        const isFeasible = (delta + rem.wdcCurrent >= rem.wdcFuture);
+
+        if (!isFeasible) {
+            container.innerHTML = `
+                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 2rem; text-align: center;">
+                    <span style="font-size: 2.5rem; display: block; margin-bottom: 0.5rem;">⏳</span>
+                    <h3 style="color: var(--text-bright); margin: 0 0 0.5rem;">WDC Title Cannot Be Clinched Over ${pairRival.name} at the ${event.name}</h3>
                     <p style="color: var(--text-muted); max-width: 650px; margin: 0 auto; line-height: 1.6;">
-                        Even if <strong>${leader.name}</strong> scores maximum points (${rem.wdcCurrent} pts) and <strong>${closestRival.name}</strong> scores 0 pts, the lead would be <strong>${delta + rem.wdcCurrent} pts</strong>, which is less than the <strong>${rem.wdcFuture} pts</strong> remaining after this weekend.
+                        Even if <strong>${pairLeader.name}</strong> scores maximum points (${rem.wdcCurrent} pts) and <strong>${pairRival.name}</strong> scores 0 pts, the lead would be <strong>${delta + rem.wdcCurrent} pts</strong>, which is less than the <strong>${rem.wdcFuture} pts</strong> remaining after this weekend.
                     </p>
                     <div style="margin-top: 1.5rem; display: inline-flex; gap: 1rem; background: rgba(0,0,0,0.25); padding: 0.8rem 1.4rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
                         <div><span style="color: var(--text-muted);">Current Gap:</span> <strong style="color: var(--accent-cyan); font-family: var(--font-mono);">${delta} pts</strong></div>
@@ -611,18 +988,13 @@
             return;
         }
 
-        // Clinch is feasible! Show alert banner
-        alertBanner.style.display = 'block';
-        document.getElementById('clinch-alert-title').innerText = `${leader.name} can clinch the Drivers' World Championship at the ${event.name}!`;
-        document.getElementById('clinch-alert-desc').innerText = `Current margin: +${delta} pts. Points remaining after this weekend: ${rem.wdcFuture} pts.`;
-
         let scenariosHtml = `
             <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1.5rem;">
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
                     <div>
-                        <h3 style="margin: 0; font-size: 1.25rem; color: var(--accent-cyan);">Clinch Scenarios: ${event.name} (Round ${currentRound})</h3>
+                        <h3 style="margin: 0; font-size: 1.25rem; color: var(--accent-cyan);">🏎️ Drivers' Clinch Scenarios: ${pairLeader.name} vs. ${pairRival.name} — ${event.name} (R${currentRound})</h3>
                         <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0.2rem 0 0;">
-                            Formula: <code>(Leader Points + Weekend Score) - (Rival Points + Weekend Score) &ge; ${rem.wdcFuture} pts</code>
+                            Current Gap: <strong>+${delta} pts</strong> (${pairLeader.points} vs ${pairRival.points}) &nbsp;|&nbsp; Formula: <code>(Leader + Weekend) - (Rival + Weekend) &ge; ${rem.wdcFuture} pts</code>
                         </p>
                     </div>
                     <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.4rem 0.9rem; border-radius: 6px; font-weight: 800; font-family: var(--font-mono); font-size: 0.9rem;">
@@ -631,13 +1003,12 @@
                 </div>
 
                 <div style="font-size: 0.85rem; color: var(--text-dim); margin-bottom: 1.2rem;">
-                    Showing required finish pairings between Leader (${leader.name}) and primary rival (${closestRival.name}):
+                    Showing required finish pairings between Leader (<strong>${pairLeader.name}</strong>) and selected rival (<strong>${pairRival.name}</strong>):
                 </div>
 
                 <div class="scenarios-list">
         `;
 
-        // Check each leader position P1 to P10 and P11+
         const positions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
         positions.forEach(lPos => {
@@ -645,8 +1016,8 @@
             const posLabel = lPos <= 10 ? `P${lPos}` : 'P11+ / DNF';
 
             // Countback tiebreaker analysis
-            const hypLeaderWins = (leader.wins || 0) + (lPos === 1 ? 1 : 0);
-            const rivalMaxWins = (closestRival.wins || 0) + futureGPs + (lPos !== 1 ? 1 : 0);
+            const hypLeaderWins = (pairLeader.wins || 0) + (lPos === 1 ? 1 : 0);
+            const rivalMaxWins = (pairRival.wins || 0) + futureGPs + (lPos !== 1 ? 1 : 0);
             const epsilon = hypLeaderWins > rivalMaxWins ? 0 : 1;
 
             const ceiling = delta + lPts - rem.wdcFuture - epsilon;
@@ -659,12 +1030,12 @@
                             <span style="display: block; font-size: 0.75rem; color: var(--text-dim); font-family: var(--font-mono);">${lPts} pts</span>
                         </div>
                         <div>
-                            <strong style="color: #f87171; display: block; margin-bottom: 2px;">❌ Cannot Clinch Title</strong>
-                            <span style="font-size: 0.85rem; color: var(--text-muted);">Points earned are insufficient to mathematically seal the championship this weekend.</span>
+                            <strong style="color: #f87171; display: block; margin-bottom: 2px;">❌ Cannot Clinch Over ${pairRival.code}</strong>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">Points earned are insufficient to mathematically eliminate ${pairRival.name} this weekend.</span>
                         </div>
                         <div>
-                            <strong style="color: #34d399; display: block; margin-bottom: 2px;">Title Fight Stays Alive</strong>
-                            <span style="font-size: 0.85rem; color: var(--text-muted);">${closestRival.code} keeps mathematical hopes alive into next round.</span>
+                            <strong style="color: #34d399; display: block; margin-bottom: 2px;">${pairRival.code} Stays Alive</strong>
+                            <span style="font-size: 0.85rem; color: var(--text-muted);">${pairRival.name} keeps mathematical hopes alive into next round.</span>
                         </div>
                     </div>
                 `;
@@ -676,24 +1047,24 @@
                 let preventDesc = '';
 
                 if (allowed.length === possible.length) {
-                    clinchDesc = `<strong>Guaranteed Title!</strong> Clinches regardless of ${closestRival.code}'s finishing position.`;
-                    preventDesc = `Cannot prevent clinch (${closestRival.code} is mathematically out of contention).`;
+                    clinchDesc = `<strong>Guaranteed Clinch over ${pairRival.code}!</strong> Eliminates ${pairRival.name} regardless of where ${pairRival.code} finishes.`;
+                    preventDesc = `Cannot prevent clinch at this ${pairLeader.code} finish (${pairRival.code} must hope ${pairLeader.code} finishes lower).`;
                 } else {
                     const bestAllowed = allowed[0];
                     if (bestAllowed === 11) {
-                        clinchDesc = `<strong>${closestRival.code} finishes P11 or lower</strong> (scores 0 points).`;
+                        clinchDesc = `<strong>${pairRival.code} finishes P11 or lower</strong> (scores 0 points).`;
                     } else {
-                        clinchDesc = `<strong>${closestRival.code} finishes P${bestAllowed} or lower</strong> (&le; ${getGPPoints(bestAllowed)} pts).`;
+                        clinchDesc = `<strong>${pairRival.code} finishes P${bestAllowed} or lower</strong> (&le; ${getGPPoints(bestAllowed)} pts).`;
                     }
 
                     const prevent = possible.filter(p => getGPPoints(p) > ceiling);
                     const worstPrevent = prevent[prevent.length - 1];
                     if (prevent.length === 1) {
-                        preventDesc = `<strong>${closestRival.code} must finish P${worstPrevent}</strong> to keep title alive.`;
+                        preventDesc = `<strong>${pairRival.code} must finish P${worstPrevent}</strong> (${getGPPoints(worstPrevent)} pts) to stay alive.`;
                     } else if (worstPrevent === 10) {
-                        preventDesc = `<strong>${closestRival.code} must score at least 1 pt</strong> (P10 or higher).`;
+                        preventDesc = `<strong>${pairRival.code} must score at least 1 pt</strong> (P10 or higher).`;
                     } else {
-                        preventDesc = `<strong>${closestRival.code} must finish P${worstPrevent} or higher</strong> (&ge; ${getGPPoints(worstPrevent)} pts).`;
+                        preventDesc = `<strong>${pairRival.code} must finish P${worstPrevent} or higher</strong> (&ge; ${getGPPoints(worstPrevent)} pts).`;
                     }
                 }
 
@@ -704,11 +1075,11 @@
                             <span style="display: block; font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">${lPts} pts</span>
                         </div>
                         <div>
-                            <strong style="color: #34d399; display: block; margin-bottom: 2px;">🏆 Circumstances to Win Championship:</strong>
+                            <strong style="color: #34d399; display: block; margin-bottom: 2px;">🏆 How ${pairLeader.code} Clinches Over ${pairRival.code}:</strong>
                             <span style="font-size: 0.88rem; color: var(--text-main);">${clinchDesc}</span>
                         </div>
                         <div>
-                            <strong style="color: #f87171; display: block; margin-bottom: 2px;">🛑 What Rival Must Do to PREVENT It:</strong>
+                            <strong style="color: #f87171; display: block; margin-bottom: 2px;">🛑 What ${pairRival.code} Must Do to Prevent It:</strong>
                             <span style="font-size: 0.88rem; color: var(--text-main);">${preventDesc}</span>
                         </div>
                     </div>
@@ -828,6 +1199,73 @@
         updateAllViews();
     });
 
+    // Scenario Dropdown Listeners
+    const scenarioCatSelect = document.getElementById('scenario-category-select');
+    const scenarioEntitySelect = document.getElementById('scenario-entity-select');
+    const scenarioRivalSelect = document.getElementById('scenario-rival-select');
+
+    if (scenarioCatSelect) {
+        scenarioCatSelect.addEventListener('change', (e) => {
+            scenarioCategory = e.target.value;
+            if (scenarioCategory === 'wcc') {
+                selectedEntityId = constructors[0].id;
+                selectedRivalId = constructors[1] ? constructors[1].id : constructors[0].id;
+            } else {
+                selectedEntityId = drivers[0].id;
+                selectedRivalId = drivers[1] ? drivers[1].id : drivers[0].id;
+            }
+            renderClinchScenarios(calculatePointsRemaining(currentRound));
+        });
+    }
+
+    if (scenarioEntitySelect) {
+        scenarioEntitySelect.addEventListener('change', (e) => {
+            const val = e.target.value; // format 'wcc:mercedes' or 'wdc:ant'
+            const parts = val.split(':');
+            if (parts.length === 2) {
+                scenarioCategory = parts[0];
+                selectedEntityId = parts[1];
+                if (scenarioCategory === 'wcc') {
+                    selectedRivalId = (selectedEntityId === constructors[0].id)
+                        ? (constructors[1] ? constructors[1].id : constructors[0].id)
+                        : constructors[0].id;
+                } else {
+                    selectedRivalId = (selectedEntityId === drivers[0].id)
+                        ? (drivers[1] ? drivers[1].id : drivers[0].id)
+                        : drivers[0].id;
+                }
+            }
+            renderClinchScenarios(calculatePointsRemaining(currentRound));
+        });
+    }
+
+    if (scenarioRivalSelect) {
+        scenarioRivalSelect.addEventListener('change', (e) => {
+            selectedRivalId = e.target.value;
+            renderClinchScenarios(calculatePointsRemaining(currentRound));
+        });
+    }
+
+    const quickMercFer = document.getElementById('quick-scen-merc-fer');
+    if (quickMercFer) {
+        quickMercFer.addEventListener('click', () => {
+            scenarioCategory = 'wcc';
+            selectedEntityId = 'mercedes';
+            selectedRivalId = 'ferrari';
+            renderClinchScenarios(calculatePointsRemaining(currentRound));
+        });
+    }
+
+    const quickAntWdc = document.getElementById('quick-scen-ant-wdc');
+    if (quickAntWdc) {
+        quickAntWdc.addEventListener('click', () => {
+            scenarioCategory = 'wdc';
+            selectedEntityId = drivers[0].id;
+            selectedRivalId = drivers[1] ? drivers[1].id : drivers[0].id;
+            renderClinchScenarios(calculatePointsRemaining(currentRound));
+        });
+    }
+
     // Preset Buttons
     document.querySelectorAll('.preset-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -856,8 +1294,23 @@
     });
 
     document.getElementById('btn-jump-scenarios').addEventListener('click', () => {
+        scenarioCategory = 'wdc';
+        selectedEntityId = drivers[0].id;
+        selectedRivalId = drivers[1] ? drivers[1].id : drivers[0].id;
+        renderClinchScenarios(calculatePointsRemaining(currentRound));
         switchTab('scenarios');
     });
+
+    const btnJumpWcc = document.getElementById('btn-jump-wcc-scenarios');
+    if (btnJumpWcc) {
+        btnJumpWcc.addEventListener('click', () => {
+            scenarioCategory = 'wcc';
+            selectedEntityId = 'mercedes';
+            selectedRivalId = 'ferrari';
+            renderClinchScenarios(calculatePointsRemaining(currentRound));
+            switchTab('scenarios');
+        });
+    }
 
     document.getElementById('btn-apply-simulation').addEventListener('click', runSimulation);
 

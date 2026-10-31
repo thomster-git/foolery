@@ -1,0 +1,30 @@
+{
+  "updatedAt": "2026-10-31T08:50:00Z",
+  "streams": [
+    {
+      "id": "stream-morning-review",
+      "title": "Morning Review",
+      "category": "morning-review",
+      "recurrence": "WEEKDAY",
+      "startTimeNL": "09:30",
+      "durationMin": 120,
+      "platformUrl": "https://twitch.tv/thomsfoolery",
+      "description": "Weekday morning review: digital garden architecture, web development experiments, tech news, and community coffee.",
+      "cancelledDates": [],
+      "cancelledReasons": {}
+    },
+    {
+      "id": "stream-oot-release-20261104",
+      "title": "The Legend of Zelda: Ocarina of Time Release Stream",
+      "category": "special-events",
+      "recurrence": "ONCE",
+      "dateNL": "2026-11-04",
+      "startTimeNL": "22:30",
+      "durationMin": 300,
+      "platformUrl": "https://twitch.tv/thomsfoolery",
+      "description": "Special launch stream celebrating the Ocarina of Time Remake / Guide progression. At least 5 hours of gameplay, dungeon routing, and live music tabs!",
+      "cancelledDates": [],
+      "cancelledReasons": {}
+    }
+  ]
+}

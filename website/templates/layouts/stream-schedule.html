@@ -87,46 +87,80 @@
             </div>
         </div>
 
-        <!-- Controls Sub-Bar: View Tabs, Category Filters, and Planner Toolbar -->
-        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; background: var(--bg-card); padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
-            <!-- View Mode Switcher -->
-            <div style="display: flex; gap: 0.3rem;">
-                <button class="view-tab-btn active" data-view="week" style="padding: 0.4rem 0.9rem; border-radius: var(--radius-sm); border: none; background: var(--accent-cyan); color: #000; font-weight: 800; cursor: pointer;">
-                    Weekly Grid
-                </button>
-                <button class="view-tab-btn" data-view="month" style="padding: 0.4rem 0.9rem; border-radius: var(--radius-sm); border: none; background: transparent; color: var(--text-muted); font-weight: 700; cursor: pointer;">
-                    Month View
-                </button>
-                <button class="view-tab-btn" data-view="list" style="padding: 0.4rem 0.9rem; border-radius: var(--radius-sm); border: none; background: transparent; color: var(--text-muted); font-weight: 700; cursor: pointer;">
-                    Upcoming List
-                </button>
+        <!-- Controls Sub-Bar: Prominent View Switcher, Category Filters, and Planner Toolbar -->
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; background: var(--bg-card); padding: 1.1rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: 0 8px 24px rgba(0,0,0,0.3);">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+                <!-- Prominent View Mode Switcher -->
+                <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                    <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-cyan);">View Mode:</span>
+                    <div class="view-switcher-bar" role="tablist" aria-label="Schedule View Switcher">
+                        <button class="view-tab-btn active" data-view="week" role="tab" aria-selected="true">
+                            <span>📅</span> Weekly Grid
+                        </button>
+                        <button class="view-tab-btn" data-view="month" role="tab" aria-selected="false">
+                            <span>🗓️</span> Month View
+                        </button>
+                        <button class="view-tab-btn" data-view="list" role="tab" aria-selected="false">
+                            <span>📋</span> Upcoming List
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Category Filter Pills -->
+                <div style="display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center;">
+                    <button class="cat-pill active" data-cat="all" style="padding: 0.35rem 0.85rem; border-radius: 20px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.12); color: var(--text-bright); font-size: 0.82rem; cursor: pointer; font-weight: 800;">All Streams</button>
+                    <button class="cat-pill" data-cat="morning-review" style="padding: 0.35rem 0.85rem; border-radius: 20px; border: 1px solid #06b6d4; background: rgba(6, 182, 212, 0.12); color: #06b6d4; font-size: 0.82rem; cursor: pointer; font-weight: 700;">☕ Morning Review</button>
+                    <button class="cat-pill" data-cat="special-events" style="padding: 0.35rem 0.85rem; border-radius: 20px; border: 1px solid #a855f7; background: rgba(168, 85, 247, 0.12); color: #a855f7; font-size: 0.82rem; cursor: pointer; font-weight: 700;">✨ Special Events</button>
+                    <button class="cat-pill" data-cat="gaming" style="padding: 0.35rem 0.85rem; border-radius: 20px; border: 1px solid #10b981; background: rgba(16, 185, 129, 0.12); color: #10b981; font-size: 0.82rem; cursor: pointer; font-weight: 700;">🗡️ Gaming</button>
+                    <button class="cat-pill" data-cat="tech-coding" style="padding: 0.35rem 0.85rem; border-radius: 20px; border: 1px solid #f59e0b; background: rgba(245, 158, 11, 0.12); color: #f59e0b; font-size: 0.82rem; cursor: pointer; font-weight: 700;">💻 Tech &amp; Coding</button>
+                </div>
             </div>
 
-            <!-- Category Filter Pills -->
-            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center;">
-                <button class="cat-pill active" data-cat="all" style="padding: 0.3rem 0.75rem; border-radius: 20px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.1); color: var(--text-bright); font-size: 0.8rem; cursor: pointer; font-weight: 700;">All</button>
-                <button class="cat-pill" data-cat="morning-review" style="padding: 0.3rem 0.75rem; border-radius: 20px; border: 1px solid #06b6d4; background: rgba(6, 182, 212, 0.1); color: #06b6d4; font-size: 0.8rem; cursor: pointer; font-weight: 700;">☕ Morning Review</button>
-                <button class="cat-pill" data-cat="special-events" style="padding: 0.3rem 0.75rem; border-radius: 20px; border: 1px solid #a855f7; background: rgba(168, 85, 247, 0.1); color: #a855f7; font-size: 0.8rem; cursor: pointer; font-weight: 700;">✨ Special Events</button>
-                <button class="cat-pill" data-cat="gaming" style="padding: 0.3rem 0.75rem; border-radius: 20px; border: 1px solid #10b981; background: rgba(16, 185, 129, 0.1); color: #10b981; font-size: 0.8rem; cursor: pointer; font-weight: 700;">🗡️ Gaming</button>
-                <button class="cat-pill" data-cat="tech-coding" style="padding: 0.3rem 0.75rem; border-radius: 20px; border: 1px solid #f59e0b; background: rgba(245, 158, 11, 0.1); color: #f59e0b; font-size: 0.8rem; cursor: pointer; font-weight: 700;">💻 Tech &amp; Coding</button>
-            </div>
-
-            <!-- Planner Mode Action Buttons -->
-            <div id="planner-actions" style="display: none; align-items: center; gap: 0.5rem;">
-                <button id="btn-add-stream" style="background: var(--accent-emerald); color: #000; font-weight: 800; padding: 0.45rem 1rem; border-radius: var(--radius-sm); border: none; cursor: pointer; font-size: 0.85rem;">
-                    ➕ Add Stream
-                </button>
-                <button id="btn-copy-schedule-json" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; font-weight: 700; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.82rem; cursor: pointer;" title="Copy entire schedule config as JSON to paste into codebase">
-                    📋 Copy Schedule JSON
-                </button>
-                <button id="btn-reset-presets" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; font-weight: 700; padding: 0.45rem 0.8rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem;">
-                    Reset Presets
-                </button>
+            <!-- Planner Mode Action Buttons (Visible when Streamer Login is active) -->
+            <div id="planner-actions" style="display: none; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; padding-top: 0.85rem; border-top: 1px dashed rgba(16, 185, 129, 0.35);">
+                <div style="font-size: 0.82rem; color: #34d399; font-weight: 700;">
+                    ✨ <strong>Streamer Planner Active:</strong> Click <strong>✕</strong> on any stream card to cancel that specific date (e.g. Holiday), or click a stream to edit its rules.
+                </div>
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;">
+                    <button id="btn-add-stream" style="background: var(--accent-emerald); color: #000; font-weight: 800; padding: 0.45rem 1rem; border-radius: var(--radius-sm); border: none; cursor: pointer; font-size: 0.85rem;">
+                        ➕ Add Stream
+                    </button>
+                    <button id="btn-publish-global" style="background: linear-gradient(135deg, #06b6d4, #3b82f6); color: #fff; font-weight: 800; padding: 0.45rem 1rem; border-radius: var(--radius-sm); border: none; cursor: pointer; font-size: 0.85rem;" title="Publish schedule &amp; holiday cancellations globally to website/static/data/stream-schedule.json">
+                        🌐 Publish Global Changes
+                    </button>
+                    <button id="btn-copy-schedule-json" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; font-weight: 700; padding: 0.45rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.82rem; cursor: pointer;" title="Copy entire schedule config as JSON">
+                        📋 Copy Schedule JSON
+                    </button>
+                    <button id="btn-reset-presets" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; font-weight: 700; padding: 0.45rem 0.8rem; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.82rem;">
+                        Reset Presets
+                    </button>
+                </div>
             </div>
         </div>
 
         <!-- Render View 1: Weekly Grid View -->
         <div id="view-week" class="calendar-view">
+            <!-- Week Forward/Backward Navigation Bar (Locked against going into the past) -->
+            <div class="schedule-nav-bar">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button id="btn-prev-week" class="sched-nav-btn" disabled title="Cannot navigate prior to current week">
+                        ◀ Prev Week
+                    </button>
+                    <button id="btn-this-week" class="sched-nav-btn sched-nav-today">
+                        Today / Current Week
+                    </button>
+                </div>
+                <div style="text-align: center;">
+                    <h3 id="week-range-title" style="margin: 0; color: var(--text-bright); font-size: 1.18rem; font-weight: 800;">Current Week</h3>
+                    <span id="week-offset-badge" style="font-size: 0.76rem; color: var(--accent-cyan); font-family: var(--font-mono); font-weight: 700;">Active Broadcast Week</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button id="btn-next-week" class="sched-nav-btn">
+                        Next Week ▶
+                    </button>
+                </div>
+            </div>
+
             <div id="week-grid-root" style="overflow-x: auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
                 <!-- Populated via JS -->
             </div>
@@ -134,10 +168,31 @@
 
         <!-- Render View 2: Monthly Calendar View -->
         <div id="view-month" class="calendar-view" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <button id="btn-prev-month" style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.4rem 0.8rem; border-radius: var(--radius-sm); cursor: pointer;">◀ Previous</button>
-                <h3 id="month-title" style="margin: 0; color: var(--text-bright); font-size: 1.2rem;">November 2026</h3>
-                <button id="btn-next-month" style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.4rem 0.8rem; border-radius: var(--radius-sm); cursor: pointer;">Next ▶</button>
+            <!-- Month Forward/Backward Navigation Bar (Locked against going into the past) -->
+            <div class="schedule-nav-bar">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button id="btn-prev-month" class="sched-nav-btn" disabled title="Cannot navigate prior to current month">
+                        ◀ Prev Month
+                    </button>
+                    <button id="btn-this-month" class="sched-nav-btn sched-nav-today">
+                        This Month
+                    </button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; justify-content: center;">
+                    <h3 id="month-title" style="margin: 0; color: var(--text-bright); font-size: 1.22rem; font-weight: 800;">November 2026</h3>
+                    <select id="month-quick-select" aria-label="Jump to upcoming month" style="background: var(--bg-dark); color: var(--accent-cyan); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.35rem 0.65rem; font-weight: 700; font-size: 0.85rem; cursor: pointer;">
+                        <!-- Populated dynamically via JS (current month + 12 months ahead) -->
+                    </select>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <button id="btn-next-month" class="sched-nav-btn">
+                        Next Month ▶
+                    </button>
+                </div>
+            </div>
+            <!-- Day-of-week header bar for Month View -->
+            <div class="month-dow-header">
+                <div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div>
             </div>
             <div id="month-grid-root" class="month-grid">
                 <!-- Populated via JS -->
@@ -221,6 +276,53 @@
             </form>
         </dialog>
 
+        <!-- Streamer Login Modal (<dialog>) -->
+        <dialog id="streamer-login-modal" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--accent-cyan); border-radius: var(--radius-md); max-width: 420px; width: 90%; padding: 1.5rem; box-shadow: 0 20px 50px rgba(0,0,0,0.75);">
+            <form id="streamer-login-form" method="dialog">
+                <h3 style="margin-top: 0; color: var(--accent-cyan); font-size: 1.25rem;">🔒 Streamer Login</h3>
+                <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5;">
+                    Unlock Planner Mode to add streams, edit times, or press <strong>✕</strong> on any stream date to cancel it for holidays.
+                </p>
+                <div style="margin-bottom: 1rem;">
+                    <label for="streamer-pass-input" style="display: block; font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.3rem;">Streamer Password</label>
+                    <input type="password" id="streamer-pass-input" placeholder="Enter password..." style="width: 100%; padding: 0.6rem 0.75rem; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-bright); font-family: var(--font-mono);">
+                    <div id="streamer-login-error" style="display: none; color: #f87171; font-size: 0.8rem; margin-top: 0.35rem; font-weight: 700;">Incorrect password. Try again.</div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                    <button type="button" id="btn-login-cancel" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Cancel</button>
+                    <button type="submit" style="background: var(--accent-cyan); color: #000; font-weight: 800; border: none; padding: 0.5rem 1.25rem; border-radius: 6px; cursor: pointer;">Unlock Planner</button>
+                </div>
+            </form>
+        </dialog>
+
+        <!-- Global Schedule Publish Modal (<dialog>) -->
+        <dialog id="publish-global-modal" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--accent-cyan); border-radius: var(--radius-md); max-width: 620px; width: 92%; padding: 1.5rem; box-shadow: 0 20px 50px rgba(0,0,0,0.75);">
+            <h3 style="margin-top: 0; color: var(--accent-cyan); font-size: 1.25rem;">🌐 Publish Schedule &amp; Cancellations Globally</h3>
+            <p style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 1rem;">
+                Every visitor loads <code>website/static/data/stream-schedule.json</code> live from GitHub. You can commit your schedule and holiday cancellations directly to the repository so all viewers see them immediately, or copy the JSON below.
+            </p>
+            <div style="margin-bottom: 1rem; background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+                <label for="gh-token-input" style="display: block; font-size: 0.78rem; font-weight: 800; color: var(--text-bright); text-transform: uppercase; margin-bottom: 0.3rem;">
+                    Direct GitHub Commit (Optional Personal Access Token with <code>repo</code> scope)
+                </label>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <input type="password" id="gh-token-input" placeholder="ghp_... or github_pat_..." style="flex: 1; min-width: 220px; padding: 0.5rem 0.75rem; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-bright); font-family: var(--font-mono); font-size: 0.85rem;">
+                    <button type="button" id="btn-commit-github" style="background: var(--accent-emerald); color: #000; font-weight: 800; border: none; padding: 0.5rem 1.1rem; border-radius: 6px; cursor: pointer;">
+                        🚀 Commit Live to GitHub
+                    </button>
+                </div>
+                <div id="gh-commit-status" style="font-size: 0.82rem; margin-top: 0.45rem; color: var(--text-muted);"></div>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.3rem;">Canonical Schedule JSON (<code>website/static/data/stream-schedule.json</code>)</label>
+                <textarea id="global-json-preview" readonly rows="8" style="width: 100%; font-family: var(--font-mono); font-size: 0.8rem; padding: 0.6rem; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-bright);"></textarea>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 0.6rem;">
+                <button type="button" id="btn-copy-global-modal" style="background: var(--accent-cyan); color: #000; font-weight: 800; border: none; padding: 0.5rem 1.1rem; border-radius: 6px; cursor: pointer;">📋 Copy JSON</button>
+                <button type="button" id="btn-close-publish-modal" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Close</button>
+            </div>
+        </dialog>
+
         <!-- Social / Discord Snippet Modal -->
         <dialog id="snippet-modal" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); border-radius: var(--radius-md); max-width: 600px; width: 90%; padding: 1.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
             <h3 style="margin-top: 0; color: var(--accent-purple); font-size: 1.3rem;">Shareable Stream Snippets</h3>
@@ -257,6 +359,114 @@
 }
 .live-pulse-dot {
     animation: pulse 1.6s infinite;
+}
+
+/* Prominent View Switcher Segmented Control */
+.view-switcher-bar {
+    display: inline-flex;
+    background: rgba(9, 13, 22, 0.85);
+    border: 2px solid rgba(6, 182, 212, 0.45);
+    border-radius: 10px;
+    padding: 4px;
+    gap: 6px;
+    box-shadow: 0 0 18px rgba(6, 182, 212, 0.15);
+}
+.view-tab-btn {
+    padding: 0.6rem 1.25rem;
+    border-radius: 7px;
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-bright);
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: all 0.18s ease;
+    letter-spacing: 0.01em;
+}
+.view-tab-btn:hover:not(.active) {
+    background: rgba(6, 182, 212, 0.14);
+    border-color: rgba(6, 182, 212, 0.35);
+    color: #fff;
+}
+.view-tab-btn.active {
+    background: linear-gradient(135deg, #06b6d4, #22d3ee);
+    color: #041019 !important;
+    border-color: #67e8f9;
+    box-shadow: 0 4px 14px rgba(6, 182, 212, 0.45);
+}
+
+/* Week & Month Navigation Bar */
+.schedule-nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+}
+.sched-nav-btn {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-color);
+    color: var(--text-bright);
+    font-weight: 800;
+    font-size: 0.85rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+.sched-nav-btn:hover:not(:disabled) {
+    background: rgba(6, 182, 212, 0.18);
+    border-color: var(--accent-cyan);
+    color: #fff;
+}
+.sched-nav-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+.sched-nav-today {
+    border-color: rgba(6, 182, 212, 0.4);
+    color: var(--accent-cyan);
+}
+
+/* Quick Cancel (X) Button for Streamer Mode */
+.stream-cancel-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid rgba(239, 68, 68, 0.7);
+    background: rgba(15, 23, 42, 0.92);
+    color: #f87171;
+    font-weight: 900;
+    font-size: 0.75rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+    transition: all 0.15s ease;
+}
+.stream-cancel-btn:hover {
+    background: #ef4444;
+    color: #fff;
+    transform: scale(1.1);
+}
+.event-chip-cancelled {
+    background: rgba(239, 68, 68, 0.12) !important;
+    border-left: 3px solid #ef4444 !important;
+    color: #fca5a5 !important;
+    opacity: 0.78;
 }
 
 /* Weekly Grid Layout */
@@ -335,13 +545,27 @@
 }
 
 /* Month Grid */
+.month-dow-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    text-align: center;
+    padding: 0.5rem 0;
+    font-size: 0.76rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+}
 .month-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 1px;
     background: var(--border-color);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
     overflow: hidden;
 }
 .month-day-cell {
@@ -376,7 +600,11 @@
     // ----------------------------------------------------
     // Newfoundland Timezone & Time Conversion Engine
     // ----------------------------------------------------
-    const STORAGE_KEY = 'thomsfoolery_stream_schedule_v2';
+    const STORAGE_KEY = 'thomsfoolery_stream_schedule_v3';
+    const GLOBAL_DATA_URLS = [
+        'https://raw.githubusercontent.com/thomster-git/foolery/teaser-launch/website/static/data/stream-schedule.json',
+        '/data/stream-schedule.json'
+    ];
 
     // Default Schedule Presets per Jonathan's Requirements
     const DEFAULT_SCHEDULE = [
@@ -388,7 +616,9 @@
             startTimeNL: '09:30',
             durationMin: 120,
             platformUrl: 'https://twitch.tv/thomsfoolery',
-            description: 'Weekday morning review: digital garden architecture, web development experiments, tech news, and community coffee.'
+            description: 'Weekday morning review: digital garden architecture, web development experiments, tech news, and community coffee.',
+            cancelledDates: [],
+            cancelledReasons: {}
         },
         {
             id: 'stream-oot-release-20261104',
@@ -399,21 +629,34 @@
             startTimeNL: '22:30',
             durationMin: 300,
             platformUrl: 'https://twitch.tv/thomsfoolery',
-            description: 'Special launch stream celebrating the Ocarina of Time Remake / Guide progression. At least 5 hours of gameplay, dungeon routing, and live music tabs!'
+            description: 'Special launch stream celebrating the Ocarina of Time Remake / Guide progression. At least 5 hours of gameplay, dungeon routing, and live music tabs!',
+            cancelledDates: [],
+            cancelledReasons: {}
         }
     ];
+
+    function normalizeStreams(list) {
+        if (!Array.isArray(list)) return JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+        return list.map(s => ({
+            ...s,
+            cancelledDates: Array.isArray(s.cancelledDates) ? s.cancelledDates : [],
+            cancelledReasons: (s.cancelledReasons && typeof s.cancelledReasons === 'object') ? s.cancelledReasons : {}
+        }));
+    }
 
     function loadSchedule() {
         try {
             const raw = localStorage.getItem(STORAGE_KEY);
-            return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+            return raw ? normalizeStreams(JSON.parse(raw)) : normalizeStreams(DEFAULT_SCHEDULE);
         } catch (e) {
-            return JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+            return normalizeStreams(DEFAULT_SCHEDULE);
         }
     }
 
     function saveSchedule(events) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+        streams = normalizeStreams(events);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(streams));
+        localStorage.setItem(STORAGE_KEY + '_dirty', 'true');
     }
 
     let streams = loadSchedule();
@@ -422,7 +665,36 @@
     let currentView = 'week';
     let currentCategory = 'all';
     let plannerMode = false;
-    let selectedMonth = new Date(2026, 10, 1); // Nov 2026
+
+    // Navigation state: strictly disallow navigating backward into past weeks or past months
+    let currentWeekOffset = 0; // 0 = current week, +1 = next week, etc. (never < 0)
+    const nowInit = new Date();
+    const minMonth = new Date(nowInit.getFullYear(), nowInit.getMonth(), 1);
+    let selectedMonth = new Date(minMonth.getFullYear(), minMonth.getMonth(), 1);
+
+    // Fetch canonical global schedule (so holiday cancellations apply to all site visitors)
+    async function syncGlobalSchedule() {
+        const isDirtyLocal = localStorage.getItem(STORAGE_KEY + '_dirty') === 'true';
+        for (const url of GLOBAL_DATA_URLS) {
+            try {
+                const res = await fetch(url + '?t=' + Date.now(), { cache: 'no-store' });
+                if (!res.ok) continue;
+                const payload = await res.json();
+                const remoteList = Array.isArray(payload) ? payload : payload.streams;
+                if (Array.isArray(remoteList) && remoteList.length > 0) {
+                    if (!isDirtyLocal) {
+                        streams = normalizeStreams(remoteList);
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(streams));
+                        updateActiveView();
+                    }
+                    return;
+                }
+            } catch (_) {
+                // Fallback to next URL or local preset
+            }
+        }
+    }
+    syncGlobalSchedule();
 
     // Populate detected local timezone in read-only header badge
     (function initTzBadge() {
@@ -484,9 +756,32 @@
     }
 
     // ----------------------------------------------------
+    // Seamless Single-Date Holiday Cancellation (✕ Button)
+    // ----------------------------------------------------
+    function toggleCancelInstance(streamId, dateStr) {
+        const s = streams.find(item => item.id === streamId);
+        if (!s) return;
+        if (!Array.isArray(s.cancelledDates)) s.cancelledDates = [];
+        if (!s.cancelledReasons || typeof s.cancelledReasons !== 'object') s.cancelledReasons = {};
+
+        const idx = s.cancelledDates.indexOf(dateStr);
+        if (idx >= 0) {
+            // Restore cancelled stream
+            s.cancelledDates.splice(idx, 1);
+            delete s.cancelledReasons[dateStr];
+        } else {
+            // Cancel this date (default reason: Holiday / Off)
+            s.cancelledDates.push(dateStr);
+            s.cancelledReasons[dateStr] = 'Holiday / No Stream';
+        }
+        saveSchedule(streams);
+        updateActiveView();
+    }
+
+    // ----------------------------------------------------
     // Expanded Concrete Occurrences Calculator
     // ----------------------------------------------------
-    function getOccurrencesForDateRange(startDate, endDate) {
+    function getOccurrencesForDateRange(startDate, endDate, includeCancelled = true) {
         const occurrences = [];
         const filteredStreams = currentCategory === 'all' 
             ? streams 
@@ -500,6 +795,12 @@
             const dateStr = `${y}-${String(m).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
             for (const s of filteredStreams) {
+                const cancelledDates = Array.isArray(s.cancelledDates) ? s.cancelledDates : [];
+                const isCancelled = cancelledDates.includes(dateStr);
+                if (!includeCancelled && isCancelled) continue;
+
+                const cancelReason = (s.cancelledReasons && s.cancelledReasons[dateStr]) ? s.cancelledReasons[dateStr] : 'Holiday / No Stream';
+
                 if (s.recurrence === 'WEEKDAY') {
                     if (dayOfWeek >= 1 && dayOfWeek <= 5) {
                         const [hh, mm] = s.startTimeNL.split(':').map(Number);
@@ -510,7 +811,9 @@
                             instanceId: `${s.id}-${dateStr}`,
                             dateStr: dateStr,
                             startUtc: startUtc,
-                            endUtc: endUtc
+                            endUtc: endUtc,
+                            isCancelled: isCancelled,
+                            cancelReason: cancelReason
                         });
                     }
                 } else if (s.recurrence === 'ONCE') {
@@ -523,7 +826,9 @@
                             instanceId: `${s.id}-${dateStr}`,
                             dateStr: dateStr,
                             startUtc: startUtc,
-                            endUtc: endUtc
+                            endUtc: endUtc,
+                            isCancelled: isCancelled,
+                            cancelReason: cancelReason
                         });
                     }
                 }
@@ -537,15 +842,14 @@
     // ----------------------------------------------------
     function updateLiveBanner() {
         const now = new Date();
-        // Look in window [-1 day, +14 days]
+        // Look in window [-1 day, +14 days], excluding cancelled holiday dates
         const rangeStart = new Date(now.getTime() - 86400000);
         const rangeEnd = new Date(now.getTime() + 14 * 86400000);
-        const list = getOccurrencesForDateRange(rangeStart, rangeEnd);
+        const list = getOccurrencesForDateRange(rangeStart, rangeEnd, false);
 
         const currentActive = list.find(ev => now >= ev.startUtc && now <= ev.endUtc);
         const nextUpcoming = list.find(ev => ev.startUtc > now);
 
-        const banner = document.getElementById('stream-live-banner');
         const badge = document.getElementById('banner-badge');
         const title = document.getElementById('banner-title');
         const countdown = document.getElementById('banner-countdown');
@@ -592,23 +896,45 @@
     setInterval(updateLiveBanner, 1000);
 
     // ----------------------------------------------------
-    // View 1: Weekly Grid Renderer
+    // View 1: Weekly Grid Renderer (with Forward/Back Nav & Past Lock)
     // ----------------------------------------------------
     function renderWeekView() {
         const root = document.getElementById('week-grid-root');
         root.innerHTML = '';
 
-        // Anchor week to current week (Oct 26 - Nov 1, 2026 or current active)
+        if (currentWeekOffset < 0) currentWeekOffset = 0;
+
+        // Anchor week to current week + currentWeekOffset * 7 days
         const now = new Date();
         const startOfWeek = new Date(now);
-        startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
+        startOfWeek.setDate(now.getDate() - now.getDay() + (currentWeekOffset * 7)); // Sunday
         startOfWeek.setHours(0, 0, 0, 0);
 
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 6);
         endOfWeek.setHours(23, 59, 59, 999);
 
-        const weekEvents = getOccurrencesForDateRange(startOfWeek, endOfWeek);
+        // Update Week Navigation Bar UI & Past Lock
+        const prevWeekBtn = document.getElementById('btn-prev-week');
+        const thisWeekBtn = document.getElementById('btn-this-week');
+        const weekRangeTitle = document.getElementById('week-range-title');
+        const weekOffsetBadge = document.getElementById('week-offset-badge');
+
+        if (prevWeekBtn) prevWeekBtn.disabled = (currentWeekOffset <= 0);
+        if (thisWeekBtn) thisWeekBtn.disabled = (currentWeekOffset === 0);
+
+        if (weekRangeTitle) {
+            const fmtStart = startOfWeek.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const fmtEnd = endOfWeek.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            weekRangeTitle.innerText = `${fmtStart} – ${fmtEnd}`;
+        }
+        if (weekOffsetBadge) {
+            weekOffsetBadge.innerText = currentWeekOffset === 0
+                ? 'Current Broadcast Week (Past Weeks Locked)'
+                : `+${currentWeekOffset} Week${currentWeekOffset > 1 ? 's' : ''} Ahead`;
+        }
+
+        const weekEvents = getOccurrencesForDateRange(startOfWeek, endOfWeek, true);
 
         // Display hours from 08:00 to 24:00 (or up to 04:00 next day for late streams)
         const startHour = 8;
@@ -624,7 +950,6 @@
         container.appendChild(timeHeader);
 
         // 7 Day Headers
-        const dayCols = [];
         for (let i = 0; i < 7; i++) {
             const dayDate = new Date(startOfWeek);
             dayDate.setDate(startOfWeek.getDate() + i);
@@ -637,7 +962,7 @@
                     ${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dayDate.getDay()]}
                 </div>
                 <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">
-                    ${dayDate.getDate()}
+                    ${dayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                 </div>
             `;
             container.appendChild(dayH);
@@ -678,30 +1003,45 @@
 
             dayEvents.forEach(ev => {
                 const chip = document.createElement('div');
-                chip.className = `event-chip chip-${ev.category}`;
+                chip.className = `event-chip chip-${ev.category} ${ev.isCancelled ? 'event-chip-cancelled' : ''}`;
 
                 // Calculate top & height in px (each hour = 48px, so 1 min = 0.8px)
                 const [hh, mm] = ev.startTimeNL.split(':').map(Number);
                 const minutesFromStart = (hh - startHour) * 60 + mm;
                 const topPx = Math.max(0, minutesFromStart * 0.8);
-                const heightPx = Math.max(28, ev.durationMin * 0.8);
+                const heightPx = Math.max(36, ev.durationMin * 0.8);
 
                 chip.style.top = `${topPx}px`;
                 chip.style.height = `${heightPx}px`;
 
                 chip.innerHTML = `
-                    <div style="font-weight: 800; font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    ${plannerMode ? `
+                        <button type="button" class="stream-cancel-btn" title="${ev.isCancelled ? 'Restore this stream date' : 'Cancel this stream date (Holiday / Off)'}">
+                            ${ev.isCancelled ? '↩' : '✕'}
+                        </button>
+                    ` : ''}
+                    <div style="font-weight: 800; font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: ${plannerMode ? '22px' : '0'}; ${ev.isCancelled ? 'text-decoration: line-through;' : ''}">
                         ${ev.title}
                     </div>
-                    <div style="font-size: 0.72rem; opacity: 0.9; margin-top: 2px;">
-                        ${formatTimeInTz(ev.startUtc, currentTz)} (${ev.durationMin}m)
+                    <div style="font-size: 0.72rem; opacity: 0.92; margin-top: 2px;">
+                        ${ev.isCancelled
+                            ? `<strong style="color: #fca5a5;">🚫 CANCELLED (${ev.cancelReason})</strong>`
+                            : `${formatTimeInTz(ev.startUtc, currentTz)} (${ev.durationMin}m)`}
                     </div>
                 `;
+
+                const cancelBtn = chip.querySelector('.stream-cancel-btn');
+                if (cancelBtn) {
+                    cancelBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        toggleCancelInstance(ev.id, ev.dateStr);
+                    });
+                }
 
                 chip.addEventListener('click', () => {
                     if (plannerMode) {
                         openEditorModal(ev);
-                    } else {
+                    } else if (!ev.isCancelled) {
                         window.open(ev.platformUrl, '_blank');
                     }
                 });
@@ -716,27 +1056,57 @@
     }
 
     // ----------------------------------------------------
-    // View 2: Month View Renderer
+    // View 2: Month View Renderer (with Forward/Back Nav & Past Lock)
     // ----------------------------------------------------
+    function populateMonthQuickSelect() {
+        const sel = document.getElementById('month-quick-select');
+        if (!sel) return;
+        sel.innerHTML = '';
+        for (let i = 0; i <= 12; i++) {
+            const d = new Date(minMonth.getFullYear(), minMonth.getMonth() + i, 1);
+            const val = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+            const label = d.toLocaleString('en-US', { month: 'long', year: 'numeric' }) + (i === 0 ? ' (Current)' : '');
+            const opt = document.createElement('option');
+            opt.value = val;
+            opt.innerText = label;
+            if (d.getFullYear() === selectedMonth.getFullYear() && d.getMonth() === selectedMonth.getMonth()) {
+                opt.selected = true;
+            }
+            sel.appendChild(opt);
+        }
+    }
+
     function renderMonthView() {
         const root = document.getElementById('month-grid-root');
         root.innerHTML = '';
+
+        // Enforce Past Lock: never allow navigating prior to minMonth
+        if (selectedMonth < minMonth) {
+            selectedMonth = new Date(minMonth.getFullYear(), minMonth.getMonth(), 1);
+        }
 
         const y = selectedMonth.getFullYear();
         const m = selectedMonth.getMonth();
         document.getElementById('month-title').innerText = selectedMonth.toLocaleString('en-US', { month: 'long', year: 'numeric' });
 
+        const isAtMinMonth = (y === minMonth.getFullYear() && m === minMonth.getMonth());
+        const prevMonthBtn = document.getElementById('btn-prev-month');
+        const thisMonthBtn = document.getElementById('btn-this-month');
+        if (prevMonthBtn) prevMonthBtn.disabled = isAtMinMonth;
+        if (thisMonthBtn) thisMonthBtn.disabled = isAtMinMonth;
+
+        populateMonthQuickSelect();
+
         const firstDay = new Date(y, m, 1);
-        const lastDay = new Date(y, m + 1, 0);
         const startDayOfWeek = firstDay.getDay();
 
-        // Range spanning 35 or 42 grid cells
+        // Range spanning 42 grid cells
         const rangeStart = new Date(firstDay);
         rangeStart.setDate(firstDay.getDate() - startDayOfWeek);
         const rangeEnd = new Date(rangeStart);
         rangeEnd.setDate(rangeStart.getDate() + 41);
 
-        const occurrences = getOccurrencesForDateRange(rangeStart, rangeEnd);
+        const occurrences = getOccurrencesForDateRange(rangeStart, rangeEnd, true);
         const todayStr = new Date().toDateString();
 
         for (let i = 0; i < 42; i++) {
@@ -757,14 +1127,37 @@
             const dayEvents = occurrences.filter(e => e.dateStr === dateStr);
             dayEvents.forEach(ev => {
                 const badge = document.createElement('div');
-                badge.className = `event-chip chip-${ev.category}`;
-                badge.style.position = 'static';
-                badge.style.marginBottom = '2px';
-                badge.innerHTML = `<strong>${ev.startTimeNL}</strong> ${ev.title}`;
+                badge.className = `event-chip chip-${ev.category} ${ev.isCancelled ? 'event-chip-cancelled' : ''}`;
+                badge.style.position = 'relative';
+                badge.style.left = '0';
+                badge.style.right = '0';
+                badge.style.marginBottom = '3px';
+                badge.style.paddingRight = plannerMode ? '26px' : '8px';
+
+                badge.innerHTML = `
+                    ${plannerMode ? `
+                        <button type="button" class="stream-cancel-btn" style="top: 2px; right: 2px; width: 19px; height: 19px; font-size: 0.68rem;" title="${ev.isCancelled ? 'Restore this stream date' : 'Cancel this stream date (Holiday / Off)'}">
+                            ${ev.isCancelled ? '↩' : '✕'}
+                        </button>
+                    ` : ''}
+                    <span style="${ev.isCancelled ? 'text-decoration: line-through;' : ''}">
+                        <strong>${formatTimeInTz(ev.startUtc, currentTz)}</strong> ${ev.title}
+                    </span>
+                    ${ev.isCancelled ? `<div style="font-size: 0.68rem; font-weight: 800; color: #fca5a5;">🚫 CANCELLED</div>` : ''}
+                `;
+
+                const cancelBtn = badge.querySelector('.stream-cancel-btn');
+                if (cancelBtn) {
+                    cancelBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        toggleCancelInstance(ev.id, ev.dateStr);
+                    });
+                }
+
                 badge.addEventListener('click', (e) => {
                     e.stopPropagation();
                     if (plannerMode) openEditorModal(ev);
-                    else window.open(ev.platformUrl, '_blank');
+                    else if (!ev.isCancelled) window.open(ev.platformUrl, '_blank');
                 });
                 cell.appendChild(badge);
             });
@@ -798,17 +1191,17 @@
 
         const now = new Date();
         const rangeEnd = new Date(now.getTime() + 30 * 86400000); // 30 days ahead
-        const list = getOccurrencesForDateRange(now, rangeEnd);
+        const list = getOccurrencesForDateRange(now, rangeEnd, true);
 
         if (list.length === 0) {
             root.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">No upcoming streams matching this filter.</div>';
             return;
         }
 
-        list.slice(0, 15).forEach(ev => {
+        list.slice(0, 18).forEach(ev => {
             const card = document.createElement('div');
-            card.style.background = 'var(--bg-card)';
-            card.style.border = '1px solid var(--border-color)';
+            card.style.background = ev.isCancelled ? 'rgba(239, 68, 68, 0.06)' : 'var(--bg-card)';
+            card.style.border = ev.isCancelled ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid var(--border-color)';
             card.style.borderRadius = 'var(--radius-md)';
             card.style.padding = '1.25rem';
             card.style.display = 'flex';
@@ -826,25 +1219,41 @@
 
             card.innerHTML = `
                 <div>
-                    <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.3rem;">
+                    <div style="display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.3rem; flex-wrap: wrap;">
                         <span class="cat-pill" style="padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800;">${catLabels[ev.category] || ev.category}</span>
                         <span style="font-size: 0.8rem; color: var(--text-muted);">${ev.recurrence === 'WEEKDAY' ? 'Every Weekday' : 'Special Date'}</span>
+                        ${ev.isCancelled ? `<span style="background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800;">🚫 CANCELLED (${ev.cancelReason})</span>` : ''}
                     </div>
-                    <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-bright);">${ev.title}</h3>
+                    <h3 style="margin: 0; font-size: 1.15rem; color: ${ev.isCancelled ? 'var(--text-muted)' : 'var(--text-bright)'}; ${ev.isCancelled ? 'text-decoration: line-through;' : ''}">${ev.title}</h3>
                     <p style="margin: 0.3rem 0 0; font-size: 0.88rem; color: var(--text-muted); max-width: 600px;">${ev.description}</p>
                 </div>
-                <div style="display: flex; align-items: center; gap: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.85rem;">
                     <div style="text-align: right;">
-                        <div style="font-weight: 800; font-family: var(--font-mono); color: var(--accent-cyan); font-size: 1.05rem;">
+                        <div style="font-weight: 800; font-family: var(--font-mono); color: ${ev.isCancelled ? '#f87171' : 'var(--accent-cyan)'}; font-size: 1.05rem;">
                             ${formatTimeInTz(ev.startUtc, currentTz)}
                         </div>
                         <small style="color: var(--text-muted);">${formatTimeInTz(ev.startUtc, currentTz, { weekday: 'short', month: 'short', day: 'numeric' })}</small>
                     </div>
-                    <a href="${ev.platformUrl}" target="_blank" rel="noopener noreferrer" style="background: rgba(6, 182, 212, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.5rem 1rem; border-radius: 6px; font-weight: 700; text-decoration: none;">
-                        Watch
-                    </a>
+                    ${plannerMode ? `
+                        <button type="button" class="btn-list-cancel" style="background: ${ev.isCancelled ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)'}; border: 1px solid ${ev.isCancelled ? '#10b981' : '#ef4444'}; color: ${ev.isCancelled ? '#34d399' : '#f87171'}; padding: 0.45rem 0.85rem; border-radius: 6px; font-weight: 800; cursor: pointer;" title="${ev.isCancelled ? 'Restore this stream date' : 'Cancel this stream date (Holiday / Off)'}">
+                            ${ev.isCancelled ? '↩ Restore' : '✕ Cancel Date'}
+                        </button>
+                    ` : ''}
+                    ${!ev.isCancelled ? `
+                        <a href="${ev.platformUrl}" target="_blank" rel="noopener noreferrer" style="background: rgba(6, 182, 212, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.5rem 1rem; border-radius: 6px; font-weight: 700; text-decoration: none;">
+                            Watch
+                        </a>
+                    ` : ''}
                 </div>
             `;
+
+            const listCancelBtn = card.querySelector('.btn-list-cancel');
+            if (listCancelBtn) {
+                listCancelBtn.addEventListener('click', () => {
+                    toggleCancelInstance(ev.id, ev.dateStr);
+                });
+            }
+
             root.appendChild(card);
         });
     }
@@ -893,6 +1302,7 @@
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         const id = document.getElementById('ev-edit-id').value || `stream-${Date.now()}`;
+        const existing = streams.find(s => s.id === id);
         const newStream = {
             id: id,
             title: document.getElementById('ev-title').value,
@@ -902,7 +1312,9 @@
             startTimeNL: document.getElementById('ev-time').value,
             durationMin: parseInt(document.getElementById('ev-duration').value, 10) || 120,
             platformUrl: document.getElementById('ev-url').value,
-            description: document.getElementById('ev-desc').value
+            description: document.getElementById('ev-desc').value,
+            cancelledDates: existing && Array.isArray(existing.cancelledDates) ? existing.cancelledDates : [],
+            cancelledReasons: existing && existing.cancelledReasons ? existing.cancelledReasons : {}
         };
 
         const existingIdx = streams.findIndex(s => s.id === id);
@@ -925,7 +1337,7 @@
     });
 
     // ----------------------------------------------------
-    // iCalendar (.ics) RFC 5545 Generation Engine
+    // iCalendar (.ics) RFC 5545 Generation Engine (with EXDATE Holiday Support)
     // ----------------------------------------------------
     function foldIcsLine(line) {
         const MAX = 75;
@@ -990,6 +1402,11 @@
         const nowIso = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 
         streams.forEach(s => {
+            const cancelledDates = Array.isArray(s.cancelledDates) ? s.cancelledDates : [];
+            if (s.recurrence === 'ONCE' && cancelledDates.includes(s.dateNL)) {
+                return; // Skip cancelled single event
+            }
+
             lines.push('BEGIN:VEVENT');
             lines.push(`UID:${s.id}@thomsfoolery.com`);
             lines.push(`DTSTAMP:${nowIso}`);
@@ -1008,6 +1425,10 @@
                 lines.push(`DTSTART;TZID=America/St_Johns:20261026T${pad(hh)}${pad(mm)}00`);
                 lines.push(`DTEND;TZID=America/St_Johns:20261026T${pad(endH)}${pad(endM)}00`);
                 lines.push('RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR');
+                cancelledDates.forEach(cd => {
+                    const clean = cd.replace(/-/g, '');
+                    lines.push(`EXDATE;TZID=America/St_Johns:${clean}T${pad(hh)}${pad(mm)}00`);
+                });
             } else {
                 const dateClean = (s.dateNL || '2026-11-04').replace(/-/g, '');
                 lines.push(`DTSTART;TZID=America/St_Johns:${dateClean}T${pad(hh)}${pad(mm)}00`);
@@ -1036,7 +1457,6 @@
     // ----------------------------------------------------
     const snippetModal = document.getElementById('snippet-modal');
     document.getElementById('btn-share-snippet').addEventListener('click', () => {
-        // Nov 4 OoT stream timestamp (Nov 5, 02:00 UTC = 1793844000)
         const ootDate = parseNLTimeToUTC(2026, 11, 4, 22, 30);
         const unixSec = Math.floor(ootDate.getTime() / 1000);
 
@@ -1059,7 +1479,7 @@
     });
 
     // ----------------------------------------------------
-    // Streamer Auth & Planner Mode Access
+    // Streamer Auth & Global Publish Engine
     // ----------------------------------------------------
     function checkAuthStatus() {
         const isAuth = sessionStorage.getItem('thoms_auth') === 'true';
@@ -1076,19 +1496,136 @@
     checkAuthStatus();
 
     const streamerLoginBtn = document.getElementById('btn-streamer-login');
-    if (streamerLoginBtn) {
+    const loginModal = document.getElementById('streamer-login-modal');
+    const loginForm = document.getElementById('streamer-login-form');
+    const passInput = document.getElementById('streamer-pass-input');
+    const loginErr = document.getElementById('streamer-login-error');
+
+    if (streamerLoginBtn && loginModal) {
         streamerLoginBtn.addEventListener('click', () => {
-            const pass = prompt('Enter Streamer / Developer Password:');
+            if (loginErr) loginErr.style.display = 'none';
+            if (passInput) passInput.value = '';
+            loginModal.showModal();
+            if (passInput) passInput.focus();
+        });
+    }
+
+    const loginCancelBtn = document.getElementById('btn-login-cancel');
+    if (loginCancelBtn && loginModal) {
+        loginCancelBtn.addEventListener('click', () => loginModal.close());
+    }
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const pass = passInput ? passInput.value.trim() : '';
             if (pass === 'connected') {
                 sessionStorage.setItem('thoms_auth', 'true');
                 checkAuthStatus();
-                // Automatically activate planner mode once logged in
+                loginModal.close();
                 if (!plannerMode) {
                     const plannerBtn = document.getElementById('btn-toggle-planner');
                     if (plannerBtn) plannerBtn.click();
                 }
-            } else if (pass !== null) {
-                alert('Incorrect password.');
+            } else {
+                if (loginErr) loginErr.style.display = 'block';
+            }
+        });
+    }
+
+    // Global Publish Modal & GitHub API Commit
+    const publishModal = document.getElementById('publish-global-modal');
+    const publishBtn = document.getElementById('btn-publish-global');
+    const closePublishBtn = document.getElementById('btn-close-publish-modal');
+    const copyGlobalModalBtn = document.getElementById('btn-copy-global-modal');
+    const commitGithubBtn = document.getElementById('btn-commit-github');
+    const ghTokenInput = document.getElementById('gh-token-input');
+    const ghCommitStatus = document.getElementById('gh-commit-status');
+    const globalJsonPreview = document.getElementById('global-json-preview');
+
+    function getCanonicalPayloadString() {
+        return JSON.stringify({
+            updatedAt: new Date().toISOString(),
+            streams: streams
+        }, null, 2);
+    }
+
+    if (publishBtn && publishModal) {
+        publishBtn.addEventListener('click', () => {
+            if (globalJsonPreview) globalJsonPreview.value = getCanonicalPayloadString();
+            const savedToken = localStorage.getItem('thoms_gh_pat') || '';
+            if (ghTokenInput && savedToken) ghTokenInput.value = savedToken;
+            if (ghCommitStatus) ghCommitStatus.textContent = '';
+            publishModal.showModal();
+        });
+    }
+
+    if (closePublishBtn && publishModal) {
+        closePublishBtn.addEventListener('click', () => publishModal.close());
+    }
+
+    if (copyGlobalModalBtn) {
+        copyGlobalModalBtn.addEventListener('click', () => {
+            const text = getCanonicalPayloadString();
+            navigator.clipboard.writeText(text).then(() => {
+                copyGlobalModalBtn.textContent = '✓ Copied!';
+                setTimeout(() => { copyGlobalModalBtn.textContent = '📋 Copy JSON'; }, 2000);
+            });
+        });
+    }
+
+    if (commitGithubBtn) {
+        commitGithubBtn.addEventListener('click', async () => {
+            const token = ghTokenInput ? ghTokenInput.value.trim() : '';
+            if (!token) {
+                if (ghCommitStatus) {
+                    ghCommitStatus.style.color = '#f87171';
+                    ghCommitStatus.textContent = 'Please enter a GitHub Personal Access Token (repo scope) to commit directly.';
+                }
+                return;
+            }
+            localStorage.setItem('thoms_gh_pat', token);
+            if (ghCommitStatus) {
+                ghCommitStatus.style.color = 'var(--accent-cyan)';
+                ghCommitStatus.textContent = 'Committing updated schedule to GitHub (thomster-git/foolery)...';
+            }
+            try {
+                const apiUrl = 'https://api.github.com/repos/thomster-git/foolery/contents/website/static/data/stream-schedule.json';
+                const getRes = await fetch(apiUrl + '?ref=teaser-launch', {
+                    headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' }
+                });
+                let sha = undefined;
+                if (getRes.ok) {
+                    const meta = await getRes.json();
+                    sha = meta.sha;
+                }
+                const contentStr = getCanonicalPayloadString();
+                const base64Content = btoa(unescape(encodeURIComponent(contentStr)));
+                const putRes = await fetch(apiUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/vnd.github+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'chore(schedule): update live stream schedule & holiday cancellations',
+                        content: base64Content,
+                        branch: 'teaser-launch',
+                        ...(sha ? { sha } : {})
+                    })
+                });
+                if (!putRes.ok) throw new Error(`GitHub API ${putRes.status}`);
+                localStorage.removeItem(STORAGE_KEY + '_dirty');
+                if (ghCommitStatus) {
+                    ghCommitStatus.style.color = '#34d399';
+                    ghCommitStatus.textContent = '✓ Published globally! All site visitors will now see this updated schedule.';
+                }
+            } catch (err) {
+                if (ghCommitStatus) {
+                    ghCommitStatus.style.color = '#f87171';
+                    ghCommitStatus.textContent = `Commit failed (${err.message}). You can copy the JSON below instead.`;
+                }
             }
         });
     }
@@ -1096,10 +1633,10 @@
     const copyScheduleBtn = document.getElementById('btn-copy-schedule-json');
     if (copyScheduleBtn) {
         copyScheduleBtn.addEventListener('click', () => {
-            const jsonText = JSON.stringify(streams, null, 2);
+            const jsonText = getCanonicalPayloadString();
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(jsonText).then(() => {
-                    alert('📋 Schedule JSON copied to clipboard!\nYou can paste this directly into DEFAULT_SCHEDULE in stream-schedule.html.');
+                    alert('📋 Schedule JSON copied to clipboard!');
                 }).catch(() => {
                     prompt('Copy your Schedule JSON below:', jsonText);
                 });
@@ -1110,18 +1647,16 @@
     }
 
     // ----------------------------------------------------
-    // Toolbar Event Listeners
+    // Toolbar & Navigation Event Listeners
     // ----------------------------------------------------
     document.querySelectorAll('.view-tab-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.view-tab-btn').forEach(b => {
                 b.classList.remove('active');
-                b.style.background = 'transparent';
-                b.style.color = 'var(--text-muted)';
+                b.setAttribute('aria-selected', 'false');
             });
             e.currentTarget.classList.add('active');
-            e.currentTarget.style.background = 'var(--accent-cyan)';
-            e.currentTarget.style.color = '#000';
+            e.currentTarget.setAttribute('aria-selected', 'true');
 
             currentView = e.currentTarget.getAttribute('data-view');
             document.querySelectorAll('.calendar-view').forEach(v => v.style.display = 'none');
@@ -1174,21 +1709,71 @@
 
     document.getElementById('btn-reset-presets').addEventListener('click', () => {
         if (confirm('Reset stream schedule to Jonathan\'s default presets?')) {
-            streams = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+            streams = normalizeStreams(DEFAULT_SCHEDULE);
             saveSchedule(streams);
+            localStorage.removeItem(STORAGE_KEY + '_dirty');
             updateActiveView();
         }
     });
 
-    // Month Navigation
+    // Week Navigation (Never backward into past weeks)
+    const prevWeekBtn = document.getElementById('btn-prev-week');
+    const thisWeekBtn = document.getElementById('btn-this-week');
+    const nextWeekBtn = document.getElementById('btn-next-week');
+
+    if (prevWeekBtn) {
+        prevWeekBtn.addEventListener('click', () => {
+            if (currentWeekOffset > 0) {
+                currentWeekOffset--;
+                renderWeekView();
+            }
+        });
+    }
+    if (thisWeekBtn) {
+        thisWeekBtn.addEventListener('click', () => {
+            currentWeekOffset = 0;
+            renderWeekView();
+        });
+    }
+    if (nextWeekBtn) {
+        nextWeekBtn.addEventListener('click', () => {
+            currentWeekOffset++;
+            renderWeekView();
+        });
+    }
+
+    // Month Navigation (Never backward into past months)
     document.getElementById('btn-prev-month').addEventListener('click', () => {
-        selectedMonth.setMonth(selectedMonth.getMonth() - 1);
-        renderMonthView();
+        const candidate = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() - 1, 1);
+        if (candidate >= minMonth) {
+            selectedMonth = candidate;
+            renderMonthView();
+        }
     });
+    const thisMonthBtn = document.getElementById('btn-this-month');
+    if (thisMonthBtn) {
+        thisMonthBtn.addEventListener('click', () => {
+            selectedMonth = new Date(minMonth.getFullYear(), minMonth.getMonth(), 1);
+            renderMonthView();
+        });
+    }
     document.getElementById('btn-next-month').addEventListener('click', () => {
-        selectedMonth.setMonth(selectedMonth.getMonth() + 1);
+        selectedMonth = new Date(selectedMonth.getFullYear(), selectedMonth.getMonth() + 1, 1);
         renderMonthView();
     });
+    const monthQuickSelect = document.getElementById('month-quick-select');
+    if (monthQuickSelect) {
+        monthQuickSelect.addEventListener('change', (e) => {
+            const [yy, mm] = e.target.value.split('-').map(Number);
+            if (yy && mm) {
+                const candidate = new Date(yy, mm - 1, 1);
+                if (candidate >= minMonth) {
+                    selectedMonth = candidate;
+                    renderMonthView();
+                }
+            }
+        });
+    }
 
     // Initial render
     updateActiveView();
