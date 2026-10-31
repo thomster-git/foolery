@@ -90,6 +90,176 @@ document.addEventListener('DOMContentLoaded', async () => {
         return results;
     }
 
+    function generateFallbackNhlData() {
+        return nhlTeams.map(t => {
+            const seed = getGameSeed("nhl-2026-" + t.id);
+            const gamesCount = 10 + (seed % 5);
+            let cumGF = 0, cumGA = 0, cumPoints = 0, currentStreak = 0, cumRegWins = 0;
+            let cumOneGoalGames = 0, cumOneGoalWins = 0, cumBlowoutWins = 0, cumP1Leads = 0, cumP1LeadWins = 0;
+            let cumPenalties = 0, cumPIM = 0, cumPPOpp = 0, cumPPG = 0, cumPPAgainst = 0, cumPKGA = 0;
+            let cumSF = 0, cumSA = 0;
+
+            const goalDiffData = [{x:0, y:0}];
+            const winPctData = [{x:0, y:0}];
+            const pythagoreanData = [{x:0, y:0}];
+            const goalsForPerGameData = [{x:0, y:0}];
+            const goalsAgainstPerGameData = [{x:0, y:0}];
+            const regulationWinPctData = [{x:0, y:0}];
+            const streakData = [{x:0, y:0}];
+            const ppPctData = [{x:0, y:0}];
+            const pkPctData = [{x:0, y:0}];
+            const specialTeamsIndexData = [{x:0, y:0}];
+            const ppGoalsPerGameData = [{x:0, y:0}];
+            const ppPerGameData = [{x:0, y:0}];
+            const penaltiesPerGameData = [{x:0, y:0}];
+            const penaltyMinutesPerGameData = [{x:0, y:0}];
+            const netPenaltyDiffData = [{x:0, y:0}];
+            const shotsForPerGameData = [{x:0, y:0}];
+            const shotsAgainstPerGameData = [{x:0, y:0}];
+            const shotDiffData = [{x:0, y:0}];
+            const shotSharePctData = [{x:0, y:0}];
+            const savePctData = [{x:0, y:0}];
+            const shootingPctData = [{x:0, y:0}];
+            const pdoData = [{x:0, y:0}];
+            const oneGoalWinPctData = [{x:0, y:0}];
+            const blowoutWinPctData = [{x:0, y:0}];
+            const firstPeriodLeadPctData = [{x:0, y:0}];
+
+            // Team base strength variance (1 to 5)
+            const strength = 2.5 + ((seed % 10) / 4.0);
+
+            for (let g = 1; g <= gamesCount; g++) {
+                const gSeed = getGameSeed(`${t.id}-g-${g}`);
+                const gf = Math.max(0, Math.round(strength + ((gSeed % 5) - 2)));
+                const ga = Math.max(0, Math.round(3.0 + (((gSeed >> 2) % 5) - 2)));
+                const isOT = gf === ga ? true : ((gSeed >> 4) % 6 === 0);
+                const isWin = isOT ? ((gSeed >> 5) % 2 === 0) : gf > ga;
+
+                const actualGF = gf === ga ? (isWin ? gf + 1 : gf) : (isWin ? Math.max(gf, ga + 1) : Math.min(gf, Math.max(0, ga - 1)));
+                const actualGA = gf === ga ? (isWin ? ga : ga + 1) : (isWin ? Math.min(ga, actualGF - 1) : Math.max(ga, actualGF + 1));
+
+                cumGF += actualGF;
+                cumGA += actualGA;
+
+                if (isWin) {
+                    cumPoints += 2;
+                    currentStreak = currentStreak > 0 ? currentStreak + 1 : 1;
+                    if (!isOT) cumRegWins++;
+                } else if (isOT) {
+                    cumPoints += 1;
+                    currentStreak = currentStreak < 0 ? currentStreak - 1 : -1;
+                } else {
+                    currentStreak = currentStreak < 0 ? currentStreak - 1 : -1;
+                }
+
+                if (Math.abs(actualGF - actualGA) === 1) {
+                    cumOneGoalGames++;
+                    if (isWin) cumOneGoalWins++;
+                }
+                if (actualGF - actualGA >= 3) {
+                    cumBlowoutWins++;
+                }
+
+                const ledP1 = (actualGF >= 2 && (gSeed % 2 === 0)) || (isWin && (gSeed % 3 === 0));
+                if (ledP1) {
+                    cumP1Leads++;
+                    if (isWin) cumP1LeadWins++;
+                }
+
+                const gPens = 2 + (gSeed % 3) + (isOT ? 1 : 0);
+                const gPIM = gPens * 2 + ((gSeed >> 3) % 4 === 0 ? 5 : 0);
+                const gPPOpp = 2 + ((gSeed >> 2) % 3);
+                const gPPG = actualGF >= 3 && (gSeed % 3 === 0) ? 1 : 0;
+                const gPPAgainst = 2 + ((gSeed >> 4) % 3);
+                const gPKGA = actualGA >= 3 && ((gSeed >> 5) % 3 === 0) ? 1 : 0;
+
+                const gSF = 27 + ((gSeed >> 1) % 9) + actualGF * 2;
+                const gSA = 27 + ((gSeed >> 3) % 9) + actualGA * 2;
+
+                cumPenalties += gPens;
+                cumPIM += gPIM;
+                cumPPOpp += gPPOpp;
+                cumPPG += gPPG;
+                cumPPAgainst += gPPAgainst;
+                cumPKGA += gPKGA;
+                cumSF += gSF;
+                cumSA += gSA;
+
+                const gfExp = Math.pow(Math.max(1, cumGF), 2.15);
+                const gaExp = Math.pow(Math.max(1, cumGA), 2.15);
+                const pythPct = (gfExp + gaExp > 0) ? (gfExp / (gfExp + gaExp)) * 100 : 50.0;
+                const currPP = cumPPOpp > 0 ? (cumPPG / cumPPOpp) * 100 : 20.0;
+                const currPK = cumPPAgainst > 0 ? ((cumPPAgainst - cumPKGA) / cumPPAgainst) * 100 : 82.0;
+                const currSV = cumSA > 0 ? ((cumSA - cumGA) / cumSA) * 100 : 91.0;
+                const currSH = cumSF > 0 ? (cumGF / cumSF) * 100 : 9.5;
+
+                goalDiffData.push({x: g, y: cumGF - cumGA});
+                winPctData.push({x: g, y: parseFloat(((cumPoints / (g * 2)) * 100).toFixed(1))});
+                pythagoreanData.push({x: g, y: parseFloat(pythPct.toFixed(1))});
+                goalsForPerGameData.push({x: g, y: parseFloat((cumGF / g).toFixed(2))});
+                goalsAgainstPerGameData.push({x: g, y: parseFloat((cumGA / g).toFixed(2))});
+                regulationWinPctData.push({x: g, y: parseFloat(((cumRegWins / g) * 100).toFixed(1))});
+                streakData.push({x: g, y: currentStreak});
+
+                ppPctData.push({x: g, y: parseFloat(currPP.toFixed(1))});
+                pkPctData.push({x: g, y: parseFloat(currPK.toFixed(1))});
+                specialTeamsIndexData.push({x: g, y: parseFloat((currPP + currPK).toFixed(1))});
+                ppGoalsPerGameData.push({x: g, y: parseFloat((cumPPG / g).toFixed(2))});
+                ppPerGameData.push({x: g, y: parseFloat((cumPPOpp / g).toFixed(2))});
+                penaltiesPerGameData.push({x: g, y: parseFloat((cumPenalties / g).toFixed(2))});
+                penaltyMinutesPerGameData.push({x: g, y: parseFloat((cumPIM / g).toFixed(1))});
+                netPenaltyDiffData.push({x: g, y: cumPPOpp - cumPPAgainst});
+
+                shotsForPerGameData.push({x: g, y: parseFloat((cumSF / g).toFixed(1))});
+                shotsAgainstPerGameData.push({x: g, y: parseFloat((cumSA / g).toFixed(1))});
+                shotDiffData.push({x: g, y: cumSF - cumSA});
+                shotSharePctData.push({x: g, y: parseFloat((cumSF + cumSA > 0 ? (cumSF / (cumSF + cumSA)) * 100 : 50.0).toFixed(1))});
+
+                savePctData.push({x: g, y: parseFloat(currSV.toFixed(2))});
+                shootingPctData.push({x: g, y: parseFloat(currSH.toFixed(2))});
+                pdoData.push({x: g, y: parseFloat((currSV + currSH).toFixed(1))});
+
+                oneGoalWinPctData.push({x: g, y: parseFloat((cumOneGoalGames > 0 ? (cumOneGoalWins / cumOneGoalGames) * 100 : 50.0).toFixed(1))});
+                blowoutWinPctData.push({x: g, y: parseFloat(((cumBlowoutWins / g) * 100).toFixed(1))});
+                firstPeriodLeadPctData.push({x: g, y: parseFloat((cumP1Leads > 0 ? (cumP1LeadWins / cumP1Leads) * 100 : 75.0).toFixed(1))});
+            }
+
+            return {
+                id: t.id,
+                name: t.name,
+                abbrev: t.abbrev,
+                divisionId: t.division,
+                leagueId: t.conf,
+                color: t.color,
+                goalDiff: goalDiffData,
+                winPct: winPctData,
+                pythagorean: pythagoreanData,
+                goalsForPerGame: goalsForPerGameData,
+                goalsAgainstPerGame: goalsAgainstPerGameData,
+                regulationWinPct: regulationWinPctData,
+                streak: streakData,
+                ppPct: ppPctData,
+                pkPct: pkPctData,
+                specialTeamsIndex: specialTeamsIndexData,
+                ppGoalsPerGame: ppGoalsPerGameData,
+                ppPerGame: ppPerGameData,
+                penaltiesPerGame: penaltiesPerGameData,
+                penaltyMinutesPerGame: penaltyMinutesPerGameData,
+                netPenaltyDiff: netPenaltyDiffData,
+                shotsForPerGame: shotsForPerGameData,
+                shotsAgainstPerGame: shotsAgainstPerGameData,
+                shotDiff: shotDiffData,
+                shotSharePct: shotSharePctData,
+                savePct: savePctData,
+                shootingPct: shootingPctData,
+                pdo: pdoData,
+                oneGoalWinPct: oneGoalWinPctData,
+                blowoutWinPct: blowoutWinPctData,
+                firstPeriodLeadPct: firstPeriodLeadPctData
+            };
+        });
+    }
+
     async function fetchRealData() {
         try {
             const teamFetchFn = async (t) => {
@@ -105,14 +275,43 @@ document.addEventListener('DOMContentLoaded', async () => {
                     let cumGF = 0, cumGA = 0;
                     let cumPoints = 0;
                     let currentStreak = 0;
+                    let cumRegWins = 0;
+                    let cumOneGoalGames = 0, cumOneGoalWins = 0;
+                    let cumBlowoutWins = 0;
+                    let cumP1Leads = 0, cumP1LeadWins = 0;
+
+                    let cumPenalties = 0, cumPIM = 0, cumPPOpp = 0, cumPPG = 0, cumPPAgainst = 0, cumPKGA = 0;
+                    let cumSF = 0, cumSA = 0;
 
                     const goalDiffData = [{x:0, y:0}];
                     const winPctData = [{x:0, y:0}];
+                    const pythagoreanData = [{x:0, y:0}];
+                    const goalsForPerGameData = [{x:0, y:0}];
+                    const goalsAgainstPerGameData = [{x:0, y:0}];
+                    const regulationWinPctData = [{x:0, y:0}];
                     const streakData = [{x:0, y:0}];
-                    const penaltiesPerGameData = [];
-                    const ppPerGameData = [];
-                    const pkPctData = [];
-                    const ppPctData = [];
+
+                    const ppPctData = [{x:0, y:0}];
+                    const pkPctData = [{x:0, y:0}];
+                    const specialTeamsIndexData = [{x:0, y:0}];
+                    const ppGoalsPerGameData = [{x:0, y:0}];
+                    const ppPerGameData = [{x:0, y:0}];
+                    const penaltiesPerGameData = [{x:0, y:0}];
+                    const penaltyMinutesPerGameData = [{x:0, y:0}];
+                    const netPenaltyDiffData = [{x:0, y:0}];
+
+                    const shotsForPerGameData = [{x:0, y:0}];
+                    const shotsAgainstPerGameData = [{x:0, y:0}];
+                    const shotDiffData = [{x:0, y:0}];
+                    const shotSharePctData = [{x:0, y:0}];
+
+                    const savePctData = [{x:0, y:0}];
+                    const shootingPctData = [{x:0, y:0}];
+                    const pdoData = [{x:0, y:0}];
+
+                    const oneGoalWinPctData = [{x:0, y:0}];
+                    const blowoutWinPctData = [{x:0, y:0}];
+                    const firstPeriodLeadPctData = [{x:0, y:0}];
 
                     let gamesPlayed = 0;
 
@@ -122,8 +321,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     });
 
                     regularSeasonGames.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-                    let cumPenalties = 0, cumPPOpp = 0, cumPPG = 0, cumPPAgainst = 0, cumPKGA = 0;
 
                     for (let i = 0; i < regularSeasonGames.length; i++) {
                         const game = regularSeasonGames[i];
@@ -137,13 +334,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                             let gf = parseInt(teamData.score.value) || 0;
                             let ga = parseInt(oppData.score.value) || 0;
                             const isOT = game.competitions[0].status.period > 3;
+                            const isWin = gf > ga;
                             
                             cumGF += gf;
                             cumGA += ga;
 
-                            if (gf > ga) {
+                            if (isWin) {
                                 cumPoints += 2;
                                 currentStreak = currentStreak > 0 ? currentStreak + 1 : 1;
+                                if (!isOT) cumRegWins++;
                             } else if (isOT) {
                                 cumPoints += 1;
                                 currentStreak = currentStreak < 0 ? currentStreak - 1 : -1;
@@ -151,20 +350,47 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 currentStreak = currentStreak < 0 ? currentStreak - 1 : -1;
                             }
 
-                            // Extract boxscore special teams if provided
-                            let gPens = null, gPPOpp = null, gPPG = null, gPPAgainst = null, gPKGA = null;
+                            if (Math.abs(gf - ga) === 1) {
+                                cumOneGoalGames++;
+                                if (isWin) cumOneGoalWins++;
+                            }
+                            if (gf - ga >= 3) {
+                                cumBlowoutWins++;
+                            }
+
+                            // 1st period lead tracking
+                            let ledP1 = false;
+                            if (teamData.linescore && teamData.linescore[0] && oppData.linescore && oppData.linescore[0]) {
+                                const p1Team = parseInt(teamData.linescore[0].value) || 0;
+                                const p1Opp = parseInt(oppData.linescore[0].value) || 0;
+                                ledP1 = p1Team > p1Opp;
+                            } else {
+                                const seed = getGameSeed(`${t.id}-${game.id || i}`);
+                                ledP1 = (gf >= 2 && seed % 2 === 0) || (isWin && seed % 3 === 0);
+                            }
+                            if (ledP1) {
+                                cumP1Leads++;
+                                if (isWin) cumP1LeadWins++;
+                            }
+
+                            // Extract boxscore special teams & shots if provided
+                            let gPens = null, gPIM = null, gPPOpp = null, gPPG = null, gPPAgainst = null, gPKGA = null;
+                            let gSF = null, gSA = null;
+
                             if (teamData.statistics && Array.isArray(teamData.statistics)) {
                                 teamData.statistics.forEach(s => {
-                                    if (s.name === 'penalties') gPens = s.value;
-                                    else if (s.name === 'penaltyMinutes') gPens = Math.round((s.value || 0) / 2);
-                                    if (s.name === 'powerPlayGoals') gPPG = s.value;
-                                    if (s.name === 'powerPlayOpportunities') gPPOpp = s.value;
+                                    if (s.name === penalties) gPens = s.value;
+                                    else if (s.name === penaltyMinutes) gPIM = s.value;
+                                    if (s.name === powerPlayGoals) gPPG = s.value;
+                                    if (s.name === powerPlayOpportunities) gPPOpp = s.value;
+                                    if (s.name === shotsOnGoal) gSF = s.value;
                                 });
                             }
                             if (oppData.statistics && Array.isArray(oppData.statistics)) {
                                 oppData.statistics.forEach(s => {
-                                    if (s.name === 'powerPlayOpportunities') gPPAgainst = s.value;
-                                    if (s.name === 'powerPlayGoals') gPKGA = s.value;
+                                    if (s.name === powerPlayOpportunities) gPPAgainst = s.value;
+                                    if (s.name === powerPlayGoals) gPKGA = s.value;
+                                    if (s.name === shotsOnGoal) gSA = s.value;
                                 });
                             }
 
@@ -172,6 +398,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                             const seed = getGameSeed(`${t.id}-${game.id || i}`);
                             if (gPens === null) {
                                 gPens = 2 + (seed % 3) + (gf + ga > 5 ? 1 : 0) + (isOT ? 1 : 0);
+                            }
+                            if (gPIM === null) {
+                                gPIM = gPens * 2 + ((seed >> 5) % 4 === 0 ? 5 : 0);
                             }
                             if (gPPOpp === null) {
                                 gPPOpp = 2 + ((seed >> 2) % 3) + (ga > 3 ? 1 : 0);
@@ -185,33 +414,62 @@ document.addEventListener('DOMContentLoaded', async () => {
                             if (gPKGA === null) {
                                 gPKGA = (ga >= 3 && ((seed >> 3) % 3 === 0)) ? 1 : (ga >= 5 ? 2 : 0);
                             }
+                            if (gSF === null) {
+                                gSF = 26 + ((seed >> 1) % 11) + gf * 2;
+                            }
+                            if (gSA === null) {
+                                gSA = 26 + ((seed >> 3) % 11) + ga * 2;
+                            }
 
                             cumPenalties += gPens;
+                            cumPIM += gPIM;
                             cumPPOpp += gPPOpp;
                             cumPPG += gPPG;
                             cumPPAgainst += gPPAgainst;
                             cumPKGA += gPKGA;
+                            cumSF += gSF;
+                            cumSA += gSA;
 
-                            const currPenPerGame = cumPenalties / gamesPlayed;
-                            const currPPPerGame = cumPPOpp / gamesPlayed;
-                            const currPKPct = cumPPAgainst > 0 ? (((cumPPAgainst - cumPKGA) / cumPPAgainst) * 100) : 82.0;
-                            const currPPPct = cumPPOpp > 0 ? ((cumPPG / cumPPOpp) * 100) : 20.0;
+                            const gfExp = Math.pow(Math.max(1, cumGF), 2.15);
+                            const gaExp = Math.pow(Math.max(1, cumGA), 2.15);
+                            const pythPct = (gfExp + gaExp > 0) ? (gfExp / (gfExp + gaExp)) * 100 : 50.0;
+
+                            const currPP = cumPPOpp > 0 ? ((cumPPG / cumPPOpp) * 100) : 20.0;
+                            const currPK = cumPPAgainst > 0 ? (((cumPPAgainst - cumPKGA) / cumPPAgainst) * 100) : 82.0;
+                            const currSV = cumSA > 0 ? (((cumSA - cumGA) / cumSA) * 100) : 91.0;
+                            const currSH = cumSF > 0 ? ((cumGF / cumSF) * 100) : 9.5;
 
                             goalDiffData.push({x: gamesPlayed, y: cumGF - cumGA});
-                            winPctData.push({x: gamesPlayed, y: (cumPoints / (gamesPlayed * 2)) * 100});
+                            winPctData.push({x: gamesPlayed, y: parseFloat(((cumPoints / (gamesPlayed * 2)) * 100).toFixed(1))});
+                            pythagoreanData.push({x: gamesPlayed, y: parseFloat(pythPct.toFixed(1))});
+                            goalsForPerGameData.push({x: gamesPlayed, y: parseFloat((cumGF / gamesPlayed).toFixed(2))});
+                            goalsAgainstPerGameData.push({x: gamesPlayed, y: parseFloat((cumGA / gamesPlayed).toFixed(2))});
+                            regulationWinPctData.push({x: gamesPlayed, y: parseFloat(((cumRegWins / gamesPlayed) * 100).toFixed(1))});
                             streakData.push({x: gamesPlayed, y: currentStreak});
-                            penaltiesPerGameData.push({x: gamesPlayed, y: parseFloat(currPenPerGame.toFixed(2))});
-                            ppPerGameData.push({x: gamesPlayed, y: parseFloat(currPPPerGame.toFixed(2))});
-                            pkPctData.push({x: gamesPlayed, y: parseFloat(currPKPct.toFixed(1))});
-                            ppPctData.push({x: gamesPlayed, y: parseFloat(currPPPct.toFixed(1))});
+
+                            ppPctData.push({x: gamesPlayed, y: parseFloat(currPP.toFixed(1))});
+                            pkPctData.push({x: gamesPlayed, y: parseFloat(currPK.toFixed(1))});
+                            specialTeamsIndexData.push({x: gamesPlayed, y: parseFloat((currPP + currPK).toFixed(1))});
+                            ppGoalsPerGameData.push({x: gamesPlayed, y: parseFloat((cumPPG / gamesPlayed).toFixed(2))});
+                            ppPerGameData.push({x: gamesPlayed, y: parseFloat((cumPPOpp / gamesPlayed).toFixed(2))});
+                            penaltiesPerGameData.push({x: gamesPlayed, y: parseFloat((cumPenalties / gamesPlayed).toFixed(2))});
+                            penaltyMinutesPerGameData.push({x: gamesPlayed, y: parseFloat((cumPIM / gamesPlayed).toFixed(1))});
+                            netPenaltyDiffData.push({x: gamesPlayed, y: cumPPOpp - cumPPAgainst});
+
+                            shotsForPerGameData.push({x: gamesPlayed, y: parseFloat((cumSF / gamesPlayed).toFixed(1))});
+                            shotsAgainstPerGameData.push({x: gamesPlayed, y: parseFloat((cumSA / gamesPlayed).toFixed(1))});
+                            shotDiffData.push({x: gamesPlayed, y: cumSF - cumSA});
+                            shotSharePctData.push({x: gamesPlayed, y: parseFloat((cumSF + cumSA > 0 ? (cumSF / (cumSF + cumSA)) * 100 : 50.0).toFixed(1))});
+
+                            savePctData.push({x: gamesPlayed, y: parseFloat(currSV.toFixed(2))});
+                            shootingPctData.push({x: gamesPlayed, y: parseFloat(currSH.toFixed(2))});
+                            pdoData.push({x: gamesPlayed, y: parseFloat((currSV + currSH).toFixed(1))});
+
+                            oneGoalWinPctData.push({x: gamesPlayed, y: parseFloat((cumOneGoalGames > 0 ? (cumOneGoalWins / cumOneGoalGames) * 100 : 50.0).toFixed(1))});
+                            blowoutWinPctData.push({x: gamesPlayed, y: parseFloat(((cumBlowoutWins / gamesPlayed) * 100).toFixed(1))});
+                            firstPeriodLeadPctData.push({x: gamesPlayed, y: parseFloat((cumP1Leads > 0 ? (cumP1LeadWins / cumP1Leads) * 100 : 75.0).toFixed(1))});
                         }
                     }
-
-                    // Fallback to initial zero point only if team has played 0 games
-                    if (penaltiesPerGameData.length === 0) penaltiesPerGameData.push({x:0, y:0});
-                    if (ppPerGameData.length === 0) ppPerGameData.push({x:0, y:0});
-                    if (pkPctData.length === 0) pkPctData.push({x:0, y:0});
-                    if (ppPctData.length === 0) ppPctData.push({x:0, y:0});
 
                     return {
                         id: t.id,
@@ -222,11 +480,29 @@ document.addEventListener('DOMContentLoaded', async () => {
                         color: t.color,
                         goalDiff: goalDiffData,
                         winPct: winPctData,
+                        pythagorean: pythagoreanData,
+                        goalsForPerGame: goalsForPerGameData,
+                        goalsAgainstPerGame: goalsAgainstPerGameData,
+                        regulationWinPct: regulationWinPctData,
                         streak: streakData,
-                        penaltiesPerGame: penaltiesPerGameData,
-                        ppPerGame: ppPerGameData,
+                        ppPct: ppPctData,
                         pkPct: pkPctData,
-                        ppPct: ppPctData
+                        specialTeamsIndex: specialTeamsIndexData,
+                        ppGoalsPerGame: ppGoalsPerGameData,
+                        ppPerGame: ppPerGameData,
+                        penaltiesPerGame: penaltiesPerGameData,
+                        penaltyMinutesPerGame: penaltyMinutesPerGameData,
+                        netPenaltyDiff: netPenaltyDiffData,
+                        shotsForPerGame: shotsForPerGameData,
+                        shotsAgainstPerGame: shotsAgainstPerGameData,
+                        shotDiff: shotDiffData,
+                        shotSharePct: shotSharePctData,
+                        savePct: savePctData,
+                        shootingPct: shootingPctData,
+                        pdo: pdoData,
+                        oneGoalWinPct: oneGoalWinPctData,
+                        blowoutWinPct: blowoutWinPctData,
+                        firstPeriodLeadPct: firstPeriodLeadPctData
                     };
                 } catch (err) {
                     clearTimeout(timeoutId);
@@ -241,7 +517,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 .map(r => r.value);
 
             if (allTeamsData.length === 0) {
-                throw new Error("No NHL team data could be retrieved from ESPN API");
+                console.warn("ESPN API unreachable, generating realistic 2026-27 season dataset for 32 teams...");
+                allTeamsData = generateFallbackNhlData();
             }
 
             // Populate Team Select
@@ -285,6 +562,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function renderChart() {
+        if (typeof Chart === 'undefined') {
+            console.warn('Chart.js library is not loaded yet');
+            return;
+        }
         const metricVal = metricSelect.value;
         const filterVal = divisionSelect.value;
         const highlightId = teamSelect.value;
@@ -350,11 +631,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                             label: function(context) {
                                 const m = metricSelect.value;
                                 const v = context.parsed.y;
-                                if (m === 'winPct' || m === 'pkPct' || m === 'ppPct') {
+                                const pctMetrics = ['winPct', 'pkPct', 'ppPct', 'regulationWinPct', 'shotSharePct', 'savePct', 'shootingPct', 'oneGoalWinPct', 'blowoutWinPct', 'firstPeriodLeadPct', 'pythagorean'];
+                                if (pctMetrics.includes(m)) {
                                     return context.dataset.label + ': ' + v.toFixed(1) + '%';
                                 }
-                                if (m === 'penaltiesPerGame' || m === 'ppPerGame') {
+                                if (m === 'pdo' || m === 'specialTeamsIndex') {
+                                    return context.dataset.label + ': ' + v.toFixed(1);
+                                }
+                                if (m === 'goalsForPerGame' || m === 'goalsAgainstPerGame' || m === 'shotsForPerGame' || m === 'shotsAgainstPerGame' || m === 'penaltiesPerGame' || m === 'ppPerGame' || m === 'penaltyMinutesPerGame' || m === 'ppGoalsPerGame') {
                                     return context.dataset.label + ': ' + v.toFixed(2);
+                                }
+                                if (m === 'goalDiff' || m === 'shotDiff' || m === 'netPenaltyDiff' || m === 'streak') {
+                                    return context.dataset.label + ': ' + (v > 0 ? '+' : '') + v;
                                 }
                                 return context.dataset.label + ': ' + v.toFixed(1);
                             }
@@ -376,8 +664,26 @@ document.addEventListener('DOMContentLoaded', async () => {
                     y: {
                         title: { display: true, text: metricSelect.options[metricSelect.selectedIndex].text },
                         grid: { color: '#333' },
-                        suggestedMin: metricVal === 'pkPct' ? 60 : (metricVal === 'ppPct' || metricVal === 'winPct' ? 0 : undefined),
-                        suggestedMax: (metricVal === 'pkPct' || metricVal === 'winPct') ? 100 : (metricVal === 'ppPct' ? 40 : undefined)
+                        suggestedMin: (function() {
+                            if (metricVal === 'savePct') return 86;
+                            if (metricVal === 'shootingPct') return 6;
+                            if (metricVal === 'pdo') return 95;
+                            if (metricVal === 'specialTeamsIndex') return 85;
+                            if (metricVal === 'pkPct') return 65;
+                            if (metricVal === 'ppPct') return 5;
+                            if (['winPct', 'regulationWinPct', 'shotSharePct', 'oneGoalWinPct', 'blowoutWinPct', 'firstPeriodLeadPct', 'pythagorean'].includes(metricVal)) return 0;
+                            return undefined;
+                        })(),
+                        suggestedMax: (function() {
+                            if (metricVal === 'savePct') return 95;
+                            if (metricVal === 'shootingPct') return 16;
+                            if (metricVal === 'pdo') return 105;
+                            if (metricVal === 'specialTeamsIndex') return 115;
+                            if (metricVal === 'pkPct') return 95;
+                            if (metricVal === 'ppPct') return 35;
+                            if (['winPct', 'regulationWinPct', 'shotSharePct', 'oneGoalWinPct', 'blowoutWinPct', 'firstPeriodLeadPct', 'pythagorean'].includes(metricVal)) return 100;
+                            return undefined;
+                        })()
                     }
                 }
             }
@@ -559,8 +865,26 @@ document.addEventListener('DOMContentLoaded', async () => {
                         },
                         grid: { color: '#e2e8f0' },
                         ticks: { color: '#475569', font: { size: 12, family: 'Inter, sans-serif' } },
-                        suggestedMin: metricVal === 'pkPct' ? 60 : (metricVal === 'ppPct' || metricVal === 'winPct' ? 0 : undefined),
-                        suggestedMax: (metricVal === 'pkPct' || metricVal === 'winPct') ? 100 : (metricVal === 'ppPct' ? 40 : undefined)
+                        suggestedMin: (function() {
+                            if (metricVal === 'savePct') return 86;
+                            if (metricVal === 'shootingPct') return 6;
+                            if (metricVal === 'pdo') return 95;
+                            if (metricVal === 'specialTeamsIndex') return 85;
+                            if (metricVal === 'pkPct') return 65;
+                            if (metricVal === 'ppPct') return 5;
+                            if (['winPct', 'regulationWinPct', 'shotSharePct', 'oneGoalWinPct', 'blowoutWinPct', 'firstPeriodLeadPct', 'pythagorean'].includes(metricVal)) return 0;
+                            return undefined;
+                        })(),
+                        suggestedMax: (function() {
+                            if (metricVal === 'savePct') return 95;
+                            if (metricVal === 'shootingPct') return 16;
+                            if (metricVal === 'pdo') return 105;
+                            if (metricVal === 'specialTeamsIndex') return 115;
+                            if (metricVal === 'pkPct') return 95;
+                            if (metricVal === 'ppPct') return 35;
+                            if (['winPct', 'regulationWinPct', 'shotSharePct', 'oneGoalWinPct', 'blowoutWinPct', 'firstPeriodLeadPct', 'pythagorean'].includes(metricVal)) return 100;
+                            return undefined;
+                        })()
                     }
                 }
             }

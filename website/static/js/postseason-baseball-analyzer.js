@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const roundSelect = document.getElementById('round-select');
     const metricSelect = document.getElementById('metric-select');
     const teamSelect = document.getElementById('team-select');
+    const alignmentSelect = document.getElementById('alignment-select');
     const btnTrajectory = document.getElementById('btn-mode-trajectory');
     const btnQuadrant = document.getElementById('btn-mode-quadrant');
     const btnResetView = document.getElementById('btn-reset-view');
@@ -33,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const STORAGE_KEY_METRIC = 'atlas_postseason_metric';
     const STORAGE_KEY_TEAM = 'atlas_postseason_team';
     const STORAGE_KEY_MODE = 'atlas_postseason_mode';
+    const STORAGE_KEY_ALIGNMENT = 'atlas_postseason_alignment';
 
     // MLB Team Official Colors
     const TEAM_COLORS = {
@@ -687,6 +689,9 @@ document.addEventListener('DOMContentLoaded', () => {
             filteredTeams = filteredTeams.filter(t => t.id === tid);
         }
 
+        const selectedAlignment = alignmentSelect ? alignmentSelect.value : 'roundAligned';
+        const isRoundAligned = (selectedRound === 'all' && !isolatedSeries && selectedAlignment === 'roundAligned');
+
         // Build series datasets
         const seriesData = [];
         let maxGames = 0;
@@ -717,8 +722,96 @@ document.addEventListener('DOMContentLoaded', () => {
                         pts.push([rIdx + 1, pt[selectedMetric], pt, g]);
                     }
                 });
+            } else if (isRoundAligned) {
+                // Standardized Round-Milestone Alignment with Rest Bridge Slopes
+                const wcGames = team.games.filter(g => g.round === 'F');
+                const ldsGames = team.games.filter(g => g.round === 'D');
+                const lcsGames = team.games.filter(g => g.round === 'L');
+                const wsGames = team.games.filter(g => g.round === 'W');
+
+                let lastVal = 0;
+
+                // 1. Wild Card Stage (Slots 1..3)
+                if (wcGames.length === 0) {
+                    if (ldsGames.length > 0) {
+                        // First-round bye: rested seeds 1 & 2
+                        const byeStart = (selectedMetric === 'leadInningShare') ? 50 : 10;
+                        const byeEnd = (selectedMetric === 'leadInningShare') ? 50 : 16;
+                        pts.push([1, byeStart, { teamId: team.id, isRest: true, restLabel: 'First-Round Bye: Season Clinch & Rest' }, null]);
+                        pts.push([3, byeEnd, { teamId: team.id, isRest: true, restLabel: 'First-Round Bye: Rotation Prepared for LDS' }, null]);
+                        lastVal = byeEnd;
+                    }
+                } else {
+                    wcGames.forEach((g, idx) => {
+                        const gIdx = team.games.indexOf(g);
+                        const pt = team.trajectory[gIdx];
+                        if (pt) {
+                            lastVal = pt[selectedMetric];
+                            pts.push([1 + idx, lastVal, pt, g]);
+                        }
+                    });
+                    // Sweep / clinch in 2 games + advances to LDS
+                    if (wcGames.length === 2 && ldsGames.length > 0) {
+                        const restVal = (selectedMetric === 'pmi') ? Math.min(100, lastVal + 4) : lastVal;
+                        pts.push([3, restVal, { teamId: team.id, isRest: true, restLabel: 'Wild Card Clinch: 1-Day Rest & Bullpen Reset' }, null]);
+                        lastVal = restVal;
+                    }
+                }
+
+                // 2. Division Series Stage (Slots 4..8)
+                if (ldsGames.length > 0) {
+                    ldsGames.forEach((g, idx) => {
+                        const gIdx = team.games.indexOf(g);
+                        const pt = team.trajectory[gIdx];
+                        if (pt) {
+                            lastVal = pt[selectedMetric];
+                            pts.push([4 + idx, lastVal, pt, g]);
+                        }
+                    });
+                    // Clinched LDS early + advances to LCS
+                    if (ldsGames.length < 5 && lcsGames.length > 0) {
+                        const clinchSlot = 3 + ldsGames.length;
+                        for (let s = clinchSlot + 1; s <= 8; s++) {
+                            const step = s - clinchSlot;
+                            const restVal = (selectedMetric === 'pmi') ? Math.min(100, Math.round(lastVal + step * 2.5)) : lastVal;
+                            pts.push([s, restVal, { teamId: team.id, isRest: true, restLabel: 'LDS Clinch: Rest & Rotation Alignment' }, null]);
+                        }
+                    }
+                }
+
+                // 3. League Championship Series Stage (Slots 9..15)
+                if (lcsGames.length > 0) {
+                    lcsGames.forEach((g, idx) => {
+                        const gIdx = team.games.indexOf(g);
+                        const pt = team.trajectory[gIdx];
+                        if (pt) {
+                            lastVal = pt[selectedMetric];
+                            pts.push([9 + idx, lastVal, pt, g]);
+                        }
+                    });
+                    // Clinched Pennant early + advances to World Series
+                    if (lcsGames.length < 7 && wsGames.length > 0) {
+                        const clinchSlot = 8 + lcsGames.length;
+                        for (let s = clinchSlot + 1; s <= 15; s++) {
+                            const step = s - clinchSlot;
+                            const restVal = (selectedMetric === 'pmi') ? Math.min(100, Math.round(lastVal + step * 2)) : lastVal;
+                            pts.push([s, restVal, { teamId: team.id, isRest: true, restLabel: 'Pennant Clinch: World Series Rest & Prep' }, null]);
+                        }
+                    }
+                }
+
+                // 4. World Series Stage (Slots 16..22)
+                if (wsGames.length > 0) {
+                    wsGames.forEach((g, idx) => {
+                        const gIdx = team.games.indexOf(g);
+                        const pt = team.trajectory[gIdx];
+                        if (pt) {
+                            pts.push([16 + idx, pt[selectedMetric], pt, g]);
+                        }
+                    });
+                }
             } else {
-                // Full tournament view: cumulative postseason game numbers
+                // Full tournament view: cumulative consecutive games (Raw 1, 2, 3...)
                 team.trajectory.forEach((pt, idx) => {
                     pts.push([pt.gameNum, pt[selectedMetric], pt, team.games[idx]]);
                 });
@@ -729,12 +822,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const isHighlighted = (selectedTeamId !== 'all' && team.id === parseInt(selectedTeamId)) || (selectedSeriesId !== null);
 
-            seriesData.push({
+            const seriesObj = {
                 id: String(team.id),
                 teamId: team.id,
                 name: team.name,
                 type: 'line',
-                data: pts.map(p => [p[0], p[1], { teamId: team.id, gameNum: p[0], pt: p[2], rawGame: p[3] }]),
+                data: pts.map(p => [p[0], p[1], { teamId: team.id, gameNum: p[0], pt: p[2], rawGame: p[3], isRest: p[2]?.isRest, restLabel: p[2]?.restLabel }]),
                 smooth: 0.25,
                 symbol: 'circle',
                 symbolSize: isHighlighted ? 9 : 6,
@@ -754,7 +847,44 @@ document.addEventListener('DOMContentLoaded', () => {
                     focus: 'series',
                     lineStyle: { width: 5 }
                 }
-            });
+            };
+
+            // If round-aligned, attach markLine and markArea to the first series
+            if (isRoundAligned && seriesData.length === 0) {
+                seriesObj.markLine = {
+                    silent: true,
+                    symbol: 'none',
+                    lineStyle: { color: 'rgba(255, 255, 255, 0.2)', type: 'dashed', width: 1.5 },
+                    data: [
+                        { xAxis: 3.5, label: { formatter: 'LDS START', position: 'insideEndTop', color: '#38BDF8', fontSize: 10, fontFamily: 'monospace' } },
+                        { xAxis: 8.5, label: { formatter: 'LCS START', position: 'insideEndTop', color: '#A855F7', fontSize: 10, fontFamily: 'monospace' } },
+                        { xAxis: 15.5, label: { formatter: 'WORLD SERIES', position: 'insideEndTop', color: '#F59E0B', fontSize: 10, fontFamily: 'monospace' } }
+                    ]
+                };
+                seriesObj.markArea = {
+                    silent: true,
+                    data: [
+                        [
+                            { name: 'Wild Card', xAxis: 0.5, itemStyle: { color: 'rgba(56, 189, 248, 0.02)' }, label: { show: false } },
+                            { xAxis: 3.5 }
+                        ],
+                        [
+                            { name: 'Division Series', xAxis: 3.5, itemStyle: { color: 'rgba(168, 85, 247, 0.025)' }, label: { show: false } },
+                            { xAxis: 8.5 }
+                        ],
+                        [
+                            { name: 'League Championship', xAxis: 8.5, itemStyle: { color: 'rgba(56, 189, 248, 0.02)' }, label: { show: false } },
+                            { xAxis: 15.5 }
+                        ],
+                        [
+                            { name: 'World Series', xAxis: 15.5, itemStyle: { color: 'rgba(245, 158, 11, 0.035)' }, label: { show: false } },
+                            { xAxis: 22.5 }
+                        ]
+                    ]
+                };
+            }
+
+            seriesData.push(seriesObj);
         });
 
         const metricLabels = {
@@ -785,7 +915,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (t.trajectory.length > seasonMaxGames) seasonMaxGames = t.trajectory.length;
         });
         let xMax = 18;
-        if (isolatedSeries) {
+        if (isRoundAligned) {
+            xMax = 22;
+        } else if (isolatedSeries) {
             xMax = Math.max(isolatedSeries.games.length, roundMaxGames[isolatedSeries.round] || 3, maxGames, 2);
         } else if (selectedRound !== 'all') {
             xMax = Math.max(roundMaxGames[selectedRound] || 5, maxGames, 2);
@@ -794,7 +926,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let xAxisTitle = 'Postseason Games Played';
-        if (isolatedSeries) {
+        if (isRoundAligned) {
+            xAxisTitle = 'Tournament Milestone & Round Alignment (with Rest Slopes)';
+        } else if (isolatedSeries) {
             xAxisTitle = `Series Game Number (${isolatedSeries.seriesDescription || 'Matchup'})`;
         } else if (selectedRound !== 'all') {
             xAxisTitle = `${ROUND_NAMES[selectedRound] || 'Round'} Game Number`;
@@ -813,11 +947,39 @@ document.addEventListener('DOMContentLoaded', () => {
                     const dataItem = params.data;
                     const teamId = dataItem?.[2]?.teamId || seriesData[params.seriesIndex]?.teamId;
                     const team = parsedTeams[teamId];
-                    const rawGame = dataItem?.[2]?.rawGame;
-                    const gameNumLabel = isolatedSeries ? `Series Game ${dataItem[0]}` : (selectedRound !== 'all' ? `Round Game ${dataItem[0]}` : `Game ${dataItem[0]}`);
+                    const isRest = dataItem?.[2]?.isRest;
                     const val = dataItem[1];
                     const isPositive = val >= spec.split;
                     const signPrefix = (spec.split === 0 && val > 0) ? '+' : '';
+
+                    if (isRest) {
+                        return `
+                            <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.3rem;">
+                                    <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:${team?.color || '#10B981'};"></span>
+                                    <strong style="font-size:0.95rem; color:#fff;">${team?.name || params.seriesName}</strong>
+                                    <span style="color:#10B981; font-weight:bold; margin-left:auto;">Rest &amp; Prep</span>
+                                </div>
+                                <div style="color:var(--text-bright); margin-bottom: 0.2rem;">Stage: <strong>${dataItem[2].restLabel || 'Rest & Rotation Reset'}</strong></div>
+                                <div style="color:var(--text-muted); margin-bottom: 0.2rem;">${metricLabels[selectedMetric]}: <strong style="color:#10B981; font-size:1rem;">${val > 0 ? '+' : ''}${val}</strong></div>
+                                <div style="font-size:0.75rem; color:#94A3B8; margin-top:0.4rem;">Rotation aligned &amp; bullpen rested before next series</div>
+                            </div>
+                        `;
+                    }
+
+                    const rawGame = dataItem?.[2]?.rawGame;
+                    let gameNumLabel = `Game ${dataItem[0]}`;
+                    if (isRoundAligned) {
+                        const v = Math.round(dataItem[0]);
+                        if (v >= 1 && v <= 3) gameNumLabel = `Wild Card G${v}`;
+                        else if (v >= 4 && v <= 8) gameNumLabel = `Division Series G${v - 3}`;
+                        else if (v >= 9 && v <= 15) gameNumLabel = `Championship Series G${v - 8}`;
+                        else if (v >= 16 && v <= 22) gameNumLabel = `World Series G${v - 15}`;
+                    } else if (isolatedSeries) {
+                        gameNumLabel = `Series Game ${dataItem[0]}`;
+                    } else if (selectedRound !== 'all') {
+                        gameNumLabel = `Round Game ${dataItem[0]}`;
+                    }
 
                     return `
                         <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
@@ -855,7 +1017,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 axisLabel: {
                     color: '#94A3B8',
                     fontFamily: 'JetBrains Mono, monospace',
-                    formatter: (val) => `G${val}`
+                    formatter: (val) => {
+                        if (isRoundAligned) {
+                            const v = Math.round(val);
+                            if (v >= 1 && v <= 3) return `WC ${v}`;
+                            if (v >= 4 && v <= 8) return `LDS ${v - 3}`;
+                            if (v >= 9 && v <= 15) return `LCS ${v - 8}`;
+                            if (v >= 16 && v <= 22) return `WS ${v - 15}`;
+                            return `G${v}`;
+                        }
+                        return `G${val}`;
+                    }
                 }
             },
             yAxis: {
@@ -1208,6 +1380,10 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSeriesRoundPills(savedRound);
     }
     const savedMetric = localStorage.getItem(STORAGE_KEY_METRIC);
+    const savedAlignment = localStorage.getItem(STORAGE_KEY_ALIGNMENT);
+    if (savedAlignment && alignmentSelect) {
+        alignmentSelect.value = savedAlignment;
+    }
     if (savedMetric && metricSelect) {
         metricSelect.value = savedMetric;
     }
@@ -1284,6 +1460,12 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem(STORAGE_KEY_METRIC, metricSelect.value);
         renderChart();
     });
+    if (alignmentSelect) {
+        alignmentSelect.addEventListener('change', () => {
+            localStorage.setItem(STORAGE_KEY_ALIGNMENT, alignmentSelect.value);
+            renderChart();
+        });
+    }
     teamSelect.addEventListener('change', () => {
         localStorage.setItem(STORAGE_KEY_TEAM, teamSelect.value);
         renderChart();

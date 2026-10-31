@@ -20,19 +20,52 @@
             
             <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
                 <div>
+                    <label style="display: block; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.5rem; text-transform: uppercase;">Select Season</label>
+                    <select id="season-select" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: var(--radius-md);">
+                        <option value="2026" selected>2026 Season</option>
+                        <option value="2025">2025 Season</option>
+                        <option value="2024">2024 Season</option>
+                        <option value="2023">2023 Season</option>
+                        <option value="2022">2022 Season</option>
+                        <option value="2021">2021 Season</option>
+                        <option value="2020">2020 Season (60-Game)</option>
+                        <option value="2019">2019 Season</option>
+                        <option value="2018">2018 Season</option>
+                        <option value="2017">2017 Season</option>
+                        <option value="2016">2016 Season</option>
+                    </select>
+                </div>
+                <div>
                     <label style="display: block; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.5rem; text-transform: uppercase;">Select Metric</label>
                     <select id="metric-select" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: var(--radius-md);">
-                        <option value="runDiff">Cumulative Run Differential</option>
-                        <option value="streak">Current Win Streak</option>
-                        <option value="gamesAbove500">Games > .500</option>
-                        <option value="rollingWinPct">10-Game Rolling Win %</option>
-                        <option value="pythagorean">Pythagorean Expected Win %</option>
-                        <option value="oneRunWinPct">1-Run Game Win %</option>
-                        <option value="blowoutWinPct">Blowout (5+ Runs) Win %</option>
-                        <option value="rollingRunsScored">10-Game Rolling Runs Scored (Avg)</option>
-                        <option value="rollingRunsAllowed">10-Game Rolling Runs Allowed (Avg)</option>
-                        <option value="winPct">Classic Win %</option>
-                        <option value="playoffOdds">Estimated Playoff Odds (%)</option>
+                        <optgroup label="Standings, Run Diff &amp; Record">
+                            <option value="runDiff">Cumulative Run Differential</option>
+                            <option value="winPct">Classic Win Percentage</option>
+                            <option value="gamesAbove500">Games Above/Below .500</option>
+                            <option value="pythagorean">Pythagorean Expected Win %</option>
+                            <option value="luckGap">Luck Gap (Actual vs Expected Win %)</option>
+                            <option value="playoffOdds">Estimated Playoff Odds (%)</option>
+                            <option value="streak">Current Win/Loss Streak</option>
+                        </optgroup>
+                        <optgroup label="Rolling Form &amp; Streaks (10-Game)">
+                            <option value="rollingWinPct">10-Game Rolling Win %</option>
+                            <option value="rollingRunDiff">10-Game Rolling Run Differential</option>
+                            <option value="rollingRunsScored">10-Game Rolling Runs Scored (Avg)</option>
+                            <option value="rollingRunsAllowed">10-Game Rolling Runs Allowed (Avg)</option>
+                        </optgroup>
+                        <optgroup label="Clutch, Blowouts &amp; Game State">
+                            <option value="oneRunWinPct">1-Run Game Win % (Clutch)</option>
+                            <option value="blowoutWinPct">Blowout (5+ Runs) Win %</option>
+                            <option value="scoringFirstWinPct">Win % When Scoring First</option>
+                            <option value="comebackWins">Cumulative Comeback Wins</option>
+                            <option value="shutouts">Cumulative Shutouts Recorded</option>
+                        </optgroup>
+                        <optgroup label="Per-Game Run Scoring &amp; Splits">
+                            <option value="runsScoredPerGame">Runs Scored Per Game (RS/G)</option>
+                            <option value="runsAllowedPerGame">Runs Allowed Per Game (RA/G)</option>
+                            <option value="homeWinPct">Home Win % Split</option>
+                            <option value="awayWinPct">Away / Road Win % Split</option>
+                        </optgroup>
                     </select>
                 </div>
                 <div>
@@ -74,36 +107,6 @@
                 </div>
             </div>
 
-            
-        <div id="awards-container" style="background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); margin-bottom: 3rem; text-align: left; display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-                <h2 style="font-size: 1.8rem; margin: 0; color: var(--accent-cyan);">2026 Season Awards &amp; Standings</h2>
-                <button id="copy-awards-btn" type="button" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); padding: 0.5rem 0.9rem; border-radius: var(--radius-md); font-weight: bold; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem;" title="Copy standings and notable streaks to clipboard">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                    <span>Copy Standings Table</span>
-                </button>
-            </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
-                <div>
-                    <h3 style="color: var(--text-main); font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1rem;">Top 10 Teams (Win %)</h3>
-                    <ol id="award-top10" style="padding-left: 1.2rem; color: var(--text-dim); line-height: 1.6;"></ol>
-                </div>
-                <div>
-                    <h3 style="color: var(--text-main); font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1rem;">Bottom 10 Teams (Win %)</h3>
-                    <ol id="award-bottom10" style="padding-left: 1.2rem; color: var(--text-dim); line-height: 1.6;"></ol>
-                </div>
-                <div>
-                    <h3 style="color: var(--text-main); font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1rem;">Notable Streaks</h3>
-                    <ul style="padding-left: 1.2rem; color: var(--text-dim); line-height: 1.6;">
-                        <li><strong>Longest Win Streak:</strong> <span id="award-winstreak"></span></li>
-                        <li><strong>Longest Losing Streak:</strong> <span id="award-lossstreak"></span></li>
-                        <li><strong>Best Run Differential:</strong> <span id="award-bestdiff"></span></li>
-                        <li><strong>Worst Run Differential:</strong> <span id="award-worstdiff"></span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
             <div id="chart-container" style="position: relative; height: 500px; width: 100%;">
                 <div id="chart-loading" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); z-index: 10;">
                     <p style="font-weight: bold;">Loading MLB Data...</p>
@@ -113,6 +116,36 @@
             
             <div id="chart-error" style="display: none; color: #ef4444; margin-top: 1rem;">
                 <p>Failed to load data from MLB stats API.</p>
+            </div>
+
+            <!-- Season Awards & Standings: Placed AFTER the graph -->
+            <div id="awards-container" style="background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); margin-top: 2.5rem; text-align: left; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                    <h2 id="awards-title" style="font-size: 1.8rem; margin: 0; color: var(--accent-cyan);">2026 Season Awards &amp; Standings</h2>
+                    <button id="copy-awards-btn" type="button" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); padding: 0.5rem 0.9rem; border-radius: var(--radius-md); font-weight: bold; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem;" title="Copy standings and notable streaks to clipboard">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        <span>Copy Standings Table</span>
+                    </button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    <div>
+                        <h3 style="color: var(--text-main); font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1rem;">Top 10 Teams (Win %)</h3>
+                        <ol id="award-top10" style="padding-left: 1.2rem; color: var(--text-dim); line-height: 1.6;"></ol>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--text-main); font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1rem;">Bottom 10 Teams (Win %)</h3>
+                        <ol id="award-bottom10" style="padding-left: 1.2rem; color: var(--text-dim); line-height: 1.6;"></ol>
+                    </div>
+                    <div>
+                        <h3 style="color: var(--text-main); font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 1rem;">Notable Streaks &amp; Records</h3>
+                        <ul style="padding-left: 1.2rem; color: var(--text-dim); line-height: 1.6;">
+                            <li><strong>Longest Win Streak:</strong> <span id="award-winstreak"></span></li>
+                            <li><strong>Longest Losing Streak:</strong> <span id="award-lossstreak"></span></li>
+                            <li><strong>Best Run Differential:</strong> <span id="award-bestdiff"></span></li>
+                            <li><strong>Worst Run Differential:</strong> <span id="award-worstdiff"></span></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 

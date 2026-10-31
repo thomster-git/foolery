@@ -42,13 +42,41 @@
                 <div>
                     <label style="display: block; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.5rem; text-transform: uppercase;">Select Metric</label>
                     <select id="metric-select" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: var(--radius-md);">
-                        <option value="goalDiff">Cumulative Goal Differential</option>
-                        <option value="winPct">Points Percentage</option>
-                        <option value="streak">Current Point Streak</option>
-                        <option value="penaltiesPerGame">Penalties per Game</option>
-                        <option value="ppPerGame">Power Plays per Game</option>
-                        <option value="pkPct">Power Play Kill %</option>
-                        <option value="ppPct">Goal on Power Play %</option>
+                        <optgroup label="Standings, Points &amp; Goals">
+                            <option value="goalDiff">Cumulative Goal Differential</option>
+                            <option value="winPct">Points Percentage (PTS %)</option>
+                            <option value="pythagorean">Pythagorean Expected Points %</option>
+                            <option value="goalsForPerGame">Goals Scored Per Game (GF/GP)</option>
+                            <option value="goalsAgainstPerGame">Goals Allowed Per Game (GA/GP)</option>
+                            <option value="regulationWinPct">Regulation Win % (RW %)</option>
+                            <option value="streak">Current Point Streak</option>
+                        </optgroup>
+                        <optgroup label="Special Teams &amp; Discipline">
+                            <option value="ppPct">Power Play Efficiency % (PP %)</option>
+                            <option value="pkPct">Penalty Kill % (PK %)</option>
+                            <option value="specialTeamsIndex">Special Teams Index (PP% + PK%)</option>
+                            <option value="ppGoalsPerGame">Power Play Goals Per Game</option>
+                            <option value="ppPerGame">Power Play Opportunities Per Game</option>
+                            <option value="penaltiesPerGame">Penalties Taken Per Game</option>
+                            <option value="penaltyMinutesPerGame">Penalty Minutes Per Game (PIM/GP)</option>
+                            <option value="netPenaltyDiff">Cumulative Net Special Teams Diff</option>
+                        </optgroup>
+                        <optgroup label="Shots &amp; Possession Control">
+                            <option value="shotsForPerGame">Shots on Goal Per Game (SF/GP)</option>
+                            <option value="shotsAgainstPerGame">Shots Allowed Per Game (SA/GP)</option>
+                            <option value="shotDiff">Cumulative Shot Differential</option>
+                            <option value="shotSharePct">Shot Share % (SF %)</option>
+                        </optgroup>
+                        <optgroup label="Goaltending &amp; Finishing (Puck Luck / PDO)">
+                            <option value="savePct">Team Save Percentage (SV %)</option>
+                            <option value="shootingPct">Team Shooting Percentage (SH %)</option>
+                            <option value="pdo">PDO / Puck Luck Index (SV% + SH%)</option>
+                        </optgroup>
+                        <optgroup label="Clutch &amp; Game State Scenarios">
+                            <option value="oneGoalWinPct">1-Goal Game Win %</option>
+                            <option value="blowoutWinPct">Blowout (3+ Goal) Win %</option>
+                            <option value="firstPeriodLeadPct">1st Period Lead Conversion %</option>
+                        </optgroup>
                     </select>
                 </div>
                 <div>
