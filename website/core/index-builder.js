@@ -89,17 +89,19 @@ export default class IndexBuilder {
         const description = "Thoms Foolery Live Stream";
         
         const fullHtml = this.renderer.render(baseTemplate, {
-            page_title:       `${title} — ${config.site.title}`,
-            site_title:       config.site.title,
-            site_url:         config.site.url,
-            site_author:      config.site.author,
-            lang:             config.site.language || "en",
-            meta_description: description,
-            og_title:         title,
-            og_type:          "website",
-            canonical_url:    `${config.site.url}/live/`,
-            og_image:         `${config.site.url}/images/og-card.jpg`,
-            google_adsense:   "",
+            page_title:            `${title} — ${config.site.title}`,
+            site_title:            config.site.title,
+            site_url:              config.site.url,
+            site_author:           config.site.author,
+            lang:                  config.site.language || "en",
+            meta_description:      description,
+            meta_description_json: JSON.stringify(description).slice(1, -1),
+            breadcrumb_schema:     "",
+            og_title:              title,
+            og_type:               "website",
+            canonical_url:         `${config.site.url}/live/`,
+            og_image:              `${config.site.url}/images/social-preview.png`,
+            google_adsense:        "",
             header: headerPartial,
             footer: footerPartial,
             content: liveHtml
@@ -661,19 +663,32 @@ export default class IndexBuilder {
             graph_html: graphHtml
         });
 
+        const desc = description || config.site.description;
+        const breadcrumbSchema = `<script type="application/ld+json">${JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": `${config.site.url}/` },
+                { "@type": "ListItem", "position": 2, "name": "Tags", "item": `${config.site.url}/tags/` },
+                { "@type": "ListItem", "position": 3, "name": title, "item": `${config.site.url}/tags/${tagSlug}.html` }
+            ]
+        })}</script>`;
+
         const fullHtml = this.renderer.render(baseTemplate, {
-            page_title:       `${title} — ${config.site.title}`,
-            site_title:       config.site.title,
-            site_url:         config.site.url,
-            site_author:      config.site.author,
-            lang:             config.site.language || "en",
-            meta_description: description || config.site.description,
-            og_title:         title,
-            og_type:          "website",
-            canonical_url:    `${config.site.url}/tags/${tagSlug}.html`,
-            og_image:         `${config.site.url}/images/og-card.jpg`,
-            google_adsense:   "",
-            focus_tag:        tagSlug,
+            page_title:            `${title} — ${config.site.title}`,
+            site_title:            config.site.title,
+            site_url:              config.site.url,
+            site_author:           config.site.author,
+            lang:                  config.site.language || "en",
+            meta_description:      desc,
+            meta_description_json: JSON.stringify(desc).slice(1, -1),
+            breadcrumb_schema:     breadcrumbSchema,
+            og_title:              title,
+            og_type:               "website",
+            canonical_url:         `${config.site.url}/tags/${tagSlug}.html`,
+            og_image:              `${config.site.url}/images/social-preview.png`,
+            google_adsense:        "",
+            focus_tag:             tagSlug,
             header: headerPartial,
             footer: footerPartial,
             content: contentHtml
@@ -716,18 +731,30 @@ export default class IndexBuilder {
             graph_html: graphHtml
         });
 
+        const desc = description || config.site.description;
+        const breadcrumbSchema = `<script type="application/ld+json">${JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": `${config.site.url}/` },
+                { "@type": "ListItem", "position": 2, "name": title, "item": `${config.site.url}/${folder}/` }
+            ]
+        })}</script>`;
+
         const fullHtml = this.renderer.render(baseTemplate, {
-            page_title:       `${title} — ${config.site.title}`,
-            site_title:       config.site.title,
-            site_url:         config.site.url,
-            site_author:      config.site.author,
-            lang:             config.site.language || "en",
-            meta_description: description || config.site.description,
-            og_title:         title,
-            og_type:          "website",
-            canonical_url:    `${config.site.url}/${folder}/`,
-            og_image:         `${config.site.url}/images/og-card.jpg`,
-            google_adsense:   "",
+            page_title:            `${title} — ${config.site.title}`,
+            site_title:            config.site.title,
+            site_url:              config.site.url,
+            site_author:           config.site.author,
+            lang:                  config.site.language || "en",
+            meta_description:      desc,
+            meta_description_json: JSON.stringify(desc).slice(1, -1),
+            breadcrumb_schema:     breadcrumbSchema,
+            og_title:              title,
+            og_type:               "website",
+            canonical_url:         `${config.site.url}/${folder}/`,
+            og_image:              `${config.site.url}/images/social-preview.png`,
+            google_adsense:        "",
             header: headerPartial,
             footer: footerPartial,
             content: contentHtml

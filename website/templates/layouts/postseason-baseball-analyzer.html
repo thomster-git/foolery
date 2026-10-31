@@ -2,6 +2,23 @@
     <div class="content-wrapper article-layout" style="text-align: center; margin: 4rem auto; max-width: 1200px;">
         <div class="article-content">
         
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "MLB Postseason Momentum Analyzer & Playoff Bracket Tracker",
+          "url": "https://thomsfoolery.com/tools/postseason-baseball-analyzer/",
+          "applicationCategory": "SportsApplication",
+          "operatingSystem": "Any",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "Interactive MLB Postseason Momentum Analyzer. Track October playoff velocity, Postseason Momentum Index (PMI), round-synchronized rest slopes, and inning control across Wild Card, Division Series, LCS, and World Series matchups."
+        }
+        </script>
+
         <div class="breadcrumbs">
             <a href="/">Home</a> &gt;
             <a href="/tools/">Tools</a> &gt;
@@ -310,6 +327,30 @@
                 </p>
             </div>
         </section>
+
+        <!-- Static Methodology & Postseason Momentum Index Guide -->
+        <section style="text-align: left; max-width: 860px; margin: 3rem auto; line-height: 1.7; color: var(--text-main);">
+            <h2 style="font-size: 1.8rem; margin-bottom: 1.25rem; color: var(--accent-cyan);">Methodology: How the Postseason Momentum Index (PMI) &amp; Round Alignment Work</h2>
+            <p style="margin-bottom: 1.25rem;">
+                Playoff baseball compresses an entire season's emotional and statistical volatility into short 3-game, 5-game, and 7-game series. Traditional bracket views show series wins, but fail to capture <strong>velocity</strong>—how decisively a club is controlling innings and whether a sweeping team carries rest advantages into the next round.
+            </p>
+            <h3 style="font-size: 1.35rem; margin-bottom: 0.75rem;">Round-Synchronized Timeline &amp; Rest Recovery Slopes</h3>
+            <p style="margin-bottom: 1.25rem;">
+                Because some playoff series end in 3-game or 4-game sweeps while others go the full distance, plotting raw sequential game numbers causes teams in the League Championship Series (LCS) or World Series to desynchronize horizontally. Our <strong>Round-Synchronized (Rest Slopes)</strong> alignment anchors every club to fixed round milestones (<code>WC G1–G3</code>, <code>DS G1–G5</code>, <code>LCS G1–G7</code>, <code>WS G1–G7</code>). When a team clinches a series early (or earns a Top-2 Seed Wild Card Bye), a dashed <strong>Rest &amp; Bullpen Recovery Bridge</strong> with a slight positive slope connects their clinch game to Game 1 of the next round.
+            </p>
+        </section>
+
+        <!-- Related Sports Analytics Tools Cross-Linking -->
+        <nav aria-label="Related Sports Analytics Tools" style="text-align: left; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; margin: 2.5rem auto;">
+            <h2 style="font-size: 1.3rem; color: var(--accent-cyan); margin: 0 0 1rem 0;">Explore Related Sports Analytics Tools</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem;">
+                <a href="/tools/baseball-trend-analyzer/" style="text-decoration: none; padding: 0.9rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.9rem;">⚾ MLB 162-Game Trend Analyzer (2016–2026) &rarr;</a>
+                <a href="/tools/umpire-simulator/" style="text-decoration: none; padding: 0.9rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.9rem;">⚾🥽 3D MLB Umpire Pitch Simulator &rarr;</a>
+                <a href="/tools/nhl-trend-analyzer/" style="text-decoration: none; padding: 0.9rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.9rem;">🏒 NHL 25-Metric Trend Analyzer &rarr;</a>
+                <a href="/tools/nfl-trend-analyzer/" style="text-decoration: none; padding: 0.9rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.9rem;">🏈 NFL Point Differential Analyzer &rarr;</a>
+                <a href="/tools/f1-championship-calculator/" style="text-decoration: none; padding: 0.9rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.9rem;">🏎️ F1 2026 Championship Calculator &rarr;</a>
+            </div>
+        </nav>
 
         </div> <!-- end article-content -->
         {{suggestions-cta}}

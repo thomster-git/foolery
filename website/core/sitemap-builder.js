@@ -15,25 +15,41 @@ export default class SitemapBuilder {
                 updated: page.metadata.updated || page.metadata.created || new Date().toISOString()
             }));
 
-        // Manually inject structural static pages
+        // Structural static pages & interactive tools
         const now = new Date().toISOString();
-        pages.push({ url: "/", updated: now });
-        pages.push({ url: "/start/", updated: now });
-        pages.push({ url: "/resume/", updated: now });
-        pages.push({ url: "/tools/", updated: now });
-        pages.push({ url: "/tools/tier-list/", updated: now });
-        pages.push({ url: "/tools/postseason-baseball-analyzer/", updated: now });
-        pages.push({ url: "/tools/baseball-trend-analyzer/", updated: now });
-        pages.push({ url: "/tools/sports-betting/", updated: now });
-        pages.push({ url: "/tools/nhl-trend-analyzer/", updated: now });
-        pages.push({ url: "/tools/nfl-trend-analyzer/", updated: now });
-        pages.push({ url: "/tools/ocarina/", updated: now });
-        pages.push({ url: "/tools/dragonwilds-tracker/", updated: now });
-        pages.push({ url: "/tools/ffx-tracker/", updated: now });
-        pages.push({ url: "/sponsors/", updated: now });
-        pages.push({ url: "/interests/", updated: now });
-        pages.push({ url: "/uses/", updated: now });
-        pages.push({ url: "/shit-list/", updated: now });
+        const staticRoutes = [
+            "/",
+            "/start/",
+            "/resume/",
+            "/hire/",
+            "/interests/",
+            "/uses/",
+            "/sponsors/",
+            "/articles/",
+            "/projects/",
+            "/topics/",
+            "/themes/",
+            "/tags/",
+            "/library/",
+            "/graph/",
+            "/wishlist/",
+            "/tools/",
+            "/tools/f1-championship-calculator/",
+            "/tools/umpire-simulator/",
+            "/tools/ocarina/",
+            "/tools/dragonwilds-tracker/",
+            "/tools/ffx-tracker/",
+            "/tools/tier-list/",
+            "/tools/postseason-baseball-analyzer/",
+            "/tools/baseball-trend-analyzer/",
+            "/tools/sports-betting/",
+            "/tools/nhl-trend-analyzer/",
+            "/tools/nfl-trend-analyzer/",
+            "/tools/stream-schedule/"
+        ];
+        for (const route of staticRoutes) {
+            pages.push({ url: route, updated: now });
+        }
 
         const xmlUrls = pages.map(p => {
           let dateStr;

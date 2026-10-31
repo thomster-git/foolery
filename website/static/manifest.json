@@ -1,0 +1,26 @@
+{
+  "name": "Thom's Foolery — Digital Garden & Interactive Tools",
+  "short_name": "ThomsFoolery",
+  "description": "Jonathan Thoms' Digital Garden: Interactive gaming compendiums, 12-hole ocarina tuner & Zelda songbook, F1/MLB/NHL/NFL analytics tools, and essays.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0f19",
+  "theme_color": "#0b0f19",
+  "icons": [
+    {
+      "src": "/images/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

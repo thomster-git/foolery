@@ -2,6 +2,23 @@
     <div class="content-wrapper article-layout" style="text-align: center; margin: 4rem auto;">
         <div class="article-content">
         
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "MLB Baseball Trend & Run Differential Analyzer (2016–2026)",
+          "url": "https://thomsfoolery.com/tools/baseball-trend-analyzer/",
+          "applicationCategory": "SportsApplication",
+          "operatingSystem": "Any",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "Interactive MLB baseball trend analyzer (2016–2026 seasons). Compare all 30 teams across 20 metrics including cumulative run differential, Pythagorean win percentage, luck gap, 1-run clutch record, and 10-game rolling form."
+        }
+        </script>
+
         <div class="breadcrumbs">
             <a href="/">Home</a> &gt;
             <a href="/tools/">Tools</a> &gt;
@@ -269,6 +286,34 @@
                 </p>
             </div>
         </section>
+
+        <!-- Static Methodology & Sabermetric Guide -->
+        <section style="text-align: left; max-width: 860px; margin: 3rem auto; line-height: 1.7; color: var(--text-main);">
+            <h2 style="font-size: 1.8rem; margin-bottom: 1.25rem; color: var(--accent-cyan);">Methodology: Sabermetric Run Differential &amp; 162-Game Trajectory Analysis</h2>
+            <p style="margin-bottom: 1.25rem;">
+                Over a 162-game Major League Baseball regular season, raw win-loss standings often mask underlying team quality due to sequencing luck, bullpen variance in extra innings, and cluster luck with runners in scoring position. The <strong>MLB Trend Analyzer (2016–2026)</strong> plots every team's game-by-game progression across 20 distinct sabermetric and situational indicators.
+            </p>
+            <h3 style="font-size: 1.35rem; margin-bottom: 0.75rem;">Pythagorean Expected Win % &amp; The Luck Gap</h3>
+            <p style="margin-bottom: 1.25rem;">
+                Formulated by Bill James and refined with the Pythagenpat exponent (<code>1.83</code>), <strong>Pythagorean Win Percentage</strong> estimates what a team's record <em>should</em> be based purely on runs scored ($RS^{1.83}$) versus runs allowed ($RA^{1.83}$). Our <strong>Luck Gap</strong> metric subtracts Pythagorean Expected Win % from Actual Win %, immediately exposing clubs outperforming their run differential via unsustainable <strong>1-Run Game Win %</strong> versus juggernauts dominating via <strong>Blowout (5+ Run) Wins</strong>.
+            </p>
+            <h3 style="font-size: 1.35rem; margin-bottom: 0.75rem;">10-Game Rolling Form &amp; Home/Road Splits</h3>
+            <p style="margin-bottom: 1.5rem;">
+                Season-long cumulative curves smooth out mid-season inflection points like trade deadline acquisitions or pitching rotation call-ups. Switching to <strong>10-Game Rolling Run Differential</strong>, <strong>Rolling Runs Scored</strong>, or <strong>Home vs. Away Win % Splits</strong> isolates acute hot streaks and defensive slumps across any MLB season from 2016 through 2026.
+            </p>
+        </section>
+
+        <!-- Related Sports Analytics Tools Cross-Linking -->
+        <nav aria-label="Related Sports Analytics Tools" style="text-align: left; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; margin: 2.5rem auto;">
+            <h2 style="font-size: 1.3rem; color: var(--accent-cyan); margin: 0 0 1rem 0;">Explore Related Sports Analytics Tools</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem;">
+                <a href="/tools/postseason-baseball-analyzer/" style="text-decoration: none; padding: 0.9rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.9rem;">⚾🔥 MLB Postseason Momentum Analyzer &rarr;</a>
+                <a href="/tools/umpire-simulator/" style="text-decoration: none; padding: 0.9rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.9rem;">⚾🥽 3D MLB Umpire Pitch Simulator &rarr;</a>
+                <a href="/tools/nhl-trend-analyzer/" style="text-decoration: none; padding: 0.9rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.9rem;">🏒 NHL 25-Metric Trend Analyzer &rarr;</a>
+                <a href="/tools/nfl-trend-analyzer/" style="text-decoration: none; padding: 0.9rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.9rem;">🏈 NFL Point Differential Analyzer &rarr;</a>
+                <a href="/tools/f1-championship-calculator/" style="text-decoration: none; padding: 0.9rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.9rem;">🏎️ F1 2026 Championship Calculator &rarr;</a>
+            </div>
+        </nav>
 
         </div> <!-- end article-content -->
         {{suggestions-cta}}

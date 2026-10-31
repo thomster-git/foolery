@@ -104,12 +104,14 @@
         {
           "@context": "https://schema.org",
           "@type": "Article",
-          "headline": "{{title}}",
-          "description": "{{summary}}",
+          "headline": "{{title_json}}",
+          "description": "{{summary_json}}",
+          "image": "{{og_image}}",
           "url": "{{canonical_url}}",
           "datePublished": "{{created_iso}}",
-          "dateModified": "{{created_iso}}",
+          "dateModified": "{{updated_iso}}",
           "wordCount": {{word_count}},
+          {{paywall_schema}}
           "author": {
             "@type": "Person",
             "name": "Jonathan Thoms",

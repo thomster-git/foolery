@@ -256,8 +256,12 @@ export default class PageBuilder {
 
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "Ocarina Practice Tool",
-            { description: "12-hole ocarina fingering chart, live pitch tuner, and Zelda songbook", path: "/tools/ocarina/", ogType: "website" }
+            "12-Hole Ocarina Fingering Chart, Live Pitch Tuner & Zelda OoT Songbook",
+            {
+                description: "Free interactive 12-hole Alto C ocarina practice tool featuring a complete fingering chart, live microphone pitch tuner, playable Zelda: Ocarina of Time melodies, and OBS stream overlay.",
+                path: "/tools/ocarina/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
@@ -301,7 +305,8 @@ export default class PageBuilder {
         const template = await this.loadLayout("devtools.html");
         const html = await this.wrapPage(
             this.renderer.render(template, { title: "Dev Tools" }),
-            "Dev Tools - Thoms Foolery"
+            "Dev Tools - Thoms Foolery",
+            { description: "Internal developer utilities and publishing tools for Project Atlas.", path: "/devtools/", ogType: "website" }
         );
         const dir = path.resolve(this.output, "devtools");
         await fs.mkdir(dir, { recursive: true });
@@ -314,16 +319,16 @@ export default class PageBuilder {
 
         const template = await this.loadLayout("tools.html");
         
-        const contentHtml = this.renderer.render(
-            template,
-            "Developer Tools",
-            { description: "Interactive tools and applications by Jonathan Thoms", path: "/tools/", ogType: "website" }
-        );
+        const contentHtml = this.renderer.render(template, {});
 
         let html = await this.wrapPage(
             contentHtml,
-            "Developer Tools",
-            { description: "Interactive tools and applications by Jonathan Thoms", path: "/tools/", ogType: "website" }
+            "Interactive Gaming, Sports Analytics & Music Tools",
+            {
+                description: "Free interactive web tools by Jonathan Thoms: RuneScape: Dragonwilds Progression Guide, 12-Hole Ocarina Tuner & Zelda OoT Songbook, 2026 F1 Championship Calculator, MLB Umpire Simulator, and NHL/NFL/MLB Trend Analyzers.",
+                path: "/tools/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
@@ -339,8 +344,12 @@ export default class PageBuilder {
         
         let html = await this.wrapPage(
             this.renderer.render(template, {}),
-            "Sports Betting Tracker",
-            { description: "Tracking sports betting slips and bankroll.", path: "/tools/sports-betting.html", ogType: "website" }
+            "Sports Betting & Bankroll Analytics Tracker",
+            {
+                description: "Interactive sports betting slip tracker, ROI analyzer, and bankroll performance log across NHL, NFL, and MLB markets.",
+                path: "/tools/sports-betting/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "sports-betting.html"), html);
@@ -359,8 +368,12 @@ export default class PageBuilder {
         
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar }),
-            "Blue Jays Postseason Tracker",
-            { description: "Live tracker for the Toronto Blue Jays postseason hopes", path: "/tools/blue-jays.html", ogType: "website" }
+            "Toronto Blue Jays Postseason Odds & Standings Tracker",
+            {
+                description: "Live tracker and statistical breakdown for the Toronto Blue Jays AL East standings, Wild Card race, and postseason probabilities.",
+                path: "/tools/blue-jays/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "blue-jays.html"), html);
@@ -380,8 +393,12 @@ export default class PageBuilder {
         
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "FFX 100% Completion Tracker",
-            { description: "Comprehensive checklist for Final Fantasy X", path: "/tools/ffx-tracker/", ogType: "website" }
+            "Final Fantasy X (FFX) 100% Completionist Guide & Checklist Tracker",
+            {
+                description: "Comprehensive interactive Final Fantasy X 100% completionist tracker: Al Bhed Primers, Celestial Weapons, Monster Arena captures, Sphere Grid stat maxing, and Dark Aeon strategies.",
+                path: "/tools/ffx-tracker/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
@@ -399,8 +416,12 @@ export default class PageBuilder {
         
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "Runescape: Dragonwilds Guide",
-            { description: "Interactive progression guide for Runescape: Dragonwilds", path: "/tools/dragonwilds-tracker/", ogType: "website" }
+            "RuneScape: Dragonwilds Progression Guide, Quest Checklist & Gear Tracker",
+            {
+                description: "Complete interactive RuneScape: Dragonwilds progression walkthrough (Chapters 1–10), quest checklist, all 13 Dreaming Stone shard locations, armor tier stats, vault timers, and dedicated server guide.",
+                path: "/tools/dragonwilds-tracker/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
@@ -425,8 +446,12 @@ export default class PageBuilder {
         
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "Tier List Creator",
-            { description: "Interactive Tier List Creator with instant screenshot clipboard pasting, multi-image upload, and snapping drag-and-drop.", path: "/tools/tier-list/", ogType: "website" }
+            "Interactive Tier List Maker — Instant Clipboard Paste & Export",
+            {
+                description: "Free browser-based Tier List Creator with instant screenshot clipboard pasting, multi-image drag-and-drop, customizable S–F rows, and high-res PNG export.",
+                path: "/tools/tier-list/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
@@ -444,8 +469,12 @@ export default class PageBuilder {
         
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "MLB Umpire Simulator",
-            { description: "Interactive 3D baseball umpire simulator behind home plate with realistic pitch physics and Statcast pitch breakdown.", path: "/tools/umpire-simulator/", ogType: "website" }
+            "MLB 3D Umpire Simulator — Call Balls & Strikes Behind Home Plate",
+            {
+                description: "Interactive 3D MLB baseball umpire simulator behind home plate featuring swept-sphere Statcast pitch physics, shadow zone accuracy grading, and post-game ABS challenge scorecards.",
+                path: "/tools/umpire-simulator/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
@@ -463,8 +492,12 @@ export default class PageBuilder {
         
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "F1 Championship Clinch & Elimination Calculator",
-            { description: "Mathematical elimination and championship clinch scenarios calculator for Formula 1 Drivers and Constructors.", path: "/tools/f1-championship-calculator/", ogType: "website" }
+            "F1 2026 Championship Calculator — WDC & WCC Clinch & Elimination Scenarios",
+            {
+                description: "Interactive 2026 Formula 1 Championship Calculator. Simulate Grand Prix and Sprint finishes to compute exact WDC Driver and WCC Constructor title clinch and elimination scenarios.",
+                path: "/tools/f1-championship-calculator/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
@@ -482,8 +515,12 @@ export default class PageBuilder {
         
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "Live Stream Schedule",
-            { description: "Interactive broadcast schedule calendar for Jonathan Thoms with automatic Newfoundland time conversion and iCal export.", path: "/tools/stream-schedule/", ogType: "website" }
+            "Live Stream Broadcast Schedule & Local Timezone Calendar",
+            {
+                description: "Interactive Twitch broadcast schedule for Jonathan Thoms (Thoms Foolery) with automatic local timezone conversion, weekly/monthly grid views, and RFC 5545 iCal (.ics) export.",
+                path: "/tools/stream-schedule/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
@@ -527,8 +564,12 @@ export default class PageBuilder {
         
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "NHL Trend Analyzer",
-            { description: "NHL team performance and special teams efficiency tracker", path: "/tools/nhl-trend-analyzer/", ogType: "website" }
+            "NHL Team Trend Analyzer — 25 Advanced Metrics, PDO & Special Teams",
+            {
+                description: "Compare all 32 NHL teams across 25 game-by-game metrics: Points Pace, Pythagorean Expectation, 5-on-5 Goal Differential, Power Play & Penalty Kill Net Efficiency, PDO, and One-Goal Wins.",
+                path: "/tools/nhl-trend-analyzer/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
@@ -546,8 +587,12 @@ export default class PageBuilder {
         
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "NFL Trend Analyzer",
-            { description: "NFL team performance trend analyzer", path: "/tools/nfl-trend-analyzer/", ogType: "website" }
+            "NFL Team Trend Analyzer — Point Differential, Pythagorean Win % & Form",
+            {
+                description: "Interactive NFL team performance visualizer comparing all 32 franchises across Cumulative Point Differential, Pythagorean Win Percentage, Offensive/Defensive PPG, and Rolling Form.",
+                path: "/tools/nfl-trend-analyzer/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
@@ -565,8 +610,12 @@ export default class PageBuilder {
         
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "Baseball Trend Analyzer",
-            { description: "MLB team performance trendline visualizer", path: "/tools/baseball-trend-analyzer/", ogType: "website" }
+            "MLB Baseball Trend Analyzer (2016–2026) — Run Differential & Sabermetrics",
+            {
+                description: "Explore 10+ seasons of MLB team trajectories (2016–2026) across 20 metrics: Run Differential, Pythagorean Win %, Luck Gap, 1-Run Games, Blowout Wins, Shutouts, and Home/Road splits.",
+                path: "/tools/baseball-trend-analyzer/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
@@ -584,8 +633,12 @@ export default class PageBuilder {
         
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "MLB Postseason Momentum Analyzer",
-            { description: "Interactive MLB Postseason momentum trajectories, velocity swings, and team form analysis", path: "/tools/postseason-baseball-analyzer/", ogType: "website" }
+            "MLB Postseason Momentum Analyzer — Round-Aligned Playoff Trajectories",
+            {
+                description: "Interactive MLB Postseason Momentum Index (PMI) visualizer featuring round-milestone alignment, rest bridge trajectories, velocity swings, and historical World Series winner comparisons.",
+                path: "/tools/postseason-baseball-analyzer/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
@@ -605,7 +658,7 @@ export default class PageBuilder {
         const html = await this.wrapPage(
             this.renderer.render(template, {}),
             "Sponsorships & Partnerships",
-            { description: "Partner with Thoms Foolery", path: "/sponsors/", ogType: "website" }
+            { description: "Partner with Jonathan Thoms and Thom's Foolery across interactive tools, engineering essays, and live streams.", path: "/sponsors/", ogType: "website" }
         );
 
         await fs.writeFile(
@@ -685,8 +738,8 @@ export default class PageBuilder {
 
         const html = await this.wrapPage(
             this.renderer.render(template, {}),
-            "Interactive Map | Thoms Foolery",
-            { description: "Visualizing the entire digital garden", path: "/graph/", ogType: "website" }
+            "Interactive Digital Garden Knowledge Map",
+            { description: "Explore the interactive node-link knowledge graph connecting essays, engineering projects, gaming guides, and themes across Thom's Foolery.", path: "/graph/", ogType: "website" }
         );
 
         await fs.writeFile(
@@ -704,15 +757,22 @@ export default class PageBuilder {
         await fs.mkdir(folder, { recursive: true });
 
         const template = await this.loadLayout("labyrinth.html");
+        const siteUrl = config.site.url;
 
-        // The labyrinth operates as a full-screen app, so we don't use wrapPage (which includes the standard header/footer)
-        // We just write it wrapped in a basic HTML shell to ensure styles load.
         const baseHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mind Labyrinth | Thoms Foolery</title>
+    <title>Mind Labyrinth — Interactive Knowledge Explorer | Thoms Foolery</title>
+    <meta name="description" content="Navigate Jonathan Thoms' digital garden as an interactive 2D Mind Labyrinth.">
+    <link rel="canonical" href="${siteUrl}/labyrinth/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Mind Labyrinth — Thoms Foolery">
+    <meta property="og:description" content="Navigate Jonathan Thoms' digital garden as an interactive 2D Mind Labyrinth.">
+    <meta property="og:url" content="${siteUrl}/labyrinth/">
+    <meta property="og:image" content="${siteUrl}/images/og-card.jpg">
+    <link rel="icon" type="image/svg+xml" href="${siteUrl}/images/logo.svg">
     <link rel="stylesheet" href="/css/atlas.css">
     <style>body, html { margin: 0; padding: 0; overflow: hidden; background: #0b0f19; }</style>
 </head>
@@ -732,13 +792,22 @@ export default class PageBuilder {
         await fs.mkdir(folder, { recursive: true });
 
         const template = await this.loadLayout("labyrinth3d.html");
+        const siteUrl = config.site.url;
 
         const baseHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mind Labyrinth 3D | Thoms Foolery</title>
+    <title>Mind Labyrinth 3D — WebGL Knowledge Explorer | Thoms Foolery</title>
+    <meta name="description" content="Explore the Thom's Foolery digital garden in a first-person 3D WebGL labyrinth.">
+    <link rel="canonical" href="${siteUrl}/labyrinth3d/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Mind Labyrinth 3D — Thoms Foolery">
+    <meta property="og:description" content="Explore the Thom's Foolery digital garden in a first-person 3D WebGL labyrinth.">
+    <meta property="og:url" content="${siteUrl}/labyrinth3d/">
+    <meta property="og:image" content="${siteUrl}/images/og-card.jpg">
+    <link rel="icon" type="image/svg+xml" href="${siteUrl}/images/logo.svg">
     <link rel="stylesheet" href="/css/atlas.css">
     <style>body, html { margin: 0; padding: 0; overflow: hidden; background: #0b0f19; }</style>
 </head>
@@ -1240,11 +1309,27 @@ export default class PageBuilder {
         const createdIso = `${dateStringForIso}T08:00:00-02:30`;
         const createdFormatted = this.formatDate(rawDate);
 
+        const rawUpdated = article.metadata.updated || rawDate;
+        let updatedStringForIso = rawUpdated;
+        if (rawUpdated instanceof Date) {
+            updatedStringForIso = rawUpdated.toISOString().split('T')[0];
+        }
+        const updatedIso = `${updatedStringForIso}T08:00:00-02:30`;
+
         const articleTags = article.metadata.tags || [];
         const tagsJson = articleTags.map(t => `"${t.replace(/"/g, '\'')}"`).join(", ");
 
         const articlePath = `/articles/${article.metadata.id}.html`;
         const canonicalUrl = `${config.site.url}${articlePath}`;
+        const ogImage = article.metadata.image
+            ? (article.metadata.image.startsWith('http') ? article.metadata.image : `${config.site.url}${article.metadata.image.startsWith('/') ? '' : '/'}${article.metadata.image}`)
+            : `${config.site.url}/images/og-card.jpg`;
+
+        const escapeJsonStr = (s) => JSON.stringify(String(s || "")).slice(1, -1);
+        const isGated = (article.metadata.access === "paid" || article.metadata.access === "members");
+        const paywallSchema = isGated
+            ? `"isAccessibleForFree": false,\n          "hasPart": { "@type": "WebPageElement", "isAccessibleForFree": false, "cssSelector": ".gated-full-content" },`
+            : `"isAccessibleForFree": true,`;
 
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const newsletterSignup = await this.loadPartial("newsletter.html");
@@ -1302,12 +1387,17 @@ export default class PageBuilder {
 
                 id: article.metadata.id,
                 title: article.metadata.title,
+                title_json: escapeJsonStr(article.metadata.title),
                 summary: article.metadata.summary,
+                summary_json: escapeJsonStr(article.metadata.summary),
+                og_image: ogImage,
                 created: rawDate,
                 created_formatted: createdFormatted,
                 created_iso: createdIso,
+                updated_iso: updatedIso,
                 canonical_url: canonicalUrl,
                 word_count: wordsCount,
+                paywall_schema: paywallSchema,
                 tags_json: tagsJson,
                 author: "Jonathan Thoms",
                 reading_time: readingTimeStr,
@@ -1337,11 +1427,16 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(
-
             path.join(folder, `${article.metadata.id}.html`),
-
             html
+        );
 
+        // Also output directory index (/articles/<slug>/index.html) so trailing-slash URLs resolve cleanly
+        const subFolder = path.join(folder, article.metadata.id);
+        await fs.mkdir(subFolder, { recursive: true });
+        await fs.writeFile(
+            path.join(subFolder, "index.html"),
+            html
         );
 
     }
@@ -1555,11 +1650,37 @@ export default class PageBuilder {
         await fs.mkdir(folder, { recursive: true });
         const template = await this.loadLayout("article.html");
         const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const newsletterSignup = await this.loadPartial("newsletter.html");
+        const escapeJsonStr = (s) => JSON.stringify(String(s || "")).slice(1, -1);
+        const rawDate = tweet.metadata.created || "2026-09-14";
+        const dateStr = rawDate instanceof Date ? rawDate.toISOString().split('T')[0] : String(rawDate);
+        const createdIso = `${dateStr}T08:00:00-02:30`;
+        const canonicalUrl = `${config.site.url}/tweets/${tweet.metadata.id}.html`;
+        const wordsCount = String(tweet.body || "").trim().split(/\s+/).filter(Boolean).length;
+
         const html = await this.wrapPage(
             this.renderer.render(template, {
                 id: tweet.metadata.id,
                 title: tweet.metadata.title,
-                summary: tweet.metadata.summary,
+                title_json: escapeJsonStr(tweet.metadata.title),
+                summary: tweet.metadata.summary || "",
+                summary_json: escapeJsonStr(tweet.metadata.summary || ""),
+                og_image: `${config.site.url}/images/og-card.jpg`,
+                created: dateStr,
+                created_formatted: this.formatDate(rawDate),
+                created_iso: createdIso,
+                updated_iso: createdIso,
+                canonical_url: canonicalUrl,
+                word_count: wordsCount,
+                paywall_schema: `"isAccessibleForFree": true,`,
+                tags_json: "",
+                author: "Jonathan Thoms",
+                reading_time: "1 min read",
+                audio_player: "",
+                newsletter_signup: newsletterSignup,
+                prev_article: "",
+                next_article: "",
+                tags: this.tagsPills(tweet.metadata.tags || []),
                 body: this.markdown(tweet.body),
                 access: "public",
                 topics: this.linksArray(tweet.links.topics),
@@ -1629,12 +1750,13 @@ export default class PageBuilder {
         const folder = path.join(this.output, "shit-list");
         await fs.mkdir(folder, { recursive: true });
 
-        // Let's use the standard article template for these items, but we can customize the styling via the generated HTML
         const template = await this.loadLayout("article.html");
+        const adSidebar = await this.loadPartial("ad-sidebar.html");
+        const newsletterSignup = await this.loadPartial("newsletter.html");
 
-        // We wrap the body in a warning-themed container
         let contentHtml = this.markdown(item.body || "");
-        if (item.metadata.access === "paid" || item.metadata.access === "members") {
+        const isGated = (item.metadata.access === "paid" || item.metadata.access === "members");
+        if (isGated) {
             let teaser = "";
             const bodyStr = item.body || "";
             if (bodyStr.includes("<!-- more -->")) {
@@ -1679,14 +1801,43 @@ export default class PageBuilder {
             </div>
         `;
 
+        const escapeJsonStr = (s) => JSON.stringify(String(s || "")).slice(1, -1);
+        const rawDate = item.metadata.created || new Date().toISOString().split('T')[0];
+        const dateStr = rawDate instanceof Date ? rawDate.toISOString().split('T')[0] : String(rawDate);
+        const createdIso = `${dateStr}T08:00:00-02:30`;
+        const canonicalUrl = `${config.site.url}/shit-list/${item.metadata.id}.html`;
+        const wordsCount = String(item.body || "").trim().split(/\s+/).filter(Boolean).length;
+        const paywallSchema = isGated
+            ? `"isAccessibleForFree": false,\n          "hasPart": { "@type": "WebPageElement", "isAccessibleForFree": false, "cssSelector": ".gated-full-content" },`
+            : `"isAccessibleForFree": true,`;
+
         const html = await this.wrapPage(
             this.renderer.render(template, {
                 id: item.metadata.id,
                 title: item.metadata.title,
-                summary: item.metadata.summary,
+                title_json: escapeJsonStr(item.metadata.title),
+                summary: item.metadata.summary || "",
+                summary_json: escapeJsonStr(item.metadata.summary || ""),
+                og_image: `${config.site.url}/images/og-card.jpg`,
                 body: customBodyHtml,
-                created: item.metadata.created || new Date().toISOString().split('T')[0],
-                author: item.metadata.author,
+                created: dateStr,
+                created_formatted: this.formatDate(rawDate),
+                created_iso: createdIso,
+                updated_iso: createdIso,
+                canonical_url: canonicalUrl,
+                word_count: wordsCount,
+                paywall_schema: paywallSchema,
+                tags_json: (item.metadata.tags || []).map(t => `"${String(t).replace(/"/g, '\'')}"`).join(", "),
+                author: item.metadata.author || "Jonathan Thoms",
+                reading_time: `${Math.max(1, Math.ceil(wordsCount / 200))} min read`,
+                audio_player: "",
+                newsletter_signup: newsletterSignup,
+                prev_article: "",
+                next_article: "",
+                topics: "",
+                themes: "",
+                related: "",
+                ad_sidebar: adSidebar,
                 tags: this.tagsPills(item.metadata.tags),
                 content_type: "Anti-Recommendation",
                 graph_html: ""
@@ -1760,11 +1911,61 @@ export default class PageBuilder {
         const pageTitle        = title || siteTitle;
         const fullPageTitle    = title && title !== siteTitle ? `${title} — ${siteTitle}` : siteTitle;
         const metaDescription  = meta.description || siteDesc;
+        const metaDescriptionJson = JSON.stringify(String(metaDescription)).slice(1, -1);
         const ogTitle          = pageTitle;
         const ogType           = meta.ogType || "website";
         const pagePath         = meta.path || "/";
         const canonicalUrl     = `${siteUrl}${pagePath}`;
         const ogImage          = meta.image ? (meta.image.startsWith('http') ? meta.image : `${siteUrl}${meta.image.startsWith('/') ? '' : '/'}${meta.image}`) : `${siteUrl}/images/og-card.jpg`;
+
+        // Build BreadcrumbList JSON-LD for non-root pages
+        let breadcrumbSchema = "";
+        if (pagePath && pagePath !== "/" && pagePath !== "/404.html") {
+            const segments = pagePath.replace(/^\/|\/$/g, "").split("/").filter(Boolean);
+            const items = [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": `${siteUrl}/`
+                }
+            ];
+            const sectionNames = {
+                tools: "Tools",
+                articles: "Articles",
+                projects: "Projects",
+                topics: "Topics",
+                themes: "Themes",
+                tags: "Tags",
+                library: "Library"
+            };
+            if (segments.length > 1 && sectionNames[segments[0]]) {
+                items.push({
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": sectionNames[segments[0]],
+                    "item": `${siteUrl}/${segments[0]}/`
+                });
+                items.push({
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": pageTitle,
+                    "item": canonicalUrl
+                });
+            } else {
+                items.push({
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": pageTitle,
+                    "item": canonicalUrl
+                });
+            }
+            breadcrumbSchema = `<script type="application/ld+json">${JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": items
+            })}</script>`;
+        }
 
         return this.renderer.render(layout, {
 
@@ -1774,10 +1975,12 @@ export default class PageBuilder {
             site_author:     siteAuthor,
             lang:            siteLanguage,
             meta_description: metaDescription,
+            meta_description_json: metaDescriptionJson,
             og_title:        ogTitle,
             og_type:         ogType,
             og_image:        ogImage,
             canonical_url:   canonicalUrl,
+            breadcrumb_schema: breadcrumbSchema,
             google_adsense:  google_adsense,
             header,
             footer,

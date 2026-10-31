@@ -252,6 +252,30 @@
                 </div>
             </div>
 
+            <!-- Static Methodology: 3D Statcast Physics & Automated Ball-Strike (ABS) Geometry -->
+            <section style="text-align: left; max-width: 960px; margin: 2.5rem auto 1.5rem auto; line-height: 1.7; color: var(--text-main); background: rgba(15, 23, 42, 0.55); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
+                <h2 style="font-size: 1.5rem; margin-bottom: 0.85rem; color: var(--accent-cyan);">Methodology: 3D Statcast Pitch Kinematics &amp; Rulebook Strike Zone Collision</h2>
+                <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.94rem;">
+                    The <strong>3D MLB Umpire Simulator</strong> models pitches from a 54-foot release point ($z_0 = 54.0\text{ ft}$, $y_0 = 6.0\text{ ft}$) down to home plate using constant-acceleration kinematic equations calibrated to MLB Statcast pitch-tracking averages. Each pitch type—<strong>4-Seam Fastball</strong> (95 mph, $+17.5^{\prime\prime}$ induced vertical break), <strong>Slider</strong> (85 mph, $+8.0^{\prime\prime}$ glove-side sweep), <strong>12-6 Curveball</strong> (78 mph, $-14.0^{\prime\prime}$ vertical drop), and <strong>Circle Changeup</strong> (84 mph, $-14.5^{\prime\prime}$ arm-side fade)—follows a realistic 3D trajectory with aerodynamic drag.
+                </p>
+                <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--text-bright);">Pentagonal Prism Swept-Sphere Strike Evaluation &amp; Shadow Zone</h3>
+                <p style="margin-bottom: 0; color: var(--text-muted); font-size: 0.94rem;">
+                    Per Official Baseball Rules, home plate is a 17-inch-wide pentagon ($8.5^{\prime\prime}$ half-width) extending from the front edge ($z = 0$) to the rear apex ($z = -17^{\prime\prime}$). A pitch is a rulebook strike if any portion of the baseball ($1.45^{\prime\prime}$ radius sphere) intersects the 3D pentagonal prism between the batter's knees ($1.5\text{ ft}$) and midpoint of the torso ($3.5\text{ ft}$). Pitches within $\pm 1.45^{\prime\prime}$ of the outer boundary are classified into the <strong>Shadow Zone</strong>—where MLB umpires and the Automated Ball-Strike (ABS) challenge system face the toughest calls.
+                </p>
+            </section>
+
+            <!-- Related Sports Analytics Tools Cross-Linking -->
+            <nav aria-label="Related Sports Analytics Tools" style="text-align: left; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin: 1.5rem auto;">
+                <h2 style="font-size: 1.2rem; color: var(--accent-cyan); margin: 0 0 0.85rem 0;">Explore Related Baseball &amp; Sports Analytics Tools</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.75rem;">
+                    <a href="/tools/baseball-trend-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">⚾ MLB 162-Game Trend Analyzer (2016–2026) &rarr;</a>
+                    <a href="/tools/postseason-baseball-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">⚾🔥 MLB Postseason Momentum Analyzer &rarr;</a>
+                    <a href="/tools/f1-championship-calculator/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">🏎️ F1 2026 Championship Calculator &rarr;</a>
+                    <a href="/tools/nhl-trend-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">🏒 NHL 25-Metric Trend Analyzer &rarr;</a>
+                    <a href="/tools/nfl-trend-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">🏈 NFL Point Differential Analyzer &rarr;</a>
+                </div>
+            </nav>
+
         </div>
 
     </div>
