@@ -109,11 +109,31 @@ When you inspect a project on this platform:
 
 The graph database mechanically reflects the reality of cognition: high-density pattern recognition operating across disciplines without artificial boundaries.
 
+<section class="graph-container" style="position: relative; margin: 2.25rem 0; padding: 0; border-radius: var(--radius-lg, 12px); overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 1px solid var(--border-color);">
+  <div style="background: var(--bg-element); padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+    <div>
+      <div style="margin: 0; color: var(--accent-cyan); font-size: 1.2rem; font-weight: 700;">Interactive Knowledge Graph — Full Expanded Map</div>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">All four core pillars (Articles, Tools, Interests, and Professional Resume) expanded around Thoms Foolery. Hover any node to trace its cross-disciplinary load paths, or click to jump directly in.</div>
+    </div>
+    <a href="/graph/" style="font-size: 0.85rem; color: var(--accent-cyan); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;">
+      Full Graph View &rarr;
+    </a>
+  </div>
+  <div id="graph-canvas" class="graph-canvas" data-focus-type="global" data-auto-expand="true" style="height: 580px; width: 100%; background: var(--bg-card); position: relative;">
+    <div style="position: absolute; top: 16px; right: 16px; z-index: 100; display: flex; align-items: center; gap: 8px;">
+      <input type="text" id="graph-search" class="graph-search-input" placeholder="Search the map..." style="padding: 0.65rem 1rem; border-radius: 8px; border: 1px solid var(--accent-cyan); background: rgba(11, 15, 25, 0.85); color: #fff; width: 200px; font-size: 0.9rem; backdrop-filter: blur(6px); box-shadow: 0 4px 12px rgba(0,0,0,0.4); outline: none;">
+      <button id="graph-reset-btn" class="graph-reset-btn" type="button" title="Reset Graph Layout" style="padding: 0.65rem 0.9rem; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(11, 15, 25, 0.85); color: var(--accent-cyan); font-size: 0.85rem; font-weight: 600; cursor: pointer; backdrop-filter: blur(6px); box-shadow: 0 4px 12px rgba(0,0,0,0.4); display: inline-flex; align-items: center; gap: 0.35rem; transition: all 0.2s;">
+        ↺ Reset
+      </button>
+    </div>
+  </div>
+</section>
+
 ---
 
 ## 4. For Readers: How to Explore
 
-When you interact with the 3D knowledge graph or the interactive nodes on this site, there is no required reading order. 
+When you interact with the knowledge graph above or the interactive nodes across this site, there is no required reading order. 
 
 > [!TIP]
 > **Abandon Chronological Reading:**  

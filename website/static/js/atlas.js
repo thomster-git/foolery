@@ -22,32 +22,35 @@ document.addEventListener("DOMContentLoaded", () => {
    ============================================================ */
 
 async function initGraphViewer() {
-  const container = document.getElementById("graph-canvas");
-  if (!container) return;
-
-  const getValidAttr = (attr) => {
-    const val = container.getAttribute(attr);
-    return (val && !val.includes("{{")) ? val : null;
-  };
-
-  const focusId = getValidAttr("data-focus-id");
-  const focusType = getValidAttr("data-focus-type");
-  const focusTag = getValidAttr("data-focus-tag");
+  const containers = document.querySelectorAll(".graph-canvas, #graph-canvas");
+  if (!containers || containers.length === 0) return;
 
   try {
-    const res = await fetch("/graph.json?v=1.5.2", { cache: "no-store" });
+    const res = await fetch("/graph.json?v=1.5.3", { cache: "no-store" });
     if (!res.ok) return;
     const graphData = await res.json();
 
     if (!graphData || !graphData.nodes || graphData.nodes.length === 0) return;
 
-    renderCanvasGraph(container, graphData, focusId, focusType, focusTag);
+    containers.forEach((container) => {
+      const getValidAttr = (attr) => {
+        const val = container.getAttribute(attr);
+        return (val && !val.includes("{{")) ? val : null;
+      };
+
+      const focusId = getValidAttr("data-focus-id");
+      const focusType = getValidAttr("data-focus-type");
+      const focusTag = getValidAttr("data-focus-tag");
+      const autoExpand = getValidAttr("data-auto-expand") === "true";
+
+      renderCanvasGraph(container, graphData, focusId, focusType, focusTag, autoExpand);
+    });
   } catch (err) {
     console.error("Failed to render Knowledge Graph:", err);
   }
 }
 
-function renderCanvasGraph(container, data, focusId = null, focusType = null, focusTag = null) {
+function renderCanvasGraph(container, data, focusId = null, focusType = null, focusTag = null, autoExpand = false) {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
   container.appendChild(canvas);
@@ -76,7 +79,8 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     height = canvas.height = container.clientHeight || 600;
   });
 
-  const searchInput = document.getElementById("graph-search");
+  const parentSection = container.closest(".graph-container") || container;
+  const searchInput = parentSection.querySelector(".graph-search-input, #graph-search") || document.getElementById("graph-search");
   let searchQuery = "";
   if (searchInput) {
     searchInput.addEventListener("keyup", (e) => {
@@ -447,6 +451,43 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
 
     nodeMap = new Map(nodes.map(n => [n.id, n]));
     syncLinksForVisibleNodes();
+
+    if (autoExpand && isGlobalOrFull) {
+      const pillarNodes = nodes.filter(n => n.type === 'pillar');
+      pillarNodes.forEach(pillarNode => {
+        const children = getCategoryChildren(pillarNode.id);
+        if (children.length > 0 && !pillarNode.expanded) {
+          toggleCategoryExpansion(pillarNode, children);
+        }
+      });
+
+      // Run a brief initial relaxation pass so all expanded nodes start cleanly separated
+      for (let step = 0; step < 30; step++) {
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const a = nodes[i];
+            const b = nodes[j];
+            const dx = b.x - a.x;
+            const dy = b.y - a.y;
+            const dist = Math.hypot(dx, dy) || 1;
+            const minDist = a.radius + b.radius + 54;
+            if (dist < minDist) {
+              const force = ((minDist - dist) / minDist) * 0.35;
+              const nx = (dx / dist) * force;
+              const ny = (dy / dist) * force;
+              if (!a.isFocused && a.type !== 'pillar') {
+                a.x = Math.max(36, Math.min(width - 135, a.x - nx));
+                a.y = Math.max(36, Math.min(height - 36, a.y - ny));
+              }
+              if (!b.isFocused && b.type !== 'pillar') {
+                b.x = Math.max(36, Math.min(width - 135, b.x + nx));
+                b.y = Math.max(36, Math.min(height - 36, b.y + ny));
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   buildInitialGraph();
@@ -460,7 +501,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     buildInitialGraph();
   }
 
-  const resetBtn = document.getElementById("graph-reset-btn");
+  const resetBtn = parentSection.querySelector(".graph-reset-btn, #graph-reset-btn") || document.getElementById("graph-reset-btn");
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
       resetGraphLayout();

@@ -1373,7 +1373,8 @@ export default class PageBuilder {
                  <a href="/articles/" class="nav-card-action">Explore Complete Archive →</a>
                </div>`;
 
-        const graphHtml = `
+        const hasInlineGraph = String(article.body || "").includes("graph-canvas");
+        const graphHtml = hasInlineGraph ? "" : `
         <div class="article-graph-section">
             <div class="article-graph-header">
                 <div class="graph-title-group">

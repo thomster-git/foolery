@@ -7,12 +7,18 @@ export default function parseMarkdown(markdownText = "") {
 
   let text = markdownText.trim();
 
-  // 1. Extract and protect code blocks with placeholders
+  // 1. Extract and protect code blocks and raw <section> HTML blocks with placeholders
   const codeBlocks = [];
   text = text.replace(/```([^\n]*)\n([\s\S]*?)```/g, (match, lang, code) => {
     const langClass = lang.trim() ? ` class="language-${escapeHtml(lang.trim())}"` : '';
     const placeholder = `%%%ATLAS_CODE_BLOCK_${codeBlocks.length}%%%`;
     codeBlocks.push(`<pre><code${langClass}>${escapeHtml(code.replace(/^\n+|\n+$/g, ""))}</code></pre>`);
+    return placeholder;
+  });
+
+  text = text.replace(/<section\b[\s\S]*?<\/section>/gi, (match) => {
+    const placeholder = `%%%ATLAS_CODE_BLOCK_${codeBlocks.length}%%%`;
+    codeBlocks.push(match);
     return placeholder;
   });
 
