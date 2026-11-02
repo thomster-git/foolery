@@ -161,7 +161,7 @@
                 </div>
             </div>
 
-            <div id="week-grid-root" style="overflow-x: auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+            <div id="week-grid-root" style="max-height: 700px; overflow-y: auto; overflow-x: auto; position: relative; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
                 <!-- Populated via JS -->
             </div>
         </div>
@@ -492,16 +492,61 @@
     padding: 0.6rem 0.4rem;
     text-align: center;
     border-bottom: 1px solid var(--border-color);
-    background: rgba(0, 0, 0, 0.2);
+    border-right: 1px solid var(--border-color);
+    background: rgba(15, 23, 42, 0.96);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+}
+.grid-day-header:nth-child(8) {
+    border-right: none;
 }
 .grid-day-header.today {
     border-bottom: 2px solid var(--accent-cyan);
-    background: rgba(6, 182, 212, 0.08);
+    background: rgba(12, 34, 52, 0.97);
 }
 .time-slot {
     height: 48px;
     border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
     box-sizing: border-box;
+}
+
+/* Red Current Time Line on Today's Column */
+.current-time-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #ef4444;
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.85);
+    z-index: 22;
+    pointer-events: none;
+}
+.current-time-dot {
+    position: absolute;
+    left: -5px;
+    top: -4px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ef4444;
+    box-shadow: 0 0 8px #ef4444;
+}
+.current-time-badge {
+    position: absolute;
+    right: 4px;
+    top: -10px;
+    background: #ef4444;
+    color: #ffffff;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    font-weight: 800;
+    padding: 1px 5px;
+    border-radius: 4px;
+    line-height: 1.25;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
 }
 
 /* Event Chips */
@@ -896,16 +941,64 @@
     setInterval(updateLiveBanner, 1000);
 
     // ----------------------------------------------------
-    // View 1: Weekly Grid Renderer (with Forward/Back Nav & Past Lock)
+    // View 1: Weekly Grid Renderer (24h 12 AM–12 AM, Default Scroll at 7 AM, Overnight Split & Red Current-Time Line)
     // ----------------------------------------------------
-    function renderWeekView() {
+    let hasInitializedWeekScroll = false;
+
+    function getTzDateParts(utcDate, timeZone) {
+        const tz = (timeZone === 'LOCAL' || !timeZone) ? undefined : timeZone;
+        const parts = new Intl.DateTimeFormat('en-US', {
+            timeZone: tz,
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        }).formatToParts(utcDate);
+        const map = {};
+        for (const p of parts) {
+            if (p.type !== 'literal') map[p.type] = parseInt(p.value, 10);
+        }
+        const hour = map.hour === 24 ? 0 : map.hour;
+        const dateStr = `${map.year}-${String(map.month).padStart(2, '0')}-${String(map.day).padStart(2, '0')}`;
+        return {
+            year: map.year,
+            month: map.month,
+            day: map.day,
+            hour,
+            minute: map.minute,
+            second: map.second || 0,
+            dateStr,
+            minutesOfDay: hour * 60 + map.minute
+        };
+    }
+
+    function updateCurrentTimeLine() {
+        const line = document.getElementById('week-current-time-line');
+        const badge = document.getElementById('week-current-time-badge');
+        if (!line) return;
+        const now = new Date();
+        const nowParts = getTzDateParts(now, currentTz);
+        const exactMinutes = nowParts.hour * 60 + nowParts.minute + (nowParts.second / 60);
+        line.style.top = `${(exactMinutes * 0.8).toFixed(1)}px`;
+        if (badge) {
+            badge.textContent = formatTimeInTz(now, currentTz);
+        }
+    }
+    setInterval(updateCurrentTimeLine, 15000);
+
+    function renderWeekView(resetScroll = false) {
         const root = document.getElementById('week-grid-root');
+        const previousScrollTop = root.scrollTop;
         root.innerHTML = '';
 
         if (currentWeekOffset < 0) currentWeekOffset = 0;
 
         // Anchor week to current week + currentWeekOffset * 7 days
         const now = new Date();
+        const todayParts = getTzDateParts(now, currentTz);
         const startOfWeek = new Date(now);
         startOfWeek.setDate(now.getDate() - now.getDay() + (currentWeekOffset * 7)); // Sunday
         startOfWeek.setHours(0, 0, 0, 0);
@@ -921,7 +1014,7 @@
         const weekOffsetBadge = document.getElementById('week-offset-badge');
 
         if (prevWeekBtn) prevWeekBtn.disabled = (currentWeekOffset <= 0);
-        if (thisWeekBtn) thisWeekBtn.disabled = (currentWeekOffset === 0);
+        if (thisWeekBtn) thisWeekBtn.disabled = false;
 
         if (weekRangeTitle) {
             const fmtStart = startOfWeek.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
@@ -934,11 +1027,14 @@
                 : `+${currentWeekOffset} Week${currentWeekOffset > 1 ? 's' : ''} Ahead`;
         }
 
-        const weekEvents = getOccurrencesForDateRange(startOfWeek, endOfWeek, true);
+        // Query starting 1 day before startOfWeek so overnight events crossing 12 AM into Sunday are included
+        const queryStart = new Date(startOfWeek.getTime() - 86400000);
+        const weekEvents = getOccurrencesForDateRange(queryStart, endOfWeek, true);
 
-        // Display hours from 08:00 to 24:00 (or up to 04:00 next day for late streams)
-        const startHour = 8;
-        const totalHours = 17; // 8 AM to 1 AM
+        // Full 24-hour range: 12:00 AM (00:00) through 11:59 PM (24:00), default scroll at 7:00 AM
+        const startHour = 0;
+        const totalHours = 24;
+        const DEFAULT_SCROLL_HOUR = 7; // Sit at 7:00 AM by default, scrollable up to 12:00 AM
 
         const container = document.createElement('div');
         container.className = 'week-grid-container';
@@ -953,13 +1049,14 @@
         for (let i = 0; i < 7; i++) {
             const dayDate = new Date(startOfWeek);
             dayDate.setDate(startOfWeek.getDate() + i);
-            const isToday = dayDate.toDateString() === now.toDateString();
+            const colDateStr = `${dayDate.getFullYear()}-${String(dayDate.getMonth() + 1).padStart(2, '0')}-${String(dayDate.getDate()).padStart(2, '0')}`;
+            const isToday = colDateStr === todayParts.dateStr;
 
             const dayH = document.createElement('div');
             dayH.className = `grid-day-header ${isToday ? 'today' : ''}`;
             dayH.innerHTML = `
                 <div style="font-size: 0.75rem; font-weight: 700; color: ${isToday ? 'var(--accent-cyan)' : 'var(--text-muted)'}; text-transform: uppercase;">
-                    ${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dayDate.getDay()]}
+                    ${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dayDate.getDay()]}${isToday ? ' • TODAY' : ''}
                 </div>
                 <div style="font-size: 1.1rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">
                     ${dayDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -968,7 +1065,7 @@
             container.appendChild(dayH);
         }
 
-        // Time Column Hour Slots
+        // Time Column Hour Slots (12 AM to 11 PM)
         const timeCol = document.createElement('div');
         timeCol.className = 'grid-time-col';
         for (let h = 0; h < totalHours; h++) {
@@ -987,6 +1084,9 @@
         for (let i = 0; i < 7; i++) {
             const dayDate = new Date(startOfWeek);
             dayDate.setDate(startOfWeek.getDate() + i);
+            const colDateStr = `${dayDate.getFullYear()}-${String(dayDate.getMonth() + 1).padStart(2, '0')}-${String(dayDate.getDate()).padStart(2, '0')}`;
+            const isToday = colDateStr === todayParts.dateStr;
+
             const dayCol = document.createElement('div');
             dayCol.className = 'grid-day-col';
 
@@ -997,22 +1097,86 @@
                 dayCol.appendChild(slot);
             }
 
-            // Events for this specific day
-            const dateStr = `${dayDate.getFullYear()}-${String(dayDate.getMonth() + 1).padStart(2, '0')}-${String(dayDate.getDate()).padStart(2, '0')}`;
-            const dayEvents = weekEvents.filter(e => e.dateStr === dateStr);
+            // Red Current-Time Line on the Current Date
+            if (isToday) {
+                const exactMinutes = todayParts.hour * 60 + todayParts.minute + (todayParts.second / 60);
+                const nowLine = document.createElement('div');
+                nowLine.id = 'week-current-time-line';
+                nowLine.className = 'current-time-line';
+                nowLine.style.top = `${(exactMinutes * 0.8).toFixed(1)}px`;
+                nowLine.innerHTML = `
+                    <span class="current-time-dot"></span>
+                    <span id="week-current-time-badge" class="current-time-badge">${formatTimeInTz(now, currentTz)}</span>
+                `;
+                dayCol.appendChild(nowLine);
+            }
 
-            dayEvents.forEach(ev => {
+            // Build segments for events that start on this day OR carry over past 12:00 AM into this day
+            const daySegments = [];
+            weekEvents.forEach(ev => {
+                const startParts = getTzDateParts(ev.startUtc, currentTz);
+                const endParts = getTzDateParts(ev.endUtc, currentTz);
+
+                if (startParts.dateStr === colDateStr && endParts.dateStr === colDateStr) {
+                    // Single-day event within 12:00 AM – 11:59 PM
+                    daySegments.push({
+                        ev,
+                        segStartMin: startParts.minutesOfDay,
+                        segDurationMin: Math.max(15, ev.durationMin),
+                        isOvernightContinuation: false,
+                        continuesPastMidnight: false
+                    });
+                } else if (startParts.dateStr === colDateStr && endParts.dateStr !== colDateStr) {
+                    // Starts today and crosses 12:00 AM midnight into the next day
+                    const minsUntilMidnight = Math.max(15, 1440 - startParts.minutesOfDay);
+                    daySegments.push({
+                        ev,
+                        segStartMin: startParts.minutesOfDay,
+                        segDurationMin: minsUntilMidnight,
+                        isOvernightContinuation: false,
+                        continuesPastMidnight: true
+                    });
+                } else if (endParts.dateStr === colDateStr && startParts.dateStr !== colDateStr && endParts.minutesOfDay > 0) {
+                    // Continuation from previous night starting at 12:00 AM (00:00) on this day
+                    daySegments.push({
+                        ev,
+                        segStartMin: 0,
+                        segDurationMin: Math.max(15, endParts.minutesOfDay),
+                        isOvernightContinuation: true,
+                        continuesPastMidnight: false
+                    });
+                }
+            });
+
+            daySegments.forEach(({ ev, segStartMin, segDurationMin, isOvernightContinuation, continuesPastMidnight }) => {
                 const chip = document.createElement('div');
                 chip.className = `event-chip chip-${ev.category} ${ev.isCancelled ? 'event-chip-cancelled' : ''}`;
 
                 // Calculate top & height in px (each hour = 48px, so 1 min = 0.8px)
-                const [hh, mm] = ev.startTimeNL.split(':').map(Number);
-                const minutesFromStart = (hh - startHour) * 60 + mm;
-                const topPx = Math.max(0, minutesFromStart * 0.8);
-                const heightPx = Math.max(36, ev.durationMin * 0.8);
+                const topPx = Math.max(0, segStartMin * 0.8);
+                const heightPx = Math.max(36, segDurationMin * 0.8);
 
                 chip.style.top = `${topPx}px`;
                 chip.style.height = `${heightPx}px`;
+                if (continuesPastMidnight) {
+                    chip.style.borderBottom = '2px dashed rgba(255, 255, 255, 0.45)';
+                    chip.style.borderRadius = '6px 6px 2px 2px';
+                } else if (isOvernightContinuation) {
+                    chip.style.borderTop = '2px dashed rgba(255, 255, 255, 0.45)';
+                    chip.style.borderRadius = '2px 2px 6px 6px';
+                }
+
+                const fullTimeRangeLabel = `${formatTimeInTz(ev.startUtc, currentTz)} – ${formatTimeInTz(ev.endUtc, currentTz)}`;
+                let subtitleHtml = '';
+                if (ev.isCancelled) {
+                    subtitleHtml = `<strong style="color: #fca5a5;">🚫 CANCELLED (${ev.cancelReason})</strong>`;
+                } else if (continuesPastMidnight) {
+                    subtitleHtml = `${fullTimeRangeLabel} <span style="opacity:0.85;">• Continues 12 AM ↳</span>`;
+                } else if (isOvernightContinuation) {
+                    subtitleHtml = `<span style="opacity:0.9;">↳ Cont. past 12 AM</span> • Ends ${formatTimeInTz(ev.endUtc, currentTz)}`;
+                } else {
+                    subtitleHtml = `${fullTimeRangeLabel} (${ev.durationMin}m)`;
+                }
 
                 chip.innerHTML = `
                     ${plannerMode ? `
@@ -1021,12 +1185,10 @@
                         </button>
                     ` : ''}
                     <div style="font-weight: 800; font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: ${plannerMode ? '22px' : '0'}; ${ev.isCancelled ? 'text-decoration: line-through;' : ''}">
-                        ${ev.title}
+                        ${isOvernightContinuation ? '↳ ' : ''}${ev.title}
                     </div>
-                    <div style="font-size: 0.72rem; opacity: 0.92; margin-top: 2px;">
-                        ${ev.isCancelled
-                            ? `<strong style="color: #fca5a5;">🚫 CANCELLED (${ev.cancelReason})</strong>`
-                            : `${formatTimeInTz(ev.startUtc, currentTz)} (${ev.durationMin}m)`}
+                    <div style="font-size: 0.72rem; opacity: 0.92; margin-top: 2px; line-height: 1.3;">
+                        ${subtitleHtml}
                     </div>
                 `;
 
@@ -1053,6 +1215,14 @@
         }
 
         root.appendChild(container);
+
+        // Set default scroll position to 7:00 AM (336px) on initial load or week change, while allowing scrolling up to 12:00 AM (0px)
+        if (!hasInitializedWeekScroll || resetScroll) {
+            root.scrollTop = DEFAULT_SCROLL_HOUR * 48;
+            hasInitializedWeekScroll = true;
+        } else {
+            root.scrollTop = previousScrollTop;
+        }
     }
 
     // ----------------------------------------------------
@@ -1732,7 +1902,7 @@
     if (thisWeekBtn) {
         thisWeekBtn.addEventListener('click', () => {
             currentWeekOffset = 0;
-            renderWeekView();
+            renderWeekView(true);
         });
     }
     if (nextWeekBtn) {
