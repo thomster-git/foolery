@@ -157,7 +157,12 @@ export default class PageBuilder {
 
         const recentArticles = content
             .filter(x => x.metadata.type === "article" && x.metadata.status !== "draft")
-            .slice(0, 6)
+            .sort((a, b) => {
+                const dateA = a.metadata.updated || a.metadata.created || "2000-01-01";
+                const dateB = b.metadata.updated || b.metadata.created || "2000-01-01";
+                return String(dateB).localeCompare(String(dateA));
+            })
+            .slice(0, 8)
             .map(article => this.components.articleCard(article))
             .join("\n");
 

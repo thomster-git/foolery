@@ -81,12 +81,28 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
   if (searchInput) {
     searchInput.addEventListener("keyup", (e) => {
       searchQuery = e.target.value.toLowerCase().trim();
+      if (searchQuery.length >= 2) {
+        // Automatically expand any collapsed pillar that contains a matching child node
+        const matchingChildren = filteredNodes.filter(n =>
+          n.parentPillar &&
+          ((n.label && n.label.toLowerCase().includes(searchQuery)) ||
+           (n.id && n.id.toLowerCase().includes(searchQuery)) ||
+           (n.summary && n.summary.toLowerCase().includes(searchQuery)))
+        );
+        matchingChildren.forEach(child => {
+          const pillarNode = nodeMap.get(child.parentPillar);
+          if (pillarNode && !pillarNode.expanded) {
+            const children = getCategoryChildren(pillarNode.id);
+            if (children.length > 0) {
+              toggleCategoryExpansion(pillarNode, children);
+            }
+          }
+        });
+      }
       if (e.key === "Enter" && searchQuery) {
         const match = nodes.find(n => n.label?.toLowerCase().includes(searchQuery) || n.id.toLowerCase().includes(searchQuery));
         if (match) {
-            hoveredNode = match;
-            match.x = width / 2;
-            match.y = height / 2;
+          hoveredNode = match;
         }
       }
     });
@@ -108,16 +124,16 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       if (to === focusId) connectedNodeIds.add(from);
     });
 
-    // Exclude raw tags from article/project graphs when substantive content connections exist
+    // Exclude raw tags and top-level pillar hubs from individual article/project graphs when substantive connections exist
     const hasSubstantiveConnections = (data.edges || []).some(e => {
       const from = e.source || e.from;
       const to = e.target || e.to;
-      return (from === focusId || to === focusId) && e.relation !== 'tags';
+      return (from === focusId || to === focusId) && e.relation !== 'tags' && e.relation !== 'pillar-member';
     });
 
     filteredNodes = data.nodes.filter(n => {
       if (!connectedNodeIds.has(n.id)) return false;
-      if (hasSubstantiveConnections && n.type === 'tag') return false;
+      if (hasSubstantiveConnections && (n.type === 'tag' || n.type === 'pillar' || n.id === 'hub-global')) return false;
       return true;
     });
 
@@ -125,7 +141,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     filteredEdges = (data.edges || []).filter(e => {
       const from = e.source || e.from;
       const to = e.target || e.to;
-      return activeNodeIds.has(from) && activeNodeIds.has(to) && (!hasSubstantiveConnections || e.relation !== 'tags');
+      return activeNodeIds.has(from) && activeNodeIds.has(to) && (!hasSubstantiveConnections || (e.relation !== 'tags' && e.relation !== 'pillar-member'));
     });
 
   } else if (focusTag) {
@@ -149,41 +165,34 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
 
   } else if (focusType === 'global' || focusType === 'full') {
     // Homepage Interactive Knowledge Graph & Full Digital Garden Map:
-    // Focus strictly on published articles, projects, topics, and themes (excluding library items, raw tags, and draft topics like AuDHD)
-    const contentNodes = data.nodes.filter(n => n.type !== 'tag' && n.type !== 'library-category' && !libraryTypes.includes(n.type) && n.id !== 'audhd');
-    const contentIds = new Set(contentNodes.map(n => n.id));
+    // Center: "Thoms Foolery" (hub-global)
+    // Ring 1 (Main Branch-Off): Strictly the 4 core site pillars:
+    //   1. Articles (/articles/)
+    //   2. Tools (/tools/)
+    //   3. Interests (/interests/)
+    //   4. Professional Resume (/resume/)
+    // Ring 2 (Expandable Children): Articles, Site Tools, Interests, and Professional Resume items
+    const validGlobalTypes = new Set(['hub', 'pillar', 'article', 'site-tool', 'interest', 'resume-item']);
+    filteredNodes = data.nodes.filter(n => validGlobalTypes.has(n.type));
 
-    // Central Digital Garden Core Anchor
-    const rootHub = {
-      id: 'hub-global',
-      label: 'Thoms Foolery',
-      type: 'hub',
-      url: '/graph/',
-      summary: 'The Digital Garden — Explore connected essays, systems, and projects'
-    };
+    // Ensure central hub exists even if loading an older cached graph.json
+    if (!filteredNodes.some(n => n.id === 'hub-global')) {
+      filteredNodes.unshift({
+        id: 'hub-global',
+        label: 'Thoms Foolery',
+        type: 'hub',
+        url: '/graph/',
+        summary: 'The Digital Garden — Articles, Interactive Tools, Interests, and Professional Resume.'
+      });
+    }
 
-    filteredNodes = [rootHub, ...contentNodes];
-
-    // Connect root hub to main pillars (topics and themes)
-    const pillarEdges = [];
-    contentNodes.forEach(n => {
-      if (n.type === 'topic' || n.type === 'theme') {
-        pillarEdges.push({
-          source: 'hub-global',
-          target: n.id,
-          relation: 'pillar'
-        });
-      }
-    });
-
-    // Real published content edges
-    const realEdges = (data.edges || []).filter(e => {
+    const contentIds = new Set(filteredNodes.map(n => n.id));
+    filteredEdges = (data.edges || []).filter(e => {
       const from = e.source || e.from;
       const to = e.target || e.to;
       return contentIds.has(from) && contentIds.has(to) && e.relation !== 'tags';
     });
 
-    filteredEdges = [...pillarEdges, ...realEdges];
     focusId = 'hub-global';
 
   } else if (focusType) {
@@ -215,8 +224,8 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     }));
     focusId = hubNodeId;
   } else {
-    // Default fallback: all non-tag, non-library published content
-    filteredNodes = data.nodes.filter(n => n.type !== 'tag' && n.type !== 'library-category' && !libraryTypes.includes(n.type) && n.id !== 'audhd');
+    const validGlobalTypes = new Set(['hub', 'pillar', 'article', 'site-tool', 'interest', 'resume-item']);
+    filteredNodes = data.nodes.filter(n => validGlobalTypes.has(n.type));
     const cIds = new Set(filteredNodes.map(n => n.id));
     filteredEdges = (data.edges || []).filter(e => {
       const from = e.source || e.from;
@@ -240,12 +249,17 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     return `/${n.type}s/${n.id}.html`;
   };
 
-  // Find all real published content children connected to a category (articles & projects)
+  // Find all child nodes belonging to a main pillar (or legacy topic/theme category)
   function getCategoryChildren(catId) {
+    const byParentPillar = filteredNodes.filter(n => n.parentPillar === catId && n.id !== catId);
+    if (byParentPillar.length > 0) {
+      return byParentPillar;
+    }
+
     const connectedEdges = (data.edges || []).filter(e => {
       const from = e.source?.id || e.source || e.from?.id || e.from;
       const to = e.target?.id || e.target || e.to?.id || e.to;
-      return (from === catId || to === catId) && e.relation !== 'tags';
+      return (from === catId || to === catId) && e.relation !== 'tags' && e.relation !== 'site-pillar';
     });
     const childIds = new Set(connectedEdges.map(e => {
       const from = e.source?.id || e.source || e.from?.id || e.from;
@@ -255,7 +269,8 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     return (data.nodes || []).filter(n =>
       childIds.has(n.id) &&
       n.id !== catId &&
-      (n.type === 'article' || n.type === 'project')
+      n.id !== 'hub-global' &&
+      n.type !== 'pillar'
     );
   }
 
@@ -293,11 +308,11 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     const cy = height / 2;
 
     if (!catNode.expanded) {
-      // EXPAND: sprout connected articles/projects outward from category
+      // EXPAND: sprout child nodes outward from the pillar bubble
       catNode.expanded = true;
       const count = children.length;
       const baseAngle = Math.atan2(catNode.y - cy, catNode.x - cx);
-      const spread = Math.min(Math.PI * 0.85, Math.PI * 0.22 * Math.max(2, count));
+      const spread = Math.min(Math.PI * 1.05, Math.PI * 0.16 * Math.max(2, count));
       const startAngle = count > 1 ? baseAngle - spread / 2 : baseAngle;
       const angleStep = count > 1 ? spread / (count - 1) : 0;
 
@@ -309,15 +324,15 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
 
         if (!childNode) {
           const childAngle = count === 1 ? baseAngle : startAngle + i * angleStep;
-          const dist = 115 + (i % 2) * 22; // Staggered radial distance for clean label positioning
+          const dist = 115 + (i % 3) * 24; // Staggered radial distance for clean label legibility
           childNode = {
             ...child,
             url: resolveUrl(child),
-            x: catNode.x + Math.cos(childAngle) * dist,
-            y: catNode.y + Math.sin(childAngle) * dist,
-            vx: Math.cos(childAngle) * 0.12,
-            vy: Math.sin(childAngle) * 0.12,
-            radius: child.type === 'article' ? 13 : 11,
+            x: Math.max(40, Math.min(width - 140, catNode.x + Math.cos(childAngle) * dist)),
+            y: Math.max(36, Math.min(height - 36, catNode.y + Math.sin(childAngle) * dist)),
+            vx: Math.cos(childAngle) * 0.1,
+            vy: Math.sin(childAngle) * 0.1,
+            radius: child.type === 'article' ? 12 : 11,
             isFocused: false,
             expanded: false
           };
@@ -330,12 +345,11 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       syncLinksForVisibleNodes();
 
     } else {
-      // COLLAPSE: retract children back into category
+      // COLLAPSE: retract children back into pillar bubble
       catNode.expanded = false;
       const toRemove = catNode.spawnedNodeIds || [];
 
       toRemove.forEach(id => {
-        // Only remove if no OTHER expanded category is still claiming this node
         const stillClaimed = nodes.some(n => n !== catNode && n.expanded && (n.spawnedNodeIds || []).includes(id));
         if (!stillClaimed) {
           nodes = nodes.filter(n => n.id !== id);
@@ -354,10 +368,10 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     const minDim = Math.min(width, height);
     const isGlobalOrFull = focusType === 'global' || focusType === 'full';
 
-    // Layout hierarchy rings for clean, non-overlapping spacing:
-    // Center: focusId node (e.g. hub-global)
-    // Ring 1: Category bubbles (Topics & Themes)
-    // Ring 2: Content Nodes (Articles, Projects, Software) - hidden by default if isGlobalOrFull
+    // Layout hierarchy rings:
+    // Center (Ring 0): Thoms Foolery (hub-global) or focusId node
+    // Ring 1: The 4 Main Site Pillars (Articles, Tools, Interests, Professional Resume)
+    // Ring 2: Individual child nodes (collapsed inside their pillar by default on global/full graph)
     const ring1 = [];
     const ring2 = [];
     let centerNode = null;
@@ -365,14 +379,14 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     filteredNodes.forEach(n => {
       if (n.id === focusId) {
         centerNode = n;
-      } else if ((n.type === 'topic' || n.type === 'theme') && n.id !== 'audhd') {
+      } else if (isGlobalOrFull ? n.type === 'pillar' : (n.type === 'pillar' || n.type === 'topic' || n.type === 'theme')) {
         ring1.push(n);
       } else {
         ring2.push(n);
       }
     });
 
-    const r1 = Math.max(130, minDim * 0.32);
+    const r1 = Math.max(125, minDim * 0.28);
     const r2 = Math.max(200, minDim * 0.44);
 
     nodes = [];
@@ -385,33 +399,35 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
         y: cy,
         vx: 0,
         vy: 0,
-        radius: centerNode.id === 'hub-global' ? 22 : 18,
+        radius: centerNode.id === 'hub-global' ? 24 : 18,
         isFocused: true,
         expanded: false
       });
     }
 
+    // Position the 4 main pillars at balanced diagonal compass quadrants (-135°, -45°, +45°, +135°)
     ring1.forEach((n, i) => {
-      const angle = (i / Math.max(1, ring1.length)) * Math.PI * 2 - Math.PI / 2;
+      const angle = ring1.length === 4
+        ? (-Math.PI * 0.75) + i * (Math.PI / 2)
+        : (i / Math.max(1, ring1.length)) * Math.PI * 2 - Math.PI / 2;
       const children = getCategoryChildren(n.id);
-      const articleCount = children.filter(c => c.type === 'article').length;
       nodes.push({
         ...n,
         url: resolveUrl(n),
-        x: cx + Math.cos(angle) * r1,
-        y: cy + Math.sin(angle) * r1,
-        vx: (Math.random() - 0.5) * 0.12,
-        vy: (Math.random() - 0.5) * 0.12,
-        radius: n.type === 'topic' ? 14 : 13,
+        x: cx + Math.cos(angle) * (r1 * 1.18),
+        y: cy + Math.sin(angle) * (r1 * 0.92),
+        vx: (Math.random() - 0.5) * 0.08,
+        vy: (Math.random() - 0.5) * 0.08,
+        radius: n.type === 'pillar' ? 16 : 14,
         isFocused: false,
         expanded: false,
-        displayCount: articleCount || children.length,
+        displayCount: children.length,
         spawnedNodeIds: []
       });
     });
 
-    // In global/full graph, articles are hidden within the category bubbles by default.
-    // In specific single-category views, ring2 nodes are shown.
+    // In global/full graph, child nodes start neatly tucked inside their 4 main pillars.
+    // In specific single-item/tag views, ring2 nodes are shown immediately.
     if (!isGlobalOrFull) {
       ring2.forEach((n, i) => {
         const angle = (i / Math.max(1, ring2.length)) * Math.PI * 2 + Math.PI / 4;
@@ -476,6 +492,16 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
   // Types that open the drawer panel instead of full-page navigation
   const drawerTypes = new Set(["topic", "theme", "collection", "book", "hardware", "tool", "creator", "game", "service", "software", "website", "project", "library"]);
 
+  // Human-readable type labels for tooltips
+  const typeDisplayNames = {
+    hub: "Digital Garden Hub",
+    pillar: "Main Site Section",
+    article: "Published Article",
+    "site-tool": "Interactive Tool",
+    interest: "Curiosity & Interest",
+    "resume-item": "Professional Resume"
+  };
+
   canvas.addEventListener("mousemove", (e) => {
     const rect = canvas.getBoundingClientRect();
     const mx = e.clientX - rect.left;
@@ -520,29 +546,36 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       tooltip.style.left = (mx + 15) + "px";
       tooltip.style.top = (my - 10) + "px";
       const isDrawerType = drawerTypes && drawerTypes.has(hoveredNode.type);
-      const isCategory = hoveredNode.type === 'topic' || hoveredNode.type === 'theme';
-      const children = isCategory ? getCategoryChildren(hoveredNode.id) : [];
-      const articleCount = children.filter(c => c.type === 'article').length;
+      const isExpandable = hoveredNode.type === 'pillar' || hoveredNode.type === 'topic' || hoveredNode.type === 'theme';
+      const children = isExpandable ? getCategoryChildren(hoveredNode.id) : [];
 
       let actionText = '';
-      if (hoveredNode.type === 'article') {
-        actionText = 'Click to read article →';
-      } else if (isCategory && children.length > 0) {
+      if (isExpandable && children.length > 0) {
         actionText = hoveredNode.expanded
-          ? 'Click to collapse articles ▲'
-          : `Click to expand ${articleCount || children.length} article${(articleCount || children.length) > 1 ? 's' : ''} ▼`;
+          ? `Click to collapse (${children.length}) ▲`
+          : `Click to expand ${children.length} connected items ▼`;
+      } else if (hoveredNode.type === 'article') {
+        actionText = 'Click to read article →';
+      } else if (hoveredNode.type === 'site-tool') {
+        actionText = 'Click to launch tool →';
+      } else if (hoveredNode.type === 'interest') {
+        actionText = 'Click to explore interest →';
+      } else if (hoveredNode.type === 'resume-item') {
+        actionText = 'Click to view on Resume →';
       } else if (isDrawerType) {
         actionText = 'Click to preview in panel ↗';
       } else {
         actionText = 'Click to view page →';
       }
 
+      const typeBadgeLabel = typeDisplayNames[hoveredNode.type] || hoveredNode.type;
+
       tooltip.innerHTML = `
         <div style="font-weight:700; color:#38bdf8; font-size:13px;">${escapeHtml(hoveredNode.label || hoveredNode.id)}</div>
-        <div style="font-size:10px; text-transform:uppercase; color:#818cf8; margin-top:2px; font-weight:600;">${escapeHtml(hoveredNode.type)}</div>
-        ${hoveredNode.summary ? `<div style="font-size:11px; color:#94a3b8; margin-top:4px; line-height:1.4;">${escapeHtml(hoveredNode.summary.slice(0, 110))}...</div>` : ''}
+        <div style="font-size:10px; text-transform:uppercase; color:#818cf8; margin-top:2px; font-weight:600;">${escapeHtml(typeBadgeLabel)}</div>
+        ${hoveredNode.summary ? `<div style="font-size:11px; color:#94a3b8; margin-top:4px; line-height:1.4;">${escapeHtml(hoveredNode.summary.slice(0, 120))}${hoveredNode.summary.length > 120 ? '...' : ''}</div>` : ''}
         <div style="font-size:10px; color:#34d399; margin-top:6px; font-weight:600;">${actionText}</div>
-        ${isCategory && children.length > 0 ? '<div style="font-size:9px; color:#64748b; margin-top:2px;">Double-click to view category info</div>' : ''}
+        ${isExpandable && hoveredNode.url ? '<div style="font-size:9px; color:#64748b; margin-top:2px;">Double-click to open section page</div>' : ''}
       `;
     } else {
       tooltip.style.display = "none";
@@ -565,14 +598,16 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
         } else {
           openNodeDrawer(hoveredNode);
         }
-      } else if (hoveredNode.type === 'topic' || hoveredNode.type === 'theme') {
+      } else if (hoveredNode.type === 'pillar' || hoveredNode.type === 'topic' || hoveredNode.type === 'theme') {
         const children = getCategoryChildren(hoveredNode.id);
         if (children.length > 0) {
           toggleCategoryExpansion(hoveredNode, children);
+        } else if (hoveredNode.url) {
+          window.location.href = hoveredNode.url;
         } else {
           openNodeDrawer(hoveredNode);
         }
-      } else if (hoveredNode.type === 'article' && hoveredNode.url) {
+      } else if (hoveredNode.url && ['article', 'site-tool', 'interest', 'resume-item'].includes(hoveredNode.type)) {
         window.location.href = hoveredNode.url;
       } else if (drawerTypes.has(hoveredNode.type)) {
         openNodeDrawer(hoveredNode);
@@ -586,7 +621,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
 
   canvas.addEventListener("dblclick", () => {
     if (hoveredNode) {
-      if (hoveredNode.type === 'article' && hoveredNode.url) {
+      if (hoveredNode.url) {
         window.location.href = hoveredNode.url;
       } else {
         openNodeDrawer(hoveredNode);
@@ -648,8 +683,8 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
         ctx.shadowColor = "#38bdf8";
         ctx.shadowBlur = 10;
       } else {
-        ctx.strokeStyle = isLinkDimmed ? "rgba(56, 189, 248, 0.05)" : "rgba(56, 189, 248, 0.3)";
-        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = isLinkDimmed ? "rgba(56, 189, 248, 0.05)" : "rgba(56, 189, 248, 0.32)";
+        ctx.lineWidth = l.relation === 'site-pillar' ? 1.8 : 1.2;
         ctx.shadowBlur = 0;
       }
       ctx.stroke();
@@ -664,7 +699,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
         const dx = b.x - a.x;
         const dy = b.y - a.y;
         const dist = Math.hypot(dx, dy) || 1;
-        const minDist = a.radius + b.radius + 60;
+        const minDist = a.radius + b.radius + 54;
         if (dist < minDist) {
           const force = ((minDist - dist) / minDist) * 0.2;
           const nx = (dx / dist) * force;
@@ -683,9 +718,19 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
 
     // Sort nodes to ensure proper z-index (drawn from bottom to top)
     nodes.sort((a, b) => {
-      const getLayer = n => n.id === 'hub-global' ? 3 : (n.type === 'hub' ? 2 : 1);
+      const getLayer = n => n.id === 'hub-global' ? 3 : (n.type === 'pillar' || n.type === 'hub' ? 2 : 1);
       return getLayer(a) - getLayer(b);
     });
+
+    // Color resolver matching each of the 4 main pillars and their children
+    function getNodeColor(n) {
+      if (n.id === 'hub-global' || n.type === 'hub') return "#38bdf8"; // Bright Sky Blue
+      if (n.id === 'pillar-articles' || n.type === 'article') return "#60a5fa"; // Electric Blue
+      if (n.id === 'pillar-tools' || n.type === 'site-tool' || n.type === 'project') return "#a855f7"; // Vivid Purple
+      if (n.id === 'pillar-interests' || n.type === 'interest' || n.type === 'topic') return "#34d399"; // Mint Emerald
+      if (n.id === 'pillar-resume' || n.type === 'resume-item' || n.type === 'theme') return "#f59e0b"; // Warm Amber
+      return "#818cf8";
+    }
 
     // Update & draw nodes
     nodes.forEach(n => {
@@ -726,19 +771,9 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       // Get current theme from documentElement to decide colors dynamically
       const isDark = document.documentElement.getAttribute("data-theme") === "dark";
       const textColorPrimary = isDark ? "#ffffff" : "#0f172a";
-      const textColorSecondary = isDark ? "#94a3b8" : "#475569";
+      const textColorSecondary = isDark ? "#cbd5e1" : "#334155";
 
-      // Type-specific color palette for visual hierarchy and clarity
-      const typeColors = {
-        hub: "#38bdf8",       // Bright Sky Blue (central garden hub)
-        article: "#60a5fa",   // Slate Blue (in-depth essays)
-        topic: "#34d399",     // Mint Emerald (pillar curiosity topics)
-        theme: "#f59e0b",     // Warm Amber (philosophical themes)
-        project: "#a855f7",   // Purple (tools & systems)
-        software: "#ec4899",  // Pink (library tools)
-        library: "#ec4899"
-      };
-      const nodeColor = typeColors[n.type] || (n.id === 'hub-global' ? "#38bdf8" : "#818cf8");
+      const nodeColor = getNodeColor(n);
 
       if (isActive || isSearchHighlight) {
         ctx.fillStyle = textColorPrimary;
@@ -761,18 +796,18 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
 
       // Category expansion indicator ring
       if (n.expanded) {
-        ctx.strokeStyle = "#38bdf8";
+        ctx.strokeStyle = nodeColor;
         ctx.lineWidth = 2.5;
         ctx.beginPath();
         ctx.arc(n.x, n.y, r + 5, 0, Math.PI * 2);
         ctx.stroke();
       } else if (n.displayCount > 0) {
-        // Subtle dotted indicator ring for categories with hidden articles
-        ctx.strokeStyle = "rgba(56, 189, 248, 0.45)";
-        ctx.lineWidth = 1.5;
+        // Subtle dotted indicator ring for main pillars with expandable child nodes
+        ctx.strokeStyle = "rgba(56, 189, 248, 0.55)";
+        ctx.lineWidth = 1.6;
         ctx.setLineDash([3, 4]);
         ctx.beginPath();
-        ctx.arc(n.x, n.y, r + 4, 0, Math.PI * 2);
+        ctx.arc(n.x, n.y, r + 4.5, 0, Math.PI * 2);
         ctx.stroke();
         ctx.setLineDash([]);
       }
@@ -796,12 +831,15 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
         } else {
           ctx.shadowBlur = 0;
         }
+      } else if (n.isFocused || n.type === 'hub') {
+        ctx.fillStyle = textColorPrimary;
+        ctx.font = "bold 15px Outfit, system-ui, sans-serif";
+      } else if (n.type === 'pillar') {
+        ctx.fillStyle = textColorPrimary;
+        ctx.font = "bold 13.5px Outfit, system-ui, sans-serif";
       } else if (isNeighbor) {
         ctx.fillStyle = nodeColor;
         ctx.font = "600 13px Outfit, system-ui, sans-serif";
-      } else if (n.isFocused || n.type === 'hub') {
-        ctx.fillStyle = textColorPrimary;
-        ctx.font = "bold 14px Outfit, system-ui, sans-serif";
       } else {
         ctx.fillStyle = textColorSecondary;
         ctx.font = "12px Outfit, system-ui, sans-serif";
