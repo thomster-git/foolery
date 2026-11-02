@@ -305,9 +305,9 @@ export default class GraphBuilder {
             });
         });
 
-        // Exclude library items from the knowledge graph for the time being
-        const libraryTypes = new Set(["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "tv-show"]);
-        const publishedContent = content.filter(obj => obj.metadata?.status !== "draft" && !libraryTypes.has(obj.metadata?.type));
+        // Exclude library items and legacy topic/theme stubs from the knowledge graph
+        const excludedTypes = new Set(["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "tv-show", "topic", "theme"]);
+        const publishedContent = content.filter(obj => obj.metadata?.status !== "draft" && !excludedTypes.has(obj.metadata?.type));
         const publishedIds = new Set(publishedContent.map(obj => obj.metadata.id));
 
         publishedContent.forEach(object => {

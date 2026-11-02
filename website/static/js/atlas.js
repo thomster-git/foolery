@@ -35,7 +35,7 @@ async function initGraphViewer() {
   const focusTag = getValidAttr("data-focus-tag");
 
   try {
-    const res = await fetch("/graph.json");
+    const res = await fetch("/graph.json?v=1.5.2", { cache: "no-store" });
     if (!res.ok) return;
     const graphData = await res.json();
 
