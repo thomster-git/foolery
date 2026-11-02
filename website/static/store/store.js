@@ -846,7 +846,7 @@ if (orderForm) {
       .catch(function(err) {
         console.error('Submit error:', err);
         status.style.color = 'var(--red)';
-        status.textContent = 'Error sending request via webhook. Please contact jonathan@thomsfoolery.com directly.';
+        status.textContent = 'Error sending request via webhook. Please contact social@thomsfoolery.com directly.';
         btn.disabled = false;
         btn.textContent = 'Retry Order Request';
       });
