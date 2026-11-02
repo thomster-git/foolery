@@ -1,336 +1,684 @@
 /**
  * store.js — EtchCentric Creations Laser Store
  *
- * Architecture:
- *  1. Landing: Category selector (Bottle Openers / Coasters / Commissions)
- *  2. Category view: All product variants in that category with thumbnails
- *  3. Lightbox: Swipeable full-screen gallery for each product's photos
- *  4. General Gallery: Browse ALL project photos
- *  5. Order cart + backend webhook request form
+ * Studio Photography & Precision Laser Craftsmanship by Jonathan Thoms
+ *
+ * Three-Tier Pricing Architecture:
+ *  - Tier 1: Zero-Prep Stock Vectors & Craft Fair Clearance Slate ($12 single / $35 set of 4)
+ *  - Tier 2: Bespoke Customer Photo Slate ($15 single / $45 set of 4 shared / $55 set of 4 unique)
+ *  - Tier 3: Custom Acacia + Marble Coasters ($16 single / $48 set of 4 shared / $54 set of 4 unique)
+ *
+ * Features:
+ *  - Real-time piece-level inventory deduplication (140 sq slate, 132 circ slate, 37 circ marble, 34 sq marble)
+ *  - Interactive pack size (Set of 4 vs Single) and engraving tier selectors
+ *  - Swipeable full-screen lightbox gallery
+ *  - Request cart with quantity controls and Discord webhook submission
  */
 
 (function() {
-// ─── DATA ─────────────────────────────────────────────────────────────────────
+// ─── PRODUCT & TIER CATALOG ─────────────────────────────────────────────────
 
-var categories = [
+var products = [
   {
-    id: 'openers',
-    label: 'Bottle Openers',
-    emoji: '🍺',
-    desc: 'Custom engraved bottle openers. Perfect for gifts, weddings, or stocking up the bar.',
-    coverImg: '/store/images/bottle-opener/opener_handle_01.jpg'
-  },
-  {
-    id: 'coasters',
-    label: 'Coasters',
-    emoji: '🪵',
-    desc: 'Slate, acacia granite, and pine wood coasters engraved to order. Sets of 4.',
-    coverImg: '/store/images/coasters/coaster_slate_circle_01.jpg'
-  },
-  {
-    id: 'commission',
-    label: 'Custom Commissions',
-    emoji: '✉️',
-    desc: 'Send in your own item — Yeti mugs, knives, tech, wood panels. Price by quote.',
-    coverImg: '/store/images/bottle-opener/opener_handle_03.jpg'
-  }
-];
-
-var inventory = [
-  // ── BOTTLE OPENERS ──────────────────────────────────────────────────────────
-  {
-    id: 'b1', category: 'openers', type: 'blank',
-    name: 'Bottle Opener — Handle Style',
-    tagline: 'Classic engraved wood handle opener',
-    price: 15, qty: 10,
-    desc: 'Solid oak handle bottle opener with stainless head. Engrave any name, quote, or design. Great as personalized gifts or event favours.',
-    img: '/store/images/bottle-opener/opener_handle_01.jpg',
+    id: 'c_slate_square',
+    material: 'slate',
+    shape: 'square',
+    name: 'Slate Coasters — Square',
+    tagline: 'Natural black slate · Chiseled square edge',
+    desc: 'Hand-finished natural cleft slate coasters. Laser engraving reveals a crisp, high-contrast frosted white against dark charcoal stone. Cork-backed for furniture protection.',
+    totalPieces: 140,
+    img: '/store/images/coasters/slate/square/slate-square-blank.jpg',
     gallery: [
-      '/store/images/bottle-opener/opener_handle_01.jpg',
-      '/store/images/bottle-opener/opener_handle_02.jpg',
-      '/store/images/bottle-opener/opener_handle_03.jpg',
-      '/store/images/bottle-opener/opener_handle_04.jpg',
-      '/store/images/bottle-opener/opener_handle_05.jpg'
-    ]
-  },
-  {
-    id: 'b2', category: 'openers', type: 'blank',
-    name: 'Bottle Opener — Circle Magnet',
-    tagline: 'Magnetic fridge-mount circle opener',
-    price: 10, qty: 15,
-    desc: 'Compact wooden circle bottle opener with a strong magnet back. Sticks right to your fridge. Engrave a name, logo, or short message.',
-    img: '/store/images/bottle-opener/opener_circle_magnet_01.jpg',
-    gallery: [
-      '/store/images/bottle-opener/opener_circle_magnet_01.jpg'
-    ]
-  },
-
-  // ── COASTERS ────────────────────────────────────────────────────────────────
-  {
-    id: 'c1', category: 'coasters', type: 'blank',
-    name: 'Slate Coasters — Circle (Set of 4)',
-    tagline: 'Black slate, bright white engrave',
-    price: 30, qty: 8,
-    desc: 'Natural slate stone circle coasters. Laser engraving burns to a crisp frosted white against the dark stone. Cork-backed for surface protection.',
-    img: '/store/images/coasters/coaster_slate_circle_01.jpg',
-    gallery: [
-      '/store/images/coasters/coaster_slate_circle_01.jpg',
-      '/store/images/coasters/coaster_slate_circle_02.jpg',
-      '/store/images/coasters/coaster_slate_circle_05.jpg',
-      '/store/images/coasters/coaster_slate_circle_06.jpg',
-      '/store/images/coasters/coaster_slate_circle_07.jpg',
-      '/store/images/coasters/coaster_slate_circle_08.jpg',
-      '/store/images/coasters/coaster_slate_circle_09.jpg',
-      '/store/images/coasters/coaster_slate_circle_extra_01.jpg',
-      '/store/images/coasters/coaster_slate_circle_extra_02.jpg',
-      '/store/images/coasters/coaster_slate_circle_extra_03.jpg'
-    ]
-  },
-  {
-    id: 'c2', category: 'coasters', type: 'blank',
-    name: 'Slate Coasters — Square (Set of 4)',
-    tagline: 'Black slate, bright white engrave',
-    price: 30, qty: 8,
-    desc: 'Natural slate stone square coasters. Same high-contrast frosted white engraving as the circles, in a clean square format. Cork-backed.',
-    img: '/store/images/coasters/coaster_slate_square_08.jpg',
-    gallery: [
-      '/store/images/coasters/coaster_slate_square_08.jpg'
-    ]
-  },
-  {
-    id: 'c3', category: 'coasters', type: 'blank',
-    name: 'Acacia & Granite Coasters (Set of 4)',
-    tagline: 'Half warm acacia, half dark granite',
-    price: 45, qty: 5,
-    desc: 'Elegant two-material coasters — one half warm acacia wood, one half dark granite. Available in circle and square. Each piece is naturally unique. Engraves beautifully on both halves.',
-    img: '/store/images/coasters/coaster_acacia_granite_circle_01.jpg',
-    gallery: [
-      '/store/images/coasters/coaster_acacia_granite_circle_01.jpg',
-      '/store/images/coasters/coaster_acacia_granite_square_03.jpg'
-    ]
-  },
-  {
-    id: 'c5', category: 'coasters', type: 'blank',
-    name: 'Pine Wood Coasters — Square (Set of 4)',
-    tagline: 'Natural light pine, warm engrave',
-    price: 25, qty: 10,
-    desc: 'Warm natural pine wood square coasters. Engraving produces a rich dark-brown contrast against the light wood grain. Great for rustic, cabin, or novelty aesthetics.',
-    img: '/store/images/coasters/coaster_pine_square_01.jpg',
-    gallery: [
-      '/store/images/coasters/coaster_pine_square_01.jpg',
-      '/store/images/coasters/coaster_pine_square_02.jpg',
-      '/store/images/coasters/coaster_pine_square_03.jpg',
-      '/store/images/coasters/coaster_pine_square_04.jpg'
-    ]
-  },
-
-  // ── COMMISSIONS ─────────────────────────────────────────────────────────────
-  {
-    id: 'x1', category: 'commission', type: 'commission',
-    name: 'Send-In Item — Custom Quote',
-    tagline: 'Engrave your own item',
-    price: 0, qty: 999,
-    desc: 'Mail me your Yeti tumbler, pocket knife, wood panel, acrylic piece, or whatever you have in mind. Price is quoted after reviewing your item and design. Contact first.',
-    img: '/store/images/commissions/commission_01.jpg',
-    gallery: [
-      '/store/images/commissions/commission_01.jpg',
-      '/store/images/commissions/commission_02.jpg',
-      '/store/images/commissions/commission_03.jpg',
-      '/store/images/commissions/commission_04.jpg',
-      '/store/images/commissions/commission_05.jpg'
-    ]
-  }
-];
-
-// Build a flat array of all real project photos for the general gallery
-var allGalleryPhotos = [];
-inventory.forEach(function(item) {
-  if (item.type !== 'blank') {
-    item.gallery.forEach(function(src) {
-      if (!src.includes('placeholder') && !allGalleryPhotos.find(p => p.src === src)) {
-        allGalleryPhotos.push({ src: src, caption: item.name + ' — ' + item.tagline });
+      { src: '/store/images/coasters/slate/square/slate-square-blank.jpg', caption: 'Square Slate Coaster — Blank natural stone' },
+      { src: '/store/images/coasters/slate/square/slate-square-set.jpg', caption: 'Square Slate Coasters — Complete set of 4' },
+      { src: '/store/images/coasters/slate/square/slate-square-nativity.jpg', caption: 'Fine-Detail Engraving — Nativity scene on square slate' },
+      { src: '/store/images/coasters/slate/square/slate-square-puppy.jpg', caption: 'Bespoke Customer Photo — Pet portrait engraving' },
+      { src: '/store/images/coasters/slate/square/slate-square-santa.jpg', caption: 'High-Contrast Engraving — Santa Claus portrait' }
+    ],
+    packTypes: {
+      set4: {
+        label: 'Set of 4',
+        pieces: 4,
+        badge: 'Save up to $15',
+        options: {
+          stock: {
+            tier: 'Tier 1',
+            label: 'Stock Vector / Classic Design',
+            desc: 'Pre-made sports logos, holiday artwork, geometric vectors, or monograms',
+            price: 35.00,
+            unitNote: '$8.75 / coaster · Save $13 vs singles'
+          },
+          photo1: {
+            tier: 'Tier 2',
+            label: 'Custom Photo (1 Shared Across Set)',
+            desc: 'Bespoke customer pet or family photo dithered for high-DPI stone pass',
+            price: 45.00,
+            unitNote: '$11.25 / coaster · Save $15 vs singles'
+          },
+          photo4: {
+            tier: 'Tier 2',
+            label: 'Custom Photos (4 Unique Photos)',
+            desc: '4 different customer photos edited, background-removed & engraved',
+            price: 55.00,
+            unitNote: '$13.75 / coaster'
+          }
+        }
+      },
+      single: {
+        label: 'Single (1x)',
+        pieces: 1,
+        badge: 'Individual',
+        options: {
+          stock: {
+            tier: 'Tier 1',
+            label: 'Stock Vector / Classic Design',
+            desc: 'Zero-prep sports logos, holiday art, or clean text graphics',
+            price: 12.00,
+            unitNote: 'per individual coaster'
+          },
+          photo: {
+            tier: 'Tier 2',
+            label: 'Bespoke Customer Photo',
+            desc: 'Customer photo conversion with background removal & high-DPI pass',
+            price: 15.00,
+            unitNote: 'per individual coaster'
+          }
+        }
       }
-    });
+    }
+  },
+  {
+    id: 'c_slate_circle',
+    material: 'slate',
+    shape: 'circle',
+    name: 'Slate Coasters — Circle',
+    tagline: 'Natural black slate · Chiseled round edge',
+    desc: 'Circular natural slate stone with organic chiseled edges. Burns to an elegant bright white frost. Fitted with protective cork backing.',
+    totalPieces: 132,
+    img: '/store/images/coasters/slate/circle/slate-circle-blank.jpg',
+    gallery: [
+      { src: '/store/images/coasters/slate/circle/slate-circle-blank.jpg', caption: 'Circle Slate Coaster — Blank natural stone' },
+      { src: '/store/images/coasters/slate/circle/slate-circle-santa.jpg', caption: 'High-Contrast Engraving — Santa Claus on circle slate' },
+      { src: '/store/images/coasters/slate/circle/slate-circle-sleigh.jpg', caption: 'Fine-Detail Engraving — Santa & Reindeer night flight' }
+    ],
+    packTypes: {
+      set4: {
+        label: 'Set of 4',
+        pieces: 4,
+        badge: 'Save up to $15',
+        options: {
+          stock: {
+            tier: 'Tier 1',
+            label: 'Stock Vector / Classic Design',
+            desc: 'Pre-made sports logos, holiday artwork, geometric vectors, or monograms',
+            price: 35.00,
+            unitNote: '$8.75 / coaster · Save $13 vs singles'
+          },
+          photo1: {
+            tier: 'Tier 2',
+            label: 'Custom Photo (1 Shared Across Set)',
+            desc: 'Bespoke customer pet or family photo dithered for high-DPI stone pass',
+            price: 45.00,
+            unitNote: '$11.25 / coaster · Save $15 vs singles'
+          },
+          photo4: {
+            tier: 'Tier 2',
+            label: 'Custom Photos (4 Unique Photos)',
+            desc: '4 different customer photos edited, background-removed & engraved',
+            price: 55.00,
+            unitNote: '$13.75 / coaster'
+          }
+        }
+      },
+      single: {
+        label: 'Single (1x)',
+        pieces: 1,
+        badge: 'Individual',
+        options: {
+          stock: {
+            tier: 'Tier 1',
+            label: 'Stock Vector / Classic Design',
+            desc: 'Zero-prep sports logos, holiday art, or clean text graphics',
+            price: 12.00,
+            unitNote: 'per individual coaster'
+          },
+          photo: {
+            tier: 'Tier 2',
+            label: 'Bespoke Customer Photo',
+            desc: 'Customer photo conversion with background removal & high-DPI pass',
+            price: 15.00,
+            unitNote: 'per individual coaster'
+          }
+        }
+      }
+    }
+  },
+  {
+    id: 'c_marble_circle',
+    material: 'marble',
+    shape: 'circle',
+    name: 'Marble & Acacia Coasters — Circle',
+    tagline: 'Dual-material · Natural white marble & acacia hardwood',
+    desc: 'Modern circular profile pairing cool natural white marble with rich, warm acacia wood. Laser burns dark into the hardwood section for a high-end gift finish.',
+    totalPieces: 37,
+    img: '/store/images/coasters/marble+acacia/circle/marble-acacia-circle-blank.jpg',
+    gallery: [
+      { src: '/store/images/coasters/marble+acacia/circle/marble-acacia-circle-blank.jpg', caption: 'Circle Marble & Acacia Coaster — Blank dual-material' }
+    ],
+    packTypes: {
+      set4: {
+        label: 'Set of 4',
+        pieces: 4,
+        badge: 'Save $16',
+        options: {
+          shared: {
+            tier: 'Tier 3',
+            label: 'Shared Monogram / Family Crest',
+            desc: 'Matching family crest, initials, or coordinates engraved across all 4',
+            price: 48.00,
+            unitNote: '$12.00 / coaster · Save $16 vs singles'
+          },
+          unique4: {
+            tier: 'Tier 3',
+            label: '4 Unique Names / Individual Styles',
+            desc: 'Different family member names, titles, or personalized text per coaster',
+            price: 54.00,
+            unitNote: '$13.50 / coaster'
+          }
+        }
+      },
+      single: {
+        label: 'Single (1x)',
+        pieces: 1,
+        badge: 'Individual',
+        options: {
+          custom: {
+            tier: 'Tier 3',
+            label: 'Custom Engraved Design',
+            desc: 'Precision laser-etched hardwood monogram or graphic',
+            price: 16.00,
+            unitNote: 'per individual coaster'
+          }
+        }
+      }
+    }
+  },
+  {
+    id: 'c_marble_square',
+    material: 'marble',
+    shape: 'square',
+    name: 'Marble & Acacia Coasters — Square',
+    tagline: 'Dual-material · Natural white marble & acacia hardwood',
+    desc: 'Geometric square coasters blending smooth natural white marble with rich acacia wood grain. Each coaster features unique stone veining and natural timber variations.',
+    totalPieces: 34,
+    img: '/store/images/coasters/marble+acacia/square/marble-acacia-square-blank.jpg',
+    gallery: [
+      { src: '/store/images/coasters/marble+acacia/square/marble-acacia-square-blank.jpg', caption: 'Square Marble & Acacia Coaster — Blank dual-material' }
+    ],
+    packTypes: {
+      set4: {
+        label: 'Set of 4',
+        pieces: 4,
+        badge: 'Save $16',
+        options: {
+          shared: {
+            tier: 'Tier 3',
+            label: 'Shared Monogram / Family Crest',
+            desc: 'Matching family crest, initials, or coordinates engraved across all 4',
+            price: 48.00,
+            unitNote: '$12.00 / coaster · Save $16 vs singles'
+          },
+          unique4: {
+            tier: 'Tier 3',
+            label: '4 Unique Names / Individual Styles',
+            desc: 'Different family member names, titles, or personalized text per coaster',
+            price: 54.00,
+            unitNote: '$13.50 / coaster'
+          }
+        }
+      },
+      single: {
+        label: 'Single (1x)',
+        pieces: 1,
+        badge: 'Individual',
+        options: {
+          custom: {
+            tier: 'Tier 3',
+            label: 'Custom Engraved Design',
+            desc: 'Precision laser-etched hardwood monogram or graphic',
+            price: 16.00,
+            unitNote: 'per individual coaster'
+          }
+        }
+      }
+    }
   }
-});
-
-var samples = [
-  '/store/images/samples/FB_IMG_1718226965411.jpg',
-  '/store/images/samples/PXL_20240613_230009538.jpg',
-  '/store/images/samples/PXL_20240614_151115728.jpg',
-  '/store/images/samples/PXL_20240618_181404706.jpg',
-  '/store/images/samples/PXL_20240618_211002674.jpg',
-  '/store/images/samples/PXL_20240620_004749430.jpg',
-  '/store/images/samples/PXL_20240626_185711951.jpg',
-  '/store/images/samples/PXL_20240704_032500587.MP.jpg',
-  '/store/images/samples/PXL_20240704_034648776.jpg',
-  '/store/images/samples/PXL_20240704_145805455.jpg',
-  '/store/images/samples/PXL_20240704_183007489.jpg',
-  '/store/images/samples/PXL_20240706_033305751.jpg',
-  '/store/images/samples/PXL_20240715_140159328.jpg',
-  '/store/images/samples/PXL_20240715_141249717.jpg',
-  '/store/images/samples/PXL_20240724_164140372.jpg',
-  '/store/images/samples/original_1d5d8fb3-16ad-43cc-bcbe-455c11976fd4_PXL_20240620_185504545.MP.jpg'
 ];
-samples.forEach(function(src) {
-  if (!allGalleryPhotos.find(p => p.src === src)) {
-    allGalleryPhotos.push({ src: src, caption: 'Custom Commission / Portfolio Example' });
-  }
-});
 
-// ─── STATE ────────────────────────────────────────────────────────────────────
+// All Gallery Photos for "Browse All Work" Lightbox
+var allGalleryPhotos = [
+  { src: '/store/images/coasters/slate/square/slate-square-blank.jpg', caption: 'Square Slate Coaster — Blank natural stone' },
+  { src: '/store/images/coasters/slate/square/slate-square-set.jpg', caption: 'Square Slate Coasters — Complete set of 4' },
+  { src: '/store/images/coasters/slate/square/slate-square-nativity.jpg', caption: 'Detailed Nativity Scene — High-contrast laser etch on slate' },
+  { src: '/store/images/coasters/slate/square/slate-square-puppy.jpg', caption: 'Bespoke Customer Photo — Pet portrait engraving' },
+  { src: '/store/images/coasters/slate/square/slate-square-santa.jpg', caption: 'Santa Claus Portrait — Detailed facial tone engraving on slate' },
+  { src: '/store/images/coasters/slate/circle/slate-circle-blank.jpg', caption: 'Circle Slate Coaster — Blank natural stone' },
+  { src: '/store/images/coasters/slate/circle/slate-circle-santa.jpg', caption: 'Circle Slate — Detailed Santa Claus engraving' },
+  { src: '/store/images/coasters/slate/circle/slate-circle-sleigh.jpg', caption: 'Circle Slate — Santa & Reindeer night flight' },
+  { src: '/store/images/coasters/marble+acacia/circle/marble-acacia-circle-blank.jpg', caption: 'Circle Marble & Acacia Coaster — Premium dual-tone blank' },
+  { src: '/store/images/coasters/marble+acacia/square/marble-acacia-square-blank.jpg', caption: 'Square Marble & Acacia Coaster — Premium dual-tone blank' },
+  { src: '/store/images/coasters/wood/square/wood-square-puppy.jpg', caption: 'Pine Wood Coaster — Holiday puppy engraving sample' },
+  { src: '/store/images/archive/bottle-opener/opener_handle_01.jpg', caption: 'Oak Handle Bottle Opener — Laser-engraved portfolio sample' },
+  { src: '/store/images/archive/bottle-opener/opener_circle_magnet_01.jpg', caption: 'Magnetic Circle Bottle Opener — Fridge mount sample' },
+  { src: '/store/images/archive/commissions/commission_01.jpg', caption: 'Custom Send-In Item Commission — Etched stainless drinkware' },
+  { src: '/store/images/archive/commissions/commission_02.jpg', caption: 'Custom Send-In Item Commission — Laser branding' },
+  { src: '/store/images/archive/samples/PXL_20240704_183007489.jpg', caption: 'Detailed Vector Laser Artwork — Multi-contrast craft' },
+  { src: '/store/images/archive/samples/PXL_20240620_004749430.jpg', caption: 'Hardwood and slate material testing' }
+];
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+var currentFilter = 'all';
+
+var cardState = {
+  c_slate_square: { pack: 'set4', option: 'stock' },
+  c_slate_circle: { pack: 'set4', option: 'stock' },
+  c_marble_circle: { pack: 'set4', option: 'shared' },
+  c_marble_square: { pack: 'set4', option: 'shared' }
+};
+
 var cart = {};
 try {
-  var saved = localStorage.getItem('etchcentric_cart');
+  var saved = localStorage.getItem('etchcentric_cart_v3');
   if (saved) cart = JSON.parse(saved);
 } catch(e) {}
 
-var currentCategory = null;
 var lightboxPhotos = [];
 var lightboxIndex = 0;
 
-// ─── CATEGORY LANDING ─────────────────────────────────────────────────────────
-function renderLanding() {
-  currentCategory = null;
-  var container = document.getElementById('catalog');
-  container.innerHTML = '';
-
-  // Back button hidden
-  var backBtn = document.getElementById('back-btn');
-  if (backBtn) backBtn.style.display = 'none';
-
-  // Page title reset
-  var pageTitle = document.getElementById('page-category-title');
-  if (pageTitle) {
-    pageTitle.textContent = 'What are you looking for?';
-    pageTitle.style.display = 'block';
-  }
-
-  // Hide filter tabs, show landing grid
-  var tabs = document.getElementById('filter-tabs');
-  if (tabs) tabs.style.display = 'none';
-
-  // Gallery button visible on landing
-  var galleryBtn = document.getElementById('gallery-all-btn');
-  if (galleryBtn) galleryBtn.style.display = 'inline-flex';
-
-  categories.forEach(function(cat) {
-    var card = document.createElement('div');
-    card.className = 'category-card';
-    card.innerHTML =
-      '<div class="category-cover" style="background-image:url(\'' + cat.coverImg + '\')"></div>' +
-      '<div class="category-body">' +
-        '<div class="category-emoji">' + cat.emoji + '</div>' +
-        '<div class="category-name">' + cat.label + '</div>' +
-        '<div class="category-desc">' + cat.desc + '</div>' +
-        '<button class="category-btn">Browse ' + cat.label + ' →</button>' +
-      '</div>';
-    card.addEventListener('click', function() {
-      showCategory(cat.id);
-    });
-    container.appendChild(card);
+// ─── INVENTORY COMPUTATIONS ─────────────────────────────────────────────────
+function getUsedPieces(productId) {
+  var used = 0;
+  Object.keys(cart).forEach(function(cartKey) {
+    if (cartKey.indexOf(productId + '__') === 0) {
+      var parts = cartKey.split('__');
+      var packType = parts[1]; // 'set4' or 'single'
+      var piecesPerItem = packType === 'set4' ? 4 : 1;
+      used += piecesPerItem * cart[cartKey];
+    }
   });
-
-  // Add a dedicated Gallery card
-  var galleryCard = document.createElement('div');
-  galleryCard.className = 'category-card';
-  galleryCard.innerHTML =
-    '<div class="category-cover" style="background-image:url(\'/store/images/samples/PXL_20240704_183007489.jpg\')"></div>' +
-    '<div class="category-body">' +
-      '<div class="category-emoji">🖼️</div>' +
-      '<div class="category-name">Full Gallery</div>' +
-      '<div class="category-desc">Browse all project photos, commissions, and materials in one place.</div>' +
-      '<button class="category-btn">Open Gallery →</button>' +
-    '</div>';
-  galleryCard.addEventListener('click', openGeneralGallery);
-  container.appendChild(galleryCard);
+  return used;
 }
 
-// ─── CATEGORY VIEW ────────────────────────────────────────────────────────────
-function showCategory(catId) {
-  currentCategory = catId;
-  var cat = categories.find(function(c) { return c.id === catId; });
+function getRemainingPieces(productId) {
+  var prod = products.find(function(p) { return p.id === productId; });
+  if (!prod) return 0;
+  return Math.max(0, prod.totalPieces - getUsedPieces(productId));
+}
 
-  var backBtn = document.getElementById('back-btn');
-  if (backBtn) {
-    backBtn.style.display = 'inline-flex';
-    backBtn.textContent = '← All Categories';
-  }
-
-  var pageTitle = document.getElementById('page-category-title');
-  if (pageTitle) {
-    pageTitle.textContent = cat.emoji + ' ' + cat.label;
-  }
-
-  var galleryBtn = document.getElementById('gallery-all-btn');
-  if (galleryBtn) galleryBtn.style.display = 'none';
-
+// ─── CATALOG RENDERING ──────────────────────────────────────────────────────
+function renderCatalog() {
   var container = document.getElementById('catalog');
+  if (!container) return;
   container.innerHTML = '';
 
-  var filtered = inventory.filter(function(i) { return i.category === catId; });
+  var filtered = products.filter(function(p) {
+    if (currentFilter === 'all') return true;
+    return p.material === currentFilter;
+  });
 
   if (filtered.length === 0) {
-    container.innerHTML = '<p style="color:var(--text-light); grid-column:1/-1; text-align:center; padding:2rem;">No items in this category currently. Check back soon!</p>';
+    container.innerHTML = '<p style="color:var(--text-light); grid-column:1/-1; text-align:center; padding:3rem;">No products match this filter.</p>';
     return;
   }
 
   filtered.forEach(function(item) {
-    var inCart = cart[item.id] || 0;
-    var remaining = item.qty - inCart;
-    var priceStr = item.price > 0 ? '$' + item.price.toFixed(2) : 'Custom Quote';
-    var stockStr = item.qty === 999 ? 'Custom order' : remaining + ' sets in stock';
-    var btnLabel = remaining <= 0 ? 'Out of Stock' : 'Add to Request';
-    var btnDisabled = remaining <= 0 ? 'disabled' : '';
-    var galleryCount = item.gallery.filter(function(s) { return !s.includes('placeholder'); }).length;
-    var photoBadge = galleryCount > 0 ? '<span class="photo-badge">📷 ' + galleryCount + ' photo' + (galleryCount !== 1 ? 's' : '') + '</span>' : '';
+    var state = cardState[item.id] || { pack: 'set4', option: 'stock' };
+    var currentPackType = state.pack;
+    var packConfig = item.packTypes[currentPackType];
+
+    // Ensure valid option for current pack type
+    if (!packConfig.options[state.option]) {
+      state.option = Object.keys(packConfig.options)[0];
+    }
+    var currentOptKey = state.option;
+    var currentOpt = packConfig.options[currentOptKey];
+
+    var remaining = getRemainingPieces(item.id);
+    var piecesNeeded = packConfig.pieces;
+
+    // Stock label logic
+    var maxSetsPossible = Math.floor(remaining / 4);
+    var stockLabel = '';
+    var stockDotClass = '';
+    var btnDisabled = false;
+    var btnLabel = 'Add ' + packConfig.label + ' to Request ($' + currentOpt.price.toFixed(2) + ')';
+
+    if (remaining <= 0) {
+      stockLabel = 'Out of stock';
+      stockDotClass = 'out';
+      btnDisabled = true;
+      btnLabel = 'Out of Stock';
+    } else if (currentPackType === 'set4' && remaining < 4) {
+      stockLabel = remaining + ' coaster' + (remaining === 1 ? '' : 's') + ' left — singles only';
+      stockDotClass = 'low';
+      btnDisabled = true;
+      btnLabel = 'Set of 4 Unavailable (' + remaining + ' left)';
+    } else if (currentPackType === 'set4') {
+      stockLabel = remaining + ' coasters in stock (up to ' + maxSetsPossible + ' sets)';
+      stockDotClass = remaining < 16 ? 'low' : '';
+    } else {
+      stockLabel = remaining + ' coasters in stock';
+      stockDotClass = remaining < 10 ? 'low' : '';
+    }
 
     var card = document.createElement('div');
     card.className = 'item-card';
+    card.id = 'card-' + item.id;
+
+    var galleryCount = item.gallery.length;
+    var photoBadge = galleryCount > 0 ? '<span class="photo-badge">📷 ' + galleryCount + ' photo' + (galleryCount !== 1 ? 's' : '') + '</span>' : '';
+
+    // Render design option buttons
+    var designOptsHtml = '';
+    Object.keys(packConfig.options).forEach(function(optKey) {
+      var opt = packConfig.options[optKey];
+      var isActive = optKey === currentOptKey;
+      designOptsHtml +=
+        '<button type="button" class="design-opt-btn ' + (isActive ? 'active' : '') + '" data-opt="' + optKey + '">' +
+          '<div>' +
+            '<div class="design-opt-title">' + opt.label + '</div>' +
+            '<div class="design-opt-desc">' + opt.desc + '</div>' +
+          '</div>' +
+          '<div class="design-opt-price">$' + opt.price.toFixed(2) + '</div>' +
+        '</button>';
+    });
+
     card.innerHTML =
-      '<div class="item-img-wrap">' +
-        '<img src="' + item.img + '" class="item-img" loading="lazy" width="400" height="400" title="Click to view gallery">' +
+      '<div class="item-img-wrap" title="Click to view photo gallery">' +
+        '<img src="' + item.img + '" class="item-img" loading="lazy" width="400" height="400" alt="' + item.name + '">' +
         photoBadge +
-        '<div class="img-overlay"><span>View Examples →</span></div>' +
+        '<div class="img-overlay"><span>View Gallery (' + galleryCount + ') →</span></div>' +
       '</div>' +
       '<div class="item-content">' +
         '<div class="item-tagline">' + item.tagline + '</div>' +
-        '<div class="item-header">' +
-          '<div class="item-title">' + item.name + '</div>' +
-          '<div class="item-price">' + priceStr + '</div>' +
-        '</div>' +
+        '<div class="item-title">' + item.name + '</div>' +
         '<p class="item-desc">' + item.desc + '</p>' +
-        '<div class="item-qty">' + stockStr + '</div>' +
-        '<button class="add-btn" ' + btnDisabled + '>' + btnLabel + '</button>' +
+
+        // Pack Selector Segment
+        '<div class="option-group-label">1. Choose Pack Size:</div>' +
+        '<div class="pack-selector">' +
+          '<button type="button" class="pack-opt ' + (currentPackType === 'set4' ? 'active' : '') + '" data-pack="set4">' +
+            '<span>Set of 4</span>' +
+            '<span class="pack-badge">' + item.packTypes.set4.badge + '</span>' +
+          '</button>' +
+          '<button type="button" class="pack-opt ' + (currentPackType === 'single' ? 'active' : '') + '" data-pack="single">' +
+            '<span>Single (1x)</span>' +
+            '<span class="pack-badge" style="color:var(--text-light); font-weight:normal;">Individual</span>' +
+          '</button>' +
+        '</div>' +
+
+        // Design Options Segment
+        '<div class="option-group-label">2. Personalization & Engraving Tier:</div>' +
+        '<div class="design-opts-wrap">' +
+          designOptsHtml +
+        '</div>' +
+
+        // Price Row
+        '<div class="item-pricing-row">' +
+          '<div class="item-main-price">$' + currentOpt.price.toFixed(2) + ' <span style="font-size:0.75rem; font-weight:600; color:var(--text-light);">CAD</span></div>' +
+          '<div class="item-unit-note">' + currentOpt.unitNote + '</div>' +
+        '</div>' +
+
+        // Stock Badge
+        '<div class="stock-badge">' +
+          '<span class="stock-dot ' + stockDotClass + '"></span>' +
+          '<span>' + stockLabel + '</span>' +
+        '</div>' +
+
+        // Add to Request Button
+        '<button class="add-btn" ' + (btnDisabled ? 'disabled' : '') + '>' + btnLabel + '</button>' +
       '</div>';
 
+    // Gallery Lightbox trigger
     card.querySelector('.item-img-wrap').addEventListener('click', function() {
-      var mappedGallery = item.gallery
-        .filter(function(s) { return !s.includes('placeholder'); })
-        .map(function(s) { return { src: s, caption: item.name + ' — ' + item.tagline }; });
-      openLightbox(mappedGallery, 0, item.name);
+      openLightbox(item.gallery, 0, item.name);
     });
-    card.querySelector('.add-btn').addEventListener('click', function(e) { addToCart(item.id, e.target); });
+
+    // Pack Selector buttons
+    card.querySelectorAll('.pack-opt').forEach(function(optBtn) {
+      optBtn.addEventListener('click', function() {
+        var newPack = optBtn.getAttribute('data-pack');
+        cardState[item.id].pack = newPack;
+        // Default to first option for that pack
+        var newPackConfig = item.packTypes[newPack];
+        cardState[item.id].option = Object.keys(newPackConfig.options)[0];
+        renderCatalog();
+      });
+    });
+
+    // Design option buttons
+    card.querySelectorAll('.design-opt-btn').forEach(function(designBtn) {
+      designBtn.addEventListener('click', function() {
+        var optKey = designBtn.getAttribute('data-opt');
+        cardState[item.id].option = optKey;
+        renderCatalog();
+      });
+    });
+
+    // Add button
+    card.querySelector('.add-btn').addEventListener('click', function(e) {
+      addToCart(item.id, currentPackType, currentOptKey, e.target);
+    });
+
     container.appendChild(card);
   });
 }
 
-// ─── LIGHTBOX ─────────────────────────────────────────────────────────────────
+function setMaterialFilter(material, btn) {
+  currentFilter = material;
+  document.querySelectorAll('.filter-tab').forEach(function(t) {
+    t.classList.remove('active');
+  });
+  if (btn) btn.classList.add('active');
+  renderCatalog();
+}
+
+function togglePricingGuide() {
+  var content = document.getElementById('pricing-guide-content');
+  var icon = document.getElementById('guide-toggle-icon');
+  if (!content) return;
+  if (content.style.display === 'none' || content.style.display === '') {
+    content.style.display = 'block';
+    if (icon) icon.textContent = 'Hide details ▴';
+  } else {
+    content.style.display = 'none';
+    if (icon) icon.textContent = 'View details ▾';
+  }
+}
+
+// ─── CART LOGIC ─────────────────────────────────────────────────────────────
+function saveCart() {
+  localStorage.setItem('etchcentric_cart_v3', JSON.stringify(cart));
+}
+
+function addToCart(productId, packType, optKey, btnElement) {
+  var prod = products.find(function(p) { return p.id === productId; });
+  if (!prod) return;
+  var pack = prod.packTypes[packType];
+  var needed = pack.pieces;
+  var remaining = getRemainingPieces(productId);
+
+  if (remaining < needed) {
+    alert('Sorry, there is not enough stock remaining for this pack option.');
+    return;
+  }
+
+  var cartKey = productId + '__' + packType + '__' + optKey;
+  cart[cartKey] = (cart[cartKey] || 0) + 1;
+  saveCart();
+  updateCartBadge();
+
+  if (btnElement) {
+    var originalText = btnElement.textContent;
+    btnElement.textContent = 'Added to Request! ✅';
+    btnElement.style.background = 'var(--green)';
+    btnElement.style.borderColor = 'var(--green)';
+    btnElement.style.color = 'white';
+
+    setTimeout(function() {
+      btnElement.style.background = '';
+      btnElement.style.borderColor = '';
+      btnElement.style.color = '';
+      renderCatalog();
+    }, 1200);
+  } else {
+    renderCatalog();
+  }
+}
+
+function updateCartItemQty(cartKey, delta) {
+  if (!cart[cartKey]) return;
+  var parts = cartKey.split('__');
+  var productId = parts[0];
+  var packType = parts[1];
+  var prod = products.find(function(p) { return p.id === productId; });
+  if (!prod) return;
+  var pack = prod.packTypes[packType];
+
+  if (delta > 0) {
+    var remaining = getRemainingPieces(productId);
+    if (remaining < pack.pieces) {
+      alert('Cannot add more. No additional stock available for this item.');
+      return;
+    }
+    cart[cartKey]++;
+  } else {
+    cart[cartKey]--;
+    if (cart[cartKey] <= 0) {
+      delete cart[cartKey];
+    }
+  }
+
+  saveCart();
+  updateCartBadge();
+  updateCartUI();
+  renderCatalog();
+}
+
+function removeCartItem(cartKey) {
+  if (cart[cartKey]) {
+    delete cart[cartKey];
+    saveCart();
+    updateCartBadge();
+    updateCartUI();
+    renderCatalog();
+  }
+}
+
+function updateCartBadge() {
+  var totalCount = 0;
+  Object.keys(cart).forEach(function(k) {
+    totalCount += cart[k];
+  });
+  var badge = document.getElementById('cartCount');
+  if (badge) badge.textContent = totalCount;
+}
+
+function updateCartUI() {
+  var total = 0;
+  var totalItems = 0;
+  var totalPieces = 0;
+  var cartDiv = document.getElementById('cartItems');
+  if (!cartDiv) return;
+  cartDiv.innerHTML = '';
+
+  var keys = Object.keys(cart);
+
+  keys.forEach(function(cartKey) {
+    var parts = cartKey.split('__');
+    var productId = parts[0];
+    var packType = parts[1];
+    var optKey = parts[2];
+    var prod = products.find(function(p) { return p.id === productId; });
+    if (!prod) return;
+    var pack = prod.packTypes[packType];
+    if (!pack) return;
+    var opt = pack.options[optKey];
+    if (!opt) return;
+
+    var qty = cart[cartKey];
+    totalItems += qty;
+    var pieceCount = pack.pieces * qty;
+    totalPieces += pieceCount;
+    var rowTotal = opt.price * qty;
+    total += rowTotal;
+
+    var row = document.createElement('div');
+    row.className = 'cart-item';
+    row.innerHTML =
+      '<div style="flex-grow:1; padding-right:1rem;">' +
+        '<div style="font-weight:700; color:var(--text); font-size:0.95rem;">' + prod.name + '</div>' +
+        '<div style="font-size:0.82rem; color:var(--cyan); margin-top:2px;">' + pack.label + ' · ' + opt.label + '</div>' +
+        '<div style="font-size:0.75rem; color:var(--text-light); margin-top:1px;">' + pieceCount + ' coaster' + (pieceCount !== 1 ? 's' : '') + ' total · $' + opt.price.toFixed(2) + ' CAD each</div>' +
+        '<div class="cart-qty-ctrl">' +
+          '<button type="button" class="cart-qty-btn dec-btn" aria-label="Decrease quantity">−</button>' +
+          '<span style="font-size:0.88rem; font-weight:700; min-width:20px; text-align:center;">' + qty + '</span>' +
+          '<button type="button" class="cart-qty-btn inc-btn" aria-label="Increase quantity">+</button>' +
+        '</div>' +
+      '</div>' +
+      '<div style="text-align:right;">' +
+        '<div style="font-weight:800; color:var(--green); font-size:1.05rem; margin-bottom:0.5rem;">$' + rowTotal.toFixed(2) + '</div>' +
+        '<button type="button" class="remove-btn">Remove</button>' +
+      '</div>';
+
+    row.querySelector('.dec-btn').addEventListener('click', function() { updateCartItemQty(cartKey, -1); });
+    row.querySelector('.inc-btn').addEventListener('click', function() { updateCartItemQty(cartKey, 1); });
+    row.querySelector('.remove-btn').addEventListener('click', function() { removeCartItem(cartKey); });
+
+    cartDiv.appendChild(row);
+  });
+
+  var totalEl = document.getElementById('cartTotal');
+  if (totalEl) {
+    totalEl.innerHTML =
+      '<div style="font-size:0.85rem; color:var(--text-light); font-weight:normal; margin-bottom:4px;">Total Coasters: ' + totalPieces + ' piece' + (totalPieces !== 1 ? 's' : '') + '</div>' +
+      'Estimated Total: $' + total.toFixed(2) + ' CAD';
+  }
+
+  if (totalItems === 0) {
+    cartDiv.innerHTML = '<p style="color:var(--text-light); margin-bottom:1.5rem; text-align:center; padding:1.5rem 0;">Your request cart is empty. Pick a coaster and add it to start!</p>';
+  }
+}
+
+function openCart() {
+  updateCartUI();
+  var modal = document.getElementById('cartModal');
+  if (modal) modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCartModal() {
+  var modal = document.getElementById('cartModal');
+  if (modal) modal.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ─── LIGHTBOX ───────────────────────────────────────────────────────────────
 function openLightbox(photos, startIndex, title) {
   if (!photos || photos.length === 0) return;
   lightboxPhotos = photos;
   lightboxIndex = startIndex || 0;
 
-  document.getElementById('lightbox-title').textContent = title || '';
+  document.getElementById('lightbox-title').textContent = title || 'Coaster Gallery';
   document.getElementById('lightbox-counter').textContent = (lightboxIndex + 1) + ' / ' + lightboxPhotos.length;
   document.getElementById('lightbox-img').src = lightboxPhotos[lightboxIndex].src;
-  
+
   var captionEl = document.getElementById('lightbox-caption');
   if (captionEl) captionEl.textContent = lightboxPhotos[lightboxIndex].caption || '';
-  
+
   document.getElementById('lightbox-prev').style.display = lightboxPhotos.length > 1 ? 'flex' : 'none';
   document.getElementById('lightbox-next').style.display = lightboxPhotos.length > 1 ? 'flex' : 'none';
-  
+
   var thumbContainer = document.getElementById('lightbox-thumbnails');
   thumbContainer.innerHTML = '';
   if (lightboxPhotos.length > 1) {
@@ -352,7 +700,8 @@ function openLightbox(photos, startIndex, title) {
 }
 
 function closeLightbox() {
-  document.getElementById('lightbox-overlay').style.display = 'none';
+  var lb = document.getElementById('lightbox-overlay');
+  if (lb) lb.style.display = 'none';
   document.body.style.overflow = '';
 }
 
@@ -368,16 +717,17 @@ function lightboxNext() {
 
 function updateLightboxImage() {
   var img = document.getElementById('lightbox-img');
+  if (!img) return;
   img.style.opacity = '0';
   setTimeout(function() {
     img.src = lightboxPhotos[lightboxIndex].src;
     document.getElementById('lightbox-counter').textContent = (lightboxIndex + 1) + ' / ' + lightboxPhotos.length;
-    
+
     var captionEl = document.getElementById('lightbox-caption');
     if (captionEl) captionEl.textContent = lightboxPhotos[lightboxIndex].caption || '';
-    
+
     img.style.opacity = '1';
-    
+
     var thumbs = document.querySelectorAll('.lb-thumb');
     thumbs.forEach(function(t, idx) {
       if (idx === lightboxIndex) {
@@ -402,7 +752,7 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowRight') lightboxNext();
 });
 
-// Touch/swipe on lightbox
+// Touch/swipe navigation
 (function() {
   var startX = 0;
   var lb = document.getElementById('lightbox-img');
@@ -414,181 +764,108 @@ document.addEventListener('keydown', function(e) {
   });
 })();
 
-// ─── GENERAL GALLERY ─────────────────────────────────────────────────────────
 function openGeneralGallery() {
-  openLightbox(allGalleryPhotos, 0, 'All Projects Gallery');
+  openLightbox(allGalleryPhotos, 0, 'EtchCentric Coasters & Custom Work');
 }
 
-// ─── CART ─────────────────────────────────────────────────────────────────────
-function saveCart() {
-  localStorage.setItem('etchcentric_cart', JSON.stringify(cart));
-}
-
-function addToCart(id, btnElement) {
-  var item = inventory.find(function(i) { return i.id === id; });
-  if (!cart[id]) cart[id] = 0;
-  
-  if (cart[id] >= item.qty) {
-    alert('Cannot add more of this item. Stock limit reached.');
-    return;
-  }
-  
-  cart[id]++;
-  saveCart();
-  updateCartBadge();
-  
-  if (btnElement) {
-    var originalText = btnElement.textContent;
-    btnElement.textContent = 'Added! ✅';
-    btnElement.style.background = 'var(--green)';
-    btnElement.style.color = 'white';
-    
-    var remaining = item.qty - cart[id];
-    var qtyDiv = btnElement.parentElement.querySelector('.item-qty');
-    if (qtyDiv) {
-        qtyDiv.textContent = item.qty === 999 ? 'Custom order' : remaining + ' sets in stock';
+// ─── ORDER FORM SUBMISSION ──────────────────────────────────────────────────
+var orderForm = document.getElementById('orderForm');
+if (orderForm) {
+  orderForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (Object.keys(cart).length === 0) {
+      alert('Please add items to your request before submitting.');
+      return;
     }
-    
-    if (remaining <= 0) {
-        setTimeout(function() {
-            btnElement.textContent = 'Out of Stock';
-            btnElement.disabled = true;
-            btnElement.style.background = '';
-            btnElement.style.color = '';
-        }, 1500);
-    } else {
-        setTimeout(function() {
-            btnElement.textContent = originalText;
-            btnElement.style.background = '';
-            btnElement.style.color = '';
-        }, 1500);
-    }
-  } else if (currentCategory) {
-    showCategory(currentCategory);
-  }
-}
 
-function removeFromCart(id) {
-  if (!cart[id]) return;
-  cart[id]--;
-  if (cart[id] <= 0) delete cart[id];
-  saveCart();
-  updateCartBadge();
-  updateCartUI();
-  if (currentCategory) showCategory(currentCategory);
-}
+    var name = document.getElementById('contactName').value;
+    var email = document.getElementById('contactEmail').value;
+    var notes = document.getElementById('contactNotes').value;
+    var btn = orderForm.querySelector('.submit-btn');
+    var status = document.getElementById('formStatus');
 
-function updateCartBadge() {
-  var count = Object.values(cart).reduce(function(a, b) { return a + b; }, 0);
-  document.getElementById('cartCount').textContent = count;
-}
+    btn.disabled = true;
+    btn.textContent = 'Sending Request...';
 
-function updateCartUI() {
-  var total = 0;
-  var totalItems = 0;
-  var cartDiv = document.getElementById('cartItems');
-  cartDiv.innerHTML = '';
+    var totalCost = 0;
+    var totalPieces = 0;
 
-  Object.keys(cart).forEach(function(id) {
-    var item = inventory.find(function(i) { return i.id === id; });
-    var qty = cart[id];
-    totalItems += qty;
-    total += item.price * qty;
+    var orderDetails = Object.keys(cart).map(function(cartKey) {
+      var parts = cartKey.split('__');
+      var prodId = parts[0];
+      var packType = parts[1];
+      var optKey = parts[2];
+      var prod = products.find(function(p) { return p.id === prodId; });
+      if (!prod) return '';
+      var pack = prod.packTypes[packType];
+      if (!pack) return '';
+      var opt = pack.options[optKey];
+      if (!opt) return '';
 
-    var row = document.createElement('div');
-    row.className = 'cart-item';
-    row.innerHTML =
-      '<div>' +
-        '<div style="font-weight:bold;">' + item.name + '</div>' +
-        '<div style="font-size:0.85rem; color:var(--text-light);">' + qty + 'x @ $' + item.price + '</div>' +
-      '</div>' +
-      '<div><button class="remove-btn">Remove</button></div>';
-    row.querySelector('.remove-btn').addEventListener('click', function() { removeFromCart(id); });
-    cartDiv.appendChild(row);
-  });
+      var qty = cart[cartKey];
+      var cost = opt.price * qty;
+      var pieceCount = pack.pieces * qty;
+      totalCost += cost;
+      totalPieces += pieceCount;
+      return '- ' + qty + 'x ' + prod.name + ' (' + pack.label + ' · ' + opt.label + ') — $' + cost.toFixed(2) + ' CAD [' + pieceCount + ' coasters]';
+    }).filter(Boolean).join('\n');
 
-  document.getElementById('cartTotal').textContent = 'Estimated Total: $' + total.toFixed(2) + ' CAD';
-  if (totalItems === 0) {
-    cartDiv.innerHTML = '<p style="color:var(--text-light); margin-bottom:1rem;">Your request cart is empty.</p>';
-  }
-}
+    var locationInfo = document.getElementById('contactLocation') ? document.getElementById('contactLocation').value : 'N/A';
+    var timeline = document.getElementById('contactTimeline') ? document.getElementById('contactTimeline').value : 'N/A';
 
-function openCart() {
-  updateCartUI();
-  document.getElementById('cartModal').style.display = 'flex';
-}
+    var payload = {
+      content: '🚨 **NEW LASER ENGRAVING ORDER REQUEST** 🚨\n\n' +
+               '**From:** ' + name + '\n' +
+               '**Email:** ' + email + '\n' +
+               '**Location / Postal:** ' + locationInfo + '\n' +
+               '**Timeline:** ' + timeline + '\n\n' +
+               '**Requested Items:**\n' + orderDetails + '\n\n' +
+               '**Total Coaster Pieces Reserved:** ' + totalPieces + ' coasters\n' +
+               '**Estimated Total:** $' + totalCost.toFixed(2) + ' CAD\n\n' +
+               '**Design / Custom Notes:**\n' + notes
+    };
 
-function closeCartModal() {
-  document.getElementById('cartModal').style.display = 'none';
-}
+    var WEBHOOK_URL = '/.netlify/functions/submit-order';
 
-// ─── GALLERY MODAL (legacy — now replaced by lightbox) ────────────────────────
-function closeModals() {
-  document.getElementById('cartModal').style.display = 'none';
-  closeLightbox();
-}
-
-document.querySelectorAll('.modal-overlay').forEach(function(el) {
-  el.addEventListener('click', function(e) {
-    if (e.target === el) closeModals();
-  });
-});
-
-// ─── FORM SUBMISSION ─────────────────────────────────────────────────────────
-document.getElementById('orderForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  if (Object.keys(cart).length === 0) { alert('Please add items to your request first.'); return; }
-
-  var name = document.getElementById('contactName').value;
-  var email = document.getElementById('contactEmail').value;
-  var notes = document.getElementById('contactNotes').value;
-  var btn = document.querySelector('.submit-btn');
-  var status = document.getElementById('formStatus');
-
-  btn.disabled = true;
-  btn.textContent = 'Sending...';
-
-  var orderDetails = Object.keys(cart).map(function(id) {
-    var item = inventory.find(function(i) { return i.id === id; });
-    return '- ' + cart[id] + 'x ' + item.name + ' ($' + (item.price * cart[id]) + ')';
-  }).join('\n');
-
-  var locationInfo = document.getElementById('contactLocation') ? document.getElementById('contactLocation').value : 'N/A';
-  var timeline = document.getElementById('contactTimeline') ? document.getElementById('contactTimeline').value : 'N/A';
-
-  var payload = {
-    content: '🚨 **NEW ENGRAVING ORDER REQUEST** 🚨\n\n**From:** ' + name + '\n**Email:** ' + email + '\n**Location:** ' + locationInfo + '\n**Timeline:** ' + timeline + '\n\n**Requested Items:**\n' + orderDetails + '\n\n**Design Notes:**\n' + notes
-  };
-
-  var WEBHOOK_URL = '/.netlify/functions/submit-order';
-
-  fetch(WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
-    .then(function(res) {
-      if (!res.ok) throw new Error('Network response was not ok');
-      status.style.color = 'var(--green)';
-      status.textContent = 'Request sent to Jonathan!';
-      cart = {}; saveCart(); updateCartBadge(); updateCartUI();
-      btn.textContent = 'Order Request Sent';
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     })
-    .catch(function() {
-      status.style.color = 'var(--red)';
-      status.textContent = 'Error sending. Please email directly.';
-      btn.disabled = false;
-      btn.textContent = 'Send Order Request';
-    });
-});
+      .then(function(res) {
+        if (!res.ok) throw new Error('Network response was not ok');
+        status.style.color = 'var(--green)';
+        status.textContent = 'Order request sent directly to Jonathan! He will review your design and follow up shortly.';
+        cart = {};
+        saveCart();
+        updateCartBadge();
+        updateCartUI();
+        renderCatalog();
+        btn.textContent = 'Order Request Sent ✅';
+      })
+      .catch(function(err) {
+        console.error('Submit error:', err);
+        status.style.color = 'var(--red)';
+        status.textContent = 'Error sending request via webhook. Please contact jonathan@thomsfoolery.com directly.';
+        btn.disabled = false;
+        btn.textContent = 'Retry Order Request';
+      });
+  });
+}
 
-// ─── EXPORT TO HTML ─────────────────────────────────────────────────────────
+// ─── EXPORT TO WINDOW ───────────────────────────────────────────────────────
 window.openGeneralGallery = openGeneralGallery;
 window.openCart = openCart;
-window.renderLanding = renderLanding;
 window.closeLightbox = closeLightbox;
 window.lightboxPrev = lightboxPrev;
 window.lightboxNext = lightboxNext;
 window.closeCartModal = closeCartModal;
+window.setMaterialFilter = setMaterialFilter;
+window.togglePricingGuide = togglePricingGuide;
 window.addToCart = addToCart;
 
-// ─── INIT ────────────────────────────────────────────────────────────────────
-renderLanding();
+// ─── INITIALIZATION ─────────────────────────────────────────────────────────
+renderCatalog();
 updateCartBadge();
+
 })();

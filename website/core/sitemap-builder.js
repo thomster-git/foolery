@@ -20,6 +20,7 @@ export default class SitemapBuilder {
         const staticRoutes = [
             "/",
             "/start/",
+            "/store/",
             "/resume/",
             "/hire/",
             "/interests/",
