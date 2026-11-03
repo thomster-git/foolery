@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const errorDiv = document.getElementById('chart-error');
     const seasonSelect = document.getElementById('season-select');
     const metricSelect = document.getElementById('metric-select');
+    const windowSelect = document.getElementById('window-select');
     const divisionSelect = document.getElementById('division-select');
     const teamSelect = document.getElementById('team-select');
     
@@ -13,12 +14,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     // localStorage persistence keys
     const STORAGE_KEY_SEASON = 'atlas_baseball_season';
     const STORAGE_KEY_METRIC = 'atlas_baseball_metric';
+    const STORAGE_KEY_WINDOW = 'atlas_baseball_window';
     const STORAGE_KEY_DIVISION = 'atlas_baseball_division';
     const STORAGE_KEY_TEAM = 'atlas_baseball_team';
 
     const urlParams = new URLSearchParams(window.location.search);
     const paramSeason = urlParams.get('season');
     const paramMetric = urlParams.get('metric');
+    const paramWindow = urlParams.get('window') || urlParams.get('rolling');
     const paramDivision = urlParams.get('division');
     const paramTeam = urlParams.get('team') || urlParams.get('team1');
 
@@ -36,6 +39,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             metricSelect.value = paramMetric;
         } else if (localStorage.getItem(STORAGE_KEY_METRIC)) {
             metricSelect.value = localStorage.getItem(STORAGE_KEY_METRIC);
+        }
+    }
+    if (windowSelect) {
+        if (paramWindow && Array.from(windowSelect.options).some(o => o.value === paramWindow)) {
+            windowSelect.value = paramWindow;
+        } else if (localStorage.getItem(STORAGE_KEY_WINDOW)) {
+            windowSelect.value = localStorage.getItem(STORAGE_KEY_WINDOW);
         }
     }
     if (divisionSelect) {
@@ -219,6 +229,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 name: info.name,
                 leagueId: info.leagueId,
                 divisionId: info.divisionId,
+                games: games,
                 runDiff: runDiffData,
                 winPct: winPctData,
                 gamesAbove500: gamesAbove500Data,
@@ -502,12 +513,102 @@ document.addEventListener('DOMContentLoaded', async () => {
         syncUrlParams();
     }
 
+    function computeMlbRollingMetric(team, metricKey, windowSize) {
+        if (!team.games || team.games.length === 0) {
+            return team[metricKey] || [{ x: 0, y: 0 }];
+        }
+        const games = team.games;
+        const result = [{ x: 0, y: 0 }];
+
+        for (let i = 0; i < games.length; i++) {
+            const gameNum = i + 1;
+            const startIdx = Math.max(0, i - windowSize + 1);
+            const slice = games.slice(startIdx, i + 1);
+            const w = slice.length;
+
+            let val = 0;
+            if (metricKey === 'runDiff' || metricKey === 'rollingRunDiff') {
+                const rs = slice.reduce((acc, g) => acc + g.rs, 0);
+                const ra = slice.reduce((acc, g) => acc + g.ra, 0);
+                val = rs - ra;
+            } else if (metricKey === 'winPct' || metricKey === 'rollingWinPct') {
+                const wins = slice.reduce((acc, g) => acc + g.w, 0);
+                val = parseFloat((wins / w).toFixed(3));
+            } else if (metricKey === 'gamesAbove500') {
+                const wins = slice.reduce((acc, g) => acc + g.w, 0);
+                val = wins - (w - wins);
+            } else if (metricKey === 'pythagorean') {
+                const rs = slice.reduce((acc, g) => acc + g.rs, 0);
+                const ra = slice.reduce((acc, g) => acc + g.ra, 0);
+                const rsPow = Math.pow(Math.max(0, rs), 1.83);
+                const raPow = Math.pow(Math.max(0, ra), 1.83);
+                val = (rsPow + raPow === 0) ? 0.5 : parseFloat((rsPow / (rsPow + raPow)).toFixed(3));
+            } else if (metricKey === 'luckGap') {
+                const wins = slice.reduce((acc, g) => acc + g.w, 0);
+                const actWinPct = wins / w;
+                const rs = slice.reduce((acc, g) => acc + g.rs, 0);
+                const ra = slice.reduce((acc, g) => acc + g.ra, 0);
+                const rsPow = Math.pow(Math.max(0, rs), 1.83);
+                const raPow = Math.pow(Math.max(0, ra), 1.83);
+                const pyth = (rsPow + raPow === 0) ? 0.5 : (rsPow / (rsPow + raPow));
+                val = parseFloat((actWinPct - pyth).toFixed(3));
+            } else if (metricKey === 'playoffOdds') {
+                val = team.playoffOdds && team.playoffOdds[gameNum] ? team.playoffOdds[gameNum].y : 0;
+            } else if (metricKey === 'streak') {
+                val = team.streak && team.streak[gameNum] ? team.streak[gameNum].y : 0;
+            } else if (metricKey === 'runsScoredPerGame' || metricKey === 'rollingRunsScored') {
+                const rs = slice.reduce((acc, g) => acc + g.rs, 0);
+                val = parseFloat((rs / w).toFixed(2));
+            } else if (metricKey === 'runsAllowedPerGame' || metricKey === 'rollingRunsAllowed') {
+                const ra = slice.reduce((acc, g) => acc + g.ra, 0);
+                val = parseFloat((ra / w).toFixed(2));
+            } else if (metricKey === 'oneRunWinPct') {
+                const oneRunGames = slice.filter(g => Math.abs(g.rs - g.ra) === 1);
+                val = oneRunGames.length > 0
+                    ? parseFloat((oneRunGames.reduce((acc, g) => acc + g.w, 0) / oneRunGames.length).toFixed(3))
+                    : null;
+            } else if (metricKey === 'blowoutWinPct') {
+                const blowoutGames = slice.filter(g => Math.abs(g.rs - g.ra) >= 5);
+                val = blowoutGames.length > 0
+                    ? parseFloat((blowoutGames.reduce((acc, g) => acc + g.w, 0) / blowoutGames.length).toFixed(3))
+                    : null;
+            } else if (metricKey === 'scoringFirstWinPct') {
+                const scoredFirstGames = slice.filter(g => g.scoredFirst);
+                val = scoredFirstGames.length > 0
+                    ? parseFloat((scoredFirstGames.reduce((acc, g) => acc + g.w, 0) / scoredFirstGames.length).toFixed(3))
+                    : null;
+            } else if (metricKey === 'comebackWins') {
+                val = slice.reduce((acc, g) => acc + (g.isComeback ? 1 : 0), 0);
+            } else if (metricKey === 'shutouts') {
+                val = slice.reduce((acc, g) => acc + (g.ra === 0 ? 1 : 0), 0);
+            } else if (metricKey === 'homeWinPct') {
+                const homeGames = slice.filter(g => g.isHome);
+                val = homeGames.length > 0
+                    ? parseFloat((homeGames.reduce((acc, g) => acc + g.w, 0) / homeGames.length).toFixed(3))
+                    : null;
+            } else if (metricKey === 'awayWinPct') {
+                const awayGames = slice.filter(g => !g.isHome);
+                val = awayGames.length > 0
+                    ? parseFloat((awayGames.reduce((acc, g) => acc + g.w, 0) / awayGames.length).toFixed(3))
+                    : null;
+            } else {
+                val = 0;
+            }
+
+            result.push({ x: gameNum, y: val });
+        }
+        return result;
+    }
+
     function renderChart() {
         if (typeof Chart === 'undefined') {
             console.warn('Chart.js library is not loaded yet');
             return;
         }
         const metricVal = metricSelect ? metricSelect.value : 'runDiff';
+        const windowVal = windowSelect ? windowSelect.value : 'cumulative';
+        const isRolling = windowVal !== 'cumulative';
+        const windowSize = isRolling ? parseInt(windowVal, 10) : 0;
         const filterVal = divisionSelect.value;
         const highlightId = teamSelect.value;
 
@@ -528,26 +629,31 @@ document.addEventListener('DOMContentLoaded', async () => {
                 let borderWidth = isHighlighted ? 2 : 1;
                 let zIndex = isHighlighted ? 10 : 1;
                 
-                let plotData = team.runDiff;
-                if (metricVal === 'gamesAbove500') plotData = team.gamesAbove500;
-                else if (metricVal === 'winPct') plotData = team.winPct;
-                else if (metricVal === 'pythagorean') plotData = team.pythagorean;
-                else if (metricVal === 'luckGap') plotData = team.luckGap;
-                else if (metricVal === 'playoffOdds') plotData = team.playoffOdds;
-                else if (metricVal === 'streak') plotData = team.streak;
-                else if (metricVal === 'rollingWinPct') plotData = team.rollingWinPct;
-                else if (metricVal === 'rollingRunDiff') plotData = team.rollingRunDiff;
-                else if (metricVal === 'rollingRunsScored') plotData = team.rollingRunsScored;
-                else if (metricVal === 'rollingRunsAllowed') plotData = team.rollingRunsAllowed;
-                else if (metricVal === 'oneRunWinPct') plotData = team.oneRunWinPct;
-                else if (metricVal === 'blowoutWinPct') plotData = team.blowoutWinPct;
-                else if (metricVal === 'scoringFirstWinPct') plotData = team.scoringFirstWinPct;
-                else if (metricVal === 'comebackWins') plotData = team.comebackWins;
-                else if (metricVal === 'shutouts') plotData = team.shutouts;
-                else if (metricVal === 'runsScoredPerGame') plotData = team.runsScoredPerGame;
-                else if (metricVal === 'runsAllowedPerGame') plotData = team.runsAllowedPerGame;
-                else if (metricVal === 'homeWinPct') plotData = team.homeWinPct;
-                else if (metricVal === 'awayWinPct') plotData = team.awayWinPct;
+                let plotData;
+                if (isRolling) {
+                    plotData = computeMlbRollingMetric(team, metricVal, windowSize);
+                } else {
+                    plotData = team.runDiff;
+                    if (metricVal === 'gamesAbove500') plotData = team.gamesAbove500;
+                    else if (metricVal === 'winPct') plotData = team.winPct;
+                    else if (metricVal === 'pythagorean') plotData = team.pythagorean;
+                    else if (metricVal === 'luckGap') plotData = team.luckGap;
+                    else if (metricVal === 'playoffOdds') plotData = team.playoffOdds;
+                    else if (metricVal === 'streak') plotData = team.streak;
+                    else if (metricVal === 'rollingWinPct') plotData = team.rollingWinPct;
+                    else if (metricVal === 'rollingRunDiff') plotData = team.rollingRunDiff;
+                    else if (metricVal === 'rollingRunsScored') plotData = team.rollingRunsScored;
+                    else if (metricVal === 'rollingRunsAllowed') plotData = team.rollingRunsAllowed;
+                    else if (metricVal === 'oneRunWinPct') plotData = team.oneRunWinPct;
+                    else if (metricVal === 'blowoutWinPct') plotData = team.blowoutWinPct;
+                    else if (metricVal === 'scoringFirstWinPct') plotData = team.scoringFirstWinPct;
+                    else if (metricVal === 'comebackWins') plotData = team.comebackWins;
+                    else if (metricVal === 'shutouts') plotData = team.shutouts;
+                    else if (metricVal === 'runsScoredPerGame') plotData = team.runsScoredPerGame;
+                    else if (metricVal === 'runsAllowedPerGame') plotData = team.runsAllowedPerGame;
+                    else if (metricVal === 'homeWinPct') plotData = team.homeWinPct;
+                    else if (metricVal === 'awayWinPct') plotData = team.awayWinPct;
+                }
 
                 datasets.push({
                     label: team.name,
@@ -574,6 +680,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Configure Chart.js dark theme defaults
         Chart.defaults.color = '#888';
         Chart.defaults.font.family = 'Inter, sans-serif';
+
+        const baseMetricLabel = metricSelect ? metricSelect.options[metricSelect.selectedIndex].text : 'Metric';
+        const yAxisLabel = isRolling ? `${baseMetricLabel} (Last ${windowSize} Games Rolling)` : baseMetricLabel;
 
         chartInstance = new Chart(ctx, {
             type: 'line',
@@ -617,9 +726,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     formatted = val + ' Shutouts';
                                 } else if (metricVal === 'comebackWins') {
                                     formatted = val + ' Comeback Wins';
-                                } else if (metricVal === 'runsScoredPerGame') {
+                                } else if (metricVal === 'runsScoredPerGame' || metricVal === 'rollingRunsScored') {
                                     formatted = val.toFixed(2) + ' RS/Game';
-                                } else if (metricVal === 'runsAllowedPerGame') {
+                                } else if (metricVal === 'runsAllowedPerGame' || metricVal === 'rollingRunsAllowed') {
                                     formatted = val.toFixed(2) + ' RA/Game';
                                 }
                                 return `${teamName}: ${formatted}`;
@@ -652,7 +761,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     y: {
                         title: {
                             display: true,
-                            text: metricSelect ? metricSelect.options[metricSelect.selectedIndex].text : 'Metric'
+                            text: yAxisLabel
                         },
                         grid: {
                             color: '#333'
@@ -670,6 +779,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         if (metricSelect && metricSelect.value && metricSelect.value !== 'runDiff') {
             params.set('metric', metricSelect.value);
+        }
+        if (windowSelect && windowSelect.value && windowSelect.value !== 'cumulative') {
+            params.set('window', windowSelect.value);
         }
         if (divisionSelect && divisionSelect.value && divisionSelect.value !== 'all') {
             params.set('division', divisionSelect.value);
@@ -726,7 +838,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function generateExportCanvas() {
         const metricVal = metricSelect ? metricSelect.value : 'runDiff';
-        const metricText = metricSelect ? metricSelect.options[metricSelect.selectedIndex].text : 'Run Differential';
+        const windowVal = windowSelect ? windowSelect.value : 'cumulative';
+        const isRolling = windowVal !== 'cumulative';
+        const windowSize = isRolling ? parseInt(windowVal, 10) : 0;
+        const baseMetricText = metricSelect ? metricSelect.options[metricSelect.selectedIndex].text : 'Run Differential';
+        const metricText = isRolling ? `${baseMetricText} (Last ${windowSize} Games Rolling)` : baseMetricText;
         const filterVal = divisionSelect.value;
         const highlightId = teamSelect.value;
 
@@ -737,6 +853,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             teamSubtitle = team.name;
         } else if (filterVal !== 'all') {
             teamSubtitle = divisionSelect.options[divisionSelect.selectedIndex].text;
+        }
+        if (isRolling) {
+            teamSubtitle += ` • Last ${windowSize} Games Rolling`;
         }
 
         const hasHighlights = highlightId !== 'none';
@@ -772,26 +891,31 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 }
 
-                let plotData = teamObj.runDiff;
-                if (metricVal === 'gamesAbove500') plotData = teamObj.gamesAbove500;
-                else if (metricVal === 'winPct') plotData = teamObj.winPct;
-                else if (metricVal === 'pythagorean') plotData = teamObj.pythagorean;
-                else if (metricVal === 'luckGap') plotData = teamObj.luckGap;
-                else if (metricVal === 'playoffOdds') plotData = teamObj.playoffOdds;
-                else if (metricVal === 'streak') plotData = teamObj.streak;
-                else if (metricVal === 'rollingWinPct') plotData = teamObj.rollingWinPct;
-                else if (metricVal === 'rollingRunDiff') plotData = teamObj.rollingRunDiff;
-                else if (metricVal === 'rollingRunsScored') plotData = teamObj.rollingRunsScored;
-                else if (metricVal === 'rollingRunsAllowed') plotData = teamObj.rollingRunsAllowed;
-                else if (metricVal === 'oneRunWinPct') plotData = teamObj.oneRunWinPct;
-                else if (metricVal === 'blowoutWinPct') plotData = teamObj.blowoutWinPct;
-                else if (metricVal === 'scoringFirstWinPct') plotData = teamObj.scoringFirstWinPct;
-                else if (metricVal === 'comebackWins') plotData = teamObj.comebackWins;
-                else if (metricVal === 'shutouts') plotData = teamObj.shutouts;
-                else if (metricVal === 'runsScoredPerGame') plotData = teamObj.runsScoredPerGame;
-                else if (metricVal === 'runsAllowedPerGame') plotData = teamObj.runsAllowedPerGame;
-                else if (metricVal === 'homeWinPct') plotData = teamObj.homeWinPct;
-                else if (metricVal === 'awayWinPct') plotData = teamObj.awayWinPct;
+                let plotData;
+                if (isRolling) {
+                    plotData = computeMlbRollingMetric(teamObj, metricVal, windowSize);
+                } else {
+                    plotData = teamObj.runDiff;
+                    if (metricVal === 'gamesAbove500') plotData = teamObj.gamesAbove500;
+                    else if (metricVal === 'winPct') plotData = teamObj.winPct;
+                    else if (metricVal === 'pythagorean') plotData = teamObj.pythagorean;
+                    else if (metricVal === 'luckGap') plotData = teamObj.luckGap;
+                    else if (metricVal === 'playoffOdds') plotData = teamObj.playoffOdds;
+                    else if (metricVal === 'streak') plotData = teamObj.streak;
+                    else if (metricVal === 'rollingWinPct') plotData = teamObj.rollingWinPct;
+                    else if (metricVal === 'rollingRunDiff') plotData = teamObj.rollingRunDiff;
+                    else if (metricVal === 'rollingRunsScored') plotData = teamObj.rollingRunsScored;
+                    else if (metricVal === 'rollingRunsAllowed') plotData = teamObj.rollingRunsAllowed;
+                    else if (metricVal === 'oneRunWinPct') plotData = teamObj.oneRunWinPct;
+                    else if (metricVal === 'blowoutWinPct') plotData = teamObj.blowoutWinPct;
+                    else if (metricVal === 'scoringFirstWinPct') plotData = teamObj.scoringFirstWinPct;
+                    else if (metricVal === 'comebackWins') plotData = teamObj.comebackWins;
+                    else if (metricVal === 'shutouts') plotData = teamObj.shutouts;
+                    else if (metricVal === 'runsScoredPerGame') plotData = teamObj.runsScoredPerGame;
+                    else if (metricVal === 'runsAllowedPerGame') plotData = teamObj.runsAllowedPerGame;
+                    else if (metricVal === 'homeWinPct') plotData = teamObj.homeWinPct;
+                    else if (metricVal === 'awayWinPct') plotData = teamObj.awayWinPct;
+                }
 
                 datasets.push({
                     label: teamObj.name,
@@ -1116,6 +1240,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderChart();
         });
     }
+    if (windowSelect) {
+        windowSelect.addEventListener('change', () => {
+            localStorage.setItem(STORAGE_KEY_WINDOW, windowSelect.value);
+            syncUrlParams();
+            renderChart();
+        });
+    }
     divisionSelect.addEventListener('change', () => {
         localStorage.setItem(STORAGE_KEY_DIVISION, divisionSelect.value);
         syncUrlParams();
@@ -1141,10 +1272,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         clearFiltersBtn.addEventListener('click', () => {
             if (seasonSelect) seasonSelect.value = '2026';
             if (metricSelect) metricSelect.value = 'runDiff';
+            if (windowSelect) windowSelect.value = 'cumulative';
             if (divisionSelect) divisionSelect.value = 'all';
             if (teamSelect) teamSelect.value = 'none';
             localStorage.removeItem(STORAGE_KEY_SEASON);
             localStorage.removeItem(STORAGE_KEY_METRIC);
+            localStorage.removeItem(STORAGE_KEY_WINDOW);
             localStorage.removeItem(STORAGE_KEY_DIVISION);
             localStorage.removeItem(STORAGE_KEY_TEAM);
             currentSeason = '2026';

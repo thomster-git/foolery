@@ -80,6 +80,19 @@
                     </select>
                 </div>
                 <div>
+                    <label style="display: block; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.5rem; text-transform: uppercase;">Rolling Window</label>
+                    <select id="window-select" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: var(--radius-md);">
+                        <option value="cumulative" selected>Full Season (Cumulative)</option>
+                        <option value="2">Last 2 Games (Rolling)</option>
+                        <option value="3">Last 3 Games (Rolling)</option>
+                        <option value="5">Last 5 Games (Rolling)</option>
+                        <option value="7">Last 7 Games (Rolling)</option>
+                        <option value="10">Last 10 Games (Rolling)</option>
+                        <option value="14">Last 14 Games (Rolling)</option>
+                        <option value="20">Last 20 Games (Rolling)</option>
+                    </select>
+                </div>
+                <div>
                     <label style="display: block; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.5rem; text-transform: uppercase;">Select Conference/Division</label>
                     <select id="division-select" style="background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.5rem; border-radius: var(--radius-md);">
                         <option value="all">All NHL</option>

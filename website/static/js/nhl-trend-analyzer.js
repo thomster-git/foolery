@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loading = document.getElementById('chart-loading');
     const errorDiv = document.getElementById('chart-error');
     const metricSelect = document.getElementById('metric-select');
+    const windowSelect = document.getElementById('window-select');
     const divisionSelect = document.getElementById('division-select');
     const teamSelect = document.getElementById('team-select');
     const teamSelect2 = document.getElementById('team-select-2');
@@ -11,12 +12,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // localStorage persistence keys
     const STORAGE_KEY_METRIC = 'atlas_nhl_metric';
+    const STORAGE_KEY_WINDOW = 'atlas_nhl_window';
     const STORAGE_KEY_DIVISION = 'atlas_nhl_division';
     const STORAGE_KEY_TEAM = 'atlas_nhl_team';
     const STORAGE_KEY_TEAM2 = 'atlas_nhl_team2';
 
     const urlParams = new URLSearchParams(window.location.search);
     const paramMetric = urlParams.get('metric');
+    const paramWindow = urlParams.get('window') || urlParams.get('rolling');
     const paramDivision = urlParams.get('division');
     const paramTeam = urlParams.get('team') || urlParams.get('team1');
     const paramTeam2 = urlParams.get('team2');
@@ -26,6 +29,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             metricSelect.value = paramMetric;
         } else if (localStorage.getItem(STORAGE_KEY_METRIC)) {
             metricSelect.value = localStorage.getItem(STORAGE_KEY_METRIC);
+        }
+    }
+    if (windowSelect) {
+        if (paramWindow && Array.from(windowSelect.options).some(o => o.value === paramWindow)) {
+            windowSelect.value = paramWindow;
+        } else if (localStorage.getItem(STORAGE_KEY_WINDOW)) {
+            windowSelect.value = localStorage.getItem(STORAGE_KEY_WINDOW);
         }
     }
     if (divisionSelect) {
@@ -127,6 +137,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Team base strength variance (1 to 5)
             const strength = 2.5 + ((seed % 10) / 4.0);
+            const rawGamesList = [];
 
             for (let g = 1; g <= gamesCount; g++) {
                 const gSeed = getGameSeed(`${t.id}-g-${g}`);
@@ -185,6 +196,30 @@ document.addEventListener('DOMContentLoaded', async () => {
                 cumSF += gSF;
                 cumSA += gSA;
 
+                rawGamesList.push({
+                    gameNum: g,
+                    gf: actualGF,
+                    ga: actualGA,
+                    isWin: isWin ? 1 : 0,
+                    isOT: isOT,
+                    points: isWin ? 2 : (isOT ? 1 : 0),
+                    isRegWin: (isWin && !isOT) ? 1 : 0,
+                    streak: currentStreak,
+                    isOneGoal: Math.abs(actualGF - actualGA) === 1 ? 1 : 0,
+                    isOneGoalWin: (Math.abs(actualGF - actualGA) === 1 && isWin) ? 1 : 0,
+                    isBlowoutWin: (actualGF - actualGA >= 3) ? 1 : 0,
+                    ledP1: ledP1 ? 1 : 0,
+                    p1LeadWin: (ledP1 && isWin) ? 1 : 0,
+                    pens: gPens,
+                    pim: gPIM,
+                    ppOpp: gPPOpp,
+                    ppg: gPPG,
+                    ppAgainst: gPPAgainst,
+                    pkga: gPKGA,
+                    sf: gSF,
+                    sa: gSA
+                });
+
                 const gfExp = Math.pow(Math.max(1, cumGF), 2.15);
                 const gaExp = Math.pow(Math.max(1, cumGA), 2.15);
                 const pythPct = (gfExp + gaExp > 0) ? (gfExp / (gfExp + gaExp)) * 100 : 50.0;
@@ -231,6 +266,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 divisionId: t.division,
                 leagueId: t.conf,
                 color: t.color,
+                rawGames: rawGamesList,
                 goalDiff: goalDiffData,
                 winPct: winPctData,
                 pythagorean: pythagoreanData,
@@ -282,6 +318,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     let cumPenalties = 0, cumPIM = 0, cumPPOpp = 0, cumPPG = 0, cumPPAgainst = 0, cumPKGA = 0;
                     let cumSF = 0, cumSA = 0;
+                    const rawGamesList = [];
 
                     const goalDiffData = [{x:0, y:0}];
                     const winPctData = [{x:0, y:0}];
@@ -468,6 +505,30 @@ document.addEventListener('DOMContentLoaded', async () => {
                             oneGoalWinPctData.push({x: gamesPlayed, y: parseFloat((cumOneGoalGames > 0 ? (cumOneGoalWins / cumOneGoalGames) * 100 : 50.0).toFixed(1))});
                             blowoutWinPctData.push({x: gamesPlayed, y: parseFloat(((cumBlowoutWins / gamesPlayed) * 100).toFixed(1))});
                             firstPeriodLeadPctData.push({x: gamesPlayed, y: parseFloat((cumP1Leads > 0 ? (cumP1LeadWins / cumP1Leads) * 100 : 75.0).toFixed(1))});
+
+                            rawGamesList.push({
+                                gameNum: gamesPlayed,
+                                gf: gf,
+                                ga: ga,
+                                isWin: isWin ? 1 : 0,
+                                isOT: isOT,
+                                points: isWin ? 2 : (isOT ? 1 : 0),
+                                isRegWin: (isWin && !isOT) ? 1 : 0,
+                                streak: currentStreak,
+                                isOneGoal: Math.abs(gf - ga) === 1 ? 1 : 0,
+                                isOneGoalWin: (Math.abs(gf - ga) === 1 && isWin) ? 1 : 0,
+                                isBlowoutWin: (gf - ga >= 3) ? 1 : 0,
+                                ledP1: ledP1 ? 1 : 0,
+                                p1LeadWin: (ledP1 && isWin) ? 1 : 0,
+                                pens: gPens,
+                                pim: gPIM,
+                                ppOpp: gPPOpp,
+                                ppg: gPPG,
+                                ppAgainst: gPPAgainst,
+                                pkga: gPKGA,
+                                sf: gSF,
+                                sa: gSA
+                            });
                         }
                     }
 
@@ -478,6 +539,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         divisionId: t.division,
                         leagueId: t.conf,
                         color: t.color,
+                        rawGames: rawGamesList,
                         goalDiff: goalDiffData,
                         winPct: winPctData,
                         pythagorean: pythagoreanData,
@@ -561,12 +623,125 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    function computeNhlRollingMetric(team, metricKey, windowSize) {
+        if (!team.rawGames || team.rawGames.length === 0) {
+            return team[metricKey] || [{ x: 0, y: 0 }];
+        }
+        const games = team.rawGames;
+        const result = [{ x: 0, y: 0 }];
+
+        for (let i = 0; i < games.length; i++) {
+            const gameNum = games[i].gameNum;
+            const startIdx = Math.max(0, i - windowSize + 1);
+            const slice = games.slice(startIdx, i + 1);
+            const w = slice.length;
+
+            let val = 0;
+            if (metricKey === 'goalDiff') {
+                val = slice.reduce((acc, g) => acc + (g.gf - g.ga), 0);
+            } else if (metricKey === 'winPct') {
+                const pts = slice.reduce((acc, g) => acc + g.points, 0);
+                val = parseFloat(((pts / (w * 2)) * 100).toFixed(1));
+            } else if (metricKey === 'pythagorean') {
+                const gfSum = slice.reduce((acc, g) => acc + g.gf, 0);
+                const gaSum = slice.reduce((acc, g) => acc + g.ga, 0);
+                const gfExp = Math.pow(Math.max(1, gfSum), 2.15);
+                const gaExp = Math.pow(Math.max(1, gaSum), 2.15);
+                val = (gfExp + gaExp > 0) ? parseFloat(((gfExp / (gfExp + gaExp)) * 100).toFixed(1)) : 50.0;
+            } else if (metricKey === 'goalsForPerGame') {
+                val = parseFloat((slice.reduce((acc, g) => acc + g.gf, 0) / w).toFixed(2));
+            } else if (metricKey === 'goalsAgainstPerGame') {
+                val = parseFloat((slice.reduce((acc, g) => acc + g.ga, 0) / w).toFixed(2));
+            } else if (metricKey === 'regulationWinPct') {
+                const regWins = slice.reduce((acc, g) => acc + g.isRegWin, 0);
+                val = parseFloat(((regWins / w) * 100).toFixed(1));
+            } else if (metricKey === 'streak') {
+                val = games[i].streak;
+            } else if (metricKey === 'ppPct') {
+                const ppg = slice.reduce((acc, g) => acc + g.ppg, 0);
+                const opp = slice.reduce((acc, g) => acc + g.ppOpp, 0);
+                val = opp > 0 ? parseFloat(((ppg / opp) * 100).toFixed(1)) : 20.0;
+            } else if (metricKey === 'pkPct') {
+                const against = slice.reduce((acc, g) => acc + g.ppAgainst, 0);
+                const pkga = slice.reduce((acc, g) => acc + g.pkga, 0);
+                val = against > 0 ? parseFloat((((against - pkga) / against) * 100).toFixed(1)) : 82.0;
+            } else if (metricKey === 'specialTeamsIndex') {
+                const ppg = slice.reduce((acc, g) => acc + g.ppg, 0);
+                const opp = slice.reduce((acc, g) => acc + g.ppOpp, 0);
+                const pp = opp > 0 ? ((ppg / opp) * 100) : 20.0;
+                const against = slice.reduce((acc, g) => acc + g.ppAgainst, 0);
+                const pkga = slice.reduce((acc, g) => acc + g.pkga, 0);
+                const pk = against > 0 ? (((against - pkga) / against) * 100) : 82.0;
+                val = parseFloat((pp + pk).toFixed(1));
+            } else if (metricKey === 'ppGoalsPerGame') {
+                val = parseFloat((slice.reduce((acc, g) => acc + g.ppg, 0) / w).toFixed(2));
+            } else if (metricKey === 'ppPerGame') {
+                val = parseFloat((slice.reduce((acc, g) => acc + g.ppOpp, 0) / w).toFixed(2));
+            } else if (metricKey === 'penaltiesPerGame') {
+                val = parseFloat((slice.reduce((acc, g) => acc + g.pens, 0) / w).toFixed(2));
+            } else if (metricKey === 'penaltyMinutesPerGame') {
+                val = parseFloat((slice.reduce((acc, g) => acc + g.pim, 0) / w).toFixed(1));
+            } else if (metricKey === 'netPenaltyDiff') {
+                const forOpp = slice.reduce((acc, g) => acc + g.ppOpp, 0);
+                const againstOpp = slice.reduce((acc, g) => acc + g.ppAgainst, 0);
+                val = forOpp - againstOpp;
+            } else if (metricKey === 'shotsForPerGame') {
+                val = parseFloat((slice.reduce((acc, g) => acc + g.sf, 0) / w).toFixed(1));
+            } else if (metricKey === 'shotsAgainstPerGame') {
+                val = parseFloat((slice.reduce((acc, g) => acc + g.sa, 0) / w).toFixed(1));
+            } else if (metricKey === 'shotDiff') {
+                const sf = slice.reduce((acc, g) => acc + g.sf, 0);
+                const sa = slice.reduce((acc, g) => acc + g.sa, 0);
+                val = sf - sa;
+            } else if (metricKey === 'shotSharePct') {
+                const sf = slice.reduce((acc, g) => acc + g.sf, 0);
+                const sa = slice.reduce((acc, g) => acc + g.sa, 0);
+                val = (sf + sa > 0) ? parseFloat(((sf / (sf + sa)) * 100).toFixed(1)) : 50.0;
+            } else if (metricKey === 'savePct') {
+                const sa = slice.reduce((acc, g) => acc + g.sa, 0);
+                const ga = slice.reduce((acc, g) => acc + g.ga, 0);
+                val = sa > 0 ? parseFloat((((sa - ga) / sa) * 100).toFixed(2)) : 91.0;
+            } else if (metricKey === 'shootingPct') {
+                const sf = slice.reduce((acc, g) => acc + g.sf, 0);
+                const gf = slice.reduce((acc, g) => acc + g.gf, 0);
+                val = sf > 0 ? parseFloat(((gf / sf) * 100).toFixed(2)) : 9.5;
+            } else if (metricKey === 'pdo') {
+                const sa = slice.reduce((acc, g) => acc + g.sa, 0);
+                const ga = slice.reduce((acc, g) => acc + g.ga, 0);
+                const sv = sa > 0 ? (((sa - ga) / sa) * 100) : 91.0;
+                const sf = slice.reduce((acc, g) => acc + g.sf, 0);
+                const gf = slice.reduce((acc, g) => acc + g.gf, 0);
+                const sh = sf > 0 ? ((gf / sf) * 100) : 9.5;
+                val = parseFloat((sv + sh).toFixed(1));
+            } else if (metricKey === 'oneGoalWinPct') {
+                const oneGoalGames = slice.reduce((acc, g) => acc + g.isOneGoal, 0);
+                const oneGoalWins = slice.reduce((acc, g) => acc + g.isOneGoalWin, 0);
+                val = oneGoalGames > 0 ? parseFloat(((oneGoalWins / oneGoalGames) * 100).toFixed(1)) : 50.0;
+            } else if (metricKey === 'blowoutWinPct') {
+                const blowoutWins = slice.reduce((acc, g) => acc + g.isBlowoutWin, 0);
+                val = parseFloat(((blowoutWins / w) * 100).toFixed(1));
+            } else if (metricKey === 'firstPeriodLeadPct') {
+                const p1Leads = slice.reduce((acc, g) => acc + g.ledP1, 0);
+                const p1Wins = slice.reduce((acc, g) => acc + g.p1LeadWin, 0);
+                val = p1Leads > 0 ? parseFloat(((p1Wins / p1Leads) * 100).toFixed(1)) : 75.0;
+            } else {
+                val = 0;
+            }
+
+            result.push({ x: gameNum, y: val });
+        }
+        return result;
+    }
+
     function renderChart() {
         if (typeof Chart === 'undefined') {
             console.warn('Chart.js library is not loaded yet');
             return;
         }
         const metricVal = metricSelect.value;
+        const windowVal = windowSelect ? windowSelect.value : 'cumulative';
+        const isRolling = windowVal !== 'cumulative';
+        const windowSize = isRolling ? parseInt(windowVal, 10) : 0;
         const filterVal = divisionSelect.value;
         const highlightId = teamSelect.value;
         const highlightId2 = teamSelect2.value;
@@ -586,7 +761,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 let borderWidth = isHighlighted ? 3 : 1;
                 let zIndex = isHighlighted ? 10 : 1;
                 
-                let plotData = team[metricVal] || [];
+                let plotData = isRolling 
+                    ? computeNhlRollingMetric(team, metricVal, windowSize)
+                    : (team[metricVal] || []);
 
                 datasets.push({
                     label: team.name,
@@ -612,6 +789,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         Chart.defaults.color = '#888';
         Chart.defaults.font.family = 'Inter, sans-serif';
+
+        const baseMetricLabel = metricSelect.options[metricSelect.selectedIndex].text;
+        const yAxisLabel = isRolling ? `${baseMetricLabel} (Last ${windowSize} Games Rolling)` : baseMetricLabel;
 
         chartInstance = new Chart(ctx, {
             type: 'line',
@@ -662,7 +842,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         ticks: { stepSize: 1 }
                     },
                     y: {
-                        title: { display: true, text: metricSelect.options[metricSelect.selectedIndex].text },
+                        title: { display: true, text: yAxisLabel },
                         grid: { color: '#333' },
                         suggestedMin: (function() {
                             if (metricVal === 'savePct') return 86;
@@ -694,6 +874,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const params = new URLSearchParams();
         if (metricSelect && metricSelect.value && metricSelect.value !== 'goalDiff') {
             params.set('metric', metricSelect.value);
+        }
+        if (windowSelect && windowSelect.value && windowSelect.value !== 'cumulative') {
+            params.set('window', windowSelect.value);
         }
         if (divisionSelect && divisionSelect.value && divisionSelect.value !== 'all') {
             params.set('division', divisionSelect.value);
@@ -757,7 +940,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function generateExportCanvas() {
         const metricVal = metricSelect.value;
-        const metricText = metricSelect.options[metricSelect.selectedIndex].text;
+        const windowVal = windowSelect ? windowSelect.value : 'cumulative';
+        const isRolling = windowVal !== 'cumulative';
+        const windowSize = isRolling ? parseInt(windowVal, 10) : 0;
+        const baseMetricText = metricSelect.options[metricSelect.selectedIndex].text;
+        const metricText = isRolling ? `${baseMetricText} (Last ${windowSize} Games Rolling)` : baseMetricText;
         const filterVal = divisionSelect.value;
         const highlightId = teamSelect.value;
         const highlightId2 = teamSelect2.value;
@@ -774,6 +961,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             teamSubtitle = `${team2.name}`;
         } else if (filterVal !== 'all') {
             teamSubtitle = divisionSelect.options[divisionSelect.selectedIndex].text;
+        }
+        if (isRolling) {
+            teamSubtitle += ` • Last ${windowSize} Games Rolling`;
         }
 
         const hasHighlights = highlightId !== 'none' || highlightId2 !== 'none';
@@ -811,9 +1001,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 }
 
+                const plotData = isRolling
+                    ? computeNhlRollingMetric(team, metricVal, windowSize)
+                    : (team[metricVal] || []);
+
                 datasets.push({
                     label: team.name,
-                    data: team[metricVal] || [],
+                    data: plotData,
                     borderColor: color,
                     borderWidth: borderWidth,
                     borderDash: borderDash,
@@ -1048,6 +1242,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         syncUrlParams();
         renderChart();
     });
+    if (windowSelect) {
+        windowSelect.addEventListener('change', () => {
+            localStorage.setItem(STORAGE_KEY_WINDOW, windowSelect.value);
+            syncUrlParams();
+            renderChart();
+        });
+    }
     divisionSelect.addEventListener('change', () => {
         localStorage.setItem(STORAGE_KEY_DIVISION, divisionSelect.value);
         syncUrlParams();
@@ -1072,10 +1273,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (clearFiltersBtn) {
         clearFiltersBtn.addEventListener('click', () => {
             metricSelect.value = 'goalDiff';
+            if (windowSelect) windowSelect.value = 'cumulative';
             divisionSelect.value = 'all';
             teamSelect.value = 'none';
             teamSelect2.value = 'none';
             localStorage.removeItem(STORAGE_KEY_METRIC);
+            localStorage.removeItem(STORAGE_KEY_WINDOW);
             localStorage.removeItem(STORAGE_KEY_DIVISION);
             localStorage.removeItem(STORAGE_KEY_TEAM);
             localStorage.removeItem(STORAGE_KEY_TEAM2);
