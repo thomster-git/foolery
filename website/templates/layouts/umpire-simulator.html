@@ -53,239 +53,529 @@
             </div>
         </div>
 
-        <!-- Simulator Viewport & Primary Interactive Container -->
-        <div style="position: relative; background: #070b14; border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4); margin-bottom: 1.5rem;">
+        <!-- Top Section: 3D Simulator on Left, Statcast Pitch Breakdown on Right (PC) -->
+        <div class="umpire-layout-top-grid">
             
-            <!-- Canvas Container -->
-            <div style="position: relative; width: 100%; aspect-ratio: 16/9; max-height: 600px; min-height: 380px;">
-                <canvas id="umpire-canvas" style="width: 100%; height: 100%; display: block; cursor: crosshair;"></canvas>
-
-                <!-- In-Canvas HUD: Radar Gun Display -->
-                <div id="radar-hud" style="position: absolute; top: 1.2rem; right: 1.2rem; background: rgba(0, 0, 0, 0.75); border: 1px solid rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); padding: 0.5rem 1rem; border-radius: 8px; text-align: right; pointer-events: none;">
-                    <div style="font-size: 0.7rem; color: var(--text-muted); letter-spacing: 1px; font-weight: 700;">STATCAST RADAR</div>
-                    <div id="radar-mph" style="font-family: var(--font-mono); font-size: 1.8rem; font-weight: 900; color: #fbbf24; line-height: 1;">-- <span style="font-size: 0.9rem; color: #94a3b8;">MPH</span></div>
-                    <div id="radar-pitch-name" style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700;">Ready</div>
-                </div>
-
-                <!-- In-Canvas Verdict Banner (Overlaid right as pitch crosses) -->
-                <div id="verdict-banner" style="display: none; position: absolute; top: 18%; left: 50%; transform: translate(-50%, -50%); padding: 0.8rem 2rem; border-radius: 12px; font-family: var(--font-sans); font-size: 1.8rem; font-weight: 900; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); text-align: center; pointer-events: none; z-index: 20; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
-                    <div id="verdict-title">STRIKE!</div>
-                    <div id="verdict-subtitle" style="font-size: 0.95rem; font-weight: 600; margin-top: 0.2rem; opacity: 0.95;"></div>
-                </div>
-
-                <!-- Call Prompt / Big Action Overlay during CALL_WINDOW -->
-                <div id="call-prompt-overlay" style="display: none; position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%); z-index: 25; text-align: center;">
-                    <div style="color: #fff; font-weight: 800; font-size: 1.1rem; text-shadow: 0 2px 6px #000; margin-bottom: 0.6rem;">MAKE YOUR CALL!</div>
-                    <div style="display: flex; gap: 1rem; justify-content: center;">
-                        <button id="overlay-btn-strike" style="background: #ef4444; color: white; border: 2px solid #b91c1c; font-size: 1.2rem; font-weight: 900; padding: 0.7rem 1.8rem; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); transition: transform 0.1s;">
-                            🔴 STRIKE <kbd style="background: rgba(0,0,0,0.3); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">S</kbd>
-                        </button>
-                        <button id="overlay-btn-ball" style="background: #10b981; color: white; border: 2px solid #047857; font-size: 1.2rem; font-weight: 900; padding: 0.7rem 1.8rem; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); transition: transform 0.1s;">
-                            🟢 BALL <kbd style="background: rgba(0,0,0,0.3); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">B</kbd>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Pitch Delivery Action Button (When idle / ready) -->
-                <div id="pitch-action-overlay" style="position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); z-index: 15;">
-                    <button id="btn-throw-pitch" style="background: var(--accent-cyan); color: #000; border: none; font-size: 1.1rem; font-weight: 900; padding: 0.75rem 2rem; border-radius: 30px; cursor: pointer; box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4); display: inline-flex; align-items: center; gap: 0.5rem; transition: transform 0.15s, background 0.15s;">
-                        <span>⚾</span> THROW PITCH <kbd style="background: rgba(0,0,0,0.15); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Space</kbd>
-                    </button>
-                </div>
-
-            </div>
-
-            <!-- Direct Control Bar underneath the Canvas -->
-            <div style="background: rgba(15, 23, 42, 0.95); border-top: 1px solid var(--border-color); padding: 0.8rem 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+            <!-- Left Column: 3D Simulator Viewport & In-Game Controls -->
+            <div class="umpire-simulator-column">
                 
-                <!-- Left: Call Buttons -->
-                <div style="display: flex; gap: 0.6rem; align-items: center;">
-                    <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-right: 0.2rem;">CALL:</span>
-                    <button id="btn-call-strike" class="btn" style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; font-weight: 800; padding: 0.45rem 1rem; border-radius: 6px; cursor: pointer;">
-                        🔴 Strike (S)
-                    </button>
-                    <button id="btn-call-ball" class="btn" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; font-weight: 800; padding: 0.45rem 1rem; border-radius: 6px; cursor: pointer;">
-                        🟢 Ball (B)
-                    </button>
-                    <button id="btn-next-pitch" class="btn" style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-bright); font-weight: 700; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; display: none;">
-                        Next Pitch ⏭️ (Space)
-                    </button>
+                <!-- Canvas Container (More vertical 4:3 aspect ratio) -->
+                <div class="canvas-viewport-wrap">
+                    <canvas id="umpire-canvas" style="width: 100%; height: 100%; display: block; cursor: crosshair;"></canvas>
+
+                    <!-- In-Canvas HUD: Radar Gun Display -->
+                    <div id="radar-hud" style="position: absolute; top: 1.2rem; right: 1.2rem; background: rgba(0, 0, 0, 0.75); border: 1px solid rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); padding: 0.5rem 1rem; border-radius: 8px; text-align: right; pointer-events: none;">
+                        <div style="font-size: 0.7rem; color: var(--text-muted); letter-spacing: 1px; font-weight: 700;">STATCAST RADAR</div>
+                        <div id="radar-mph" style="font-family: var(--font-mono); font-size: 1.8rem; font-weight: 900; color: #fbbf24; line-height: 1;">-- <span style="font-size: 0.9rem; color: #94a3b8;">MPH</span></div>
+                        <div id="radar-pitch-name" style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700;">Ready</div>
+                    </div>
+
+                    <!-- In-Canvas Verdict Banner (Overlaid right as pitch crosses) -->
+                    <div id="verdict-banner" style="display: none; position: absolute; top: 18%; left: 50%; transform: translate(-50%, -50%); padding: 0.8rem 2rem; border-radius: 12px; font-family: var(--font-sans); font-size: 1.8rem; font-weight: 900; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); text-align: center; pointer-events: none; z-index: 20; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                        <div id="verdict-title">STRIKE!</div>
+                        <div id="verdict-subtitle" style="font-size: 0.95rem; font-weight: 600; margin-top: 0.2rem; opacity: 0.95;"></div>
+                    </div>
+
+                    <!-- Call Prompt / Big Action Overlay during CALL_WINDOW -->
+                    <div id="call-prompt-overlay" style="display: none; position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%); z-index: 25; text-align: center;">
+                        <div style="color: #fff; font-weight: 800; font-size: 1.1rem; text-shadow: 0 2px 6px #000; margin-bottom: 0.6rem;">MAKE YOUR CALL!</div>
+                        <div style="display: flex; gap: 1rem; justify-content: center;">
+                            <button id="overlay-btn-strike" style="background: #ef4444; color: white; border: 2px solid #b91c1c; font-size: 1.2rem; font-weight: 900; padding: 0.7rem 1.8rem; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); transition: transform 0.1s;">
+                                🔴 STRIKE <kbd style="background: rgba(0,0,0,0.3); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">S</kbd>
+                            </button>
+                            <button id="overlay-btn-ball" style="background: #10b981; color: white; border: 2px solid #047857; font-size: 1.2rem; font-weight: 900; padding: 0.7rem 1.8rem; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); transition: transform 0.1s;">
+                                🟢 BALL <kbd style="background: rgba(0,0,0,0.3); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">B</kbd>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Pitch Delivery Action Button (When idle / ready) -->
+                    <div id="pitch-action-overlay" style="position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); z-index: 15;">
+                        <button id="btn-throw-pitch" style="background: var(--accent-cyan); color: #000; border: none; font-size: 1.1rem; font-weight: 900; padding: 0.75rem 2rem; border-radius: 30px; cursor: pointer; box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4); display: inline-flex; align-items: center; gap: 0.5rem; transition: transform 0.15s, background 0.15s;">
+                            <span>⚾</span> THROW PITCH <kbd style="background: rgba(0,0,0,0.15); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Space</kbd>
+                        </button>
+                    </div>
+
                 </div>
 
-                <!-- Right: Practice & Visual Toggles -->
-                <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center;">
-                    <!-- Speed Mode -->
-                    <div style="display: flex; align-items: center; gap: 0.35rem;">
-                        <label for="speed-select" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">SPEED:</label>
-                        <select id="speed-select" style="background: var(--bg-dark); color: var(--text-bright); border: 1px solid var(--border-color); padding: 0.35rem 0.5rem; border-radius: 4px; font-size: 0.82rem; cursor: pointer;">
-                            <option value="1.0">Game Speed (100%)</option>
-                            <option value="0.75">Practice (75%)</option>
-                            <option value="0.5">Slow-Mo (50%)</option>
-                        </select>
+                <!-- Direct Control Bar underneath the Canvas -->
+                <div style="background: rgba(15, 23, 42, 0.95); border-top: 1px solid var(--border-color); padding: 0.8rem 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+                    
+                    <!-- Left: Call Buttons -->
+                    <div style="display: flex; gap: 0.6rem; align-items: center;">
+                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-right: 0.2rem;">CALL:</span>
+                        <button id="btn-call-strike" class="btn" style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; font-weight: 800; padding: 0.45rem 1rem; border-radius: 6px; cursor: pointer;">
+                            🔴 Strike (S)
+                        </button>
+                        <button id="btn-call-ball" class="btn" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; font-weight: 800; padding: 0.45rem 1rem; border-radius: 6px; cursor: pointer;">
+                            🟢 Ball (B)
+                        </button>
+                        <button id="btn-next-pitch" class="btn" style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-bright); font-weight: 700; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; display: none;">
+                            Next Pitch ⏭️ (Space)
+                        </button>
                     </div>
 
-                    <!-- Batter Stance -->
-                    <div style="display: flex; align-items: center; gap: 0.35rem;">
-                        <label for="batter-select" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">BATTER:</label>
-                        <select id="batter-select" style="background: var(--bg-dark); color: var(--text-bright); border: 1px solid var(--border-color); padding: 0.35rem 0.5rem; border-radius: 4px; font-size: 0.82rem; cursor: pointer;">
-                            <option value="RHH">Right-Handed</option>
-                            <option value="LHH">Left-Handed</option>
-                        </select>
+                    <!-- Right: Practice & Visual Toggles -->
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center;">
+                        <!-- Speed Mode -->
+                        <div style="display: flex; align-items: center; gap: 0.35rem;">
+                            <label for="speed-select" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">SPEED:</label>
+                            <select id="speed-select" style="background: var(--bg-dark); color: var(--text-bright); border: 1px solid var(--border-color); padding: 0.35rem 0.5rem; border-radius: 4px; font-size: 0.82rem; cursor: pointer;">
+                                <option value="1.0">Game Speed (100%)</option>
+                                <option value="0.75">Practice (75%)</option>
+                                <option value="0.5">Slow-Mo (50%)</option>
+                            </select>
+                        </div>
+
+                        <!-- Batter Stance -->
+                        <div style="display: flex; align-items: center; gap: 0.35rem;">
+                            <label for="batter-select" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">BATTER:</label>
+                            <select id="batter-select" style="background: var(--bg-dark); color: var(--text-bright); border: 1px solid var(--border-color); padding: 0.35rem 0.5rem; border-radius: 4px; font-size: 0.82rem; cursor: pointer;">
+                                <option value="RHH">Right-Handed</option>
+                                <option value="LHH">Left-Handed</option>
+                            </select>
+                        </div>
+
+                        <!-- Pitch Selection -->
+                        <div style="display: flex; align-items: center; gap: 0.35rem;">
+                            <label for="pitch-type-select" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">PITCH:</label>
+                            <select id="pitch-type-select" style="background: var(--bg-dark); color: var(--text-bright); border: 1px solid var(--border-color); padding: 0.35rem 0.5rem; border-radius: 4px; font-size: 0.82rem; cursor: pointer;">
+                                <option value="RANDOM">🎲 Random Arsenal</option>
+                                <option value="FASTBALL">🔥 4-Seam Fastball (95 mph)</option>
+                                <option value="SLIDER">🌪️ Slider (85 mph)</option>
+                                <option value="CURVEBALL">🪝 12-6 Curveball (78 mph)</option>
+                                <option value="CHANGEUP">🍃 Circle Changeup (84 mph)</option>
+                            </select>
+                        </div>
+
+                        <!-- Strike Zone Overlay Toggle -->
+                        <label style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 700; cursor: pointer;">
+                            <input type="checkbox" id="chk-show-zone" style="cursor: pointer;">
+                            Show Box in Flight
+                        </label>
+
+                        <!-- Pitch Trail Toggle -->
+                        <label style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 700; cursor: pointer;">
+                            <input type="checkbox" id="chk-show-trail" checked style="cursor: pointer;">
+                            Pitch Trail
+                        </label>
                     </div>
 
-                    <!-- Pitch Selection -->
-                    <div style="display: flex; align-items: center; gap: 0.35rem;">
-                        <label for="pitch-type-select" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">PITCH:</label>
-                        <select id="pitch-type-select" style="background: var(--bg-dark); color: var(--text-bright); border: 1px solid var(--border-color); padding: 0.35rem 0.5rem; border-radius: 4px; font-size: 0.82rem; cursor: pointer;">
-                            <option value="RANDOM">🎲 Random Arsenal</option>
-                            <option value="FASTBALL">🔥 4-Seam Fastball (95 mph)</option>
-                            <option value="SLIDER">🌪️ Slider (85 mph)</option>
-                            <option value="CURVEBALL">🪝 12-6 Curveball (78 mph)</option>
-                            <option value="CHANGEUP">🍃 Circle Changeup (84 mph)</option>
-                        </select>
-                    </div>
-
-                    <!-- Strike Zone Overlay Toggle -->
-                    <label style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 700; cursor: pointer;">
-                        <input type="checkbox" id="chk-show-zone" style="cursor: pointer;">
-                        Show Box in Flight
-                    </label>
-
-                    <!-- Pitch Trail Toggle -->
-                    <label style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 700; cursor: pointer;">
-                        <input type="checkbox" id="chk-show-trail" checked style="cursor: pointer;">
-                        Pitch Trail
-                    </label>
                 </div>
 
             </div>
 
-        </div>
-
-        <!-- Lower Section: Statcast Pitch Breakdown & Comprehensive Umpire Scorecard -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-            
-            <!-- Pitch Breakdown & Statcast Card -->
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.6rem;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="font-size: 1.2rem;">📡</span>
-                        <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-bright);">Statcast Pitch Breakdown</h3>
+            <!-- Right Column: Statcast Pitch Breakdown Card (Side-by-side on PC) -->
+            <div class="statcast-sidebar-card">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="font-size: 1.3rem;">📡</span>
+                            <h3 style="margin: 0; font-size: 1.18rem; color: var(--text-bright); font-weight: 800;">Statcast Pitch Breakdown</h3>
+                        </div>
+                        <span id="stat-subzone-badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); font-weight: 800; font-size: 0.75rem; padding: 3px 9px; border-radius: 4px; text-transform: uppercase;">Awaiting Pitch</span>
                     </div>
-                    <span id="stat-subzone-badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); font-weight: 800; font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; text-transform: uppercase;">Awaiting Pitch</span>
+
+                    <!-- Large Pitch Speed & Type Hero Readout -->
+                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Pitch Classification</div>
+                            <div id="stat-pitch-type-hero" style="font-size: 1.2rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">Ready for Delivery</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Velo at Release</div>
+                            <div id="stat-velo-hero" style="font-family: var(--font-mono); font-size: 1.45rem; font-weight: 900; color: #fbbf24; margin-top: 2px;">-- mph</div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700;">Pitch Type</div>
+                            <div id="stat-pitch-type" style="font-size: 1.05rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">--</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700;">Release Velocity</div>
+                            <div id="stat-velo" style="font-size: 1.05rem; font-weight: 800; color: #fbbf24; margin-top: 2px;">--</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700;">Horizontal Break (pfx_x)</div>
+                            <div id="stat-pfx-x" style="font-size: 0.98rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">--</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700;">Induced Vertical Drop (IVB)</div>
+                            <div id="stat-pfx-z" style="font-size: 0.98rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">--</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700;">Spin Rate &amp; Tilt</div>
+                            <div id="stat-spin" style="font-size: 0.98rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">--</div>
+                        </div>
+                        <div>
+                            <div style="color: var(--text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700;">Zone Edge Margin</div>
+                            <div id="stat-margin" style="font-size: 0.98rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">--</div>
+                        </div>
+                    </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem;">
-                    <div>
-                        <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Pitch Type</div>
-                        <div id="stat-pitch-type" style="font-size: 1.1rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">--</div>
-                    </div>
-                    <div>
-                        <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Release Velocity</div>
-                        <div id="stat-velo" style="font-size: 1.1rem; font-weight: 800; color: #fbbf24; margin-top: 2px;">--</div>
-                    </div>
-                    <div>
-                        <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Horizontal Break (pfx_x)</div>
-                        <div id="stat-pfx-x" style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">--</div>
-                    </div>
-                    <div>
-                        <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Induced Vertical Drop (IVB)</div>
-                        <div id="stat-pfx-z" style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">--</div>
-                    </div>
-                    <div>
-                        <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Spin Rate & Tilt</div>
-                        <div id="stat-spin" style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">--</div>
-                    </div>
-                    <div>
-                        <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Zone Edge Margin</div>
-                        <div id="stat-margin" style="font-size: 1rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">--</div>
-                    </div>
-                </div>
-
-                <div style="background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.8rem; font-size: 0.85rem; line-height: 1.5; color: var(--text-muted);">
-                    <strong style="color: var(--accent-cyan); display: block; margin-bottom: 0.2rem;">Rulebook Collision:</strong>
+                <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.9rem; font-size: 0.83rem; line-height: 1.5; color: var(--text-muted);">
+                    <strong style="color: var(--accent-cyan); display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.25rem;">
+                        <span>⚖️</span> Rulebook Collision Geometry:
+                    </strong>
                     Official MLB rules stipulate that if any 1.45" radius boundary of the sphere contacts the 17" pentagonal prism over home plate, the pitch is a legal strike.
                 </div>
             </div>
 
-            <!-- Umpire Scorecard & Evaluation Analytics -->
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.6rem;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                        <span style="font-size: 1.2rem;">📋</span>
-                        <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-bright);">Umpire Scorecard</h3>
-                    </div>
-                    <button id="btn-reset-scorecard" style="background: none; border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; cursor: pointer;">Reset Scorecard</button>
-                </div>
+        </div>
 
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-bottom: 1.2rem;">
-                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; text-align: center;">
-                        <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Overall Acc</div>
-                        <div id="sc-overall-acc" style="font-size: 1.3rem; font-weight: 900; color: var(--accent-cyan); margin-top: 2px;">100%</div>
-                    </div>
-                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; text-align: center;">
-                        <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Strike Acc</div>
-                        <div id="sc-strike-acc" style="font-size: 1.3rem; font-weight: 900; color: #f87171; margin-top: 2px;">--</div>
-                    </div>
-                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; text-align: center;">
-                        <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Ball Acc</div>
-                        <div id="sc-ball-acc" style="font-size: 1.3rem; font-weight: 900; color: #34d399; margin-top: 2px;">--</div>
-                    </div>
-                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; text-align: center;">
-                        <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Shadow Zone</div>
-                        <div id="sc-shadow-acc" style="font-size: 1.3rem; font-weight: 900; color: #fbbf24; margin-top: 2px;">--</div>
-                    </div>
-                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; text-align: center;">
-                        <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Net Run Favor</div>
-                        <div id="sc-favor" style="font-size: 1.3rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">0.00</div>
-                    </div>
-                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: 6px; text-align: center;">
-                        <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Total Pitches</div>
-                        <div id="sc-total-count" style="font-size: 1.3rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">0</div>
+        <!-- Umpire Scorecard & Comprehensive Evaluation Section (Full Width) -->
+        <div class="umpire-scorecard-section">
+            <div class="scorecard-header-bar">
+                <div>
+                    <h2 style="margin: 0; font-size: 1.35rem; color: var(--text-bright); display: flex; align-items: center; gap: 0.55rem; font-weight: 800;">
+                        <span>📋</span> Umpire Scorecard &amp; ABS Challenge Evaluation
+                    </h2>
+                    <div style="font-size: 0.86rem; color: var(--text-muted); margin-top: 0.25rem;">
+                        Real-time tracking of personal strike zone consistency, shadow boundary calls, and net run impact
                     </div>
                 </div>
-
-                <!-- Recent Call History Reel -->
-                <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700; margin-bottom: 0.4rem;">Recent Pitches</div>
-                <div id="recent-pitches-reel" style="display: flex; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.4rem; min-height: 40px; align-items: center;">
-                    <span style="font-size: 0.8rem; color: var(--text-dim);">No pitches thrown yet. Press Throw Pitch to begin!</span>
+                <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+                    <button id="btn-share-scorecard" class="btn btn-share-scorecard" title="Copy verified Umpire Scorecard image to clipboard">
+                        <span>📸</span> Share Scorecard (Copy Image)
+                    </button>
+                    <button id="btn-reset-scorecard" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.82rem; padding: 0.5rem 0.9rem; border-radius: 6px; cursor: pointer; font-weight: 700; transition: background 0.15s;">
+                        ↺ Reset Scorecard
+                    </button>
                 </div>
             </div>
 
-            <!-- Static Methodology: 3D Statcast Physics & Automated Ball-Strike (ABS) Geometry -->
-            <section style="text-align: left; max-width: 960px; margin: 2.5rem auto 1.5rem auto; line-height: 1.7; color: var(--text-main); background: rgba(15, 23, 42, 0.55); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem;">
-                <h2 style="font-size: 1.5rem; margin-bottom: 0.85rem; color: var(--accent-cyan);">Methodology: 3D Statcast Pitch Kinematics &amp; Rulebook Strike Zone Collision</h2>
-                <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.94rem;">
-                    The <strong>3D MLB Umpire Simulator</strong> models pitches from a 54-foot release point ($z_0 = 54.0\text{ ft}$, $y_0 = 6.0\text{ ft}$) down to home plate using constant-acceleration kinematic equations calibrated to MLB Statcast pitch-tracking averages. Each pitch type—<strong>4-Seam Fastball</strong> (95 mph, $+17.5^{\prime\prime}$ induced vertical break), <strong>Slider</strong> (85 mph, $+8.0^{\prime\prime}$ glove-side sweep), <strong>12-6 Curveball</strong> (78 mph, $-14.0^{\prime\prime}$ vertical drop), and <strong>Circle Changeup</strong> (84 mph, $-14.5^{\prime\prime}$ arm-side fade)—follows a realistic 3D trajectory with aerodynamic drag.
-                </p>
-                <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--text-bright);">Pentagonal Prism Swept-Sphere Strike Evaluation &amp; Shadow Zone</h3>
-                <p style="margin-bottom: 0; color: var(--text-muted); font-size: 0.94rem;">
-                    Per Official Baseball Rules, home plate is a 17-inch-wide pentagon ($8.5^{\prime\prime}$ half-width) extending from the front edge ($z = 0$) to the rear apex ($z = -17^{\prime\prime}$). A pitch is a rulebook strike if any portion of the baseball ($1.45^{\prime\prime}$ radius sphere) intersects the 3D pentagonal prism between the batter's knees ($1.5\text{ ft}$) and midpoint of the torso ($3.5\text{ ft}$). Pitches within $\pm 1.45^{\prime\prime}$ of the outer boundary are classified into the <strong>Shadow Zone</strong>—where MLB umpires and the Automated Ball-Strike (ABS) challenge system face the toughest calls.
-                </p>
-            </section>
+            <!-- Scorecard Main Grid: Left = Metrics & History Reel, Right = Virtual Strike Zone -->
+            <div class="scorecard-main-grid">
+                
+                <!-- Left: 6 Stats Tiles + Recent Pitches Reel -->
+                <div class="scorecard-stats-column">
+                    <div class="scorecard-tiles-grid">
+                        <div class="sc-tile">
+                            <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Overall Acc</div>
+                            <div id="sc-overall-acc" style="font-size: 1.4rem; font-weight: 900; color: var(--accent-cyan); margin-top: 2px;">100%</div>
+                        </div>
+                        <div class="sc-tile">
+                            <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Strike Acc</div>
+                            <div id="sc-strike-acc" style="font-size: 1.4rem; font-weight: 900; color: #f87171; margin-top: 2px;">--</div>
+                        </div>
+                        <div class="sc-tile">
+                            <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Ball Acc</div>
+                            <div id="sc-ball-acc" style="font-size: 1.4rem; font-weight: 900; color: #34d399; margin-top: 2px;">--</div>
+                        </div>
+                        <div class="sc-tile">
+                            <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Shadow Zone</div>
+                            <div id="sc-shadow-acc" style="font-size: 1.4rem; font-weight: 900; color: #fbbf24; margin-top: 2px;">--</div>
+                        </div>
+                        <div class="sc-tile">
+                            <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Net Run Favor</div>
+                            <div id="sc-favor" style="font-size: 1.4rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">0.00</div>
+                        </div>
+                        <div class="sc-tile">
+                            <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Total Pitches</div>
+                            <div id="sc-total-count" style="font-size: 1.4rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">0</div>
+                        </div>
+                    </div>
 
-            <!-- Related Sports Analytics Tools Cross-Linking -->
-            <nav aria-label="Related Sports Analytics Tools" style="text-align: left; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; margin: 1.5rem auto;">
-                <h2 style="font-size: 1.2rem; color: var(--accent-cyan); margin: 0 0 0.85rem 0;">Explore Related Baseball &amp; Sports Analytics Tools</h2>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.75rem;">
-                    <a href="/tools/baseball-trend-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">⚾ MLB 162-Game Trend Analyzer (2016–2026) &rarr;</a>
-                    <a href="/tools/postseason-baseball-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">⚾🔥 MLB Postseason Momentum Analyzer &rarr;</a>
-                    <a href="/tools/f1-championship-calculator/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">🏎️ F1 2026 Championship Calculator &rarr;</a>
-                    <a href="/tools/nhl-trend-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">🏒 NHL 25-Metric Trend Analyzer &rarr;</a>
-                    <a href="/tools/nfl-trend-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">🏈 NFL Point Differential Analyzer &rarr;</a>
+                    <!-- Recent Call History Reel -->
+                    <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700; margin-bottom: 0.45rem;">Recent Pitches</div>
+                    <div id="recent-pitches-reel" style="display: flex; gap: 0.45rem; overflow-x: auto; padding-bottom: 0.45rem; min-height: 42px; align-items: center;">
+                        <span style="font-size: 0.82rem; color: var(--text-dim);">No pitches thrown yet. Press Throw Pitch to begin!</span>
+                    </div>
                 </div>
-            </nav>
+
+                <!-- Right: Virtual Strike Zone Visualizer Display -->
+                <div class="virtual-zone-panel">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <span style="font-size: 0.84rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent-cyan);">
+                            📐 Your Established Strike Zone
+                        </span>
+                        <span id="virtual-zone-tendency-badge" style="font-size: 0.74rem; font-weight: 800; background: rgba(6,182,212,0.15); color: var(--accent-cyan); padding: 2px 8px; border-radius: 4px;">
+                            Awaiting Pitches
+                        </span>
+                    </div>
+
+                    <div style="position: relative; background: #070b14; border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem 0.5rem; text-align: center;">
+                        <canvas id="virtual-zone-canvas" width="300" height="250" style="width: 100%; max-width: 300px; height: 250px; display: block; margin: 0 auto;"></canvas>
+                        
+                        <div style="display: flex; justify-content: center; gap: 0.85rem; font-size: 0.74rem; color: var(--text-muted); margin-top: 0.55rem; flex-wrap: wrap;">
+                            <span style="display: inline-flex; align-items: center; gap: 0.3rem;"><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#22c55e;"></span> Correct</span>
+                            <span style="display: inline-flex; align-items: center; gap: 0.3rem;"><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#ef4444;"></span> Missed</span>
+                            <span style="display: inline-flex; align-items: center; gap: 0.3rem;"><span style="display:inline-block; width:10px; height:6px; border:1px dashed #ffffff; background:transparent;"></span> Rulebook</span>
+                            <span style="display: inline-flex; align-items: center; gap: 0.3rem;"><span style="display:inline-block; width:10px; height:6px; border:1.5px solid #06b6d4; background:rgba(6,182,212,0.25);"></span> Your Zone</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Scorecard Footnote: Official MLB Benchmark Statistics -->
+            <div class="scorecard-footnote">
+                <strong style="color: var(--accent-cyan); display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem; font-size: 0.88rem;">
+                    <span>📊</span> MLB Benchmark Reference &amp; Scorecard Analytics
+                </strong>
+                In a standard 9-inning Major League Baseball game, pitchers throw an average of <strong>~290 to 300 total pitches</strong> (~145 per team). Of those, approximately <strong>~140 to 150 pitches</strong> are taken (not swung at), requiring an umpire decision. Official MLB Umpire Scorecard analytics reveal that modern big-league umpires average <strong>~94.0% Overall Accuracy</strong> (with top-tier umpires reaching 96%+), <strong>~88% accuracy in the Shadow Zone</strong> (borderline pitches within &plusmn;1.45&Prime; of the edge), and <strong>~97% accuracy in clear Chase/Heart zones</strong>, with an average net run favor of &plusmn;0.40 to 0.80 runs per game.
+            </div>
 
         </div>
+
+        <!-- Static Methodology: 3D Statcast Physics & Automated Ball-Strike (ABS) Geometry (Full Width) -->
+        <section class="umpire-methodology-section">
+            <h2 style="font-size: 1.5rem; margin-bottom: 0.85rem; color: var(--accent-cyan);">Methodology: 3D Statcast Pitch Kinematics &amp; Rulebook Strike Zone Collision</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.94rem;">
+                The <strong>3D MLB Umpire Simulator</strong> models pitches from a 54-foot release point ($z_0 = 54.0\text{ ft}$, $y_0 = 6.0\text{ ft}$) down to home plate using constant-acceleration kinematic equations calibrated to MLB Statcast pitch-tracking averages. Each pitch type—<strong>4-Seam Fastball</strong> (95 mph, $+17.5^{\prime\prime}$ induced vertical break), <strong>Slider</strong> (85 mph, $+8.0^{\prime\prime}$ glove-side sweep), <strong>12-6 Curveball</strong> (78 mph, $-14.0^{\prime\prime}$ vertical drop), and <strong>Circle Changeup</strong> (84 mph, $-14.5^{\prime\prime}$ arm-side fade)—follows a realistic 3D trajectory with aerodynamic drag.
+            </p>
+            <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--text-bright);">Pentagonal Prism Swept-Sphere Strike Evaluation &amp; Shadow Zone</h3>
+            <p style="margin-bottom: 0; color: var(--text-muted); font-size: 0.94rem;">
+                Per Official Baseball Rules, home plate is a 17-inch-wide pentagon ($8.5^{\prime\prime}$ half-width) extending from the front edge ($z = 0$) to the rear apex ($z = -17^{\prime\prime}$). A pitch is a rulebook strike if any portion of the baseball ($1.45^{\prime\prime}$ radius sphere) intersects the 3D pentagonal prism between the batter's knees ($1.5\text{ ft}$) and midpoint of the torso ($3.5\text{ ft}$). Pitches within $\pm 1.45^{\prime\prime}$ of the outer boundary are classified into the <strong>Shadow Zone</strong>—where MLB umpires and the Automated Ball-Strike (ABS) challenge system face the toughest calls.
+            </p>
+        </section>
+
+        <!-- Related Sports Analytics Tools Cross-Linking (Full Width) -->
+        <nav aria-label="Related Sports Analytics Tools" class="umpire-related-nav">
+            <h2 style="font-size: 1.2rem; color: var(--accent-cyan); margin: 0 0 0.85rem 0;">Explore Related Baseball &amp; Sports Analytics Tools</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.75rem;">
+                <a href="/tools/baseball-trend-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">⚾ MLB 162-Game Trend Analyzer (2016–2026) &rarr;</a>
+                <a href="/tools/postseason-baseball-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">⚾🔥 MLB Postseason Momentum Analyzer &rarr;</a>
+                <a href="/tools/f1-championship-calculator/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">🏎️ F1 2026 Championship Calculator &rarr;</a>
+                <a href="/tools/nhl-trend-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">🏒 NHL 25-Metric Trend Analyzer &rarr;</a>
+                <a href="/tools/nfl-trend-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">🏈 NFL Point Differential Analyzer &rarr;</a>
+            </div>
+        </nav>
+
+        <!-- Share Scorecard Modal (<dialog>) -->
+        <dialog id="scorecard-share-modal" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--accent-cyan); border-radius: var(--radius-md); max-width: 680px; width: 92%; padding: 1.5rem; box-shadow: 0 20px 50px rgba(0,0,0,0.75);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                <h3 style="margin: 0; color: var(--accent-cyan); font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 800;">
+                    <span>📸</span> Share Umpire Scorecard
+                </h3>
+                <button type="button" id="btn-close-share-modal" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; line-height: 1;">&times;</button>
+            </div>
+            
+            <div id="share-feedback-pill" style="background: rgba(34, 197, 94, 0.15); border: 1px solid #22c55e; color: #4ade80; padding: 0.65rem 1rem; border-radius: 8px; font-size: 0.86rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span>✅</span> <strong>Scorecard Image Copied to Clipboard!</strong> Paste directly into Discord, X, or Reddit.
+            </div>
+
+            <!-- Scorecard Image Preview -->
+            <div style="border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; margin-bottom: 1rem; background: #070b14; text-align: center;">
+                <img id="scorecard-preview-img" alt="MLB Umpire Scorecard Preview" style="width: 100%; height: auto; display: block; max-height: 380px; object-fit: contain;">
+            </div>
+
+            <div style="margin-bottom: 1.25rem;">
+                <label style="display: block; font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.3rem;">Verification Text (matches image hash):</label>
+                <textarea id="scorecard-share-text" readonly rows="3" style="width: 100%; font-family: var(--font-mono); font-size: 0.82rem; padding: 0.55rem; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-bright);"></textarea>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.6rem;">
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <button type="button" id="btn-copy-image-again" style="background: var(--accent-cyan); color: #000; font-weight: 800; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                        📋 Copy Image
+                    </button>
+                    <button type="button" id="btn-download-scorecard-png" style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-bright); font-weight: 700; padding: 0.5rem 0.9rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                        💾 Download PNG
+                    </button>
+                    <button type="button" id="btn-copy-text" style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-muted); font-weight: 600; padding: 0.5rem 0.85rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                        Copy Text
+                    </button>
+                </div>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <button type="button" id="btn-share-x" style="background: #000; color: #fff; border: 1px solid var(--border-color); padding: 0.5rem 0.85rem; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.82rem;">
+                        Share on X
+                    </button>
+                    <button type="button" id="btn-share-reddit" style="background: #ff4500; color: #fff; border: none; padding: 0.5rem 0.85rem; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.82rem;">
+                        Reddit
+                    </button>
+                </div>
+            </div>
+        </dialog>
 
     </div>
 </div>
 
 <style>
-/* Responsive canvas styling */
+/* Layout Top Grid: 3D Simulator on Left, Statcast Breakdown on Right (PC) */
+.umpire-layout-top-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 992px) {
+    .umpire-layout-top-grid {
+        grid-template-columns: 1fr 350px;
+    }
+}
+
+.umpire-simulator-column {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+}
+
+/* More vertical 4:3 canvas viewport */
+.canvas-viewport-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    min-height: 440px;
+    max-height: 620px;
+    background: radial-gradient(circle at 50% 25%, #1e293b 0%, #0a0f1d 80%, #050811 100%);
+    overflow: hidden;
+}
+
 #umpire-canvas {
     touch-action: none;
 }
+
+/* Statcast Sidebar Card */
+.statcast-sidebar-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+    box-sizing: border-box;
+}
+
+/* Umpire Scorecard Section */
+.umpire-scorecard-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+}
+
+.scorecard-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.btn-share-scorecard {
+    background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+    color: #020617;
+    font-weight: 800;
+    font-size: 0.88rem;
+    padding: 0.55rem 1.15rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.btn-share-scorecard:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(6, 182, 212, 0.5);
+}
+
+/* Scorecard Main Grid: Metrics on Left, Virtual Zone on Right */
+.scorecard-main-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+@media (min-width: 860px) {
+    .scorecard-main-grid {
+        grid-template-columns: 1fr 320px;
+        align-items: stretch;
+    }
+}
+
+.scorecard-stats-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.scorecard-tiles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+@media (max-width: 580px) {
+    .scorecard-tiles-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.sc-tile {
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    text-align: left;
+}
+
+.virtual-zone-panel {
+    background: rgba(0, 0, 0, 0.22);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.scorecard-footnote {
+    background: rgba(6, 182, 212, 0.05);
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    border-left: 4px solid var(--accent-cyan);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    font-size: 0.86rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+}
+
+/* Methodology Section (Full Width) */
+.umpire-methodology-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-md);
+    width: 100%;
+}
+
+/* Related Tools Navigation (Full Width) */
+.umpire-related-nav {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+/* History chips */
 .call-badge-chip {
     padding: 3px 8px;
     border-radius: 4px;
@@ -303,6 +593,12 @@
     background: rgba(239, 68, 68, 0.2);
     border: 1px solid #ef4444;
     color: #f87171;
+}
+
+/* Share modal backdrop */
+dialog#scorecard-share-modal::backdrop {
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
 }
 </style>
 
@@ -616,7 +912,8 @@
         shadowPitches: 0,
         correctShadow: 0,
         netFavor: 0.0,
-        history: []
+        history: [],
+        allPitches: []
     };
 
     function resizeCanvas() {
@@ -760,6 +1057,11 @@
 
         // Statcast Breakdown Card update
         const traj = state.pitchTrajectory;
+        const heroPitchType = document.getElementById('stat-pitch-type-hero');
+        if (heroPitchType) heroPitchType.innerText = traj.config.name;
+        const heroVelo = document.getElementById('stat-velo-hero');
+        if (heroVelo) heroVelo.innerText = `${traj.config.velo} mph`;
+
         document.getElementById('stat-subzone-badge').innerText = trueVerdict.subZone;
         document.getElementById('stat-pitch-type').innerText = traj.config.name;
         document.getElementById('stat-velo').innerText = `${traj.config.velo} mph`;
@@ -793,17 +1095,25 @@
             if (isCorrect) scorecard.correctShadow++;
         }
 
-        scorecard.history.unshift({
+        const crossPos = getPitchPosition(traj, traj.tf * 0.98);
+        const pitchEntry = {
             call: userCall,
             trueStrike: trueVerdict.isTrueStrike,
             isCorrect: isCorrect,
             name: traj.config.name,
             velo: traj.config.velo,
-            subZone: trueVerdict.subZone
-        });
+            subZone: trueVerdict.subZone,
+            x: crossPos.x,
+            y: crossPos.y,
+            marginInches: trueVerdict.marginInches
+        };
+
+        scorecard.history.unshift(pitchEntry);
         if (scorecard.history.length > 15) scorecard.history.pop();
+        scorecard.allPitches.push(pitchEntry);
 
         updateScorecardUI();
+        drawVirtualStrikeZone();
     }
 
     function updateScorecardUI() {
@@ -2066,6 +2376,539 @@
     }
 
     // ----------------------------------------------------
+    // Virtual Strike Zone Visualizer & Scorecard Image Generator
+    // ----------------------------------------------------
+    function drawVirtualZoneToContext(targetCtx, rectX, rectY, width, height, pitches, isHighRes = false) {
+        const toX = (wx) => rectX + ((wx - (-1.30)) / 2.6) * width;
+        const toY = (wy) => rectY + ((4.15 - wy) / 3.3) * height;
+
+        // Background fill
+        targetCtx.fillStyle = '#070b14';
+        targetCtx.fillRect(rectX, rectY, width, height);
+
+        // Subtle background center guide
+        targetCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+        targetCtx.lineWidth = 1;
+        targetCtx.beginPath();
+        targetCtx.moveTo(toX(0), rectY);
+        targetCtx.lineTo(toX(0), rectY + height);
+        targetCtx.stroke();
+
+        // 1. Home Plate (Pentagon at bottom)
+        targetCtx.beginPath();
+        targetCtx.moveTo(toX(-HALF_PLATE_WIDTH), toY(1.15));
+        targetCtx.lineTo(toX(HALF_PLATE_WIDTH), toY(1.15));
+        targetCtx.lineTo(toX(HALF_PLATE_WIDTH), toY(1.05));
+        targetCtx.lineTo(toX(0), toY(0.90));
+        targetCtx.lineTo(toX(-HALF_PLATE_WIDTH), toY(1.05));
+        targetCtx.closePath();
+        targetCtx.fillStyle = '#e2e8f0';
+        targetCtx.fill();
+        targetCtx.strokeStyle = '#475569';
+        targetCtx.lineWidth = 1.5;
+        targetCtx.stroke();
+
+        // 2. Shadow Zone Boundary (faint dashed yellow)
+        const szX1 = toX(-HALF_PLATE_WIDTH - BALL_RADIUS);
+        const szX2 = toX(HALF_PLATE_WIDTH + BALL_RADIUS);
+        const szY1 = toY(SZ_TOP + BALL_RADIUS);
+        const szY2 = toY(SZ_BOT - BALL_RADIUS);
+        targetCtx.strokeStyle = 'rgba(251, 191, 36, 0.28)';
+        targetCtx.lineWidth = 1;
+        targetCtx.setLineDash([3, 3]);
+        targetCtx.strokeRect(szX1, szY1, szX2 - szX1, szY2 - szY1);
+        targetCtx.setLineDash([]);
+
+        // 3. MLB Rulebook Strike Zone (17" wide, knees to chest midpoint)
+        const rzX = toX(-HALF_PLATE_WIDTH);
+        const rzW = toX(HALF_PLATE_WIDTH) - rzX;
+        const rzY = toY(SZ_TOP);
+        const rzH = toY(SZ_BOT) - rzY;
+
+        // 3x3 Grid
+        targetCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        targetCtx.lineWidth = 1;
+        targetCtx.setLineDash([3, 3]);
+        for (let c = 1; c <= 2; c++) {
+            targetCtx.beginPath();
+            targetCtx.moveTo(rzX + (rzW / 3) * c, rzY);
+            targetCtx.lineTo(rzX + (rzW / 3) * c, rzY + rzH);
+            targetCtx.stroke();
+
+            targetCtx.beginPath();
+            targetCtx.moveTo(rzX, rzY + (rzH / 3) * c);
+            targetCtx.lineTo(rzX + rzW, rzY + (rzH / 3) * c);
+            targetCtx.stroke();
+        }
+        targetCtx.setLineDash([]);
+
+        // Outer Rulebook border
+        targetCtx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+        targetCtx.lineWidth = 1.8;
+        targetCtx.strokeRect(rzX, rzY, rzW, rzH);
+
+        // 4. Established Virtual Strike Zone
+        const strikeCalls = pitches.filter(p => p.call === 'STRIKE');
+        let estMinX = -HALF_PLATE_WIDTH;
+        let estMaxX = HALF_PLATE_WIDTH;
+        let estMinY = SZ_BOT;
+        let estMaxY = SZ_TOP;
+        let tendencyBadge = "ABS Calibrated (Default)";
+
+        if (strikeCalls.length >= 3) {
+            const sX = strikeCalls.map(p => p.x);
+            const sY = strikeCalls.map(p => p.y);
+            const uMinX = Math.min(...sX);
+            const uMaxX = Math.max(...sX);
+            const uMinY = Math.min(...sY);
+            const uMaxY = Math.max(...sY);
+
+            const blend = Math.min(1.0, strikeCalls.length / 10);
+            estMinX = (-HALF_PLATE_WIDTH) * (1 - blend) + uMinX * blend;
+            estMaxX = (HALF_PLATE_WIDTH) * (1 - blend) + uMaxX * blend;
+            estMinY = (SZ_BOT) * (1 - blend) + uMinY * blend;
+            estMaxY = (SZ_TOP) * (1 - blend) + uMaxY * blend;
+
+            estMinX = Math.max(-1.15, Math.min(-0.35, estMinX));
+            estMaxX = Math.min(1.15, Math.max(0.35, estMaxX));
+            estMinY = Math.max(1.1, Math.min(1.9, estMinY));
+            estMaxY = Math.min(3.9, Math.max(2.9, estMaxY));
+
+            const estWidthInches = (estMaxX - estMinX) * 12;
+            if (estWidthInches > 19.5) {
+                tendencyBadge = "Wide Zone (Pitcher's Ump)";
+            } else if (estWidthInches < 15.0) {
+                tendencyBadge = "Tight Zone (Hitter's Ump)";
+            } else if (estMaxY > 3.65) {
+                tendencyBadge = "Elevated Strike Zone";
+            } else if (estMinY < 1.35) {
+                tendencyBadge = "Low Zone (Knee-Hunter)";
+            } else {
+                tendencyBadge = "Calibrated Zone (ABS Accurate)";
+            }
+        } else if (pitches.length > 0) {
+            tendencyBadge = `Calibrating (${strikeCalls.length}/3 Strikes)`;
+        }
+
+        const ezX = toX(estMinX);
+        const ezW = toX(estMaxX) - ezX;
+        const ezY = toY(estMaxY);
+        const ezH = toY(estMinY) - ezY;
+
+        targetCtx.fillStyle = 'rgba(6, 182, 212, 0.18)';
+        targetCtx.fillRect(ezX, ezY, ezW, ezH);
+        targetCtx.strokeStyle = '#06b6d4';
+        targetCtx.lineWidth = 2.2;
+        targetCtx.strokeRect(ezX, ezY, ezW, ezH);
+
+        // 5. Plotted Pitch Dots
+        const ptRadius = isHighRes ? 5.5 : 4.0;
+        pitches.forEach((p) => {
+            const px = toX(p.x);
+            const py = toY(p.y);
+            if (px < rectX - 10 || px > rectX + width + 10 || py < rectY - 10 || py > rectY + height + 10) return;
+
+            targetCtx.beginPath();
+            targetCtx.arc(px, py, ptRadius, 0, Math.PI * 2);
+            if (p.isCorrect) {
+                targetCtx.fillStyle = '#22c55e';
+                targetCtx.strokeStyle = '#15803d';
+            } else {
+                targetCtx.fillStyle = '#ef4444';
+                targetCtx.strokeStyle = '#991b1b';
+            }
+            targetCtx.fill();
+            targetCtx.lineWidth = 1.2;
+            targetCtx.stroke();
+        });
+
+        return tendencyBadge;
+    }
+
+    function drawVirtualStrikeZone() {
+        const vzCanvas = document.getElementById('virtual-zone-canvas');
+        if (!vzCanvas) return;
+        const g = vzCanvas.getContext('2d');
+        const badgeEl = document.getElementById('virtual-zone-tendency-badge');
+
+        const rect = vzCanvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        const w = rect.width > 0 ? rect.width : 300;
+        const h = rect.height > 0 ? rect.height : 250;
+        vzCanvas.width = w * dpr;
+        vzCanvas.height = h * dpr;
+        g.resetTransform ? g.resetTransform() : g.setTransform(1, 0, 0, 1, 0, 0);
+        g.scale(dpr, dpr);
+
+        const badge = drawVirtualZoneToContext(g, 0, 0, w, h, scorecard.allPitches, false);
+        if (badgeEl) badgeEl.innerText = badge;
+    }
+
+    // ----------------------------------------------------
+    // Verified Scorecard Card Graphic Generator (1100x580 PNG)
+    // ----------------------------------------------------
+    function generateVerificationHash() {
+        let str = `${scorecard.total}|${scorecard.correct}|${scorecard.calledStrikes}|${scorecard.calledBalls}|${scorecard.shadowPitches}`;
+        if (scorecard.allPitches.length > 0) {
+            str += '|' + scorecard.allPitches.slice(-5).map(p => `${p.call}:${p.trueStrike ? 1 : 0}:${p.x.toFixed(2)}:${p.y.toFixed(2)}`).join(';');
+        }
+        let hash = 0x811c9dc5;
+        for (let i = 0; i < str.length; i++) {
+            hash ^= str.charCodeAt(i);
+            hash = Math.imul(hash, 0x01000193);
+        }
+        return (hash >>> 0).toString(16).toUpperCase().padStart(8, '0');
+    }
+
+    function generateScorecardCanvas() {
+        const offCanvas = document.createElement('canvas');
+        offCanvas.width = 1100;
+        offCanvas.height = 580;
+        const g = offCanvas.getContext('2d');
+
+        const total = scorecard.total;
+        const correct = scorecard.correct;
+        const accVal = total > 0 ? (correct / total * 100) : 100.0;
+        const accStr = accVal.toFixed(1);
+        const hash = generateVerificationHash();
+        const verId = `#TF-UMP-${hash}`;
+        const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+        // 1. Background Gradient
+        const bgGrad = g.createLinearGradient(0, 0, 1100, 580);
+        bgGrad.addColorStop(0, '#070b14');
+        bgGrad.addColorStop(0.5, '#0c1322');
+        bgGrad.addColorStop(1, '#080d18');
+        g.fillStyle = bgGrad;
+        g.fillRect(0, 0, 1100, 580);
+
+        // Subtle outer accent border
+        g.strokeStyle = 'rgba(6, 182, 212, 0.45)';
+        g.lineWidth = 2;
+        g.strokeRect(1, 1, 1098, 578);
+
+        // Top cyan highlight bar
+        const topBarGrad = g.createLinearGradient(0, 0, 1100, 0);
+        topBarGrad.addColorStop(0, '#06b6d4');
+        topBarGrad.addColorStop(0.5, '#3b82f6');
+        topBarGrad.addColorStop(1, '#10b981');
+        g.fillStyle = topBarGrad;
+        g.fillRect(0, 0, 1100, 4);
+
+        // 2. Header
+        g.fillStyle = '#ffffff';
+        g.font = '900 24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        g.fillText("THOM'S FOOLERY UMPIRE SCORECARD", 42, 42);
+
+        g.fillStyle = '#94a3b8';
+        g.font = '600 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        g.fillText("Official 3D Statcast Aerodynamic Physics & ABS Zone Collision Analysis", 42, 62);
+
+        // Verification Stamp (top right)
+        const stampW = 280, stampH = 46, stampX = 1100 - 42 - stampW, stampY = 22;
+        g.fillStyle = 'rgba(6, 182, 212, 0.12)';
+        g.strokeStyle = '#06b6d4';
+        g.lineWidth = 1.5;
+        g.beginPath();
+        g.roundRect ? g.roundRect(stampX, stampY, stampW, stampH, 8) : g.rect(stampX, stampY, stampW, stampH);
+        g.fill();
+        g.stroke();
+
+        g.fillStyle = '#06b6d4';
+        g.font = '800 14px "SF Mono", Menlo, Consolas, monospace';
+        g.fillText(`VERIFIED: ${verId}`, stampX + 16, stampY + 22);
+
+        g.fillStyle = '#cbd5e1';
+        g.font = '600 11px -apple-system, BlinkMacSystemFont, sans-serif';
+        g.fillText(`${dateStr} • ABS Validated`, stampX + 16, stampY + 38);
+
+        // Divider line below header
+        g.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+        g.lineWidth = 1;
+        g.beginPath();
+        g.moveTo(42, 78);
+        g.lineTo(1058, 78);
+        g.stroke();
+
+        // 3. Left Section: Stats & Metrics (X = 42 to 612)
+        const heroX = 42, heroY = 96, heroW = 570, heroH = 145;
+        g.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        g.strokeStyle = 'rgba(255, 255, 255, 0.14)';
+        g.lineWidth = 1;
+        g.beginPath();
+        g.roundRect ? g.roundRect(heroX, heroY, heroW, heroH, 10) : g.rect(heroX, heroY, heroW, heroH);
+        g.fill();
+        g.stroke();
+
+        g.fillStyle = '#94a3b8';
+        g.font = '700 12px -apple-system, BlinkMacSystemFont, sans-serif';
+        g.fillText("OVERALL UMPIRE ACCURACY", heroX + 22, heroY + 30);
+
+        // Big Accuracy %
+        const accColor = accVal >= 94 ? '#22c55e' : (accVal >= 88 ? '#06b6d4' : (accVal >= 80 ? '#fbbf24' : '#ef4444'));
+        g.fillStyle = accColor;
+        g.font = '900 48px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        g.fillText(`${accStr}%`, heroX + 22, heroY + 84);
+
+        // Sub-verdict label
+        let ratingText = "Big League ABS Standard ⭐⭐⭐";
+        if (accVal < 82) ratingText = "Angel Hernandez Tier — Needs Lasik ⚠️";
+        else if (accVal < 88) ratingText = "Triple-A Developing Umpire ⚾";
+        else if (accVal < 94) ratingText = "MLB Qualified Big League Umpire ⚖️";
+
+        g.fillStyle = '#f8fafc';
+        g.font = '800 15px -apple-system, BlinkMacSystemFont, sans-serif';
+        g.fillText(ratingText, heroX + 22, heroY + 115);
+
+        // Calls count
+        g.fillStyle = '#94a3b8';
+        g.font = '600 13px -apple-system, BlinkMacSystemFont, sans-serif';
+        g.fillText(`${correct} of ${total} Called Pitches Correct`, heroX + 22, heroY + 132);
+
+        // Quick streak tag in hero card (right side)
+        const streakX = heroX + heroW - 140, streakY = heroY + 25;
+        g.fillStyle = 'rgba(34, 197, 94, 0.15)';
+        g.strokeStyle = '#22c55e';
+        g.lineWidth = 1;
+        g.beginPath();
+        g.roundRect ? g.roundRect(streakX, streakY, 120, 48, 6) : g.rect(streakX, streakY, 120, 48);
+        g.fill();
+        g.stroke();
+        g.fillStyle = '#a7f3d0';
+        g.font = '700 10px -apple-system, BlinkMacSystemFont, sans-serif';
+        g.fillText("CURRENT STREAK", streakX + 12, streakY + 18);
+        g.fillStyle = '#22c55e';
+        g.font = '900 20px "SF Mono", monospace';
+        g.fillText(`${state.streak} IN A ROW`, streakX + 12, streakY + 40);
+
+        // 4 Metrics Grid (2x2)
+        const gridY = 256;
+        const tileW = 276;
+        const tileH = 75;
+        const strikeAcc = scorecard.calledStrikes ? `${((scorecard.correctStrikes / scorecard.calledStrikes) * 100).toFixed(0)}%` : '--';
+        const ballAcc = scorecard.calledBalls ? `${((scorecard.correctBalls / scorecard.calledBalls) * 100).toFixed(0)}%` : '--';
+        const shadowAcc = scorecard.shadowPitches ? `${((scorecard.correctShadow / scorecard.shadowPitches) * 100).toFixed(0)}%` : '--';
+        const favorStr = (scorecard.netFavor > 0 ? '+' : '') + scorecard.netFavor.toFixed(2);
+        const favorLabel = scorecard.netFavor > 0.05 ? 'Favors Batters' : (scorecard.netFavor < -0.05 ? 'Favors Pitchers' : 'Neutral Favor');
+
+        const tiles = [
+            { label: 'STRIKE ACCURACY', val: strikeAcc, sub: `${scorecard.correctStrikes}/${scorecard.calledStrikes} true strikes`, x: heroX, y: gridY, col: '#f87171' },
+            { label: 'BALL ACCURACY', val: ballAcc, sub: `${scorecard.correctBalls}/${scorecard.calledBalls} true balls`, x: heroX + tileW + 18, y: gridY, col: '#34d399' },
+            { label: 'SHADOW ZONE ACCURACY', val: shadowAcc, sub: `${scorecard.correctShadow}/${scorecard.shadowPitches} borderline calls`, x: heroX, y: gridY + tileH + 12, col: '#fbbf24' },
+            { label: 'NET RUN FAVOR', val: favorStr, sub: favorLabel, x: heroX + tileW + 18, y: gridY + tileH + 12, col: '#38bdf8' }
+        ];
+
+        tiles.forEach(t => {
+            g.fillStyle = 'rgba(0, 0, 0, 0.35)';
+            g.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            g.lineWidth = 1;
+            g.beginPath();
+            g.roundRect ? g.roundRect(t.x, t.y, tileW, tileH, 8) : g.rect(t.x, t.y, tileW, tileH);
+            g.fill();
+            g.stroke();
+
+            g.fillStyle = '#94a3b8';
+            g.font = '700 11px -apple-system, BlinkMacSystemFont, sans-serif';
+            g.fillText(t.label, t.x + 14, t.y + 22);
+
+            g.fillStyle = t.col;
+            g.font = '900 24px -apple-system, BlinkMacSystemFont, sans-serif';
+            g.fillText(t.val, t.x + 14, t.y + 48);
+
+            g.fillStyle = '#64748b';
+            g.font = '600 11px -apple-system, BlinkMacSystemFont, sans-serif';
+            g.fillText(t.sub, t.x + 14, t.y + 65);
+        });
+
+        // Scorecard Footnote on Left side bottom
+        const footX = heroX, footY = 432, footW = 570, footH = 96;
+        g.fillStyle = 'rgba(6, 182, 212, 0.06)';
+        g.strokeStyle = 'rgba(6, 182, 212, 0.25)';
+        g.lineWidth = 1;
+        g.beginPath();
+        g.roundRect ? g.roundRect(footX, footY, footW, footH, 6) : g.rect(footX, footY, footW, footH);
+        g.fill();
+        g.stroke();
+
+        // Cyan left accent bar
+        g.fillStyle = '#06b6d4';
+        g.fillRect(footX, footY, 4, footH);
+
+        g.fillStyle = '#06b6d4';
+        g.font = '800 11.5px -apple-system, BlinkMacSystemFont, sans-serif';
+        g.fillText("MLB Benchmark Reference & Analytics:", footX + 16, footY + 22);
+
+        g.fillStyle = '#94a3b8';
+        g.font = '500 11px -apple-system, BlinkMacSystemFont, sans-serif';
+        g.fillText("• In a standard 9-inning MLB game, teams throw ~290-300 pitches; ~140-150 are called by umpires.", footX + 16, footY + 42);
+        g.fillText("• Big league umpires average ~94.0% Overall Accuracy (~88% in the borderline Shadow Zone).", footX + 16, footY + 60);
+        g.fillText("• Average MLB umpire net run favor ranges from ±0.40 to 0.80 runs per game.", footX + 16, footY + 78);
+
+        // 4. Right Section: Virtual Strike Zone Card (X = 642 to 1058, Width = 416)
+        const vzX = 642, vzY = 96, vzW = 416, vzH = 432;
+        g.fillStyle = 'rgba(15, 23, 42, 0.85)';
+        g.strokeStyle = 'rgba(255, 255, 255, 0.14)';
+        g.lineWidth = 1;
+        g.beginPath();
+        g.roundRect ? g.roundRect(vzX, vzY, vzW, vzH, 10) : g.rect(vzX, vzY, vzW, vzH);
+        g.fill();
+        g.stroke();
+
+        g.fillStyle = '#38bdf8';
+        g.font = '800 13px -apple-system, BlinkMacSystemFont, sans-serif';
+        g.fillText("ESTABLISHED VIRTUAL STRIKE ZONE", vzX + 16, vzY + 26);
+
+        // Draw the 2D Virtual Strike Zone inside
+        const innerVzX = vzX + 16, innerVzY = vzY + 40, innerVzW = vzW - 32, innerVzH = vzH - 85;
+        const tendBadge = drawVirtualZoneToContext(g, innerVzX, innerVzY, innerVzW, innerVzH, scorecard.allPitches, true);
+
+        // Tendency pill badge in top right of Virtual Zone
+        g.fillStyle = 'rgba(6, 182, 212, 0.2)';
+        g.strokeStyle = '#06b6d4';
+        g.lineWidth = 1;
+        const badgeW = g.measureText ? Math.max(120, g.measureText(tendBadge).width + 16) : 140;
+        const badgeX = vzX + vzW - 16 - badgeW, badgeY = vzY + 12;
+        g.beginPath();
+        g.roundRect ? g.roundRect(badgeX, badgeY, badgeW, 20, 4) : g.rect(badgeX, badgeY, badgeW, 20);
+        g.fill();
+        g.stroke();
+        g.fillStyle = '#38bdf8';
+        g.font = '700 10px -apple-system, BlinkMacSystemFont, sans-serif';
+        g.fillText(tendBadge, badgeX + 8, badgeY + 14);
+
+        // Legend at bottom of Virtual Zone Card
+        const legY = vzY + vzH - 24;
+        g.fillStyle = '#22c55e';
+        g.beginPath(); g.arc(vzX + 22, legY, 4.5, 0, Math.PI * 2); g.fill();
+        g.fillStyle = '#cbd5e1'; g.font = '600 10.5px sans-serif'; g.fillText("Correct", vzX + 32, legY + 3.5);
+
+        g.fillStyle = '#ef4444';
+        g.beginPath(); g.arc(vzX + 90, legY, 4.5, 0, Math.PI * 2); g.fill();
+        g.fillStyle = '#cbd5e1'; g.fillText("Missed", vzX + 100, legY + 3.5);
+
+        g.strokeStyle = 'rgba(255, 255, 255, 0.85)';
+        g.lineWidth = 1.5;
+        g.setLineDash([2, 2]);
+        g.strokeRect(vzX + 158, legY - 5, 12, 10);
+        g.setLineDash([]);
+        g.fillText("Rulebook", vzX + 176, legY + 3.5);
+
+        g.strokeStyle = '#06b6d4';
+        g.lineWidth = 2;
+        g.fillStyle = 'rgba(6, 182, 212, 0.25)';
+        g.fillRect(vzX + 242, legY - 5, 12, 10);
+        g.strokeRect(vzX + 242, legY - 5, 12, 10);
+        g.fillStyle = '#cbd5e1';
+        g.fillText("Your Zone", vzX + 260, legY + 3.5);
+
+        // 5. Watermark Footer
+        g.fillStyle = '#475569';
+        g.font = '600 11px "SF Mono", monospace';
+        g.fillText("thomsfoolery.com/tools/umpire-simulator", 42, 558);
+
+        g.fillStyle = '#475569';
+        g.font = '600 11px sans-serif';
+        g.fillText("Interactive 3D Statcast Umpire Simulator & ABS Challenge", 1100 - 42 - 340, 558);
+
+        return {
+            canvas: offCanvas,
+            verId: verId,
+            hash: hash,
+            accStr: accStr,
+            total: total,
+            correct: correct,
+            strikeAcc: strikeAcc,
+            ballAcc: ballAcc,
+            shadowAcc: shadowAcc,
+            favorStr: favorStr
+        };
+    }
+
+    // ----------------------------------------------------
+    // Scorecard Share & Clipboard Handling (Dragonwilds Pattern)
+    // ----------------------------------------------------
+    let currentScorecardBlob = null;
+    let currentVerId = '';
+
+    async function shareUmpireScorecard() {
+        getAudioContext(); // user gesture unlock
+        const cardData = generateScorecardCanvas();
+        currentVerId = cardData.verId;
+
+        const shareTitle = `MLB Umpire Scorecard | ${cardData.accStr}% Acc (${cardData.verId})`;
+        const shareText = `⚾ MLB Umpire Scorecard | Thom's Foolery 3D Statcast
+Verified ID: ${cardData.verId}
+Overall Accuracy: ${cardData.accStr}% (${cardData.correct}/${cardData.total} pitches)
+Strike Acc: ${cardData.strikeAcc} | Ball Acc: ${cardData.ballAcc}
+Shadow Zone: ${cardData.shadowAcc} | Net Run Favor: ${cardData.favorStr}
+Verify graphic & test your eyes against 95mph Statcast pitches:
+https://www.thomsfoolery.com/tools/umpire-simulator/`;
+
+        const shareTextEl = document.getElementById('scorecard-share-text');
+        if (shareTextEl) shareTextEl.value = shareText;
+
+        const previewImg = document.getElementById('scorecard-preview-img');
+        if (previewImg) previewImg.src = cardData.canvas.toDataURL('image/png');
+
+        const feedbackPill = document.getElementById('share-feedback-pill');
+
+        cardData.canvas.toBlob(async (blob) => {
+            if (!blob) return;
+            currentScorecardBlob = blob;
+
+            const file = new File([blob], `umpire-scorecard-${cardData.hash}.png`, { type: 'image/png' });
+
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        files: [file],
+                        title: shareTitle,
+                        text: shareText
+                    });
+                    return;
+                } catch (err) {
+                    if (err.name === 'AbortError') return;
+                    console.warn('Native share failed, falling back to clipboard modal:', err);
+                }
+            }
+
+            let copied = false;
+            if (navigator.clipboard && window.ClipboardItem) {
+                try {
+                    const item = new ClipboardItem({ 'image/png': blob });
+                    await navigator.clipboard.write([item]);
+                    copied = true;
+                } catch (err) {
+                    console.warn('Direct blob copy failed:', err);
+                }
+            }
+
+            if (feedbackPill) {
+                if (copied) {
+                    feedbackPill.innerHTML = '<span>✅</span> <strong>Scorecard Image Copied to Clipboard!</strong> Paste (Ctrl+V) directly into Discord, X, or Reddit.';
+                    feedbackPill.style.background = 'rgba(34, 197, 94, 0.15)';
+                    feedbackPill.style.borderColor = '#22c55e';
+                    feedbackPill.style.color = '#4ade80';
+                } else {
+                    feedbackPill.innerHTML = '<span>📋</span> <strong>Scorecard Ready!</strong> Copy image or download below to share your verified score.';
+                    feedbackPill.style.background = 'rgba(6, 182, 212, 0.15)';
+                    feedbackPill.style.borderColor = '#06b6d4';
+                    feedbackPill.style.color = 'var(--accent-cyan)';
+                }
+            }
+
+            const modal = document.getElementById('scorecard-share-modal');
+            if (modal) {
+                if (typeof modal.showModal === 'function') {
+                    modal.showModal();
+                } else {
+                    modal.style.display = 'block';
+                }
+            }
+        }, 'image/png');
+    }
+
+    // ----------------------------------------------------
     // User Controls & Event Listeners
     // ----------------------------------------------------
     document.getElementById('btn-throw-pitch').addEventListener('click', throwNewPitch);
@@ -2092,6 +2935,10 @@
         state.showTrail = e.target.checked;
     });
 
+    // Scorecard Share and Reset Listeners
+    const shareBtn = document.getElementById('btn-share-scorecard');
+    if (shareBtn) shareBtn.addEventListener('click', shareUmpireScorecard);
+
     document.getElementById('btn-reset-scorecard').addEventListener('click', () => {
         scorecard.total = 0;
         scorecard.correct = 0;
@@ -2103,9 +2950,100 @@
         scorecard.correctShadow = 0;
         scorecard.netFavor = 0.0;
         scorecard.history = [];
+        scorecard.allPitches = [];
         state.streak = 0;
         updateScorecardUI();
+        drawVirtualStrikeZone();
     });
+
+    // Share Modal Actions
+    const closeBtn = document.getElementById('btn-close-share-modal');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            const modal = document.getElementById('scorecard-share-modal');
+            if (modal) {
+                if (typeof modal.close === 'function') modal.close();
+                else modal.style.display = 'none';
+            }
+        });
+    }
+
+    const copyImgBtn = document.getElementById('btn-copy-image-again');
+    if (copyImgBtn) {
+        copyImgBtn.addEventListener('click', async () => {
+            const feedbackPill = document.getElementById('share-feedback-pill');
+            if (currentScorecardBlob && navigator.clipboard && window.ClipboardItem) {
+                try {
+                    const item = new ClipboardItem({ 'image/png': currentScorecardBlob });
+                    await navigator.clipboard.write([item]);
+                    if (feedbackPill) {
+                        feedbackPill.innerHTML = '<span>✅</span> <strong>Scorecard Image Copied to Clipboard!</strong>';
+                        feedbackPill.style.color = '#4ade80';
+                    }
+                    return;
+                } catch (err) {
+                    console.warn('Copy image failed:', err);
+                }
+            }
+            const shareTextEl = document.getElementById('scorecard-share-text');
+            if (shareTextEl && navigator.clipboard) {
+                await navigator.clipboard.writeText(shareTextEl.value);
+                if (feedbackPill) {
+                    feedbackPill.innerHTML = '<span>📋</span> <strong>Verification text copied to clipboard!</strong>';
+                }
+            }
+        });
+    }
+
+    const downloadBtn = document.getElementById('btn-download-scorecard-png');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+            if (!currentScorecardBlob) return;
+            const url = URL.createObjectURL(currentScorecardBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `umpire-scorecard-${currentVerId.replace('#', '') || 'verified'}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        });
+    }
+
+    const copyTextBtn = document.getElementById('btn-copy-text');
+    if (copyTextBtn) {
+        copyTextBtn.addEventListener('click', async () => {
+            const shareTextEl = document.getElementById('scorecard-share-text');
+            if (shareTextEl && navigator.clipboard) {
+                await navigator.clipboard.writeText(shareTextEl.value);
+                const feedbackPill = document.getElementById('share-feedback-pill');
+                if (feedbackPill) {
+                    feedbackPill.innerHTML = '<span>📋</span> <strong>Verification text copied to clipboard!</strong>';
+                }
+            }
+        });
+    }
+
+    const shareXBtn = document.getElementById('btn-share-x');
+    if (shareXBtn) {
+        shareXBtn.addEventListener('click', () => {
+            const shareTextEl = document.getElementById('scorecard-share-text');
+            const text = shareTextEl ? shareTextEl.value : '';
+            const url = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+        });
+    }
+
+    const shareRedditBtn = document.getElementById('btn-share-reddit');
+    if (shareRedditBtn) {
+        shareRedditBtn.addEventListener('click', () => {
+            const title = `My MLB Umpire Scorecard (${currentVerId}) - Thom's Foolery Statcast`;
+            const shareTextEl = document.getElementById('scorecard-share-text');
+            const text = shareTextEl ? shareTextEl.value : '';
+            const url = `https://www.reddit.com/submit?title=${encodeURIComponent(title)}&text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+        });
+    }
 
     // Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
@@ -2122,6 +3060,12 @@
             makeCall('BALL');
         }
     });
+
+    // Window resize also updates virtual zone
+    window.addEventListener('resize', drawVirtualStrikeZone);
+
+    // Initial draw of virtual strike zone
+    drawVirtualStrikeZone();
 
     // Start Animation Loop
     requestAnimationFrame(render);
