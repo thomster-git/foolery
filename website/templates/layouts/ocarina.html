@@ -540,6 +540,21 @@
     padding-bottom: 0;
   }
 
+  .song-section-header {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    margin: 1.75rem 0 0.5rem 0;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .song-section-header:first-child {
+    margin-top: 0.25rem;
+  }
+
   .note-beat {
     display: flex;
     flex-direction: column;
@@ -2198,20 +2213,39 @@ function stopPracticeMode() {
 // ============================================================
 
 let SONGS = {
-  'scale-c-major': {
-    title: "C Major Scale",
-    info: "Practice the C Major scale (C5 to C6). No accidentals.",
-    notes: [{"n":"C5"},{"n":"D5"},{"n":"E5"},{"n":"F5"},{"n":"G5"},{"n":"A5"},{"n":"B5"},{"n":"C6"},{"break":true},{"n":"C6"},{"n":"B5"},{"n":"A5"},{"n":"G5"},{"n":"F5"},{"n":"E5"},{"n":"D5"},{"n":"C5"}]
-  },
-  'scale-f-major': {
-    title: "F Major Scale",
-    info: "Practice the F Major scale (F5 to F6). Includes Bb.",
-    notes: [{"n":"F5"},{"n":"G5"},{"n":"A5"},{"n":"Bb5"},{"n":"C6"},{"n":"D6"},{"n":"E6"},{"n":"F6"},{"break":true},{"n":"F6"},{"n":"E6"},{"n":"D6"},{"n":"C6"},{"n":"Bb5"},{"n":"A5"},{"n":"G5"},{"n":"F5"}]
-  },
-  'scale-g-major': {
-    title: "G Major Scale",
-    info: "Practice the G Major scale. Includes F#.",
-    notes: [{"n":"G5"},{"n":"A5"},{"n":"B5"},{"n":"C6"},{"n":"D6"},{"n":"E6"},{"break":true},{"n":"E6"},{"n":"D6"},{"n":"C6"},{"n":"B5"},{"n":"A5"},{"n":"G5"},{"n":"F#5"},{"n":"E5"},{"n":"D5"},{"n":"C5"},{"n":"B4"},{"n":"A4"},{"break":true},{"n":"A4"},{"n":"B4"},{"n":"C5"},{"n":"D5"},{"n":"E5"},{"n":"F#5"},{"n":"G5"}]
+  'title-theme': {
+    title: "Title Theme (Main Menu)",
+    info: "The serene opening title and main menu theme from The Legend of Zelda: Ocarina of Time, tabbed out for 12-hole Alto C.",
+    notes: [
+      { n: 'D5' }, { n: 'E5' }, { break: true },
+      { n: 'D6' }, { n: 'Db6' }, { n: 'C6' }, { n: 'B5' }, { break: true },
+      { n: 'A5' }, { n: 'G5' }, { break: true },
+
+      { n: 'D5' }, { n: 'E5' }, { break: true },
+      { n: 'D6' }, { n: 'Db6' }, { n: 'C6' }, { n: 'B5' }, { break: true },
+      { n: 'C6' }, { n: 'B5' }, { break: true },
+
+      { n: 'D5' }, { n: 'E5' }, { break: true },
+      { n: 'D6' }, { n: 'Db6' }, { n: 'C6' }, { n: 'B5' }, { break: true },
+      { n: 'A5' }, { n: 'G5' }, { break: true },
+
+      { n: 'D5' }, { n: 'E5' }, { break: true },
+      { n: 'D6' }, { n: 'Db6' }, { n: 'C6' }, { n: 'B5' }, { break: true },
+      { n: 'E6' }, { n: 'B5' }, { break: true },
+
+      { n: 'A5' }, { n: 'E5' }, { break: true },
+      { n: 'D5' }, { n: 'G5' }, { break: true },
+
+      { n: 'A5' }, { n: 'E5' }, { break: true },
+      { n: 'B5' }, { n: 'G5' }, { break: true },
+
+      { n: 'D5' }, { n: 'E5' }, { break: true },
+      { n: 'D6' }, { n: 'Db6' }, { n: 'C6' }, { n: 'B5' }, { break: true },
+      { n: 'A5' }, { n: 'G5' }, { break: true },
+
+      { n: 'C6' }, { n: 'G5' }, { break: true },
+      { n: 'F5' }, { n: 'G5' }
+    ]
   },
   'zeldas-lullaby': {
     title: "Zelda's Lullaby (Full Version)",
@@ -2263,36 +2297,22 @@ let SONGS = {
       { n: 'E6' }, { n: 'F6' }, { n: 'D6' }, { n: 'E6' }
     ]
   },
-  'littleroot': {
-    title: "Littleroot Town",
-    info: "A peaceful starting town theme from Pokémon Ruby/Sapphire/Emerald.",
+  'scale-practice': {
+    title: "Scale Practice",
+    info: "Master essential ocarina fingerings with C Major (no accidentals), F Major (with B♭), and G Major (with F♯).",
     notes: [
-      { n: 'F5', dur: 'q' }, { n: 'Bb5', dur: 'q' }, { n: 'A5', dur: 'q' }, { n: 'Bb5', dur: 'q' }, { break: true },
-      { n: 'C6', dur: 'h' }, { n: 'D6', dur: 'h' }, { break: true },
-      { n: 'F6', dur: 'q' }, { n: 'D6', dur: 'q' }, { n: 'C6', dur: 'q' }, { n: 'Bb5', dur: 'q' }, { break: true },
-      { n: 'C6', dur: 'h' }, { n: 'D6', dur: 'h' }, { break: true },
-      
-      { n: 'F5', dur: 'q' }, { n: 'Bb5', dur: 'q' }, { n: 'A5', dur: 'q' }, { n: 'Bb5', dur: 'q' }, { break: true },
-      { n: 'C6', dur: 'h' }, { n: 'D6', dur: 'h' }, { break: true },
-      { n: 'F6', dur: 'q' }, { n: 'D6', dur: 'q' }, { n: 'C6', dur: 'q' }, { n: 'Bb5', dur: 'q' }, { break: true },
-      { n: 'A5', dur: 'h' }, { n: 'F5', dur: 'h' }
-    ],
-  },
-  'blue-bird': {
-    title: "Blue Bird (Naruto Shippuden)",
-    info: "The energetic third opening theme from Naruto Shippuden by Ikimono-gakari.",
-    notes: [
-      { n: 'G5', dur: 'q' }, { n: 'C6', dur: 'q' }, { n: 'C6', dur: 'e' }, { n: 'C6', dur: 'q' }, { break: true },
-      { n: 'D6', dur: 'q' }, { n: 'D6', dur: 'e' }, { n: 'Eb6', dur: 'q' }, { n: 'D6', dur: 'q' }, { break: true },
-      
-      { n: 'C6', dur: 'e' }, { n: 'Bb5', dur: 'e' }, { n: 'Ab5', dur: 'q' }, { n: 'G5', dur: 'h' }, { break: true },
-      { n: 'Ab5', dur: 'q' }, { n: 'Ab5', dur: 'e' }, { n: 'G5', dur: 'e' }, { n: 'Ab5', dur: 'e' }, { n: 'Bb5', dur: 'e' }, { n: 'C6', dur: 'q' }, { break: true },
-      
-      { n: 'G5', dur: 'q' }, { n: 'C6', dur: 'q' }, { n: 'C6', dur: 'e' }, { n: 'C6', dur: 'q' }, { break: true },
-      { n: 'D6', dur: 'q' }, { n: 'D6', dur: 'e' }, { n: 'Eb6', dur: 'q' }, { n: 'D6', dur: 'q' }, { break: true },
-      
-      { n: 'C6', dur: 'e' }, { n: 'Bb5', dur: 'e' }, { n: 'Ab5', dur: 'q' }, { n: 'G5', dur: 'h' }, { break: true },
-      { n: 'Ab5', dur: 'q' }, { n: 'Ab5', dur: 'e' }, { n: 'G5', dur: 'e' }, { n: 'Ab5', dur: 'e' }, { n: 'Bb5', dur: 'e' }, { n: 'C6', dur: 'q' }
+      { section: "C Major Scale (C5 to C6 · Natural / No Accidentals)" },
+      { n: "C5" }, { n: "D5" }, { n: "E5" }, { n: "F5" }, { n: "G5" }, { n: "A5" }, { n: "B5" }, { n: "C6" }, { break: true },
+      { n: "C6" }, { n: "B5" }, { n: "A5" }, { n: "G5" }, { n: "F5" }, { n: "E5" }, { n: "D5" }, { n: "C5" }, { break: true },
+
+      { section: "F Major Scale (F5 to F6 · Includes B♭5)" },
+      { n: "F5" }, { n: "G5" }, { n: "A5" }, { n: "Bb5" }, { n: "C6" }, { n: "D6" }, { n: "E6" }, { n: "F6" }, { break: true },
+      { n: "F6" }, { n: "E6" }, { n: "D6" }, { n: "C6" }, { n: "Bb5" }, { n: "A5" }, { n: "G5" }, { n: "F5" }, { break: true },
+
+      { section: "G Major Scale (Full Range · Includes F♯5)" },
+      { n: "G5" }, { n: "A5" }, { n: "B5" }, { n: "C6" }, { n: "D6" }, { n: "E6" }, { break: true },
+      { n: "E6" }, { n: "D6" }, { n: "C6" }, { n: "B5" }, { n: "A5" }, { n: "G5" }, { n: "F#5" }, { n: "E5" }, { n: "D5" }, { n: "C5" }, { n: "B4" }, { n: "A4" }, { break: true },
+      { n: "A4" }, { n: "B4" }, { n: "C5" }, { n: "D5" }, { n: "E5" }, { n: "F#5" }, { n: "G5" }
     ]
   }
 };
@@ -2316,35 +2336,50 @@ function durLabel(dur) {
 }
 
 function generateNotesHtml(notes) {
-  let phrases = [];
+  let sections = [];
+  let currentSection = { title: null, phrases: [] };
   let currentPhrase = [];
   
   notes.forEach(beat => {
-    if (beat.break) {
+    if (beat.section) {
       if (currentPhrase.length > 0) {
-        phrases.push(currentPhrase);
+        currentSection.phrases.push(currentPhrase);
         currentPhrase = [];
       }
-    } else {
+      if (currentSection.phrases.length > 0 || currentSection.title) {
+        sections.push(currentSection);
+      }
+      currentSection = { title: beat.section, phrases: [] };
+    } else if (beat.break) {
+      if (currentPhrase.length > 0) {
+        currentSection.phrases.push(currentPhrase);
+        currentPhrase = [];
+      }
+    } else if (beat.n) {
       currentPhrase.push(beat);
     }
   });
-  if (currentPhrase.length > 0) phrases.push(currentPhrase);
+  if (currentPhrase.length > 0) currentSection.phrases.push(currentPhrase);
+  if (currentSection.phrases.length > 0 || currentSection.title) sections.push(currentSection);
 
-  return phrases.map(phrase => {
-    const phraseHtml = phrase.map(beat => {
-      const f = getFingering(beat.n);
-      const svg = f ? renderHoleSVG(f.holes, f.thumbs) : `<div style="color:var(--text-muted);font-size:0.7rem;">(no chart)</div>`;
-      const dur = beat.dur ? durLabel(beat.dur) : '&nbsp;';
-      return `
-        <div class="note-beat" onclick="playSynthNote('${beat.n}')" style="cursor: pointer;" title="Click to hear ${beat.n}">
-          <div class="note-name">${beat.n}</div>
-          <div style="font-size:0.75rem;color:var(--text-muted);">${dur}</div>
-          <div class="note-fingering">${svg}</div>
-        </div>
-      `;
+  return sections.map(sec => {
+    const headerHtml = sec.title ? `<div class="song-section-header"><span>🎼</span> ${sec.title}</div>` : '';
+    const phrasesHtml = sec.phrases.map(phrase => {
+      const phraseHtml = phrase.map(beat => {
+        const f = getFingering(beat.n);
+        const svg = f ? renderHoleSVG(f.holes, f.thumbs) : `<div style="color:var(--text-muted);font-size:0.7rem;">(no chart)</div>`;
+        const dur = beat.dur ? durLabel(beat.dur) : '&nbsp;';
+        return `
+          <div class="note-beat" onclick="playSynthNote('${beat.n}')" style="cursor: pointer;" title="Click to hear ${beat.n}">
+            <div class="note-name">${beat.n}</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">${dur}</div>
+            <div class="note-fingering">${svg}</div>
+          </div>
+        `;
+      }).join('');
+      return `<div class="song-phrase">${phraseHtml}</div>`;
     }).join('');
-    return `<div class="song-phrase">${phraseHtml}</div>`;
+    return headerHtml + phrasesHtml;
   }).join('');
 }
 
@@ -2360,9 +2395,11 @@ function loadSong(id, btn) {
   const notesHtml = generateNotesHtml(song.notes);
 
   let songBadge = '';
-  if (id === 'zeldas-lullaby') songBadge = '<img src="/images/website-assets/royal-crest.svg" alt="Royal Crest" style="width: 28px; opacity: 0.6;">';
+  if (id === 'title-theme') songBadge = '<img src="/images/website-assets/triforce.svg" alt="Triforce" style="width: 28px; opacity: 0.7;">';
+  else if (id === 'zeldas-lullaby') songBadge = '<img src="/images/website-assets/royal-crest.svg" alt="Royal Crest" style="width: 28px; opacity: 0.6;">';
   else if (id === 'eponas-song') songBadge = '<img src="/images/website-assets/epona.svg" alt="Epona" style="width: 28px; opacity: 0.6;">';
   else if (id === 'sarias-song') songBadge = '<img src="/images/website-assets/sarias-Song.svg" alt="Saria" style="width: 28px; opacity: 0.6;">';
+  else if (id === 'scale-practice') songBadge = '<span style="font-size: 1.5rem; line-height: 1;">🎼</span>';
 
   display.innerHTML = `
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.25rem; flex-wrap: wrap; gap: 0.5rem;">
@@ -2390,7 +2427,7 @@ function editSongInCustomTab(id) {
   song.notes.forEach(beat => {
     if (beat.break) {
       tabString += '| ';
-    } else {
+    } else if (beat.n) {
       tabString += beat.n + ' ';
     }
   });
@@ -2490,9 +2527,15 @@ function updateOcTabUrl(tab) {
 }
 
 function syncOcTabFromUrl() {
+  const rawHash = (window.location.hash || '').replace('#', '').toLowerCase();
   const tab = getOcTabFromUrl();
   const current = document.querySelector('.oc-tab.active');
   if (!current || current.dataset.tab !== tab) switchTab(tab, false);
+
+  if (rawHash === 'scale' || rawHash === 'scales') {
+    const scaleBtn = document.querySelector('[data-song="scale-practice"]');
+    if (scaleBtn) loadSong('scale-practice', scaleBtn);
+  }
 }
 
 window.addEventListener('popstate', syncOcTabFromUrl);
@@ -2535,6 +2578,11 @@ function initSongs() {
     const saved = localStorage.getItem('ocarina_songs');
     if (saved) {
       const parsed = JSON.parse(saved);
+      delete parsed['scale-c-major'];
+      delete parsed['scale-f-major'];
+      delete parsed['scale-g-major'];
+      delete parsed['littleroot'];
+      delete parsed['blue-bird'];
       SONGS = { ...SONGS, ...parsed };
     }
   } catch(e) { console.error('Failed to load saved songs', e); }
@@ -2544,8 +2592,8 @@ function initSongs() {
 
 
 let OOT_MELODIES = {
-  'oot-zelda': { title: "Zelda's Lullaby (OoT)", info: "◀ ▲ ▶ ◀ ▲ ▶", notes: [{"n":"B5"},{"n":"D6"},{"n":"A5"},{"break":true},{"n":"B5"},{"n":"D6"},{"n":"A5"}] },
-  'oot-epona': { title: "Epona's Song (OoT)", info: "▲ ◀ ▶ ▲ ◀ ▶", notes: [{"n":"D6"},{"n":"B5"},{"n":"A5"},{"break":true},{"n":"D6"},{"n":"B5"},{"n":"A5"}] },
+  'oot-zelda': { title: "Zelda's Lullaby", info: "◀ ▲ ▶ ◀ ▲ ▶", notes: [{"n":"B5"},{"n":"D6"},{"n":"A5"},{"break":true},{"n":"B5"},{"n":"D6"},{"n":"A5"}] },
+  'oot-epona': { title: "Epona's Song", info: "▲ ◀ ▶ ▲ ◀ ▶", notes: [{"n":"D6"},{"n":"B5"},{"n":"A5"},{"break":true},{"n":"D6"},{"n":"B5"},{"n":"A5"}] },
   'oot-saria': { title: "Saria's Song", info: "▼ ▶ ◀ ▼ ▶ ◀", notes: [{n:'F5'},{n:'A5'},{n:'B5'},{break:true},{n:'F5'},{n:'A5'},{n:'B5'}] },
   'oot-sun': { title: "Sun's Song", info: "▶ ▼ ▲ ▶ ▼ ▲", notes: [{n:'A5'},{n:'F5'},{n:'D6'},{break:true},{n:'A5'},{n:'F5'},{n:'D6'}] },
   'oot-time': { title: "Song of Time", info: "▶ A ▼ ▶ A ▼", notes: [{n:'A5'},{n:'D5'},{n:'F5'},{break:true},{n:'A5'},{n:'D5'},{n:'F5'}] },
@@ -3055,12 +3103,15 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSong(id, firstBtn);
   }
 
-  // Check URL song parameter (e.g. ?song=oot-zelda or ?popout=oot&song=oot-saria)
+  // Check URL song parameter (e.g. ?song=oot-zelda or ?song=title-theme or ?popout=oot&song=oot-saria)
   const params = new URLSearchParams(window.location.search);
   const songParam = params.get('song');
   if (songParam && OOT_MELODIES[songParam]) {
     const targetOotBtn = document.querySelector(`[data-oot="${songParam}"]`);
     if (targetOotBtn) loadOotSong(songParam, targetOotBtn);
+  } else if (songParam && SONGS[songParam]) {
+    const targetSongBtn = document.querySelector(`[data-song="${songParam}"]`);
+    if (targetSongBtn) loadSong(songParam, targetSongBtn);
   } else {
     const firstOotBtn = document.querySelector('#oot-buttons-container .song-btn');
     if (firstOotBtn) {
