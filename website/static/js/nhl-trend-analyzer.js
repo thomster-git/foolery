@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loading = document.getElementById('chart-loading');
     const errorDiv = document.getElementById('chart-error');
     const metricSelect = document.getElementById('metric-select');
+    const windowSelectContainer = document.getElementById('window-select-container');
     const windowSelect = document.getElementById('window-select');
     const divisionSelect = document.getElementById('division-select');
     const teamSelect = document.getElementById('team-select');
@@ -9,6 +10,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     let chartInstance = null;
     let allTeamsData = []; 
+
+    const NHL_ROLLING_SUPPORTED_METRICS = new Set([
+        'pointPct', 'goalDiff', 'goalsForPerGame', 'goalsAgainstPerGame', 'regulationWinPct',
+        'ppPct', 'pkPct', 'specialTeamsIndex', 'ppGoalsPerGame', 'ppPerGame',
+        'penaltiesPerGame', 'penaltyMinutesPerGame', 'netPenaltyDiff',
+        'shotsForPerGame', 'shotsAgainstPerGame', 'shotDiff', 'shotSharePct',
+        'savePct', 'shootingPct', 'pdo'
+    ]);
+
+    function updateRollingWindowVisibility() {
+        if (!windowSelectContainer) return;
+        const currentMetric = metricSelect ? metricSelect.value : '';
+        const isSupported = NHL_ROLLING_SUPPORTED_METRICS.has(currentMetric);
+        windowSelectContainer.style.display = isSupported ? '' : 'none';
+    }
 
     // localStorage persistence keys
     const STORAGE_KEY_METRIC = 'atlas_nhl_metric';
@@ -45,6 +61,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             divisionSelect.value = localStorage.getItem(STORAGE_KEY_DIVISION);
         }
     }
+
+    updateRollingWindowVisibility();
 
     const nhlTeams = [
         { id: 1, name: "Boston Bruins", abbrev: "BOS", division: "A", conf: "E", color: "#FFB81C" },
@@ -739,8 +757,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         const metricVal = metricSelect.value;
-        const windowVal = windowSelect ? windowSelect.value : 'cumulative';
-        const isRolling = windowVal !== 'cumulative';
+        const isSupportedMetric = NHL_ROLLING_SUPPORTED_METRICS.has(metricVal);
+        const windowVal = (windowSelect && isSupportedMetric) ? windowSelect.value : 'cumulative';
+        const isRolling = isSupportedMetric && windowVal !== 'cumulative';
         const windowSize = isRolling ? parseInt(windowVal, 10) : 0;
         const filterVal = divisionSelect.value;
         const highlightId = teamSelect.value;
@@ -875,7 +894,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (metricSelect && metricSelect.value && metricSelect.value !== 'goalDiff') {
             params.set('metric', metricSelect.value);
         }
-        if (windowSelect && windowSelect.value && windowSelect.value !== 'cumulative') {
+        const isSupportedMetric = NHL_ROLLING_SUPPORTED_METRICS.has(metricSelect ? metricSelect.value : '');
+        if (windowSelect && isSupportedMetric && windowSelect.value && windowSelect.value !== 'cumulative') {
             params.set('window', windowSelect.value);
         }
         if (divisionSelect && divisionSelect.value && divisionSelect.value !== 'all') {
@@ -940,8 +960,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function generateExportCanvas() {
         const metricVal = metricSelect.value;
-        const windowVal = windowSelect ? windowSelect.value : 'cumulative';
-        const isRolling = windowVal !== 'cumulative';
+        const isSupportedMetric = NHL_ROLLING_SUPPORTED_METRICS.has(metricVal);
+        const windowVal = (windowSelect && isSupportedMetric) ? windowSelect.value : 'cumulative';
+        const isRolling = isSupportedMetric && windowVal !== 'cumulative';
         const windowSize = isRolling ? parseInt(windowVal, 10) : 0;
         const baseMetricText = metricSelect.options[metricSelect.selectedIndex].text;
         const metricText = isRolling ? `${baseMetricText} (Last ${windowSize} Games Rolling)` : baseMetricText;
@@ -1239,6 +1260,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     metricSelect.addEventListener('change', () => {
         localStorage.setItem(STORAGE_KEY_METRIC, metricSelect.value);
+        updateRollingWindowVisibility();
         syncUrlParams();
         renderChart();
     });
@@ -1274,6 +1296,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         clearFiltersBtn.addEventListener('click', () => {
             metricSelect.value = 'goalDiff';
             if (windowSelect) windowSelect.value = 'cumulative';
+            updateRollingWindowVisibility();
             divisionSelect.value = 'all';
             teamSelect.value = 'none';
             teamSelect2.value = 'none';

@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const errorDiv = document.getElementById('chart-error');
     const seasonSelect = document.getElementById('season-select');
     const metricSelect = document.getElementById('metric-select');
+    const windowSelectContainer = document.getElementById('window-select-container');
     const windowSelect = document.getElementById('window-select');
     const divisionSelect = document.getElementById('division-select');
     const teamSelect = document.getElementById('team-select');
@@ -10,6 +11,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     let chartInstance = null;
     let allTeamsData = []; // Store parsed team data
     let currentSeason = '2026';
+
+    const MLB_ROLLING_SUPPORTED_METRICS = new Set([
+        'runDiff', 'winPct', 'pythagorean', 'runsScoredPerGame', 'runsAllowedPerGame'
+    ]);
+
+    function updateRollingWindowVisibility() {
+        if (!windowSelectContainer) return;
+        const currentMetric = metricSelect ? metricSelect.value : '';
+        const isSupported = MLB_ROLLING_SUPPORTED_METRICS.has(currentMetric);
+        windowSelectContainer.style.display = isSupported ? '' : 'none';
+    }
 
     // localStorage persistence keys
     const STORAGE_KEY_SEASON = 'atlas_baseball_season';
@@ -55,6 +67,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             divisionSelect.value = localStorage.getItem(STORAGE_KEY_DIVISION);
         }
     }
+
+    updateRollingWindowVisibility();
 
     function normalCDF(x) {
         var t = 1 / (1 + 0.2316419 * Math.abs(x));
@@ -606,8 +620,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         const metricVal = metricSelect ? metricSelect.value : 'runDiff';
-        const windowVal = windowSelect ? windowSelect.value : 'cumulative';
-        const isRolling = windowVal !== 'cumulative';
+        const isSupportedMetric = MLB_ROLLING_SUPPORTED_METRICS.has(metricVal);
+        const windowVal = (windowSelect && isSupportedMetric) ? windowSelect.value : 'cumulative';
+        const isRolling = isSupportedMetric && windowVal !== 'cumulative';
         const windowSize = isRolling ? parseInt(windowVal, 10) : 0;
         const filterVal = divisionSelect.value;
         const highlightId = teamSelect.value;
@@ -780,7 +795,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (metricSelect && metricSelect.value && metricSelect.value !== 'runDiff') {
             params.set('metric', metricSelect.value);
         }
-        if (windowSelect && windowSelect.value && windowSelect.value !== 'cumulative') {
+        const isSupportedMetric = MLB_ROLLING_SUPPORTED_METRICS.has(metricSelect ? metricSelect.value : '');
+        if (windowSelect && isSupportedMetric && windowSelect.value && windowSelect.value !== 'cumulative') {
             params.set('window', windowSelect.value);
         }
         if (divisionSelect && divisionSelect.value && divisionSelect.value !== 'all') {
@@ -838,8 +854,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function generateExportCanvas() {
         const metricVal = metricSelect ? metricSelect.value : 'runDiff';
-        const windowVal = windowSelect ? windowSelect.value : 'cumulative';
-        const isRolling = windowVal !== 'cumulative';
+        const isSupportedMetric = MLB_ROLLING_SUPPORTED_METRICS.has(metricVal);
+        const windowVal = (windowSelect && isSupportedMetric) ? windowSelect.value : 'cumulative';
+        const isRolling = isSupportedMetric && windowVal !== 'cumulative';
         const windowSize = isRolling ? parseInt(windowVal, 10) : 0;
         const baseMetricText = metricSelect ? metricSelect.options[metricSelect.selectedIndex].text : 'Run Differential';
         const metricText = isRolling ? `${baseMetricText} (Last ${windowSize} Games Rolling)` : baseMetricText;
@@ -1236,6 +1253,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (metricSelect) {
         metricSelect.addEventListener('change', () => {
             localStorage.setItem(STORAGE_KEY_METRIC, metricSelect.value);
+            updateRollingWindowVisibility();
             syncUrlParams();
             renderChart();
         });
@@ -1273,6 +1291,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (seasonSelect) seasonSelect.value = '2026';
             if (metricSelect) metricSelect.value = 'runDiff';
             if (windowSelect) windowSelect.value = 'cumulative';
+            updateRollingWindowVisibility();
             if (divisionSelect) divisionSelect.value = 'all';
             if (teamSelect) teamSelect.value = 'none';
             localStorage.removeItem(STORAGE_KEY_SEASON);

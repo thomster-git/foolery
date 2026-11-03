@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loading = document.getElementById('chart-loading');
     const errorDiv = document.getElementById('chart-error');
     const metricSelect = document.getElementById('metric-select');
+    const windowSelectContainer = document.getElementById('window-select-container');
     const windowSelect = document.getElementById('window-select');
     const divisionSelect = document.getElementById('division-select');
     const teamSelect = document.getElementById('team-select');
@@ -12,6 +13,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     const rawScheduleByTeam = new Map();
     const summaryBoxscoreCache = new Map();
     const enrichedTeams = new Set();
+
+    const NFL_ROLLING_SUPPORTED_METRICS = new Set([
+        'pointDiff', 'winPct', 'pythagorean', 'pointsScored', 'pointsAllowed',
+        'firstDowns', 'firstDownsAllowed', 'firstDownDiff', 'thirdDownPct', 'redZonePct',
+        'totalYards', 'passingYards', 'rushingYards', 'yardsPerPlay', 'playsPerGame',
+        'yardsAllowed', 'sacksMade', 'sacksAllowed', 'turnoverDiff', 'takeaways',
+        'giveaways', 'possessionMins', 'penalties', 'penaltyYards'
+    ]);
+
+    function updateRollingWindowVisibility() {
+        if (!windowSelectContainer) return;
+        const currentMetric = metricSelect ? metricSelect.value : '';
+        const isSupported = NFL_ROLLING_SUPPORTED_METRICS.has(currentMetric);
+        windowSelectContainer.style.display = isSupported ? '' : 'none';
+    }
 
     // localStorage persistence keys
     const STORAGE_KEY_METRIC = 'atlas_nfl_metric';
@@ -57,6 +73,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
     }
+
+    updateRollingWindowVisibility();
 
     const nflTeams = [
         { id: 2, name: "Buffalo Bills", division: "AFCE", conf: "AFC", color: "#00338D" },
@@ -405,6 +423,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const possessionMinsData = [];
         const penaltiesData = [];
         const penaltyYardsData = [];
+        const rawGamesList = [];
 
         let gamesPlayed = 0;
 
@@ -835,8 +854,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function renderChart() {
         const metricVal = metricSelect.value;
-        const windowVal = windowSelect ? windowSelect.value : 'cumulative';
-        const isRolling = windowVal !== 'cumulative';
+        const isSupportedMetric = NFL_ROLLING_SUPPORTED_METRICS.has(metricVal);
+        const windowVal = (windowSelect && isSupportedMetric) ? windowSelect.value : 'cumulative';
+        const isRolling = isSupportedMetric && windowVal !== 'cumulative';
         const windowSize = isRolling ? parseInt(windowVal, 10) : 0;
         const filterVal = divisionSelect.value;
         const highlightId = teamSelect.value;
@@ -950,7 +970,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (metricSelect && metricSelect.value && metricSelect.value !== 'pointDiff') {
             params.set('metric', metricSelect.value);
         }
-        if (windowSelect && windowSelect.value && windowSelect.value !== 'cumulative') {
+        const isSupportedMetric = NFL_ROLLING_SUPPORTED_METRICS.has(metricSelect ? metricSelect.value : '');
+        if (windowSelect && isSupportedMetric && windowSelect.value && windowSelect.value !== 'cumulative') {
             params.set('window', windowSelect.value);
         }
         if (divisionSelect && divisionSelect.value && divisionSelect.value !== 'all') {
@@ -1011,8 +1032,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function generateExportCanvas() {
         const metricVal = metricSelect.value;
-        const windowVal = windowSelect ? windowSelect.value : 'cumulative';
-        const isRolling = windowVal !== 'cumulative';
+        const isSupportedMetric = NFL_ROLLING_SUPPORTED_METRICS.has(metricVal);
+        const windowVal = (windowSelect && isSupportedMetric) ? windowSelect.value : 'cumulative';
+        const isRolling = isSupportedMetric && windowVal !== 'cumulative';
         const windowSize = isRolling ? parseInt(windowVal, 10) : 0;
         const baseMetricText = metricSelect.options[metricSelect.selectedIndex].text;
         const metricText = isRolling ? `${baseMetricText} (Last ${windowSize} Games Rolling)` : baseMetricText;
@@ -1292,6 +1314,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     metricSelect.addEventListener('change', () => {
         localStorage.setItem(STORAGE_KEY_METRIC, metricSelect.value);
+        updateRollingWindowVisibility();
         syncUrlParams();
         renderChart();
     });
@@ -1333,6 +1356,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         clearFiltersBtn.addEventListener('click', () => {
             metricSelect.value = 'pointDiff';
             if (windowSelect) windowSelect.value = 'cumulative';
+            updateRollingWindowVisibility();
             divisionSelect.value = 'all';
             teamSelect.value = 'none';
             teamSelect2.value = 'none';

@@ -2315,6 +2315,33 @@ let SONGS = {
       { n: 'E6' }, { n: 'F6' }, { n: 'D6' }, { n: 'E6' }
     ]
   },
+  'song-of-time': {
+    title: "Song of Time (Full Version)",
+    info: "The solemn hymn of the Temple of Time, complete with its haunting second phrase and cadence, arranged for Alto C.",
+    notes: [
+      { n: 'A5' }, { n: 'D5' }, { n: 'F5' }, { break: true },
+      { n: 'A5' }, { n: 'D5' }, { n: 'F5' }, { break: true },
+      { n: 'A5' }, { n: 'C6' }, { n: 'B5' }, { n: 'G5' }, { break: true },
+      { n: 'F5' }, { n: 'G5' }, { n: 'A5' }, { n: 'D5' }, { break: true },
+      { n: 'C5' }, { n: 'E5' }, { n: 'D5' }
+    ]
+  },
+  'song-of-storms': {
+    title: "Song of Storms (Full Version)",
+    info: "The complete Windmill Hut waltz with both whirlwind phrases and driving resolution.",
+    notes: [
+      { n: 'D5' }, { n: 'F5' }, { n: 'D6' }, { break: true },
+      { n: 'D5' }, { n: 'F5' }, { n: 'D6' }, { break: true },
+      { n: 'E6' }, { n: 'F6' }, { n: 'E6' }, { n: 'F6' }, { n: 'E6' }, { n: 'C6' }, { n: 'A5' }, { break: true },
+      { n: 'A5' }, { n: 'D5' }, { n: 'F5' }, { n: 'G5' }, { n: 'A5' }, { break: true },
+      { n: 'A5' }, { n: 'D5' }, { n: 'F5' }, { n: 'G5' }, { n: 'E5' }, { break: true },
+
+      { n: 'D5' }, { n: 'F5' }, { n: 'D6' }, { break: true },
+      { n: 'D5' }, { n: 'F5' }, { n: 'D6' }, { break: true },
+      { n: 'E6' }, { n: 'F6' }, { n: 'E6' }, { n: 'F6' }, { n: 'E6' }, { n: 'C6' }, { n: 'A5' }, { break: true },
+      { n: 'A5' }, { n: 'D5' }, { n: 'F5' }, { n: 'G5' }, { n: 'A5' }, { n: 'A5' }, { n: 'D5' }
+    ]
+  },
   'scale-practice': {
     title: "Scale Practice",
     info: "Master essential ocarina fingerings with C Major (no accidentals), F Major (with B♭), and G Major (with F♯).",
@@ -2601,6 +2628,8 @@ function initSongs() {
       delete parsed['scale-g-major'];
       delete parsed['littleroot'];
       delete parsed['blue-bird'];
+      delete parsed['song-of-time'];
+      delete parsed['song-of-storms'];
       SONGS = { ...SONGS, ...parsed };
     }
   } catch(e) { console.error('Failed to load saved songs', e); }
