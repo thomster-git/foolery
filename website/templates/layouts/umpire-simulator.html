@@ -1,5 +1,5 @@
 <div class="page-container" style="width: 100%;">
-    <div class="content-wrapper tool-layout" style="width: 100%; max-width: 1200px; margin: 1.5rem auto; padding: 0 1rem;">
+    <div class="content-wrapper tool-layout" style="width: 100%; max-width: 1280px; margin: 1.5rem auto; padding: 0 1rem; box-sizing: border-box;">
         
         <script type="application/ld+json">
         {
@@ -168,59 +168,56 @@
             <!-- Right Column: Statcast Pitch Breakdown Card (Side-by-side on PC) -->
             <div class="statcast-sidebar-card">
                 <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.65rem;">
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
                             <span style="font-size: 1.3rem;">📡</span>
-                            <h3 style="margin: 0; font-size: 1.18rem; color: var(--text-bright); font-weight: 800;">Statcast Pitch Breakdown</h3>
+                            <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-bright); font-weight: 800;">Statcast Pitch Breakdown</h3>
                         </div>
                         <span id="stat-subzone-badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); font-weight: 800; font-size: 0.75rem; padding: 3px 9px; border-radius: 4px; text-transform: uppercase;">Awaiting Pitch</span>
                     </div>
 
                     <!-- Large Pitch Speed & Type Hero Readout -->
-                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.9rem 1rem; margin-bottom: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Pitch Classification</div>
-                            <div id="stat-pitch-type-hero" style="font-size: 1.2rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">Ready for Delivery</div>
+                            <div id="stat-pitch-type-hero" style="font-size: 1.15rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">Ready for Delivery</div>
+                            <!-- Hidden span for JS backward compatibility -->
+                            <span id="stat-pitch-type" style="display: none;">--</span>
                         </div>
                         <div style="text-align: right;">
                             <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Velo at Release</div>
-                            <div id="stat-velo-hero" style="font-family: var(--font-mono); font-size: 1.45rem; font-weight: 900; color: #fbbf24; margin-top: 2px;">-- mph</div>
+                            <div id="stat-velo-hero" style="font-family: var(--font-mono); font-size: 1.4rem; font-weight: 900; color: #fbbf24; margin-top: 2px;">-- mph</div>
+                            <!-- Hidden span for JS backward compatibility -->
+                            <span id="stat-velo" style="display: none;">--</span>
                         </div>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
-                        <div>
-                            <div style="color: var(--text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700;">Pitch Type</div>
-                            <div id="stat-pitch-type" style="font-size: 1.05rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">--</div>
+                    <!-- 4 Advanced Statcast Kinematics in 2x2 Grid -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.9rem;">
+                        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.65rem 0.8rem;">
+                            <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Horizontal Break</div>
+                            <div id="stat-pfx-x" style="font-size: 0.98rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">--</div>
                         </div>
-                        <div>
-                            <div style="color: var(--text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700;">Release Velocity</div>
-                            <div id="stat-velo" style="font-size: 1.05rem; font-weight: 800; color: #fbbf24; margin-top: 2px;">--</div>
+                        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.65rem 0.8rem;">
+                            <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Induced Vertical Drop</div>
+                            <div id="stat-pfx-z" style="font-size: 0.98rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">--</div>
                         </div>
-                        <div>
-                            <div style="color: var(--text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700;">Horizontal Break (pfx_x)</div>
-                            <div id="stat-pfx-x" style="font-size: 0.98rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">--</div>
+                        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.65rem 0.8rem;">
+                            <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Spin Rate &amp; Tilt</div>
+                            <div id="stat-spin" style="font-size: 0.98rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">--</div>
                         </div>
-                        <div>
-                            <div style="color: var(--text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700;">Induced Vertical Drop (IVB)</div>
-                            <div id="stat-pfx-z" style="font-size: 0.98rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">--</div>
-                        </div>
-                        <div>
-                            <div style="color: var(--text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700;">Spin Rate &amp; Tilt</div>
-                            <div id="stat-spin" style="font-size: 0.98rem; font-weight: 700; color: var(--text-main); margin-top: 2px;">--</div>
-                        </div>
-                        <div>
-                            <div style="color: var(--text-muted); font-size: 0.76rem; text-transform: uppercase; font-weight: 700;">Zone Edge Margin</div>
+                        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.65rem 0.8rem;">
+                            <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Zone Edge Margin</div>
                             <div id="stat-margin" style="font-size: 0.98rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">--</div>
                         </div>
                     </div>
                 </div>
 
-                <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.9rem; font-size: 0.83rem; line-height: 1.5; color: var(--text-muted);">
+                <div class="rulebook-geometry-box" style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.85rem 0.95rem; font-size: 0.82rem; line-height: 1.5; color: var(--text-muted); margin-top: auto;">
                     <strong style="color: var(--accent-cyan); display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.25rem;">
                         <span>⚖️</span> Rulebook Collision Geometry:
                     </strong>
-                    Official MLB rules stipulate that if any 1.45" radius boundary of the sphere contacts the 17" pentagonal prism over home plate, the pitch is a legal strike.
+                    Official MLB rules stipulate that if any 1.45″ radius boundary of the sphere contacts the 17″ pentagonal prism over home plate, the pitch is a legal strike.
                 </div>
             </div>
 
@@ -280,8 +277,11 @@
                     </div>
 
                     <!-- Recent Call History Reel -->
-                    <div style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700; margin-bottom: 0.45rem;">Recent Pitches</div>
-                    <div id="recent-pitches-reel" style="display: flex; gap: 0.45rem; overflow-x: auto; padding-bottom: 0.45rem; min-height: 42px; align-items: center;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">
+                        <span style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Recent Pitches (Latest 15)</span>
+                        <span style="color: var(--text-dim); font-size: 0.72rem; font-weight: 600;">Scroll &harr;</span>
+                    </div>
+                    <div id="recent-pitches-reel">
                         <span style="font-size: 0.82rem; color: var(--text-dim);">No pitches thrown yet. Press Throw Pitch to begin!</span>
                     </div>
                 </div>
@@ -324,12 +324,12 @@
         <!-- Static Methodology: 3D Statcast Physics & Automated Ball-Strike (ABS) Geometry (Full Width) -->
         <section class="umpire-methodology-section">
             <h2 style="font-size: 1.5rem; margin-bottom: 0.85rem; color: var(--accent-cyan);">Methodology: 3D Statcast Pitch Kinematics &amp; Rulebook Strike Zone Collision</h2>
-            <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.94rem;">
-                The <strong>3D MLB Umpire Simulator</strong> models pitches from a 54-foot release point ($z_0 = 54.0\text{ ft}$, $y_0 = 6.0\text{ ft}$) down to home plate using constant-acceleration kinematic equations calibrated to MLB Statcast pitch-tracking averages. Each pitch type—<strong>4-Seam Fastball</strong> (95 mph, $+17.5^{\prime\prime}$ induced vertical break), <strong>Slider</strong> (85 mph, $+8.0^{\prime\prime}$ glove-side sweep), <strong>12-6 Curveball</strong> (78 mph, $-14.0^{\prime\prime}$ vertical drop), and <strong>Circle Changeup</strong> (84 mph, $-14.5^{\prime\prime}$ arm-side fade)—follows a realistic 3D trajectory with aerodynamic drag.
+            <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.94rem; line-height: 1.6;">
+                The <strong>3D MLB Umpire Simulator</strong> models pitches from a 54-foot release point (<em>z</em><sub>0</sub> = 54.0 ft, <em>y</em><sub>0</sub> = 6.0 ft) down to home plate using constant-acceleration kinematic equations calibrated to MLB Statcast pitch-tracking averages. Each pitch type—<strong>4-Seam Fastball</strong> (95 mph, +17.5″ induced vertical break), <strong>Slider</strong> (85 mph, +8.0″ glove-side sweep), <strong>12-6 Curveball</strong> (78 mph, −14.0″ vertical drop), and <strong>Circle Changeup</strong> (84 mph, −14.5″ arm-side fade)—follows a realistic 3D trajectory with aerodynamic drag.
             </p>
             <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--text-bright);">Pentagonal Prism Swept-Sphere Strike Evaluation &amp; Shadow Zone</h3>
-            <p style="margin-bottom: 0; color: var(--text-muted); font-size: 0.94rem;">
-                Per Official Baseball Rules, home plate is a 17-inch-wide pentagon ($8.5^{\prime\prime}$ half-width) extending from the front edge ($z = 0$) to the rear apex ($z = -17^{\prime\prime}$). A pitch is a rulebook strike if any portion of the baseball ($1.45^{\prime\prime}$ radius sphere) intersects the 3D pentagonal prism between the batter's knees ($1.5\text{ ft}$) and midpoint of the torso ($3.5\text{ ft}$). Pitches within $\pm 1.45^{\prime\prime}$ of the outer boundary are classified into the <strong>Shadow Zone</strong>—where MLB umpires and the Automated Ball-Strike (ABS) challenge system face the toughest calls.
+            <p style="margin-bottom: 0; color: var(--text-muted); font-size: 0.94rem; line-height: 1.6;">
+                Per Official Baseball Rules, home plate is a 17-inch-wide pentagon (8.5″ half-width) extending from the front edge (<em>z</em> = 0) to the rear apex (<em>z</em> = −17″). A pitch is a rulebook strike if any portion of the baseball (1.45″ radius sphere) intersects the 3D pentagonal prism between the batter's knees (1.5 ft) and midpoint of the torso (3.5 ft). Pitches within ±1.45″ of the outer boundary are classified into the <strong>Shadow Zone</strong>—where MLB umpires and the Automated Ball-Strike (ABS) challenge system face the toughest calls.
             </p>
         </section>
 
@@ -400,13 +400,16 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
-    align-items: start;
+    align-items: stretch;
     margin-bottom: 2rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 @media (min-width: 992px) {
     .umpire-layout-top-grid {
-        grid-template-columns: 1fr 350px;
+        grid-template-columns: minmax(0, 1fr) 350px;
+        align-items: stretch;
     }
 }
 
@@ -418,6 +421,8 @@
     box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 /* More vertical 4:3 canvas viewport */
@@ -425,8 +430,8 @@
     position: relative;
     width: 100%;
     aspect-ratio: 4 / 3;
-    min-height: 440px;
-    max-height: 620px;
+    min-height: 420px;
+    max-height: 560px;
     background: radial-gradient(circle at 50% 25%, #1e293b 0%, #0a0f1d 80%, #050811 100%);
     overflow: hidden;
 }
@@ -444,12 +449,12 @@
     box-shadow: var(--shadow-md);
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    min-height: 100%;
+    min-width: 0;
     box-sizing: border-box;
+    gap: 1rem;
 }
 
-/* Umpire Scorecard Section */
+/* Umpire Scorecard Section (Full Width, Contained) */
 .umpire-scorecard-section {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
@@ -457,6 +462,9 @@
     padding: 1.5rem;
     margin-bottom: 2rem;
     box-shadow: var(--shadow-md);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .scorecard-header-bar {
@@ -495,13 +503,15 @@
 .scorecard-main-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.25rem;
-    margin-bottom: 1.25rem;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-@media (min-width: 860px) {
+@media (min-width: 880px) {
     .scorecard-main-grid {
-        grid-template-columns: 1fr 320px;
+        grid-template-columns: minmax(0, 1fr) 310px;
         align-items: stretch;
     }
 }
@@ -510,18 +520,24 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .scorecard-tiles-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.75rem;
     margin-bottom: 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-@media (max-width: 580px) {
+@media (max-width: 620px) {
     .scorecard-tiles-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
@@ -531,6 +547,40 @@
     border-radius: 8px;
     padding: 0.85rem 1rem;
     text-align: left;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#recent-pitches-reel {
+    display: flex;
+    gap: 0.45rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 0.6rem;
+    min-height: 44px;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-cyan) rgba(255, 255, 255, 0.05);
+}
+
+#recent-pitches-reel::-webkit-scrollbar {
+    height: 6px;
+}
+#recent-pitches-reel::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+#recent-pitches-reel::-webkit-scrollbar-thumb {
+    background: rgba(6, 182, 212, 0.4);
+    border-radius: 3px;
+}
+#recent-pitches-reel::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-cyan);
 }
 
 .virtual-zone-panel {
@@ -541,6 +591,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .scorecard-footnote {
@@ -552,6 +605,8 @@
     font-size: 0.86rem;
     line-height: 1.6;
     color: var(--text-muted);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Methodology Section (Full Width) */
@@ -563,6 +618,7 @@
     margin-bottom: 2rem;
     box-shadow: var(--shadow-md);
     width: 100%;
+    box-sizing: border-box;
 }
 
 /* Related Tools Navigation (Full Width) */
@@ -573,6 +629,7 @@
     padding: 1.5rem;
     margin-bottom: 2rem;
     width: 100%;
+    box-sizing: border-box;
 }
 
 /* History chips */
@@ -1062,17 +1119,24 @@ dialog#scorecard-share-modal::backdrop {
         const heroVelo = document.getElementById('stat-velo-hero');
         if (heroVelo) heroVelo.innerText = `${traj.config.velo} mph`;
 
-        document.getElementById('stat-subzone-badge').innerText = trueVerdict.subZone;
-        document.getElementById('stat-pitch-type').innerText = traj.config.name;
-        document.getElementById('stat-velo').innerText = `${traj.config.velo} mph`;
-        document.getElementById('stat-pfx-x').innerText = `${traj.config.pfx_x > 0 ? '+' : ''}${traj.config.pfx_x.toFixed(1)} inches`;
-        document.getElementById('stat-pfx-z').innerText = `${traj.config.pfx_z > 0 ? '+' : ''}${traj.config.pfx_z.toFixed(1)} inches`;
-        document.getElementById('stat-spin').innerText = `${traj.config.rpm} RPM (${traj.config.tilt})`;
+        const elSubzone = document.getElementById('stat-subzone-badge');
+        if (elSubzone) elSubzone.innerText = trueVerdict.subZone;
+        const elPitchType = document.getElementById('stat-pitch-type');
+        if (elPitchType) elPitchType.innerText = traj.config.name;
+        const elVelo = document.getElementById('stat-velo');
+        if (elVelo) elVelo.innerText = `${traj.config.velo} mph`;
+        const elPfxX = document.getElementById('stat-pfx-x');
+        if (elPfxX) elPfxX.innerText = `${traj.config.pfx_x > 0 ? '+' : ''}${traj.config.pfx_x.toFixed(1)} inches`;
+        const elPfxZ = document.getElementById('stat-pfx-z');
+        if (elPfxZ) elPfxZ.innerText = `${traj.config.pfx_z > 0 ? '+' : ''}${traj.config.pfx_z.toFixed(1)} inches`;
+        const elSpin = document.getElementById('stat-spin');
+        if (elSpin) elSpin.innerText = `${traj.config.rpm} RPM (${traj.config.tilt})`;
 
         const marginText = trueVerdict.marginInches <= 0 
             ? `${Math.abs(trueVerdict.marginInches).toFixed(1)}" Inside Zone` 
             : `${trueVerdict.marginInches.toFixed(1)}" Outside Zone`;
-        document.getElementById('stat-margin').innerText = marginText;
+        const elMargin = document.getElementById('stat-margin');
+        if (elMargin) elMargin.innerText = marginText;
     }
 
     function recordScorecard(userCall, trueVerdict, traj) {
