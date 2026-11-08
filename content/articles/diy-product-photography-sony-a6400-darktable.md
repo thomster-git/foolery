@@ -7,7 +7,7 @@ status: "published"
 access: "public"
 author: "Jonathan Thoms"
 created: 2026-11-02
-updated: 2026-11-02
+updated: 2026-11-08
 date: "2026-11-02"
 summary: "How we built a repeatable tabletop photography studio for Thom's Foolery using an open matte sweep, a single softbox, locked manual settings on a Sony a6400 kit lens, and a batch RAW pipeline in Darktable. From mastering histogram curves on dark slate to one-click storefront exports."
 topics:
@@ -79,6 +79,9 @@ Instead of boxing the product in, we constructed an open tabletop infinity curve
 - **The Seamless Horizon:** By gently curving the matte white board from a vertical support down onto the horizontal table without creating a sharp crease or corner, the camera sees no rear horizon line. The floor transitions smoothly into the background, creating the classic "floating subject" infinity look.
 - **A Single 45-Degree Softbox:** We shut off all ambient overhead room lighting, pulled the blackout blinds to seal out daylight shifts, and positioned a single Mount Dog 50x70cm continuous softbox at a 45-degree angle to the left of the product, placed relatively close to the table.
 - **The Physics of Wrap and Grounding:** Because the surface area of the softbox face (20" x 28") is enormous relative to a 4-inch coaster, the softbox functions as a broad, wrap-around diffuse source. Light gently washes across the microscopic surface ridges of the laser engraving, while maintaining a subtle, natural contact shadow on the right side. That soft falloff shadow is essential—it provides "grounding" so the item looks tactile and physically present rather than like a flat graphic floating in void space.
+
+![Stacked 4-pack of square slate coasters resting on the seamless white tabletop sweep](/store/images/coasters/slate/square/slate-square-set.jpg)
+*Figure 1: The tabletop infinity sweep in practice (`DSC02050`). A 4-pack stack of square natural slate coasters demonstrates how the matte white curve eliminates the background horizon while preserving the soft, diffuse contact shadow falling to the right—grounding the physical weight of the stone without harsh edges.*
 
 > [!TIP]
 > **The Inverse Square Law & Broad Diffusion:** Positioning a large diffused softbox closer to a small product creates softer, more flattering light than placing a small light far away. Because the light source subtends a larger angular size relative to the coaster, the transition from highlight to shadow is silky-smooth, completely eliminating harsh specular glare on polished stone or resin.
@@ -161,6 +164,9 @@ The proper tool is **`rgb levels`**:
 > [!IMPORTANT]
 > **Protecting the Contact Shadow:** Do not drag the white point slider so aggressively that you clip the right-side contact shadow. That subtle gradient of light gray grounding the coaster is the difference between a high-end physical object sitting on a clean surface and a cheap graphic amateurishly cut out with a magic wand tool.
 
+![Laser-engraved Nativity scene on natural chipped-edge slate](/store/images/coasters/slate/square/slate-square-nativity.jpg)
+*Figure 2: Nativity slate coaster. Midtone expansion in `rgb levels` (shifted to ~0.38) opens up the natural diagonal cleavage and chipped perimeter of the raw stone while the background snaps to clean `#FFFFFF`.*
+
 ### Step 3: Carving Out Laser Engraving Detail (`local contrast`)
 
 Laser engraving on natural stone functions by physically fracturing the crystalline mineral surface. The un-etched slate is dark charcoal gray; the laser-fractured stippling appears as an opaque, frosty chalk white.
@@ -173,6 +179,9 @@ To ensure the intricate detail of our designs (such as the delicate strands of S
   - **Shadows:** `50%`
 
 By amplifying detail locally at 150% and boosting highlight micro-contrast to 75%, the frosted laser fractals visually jump forward off the dark stone substrate. Unlike traditional sharpening tools (which create ugly glowing white halos around dark edges), the Local Laplacian filter enhances micro-tonal separation naturally.
+
+![Laser-engraved Santa slate coaster showing micro-stippling detail](/store/images/coasters/slate/square/slate-square-santa.jpg)
+*Figure 3: Santa slate coaster. Local Laplacian contrast (`Detail: 150%`, `Highlights: 75%`) isolates individual frosted laser stipples across Santa's beard and snowflakes directly off the dark charcoal mineral bed with zero edge haloing.*
 
 ### Step 4: Neutralizing Support Stands on Circular Products
 
@@ -195,6 +204,9 @@ When the stand extends past the contact shadow onto the white sweep, we eliminat
 - Switch the algorithm to **Clone** (indicated by the overlapping square icon).
 - Select the **Path** tool (<kbd>Ctrl</kbd> + click) to trace a curve hugging the bottom contour of the coaster.
 - Drag the sample source target onto an adjacent patch of clean, lit white sweep. The stand disappears completely, leaving a razor-sharp, natural stone boundary against pure white.
+
+![Circular laser-engraved sleigh coaster with support stand erased](/store/images/coasters/slate/circle/slate-circle-sleigh.jpg)
+*Figure 4: Round sleigh coaster. Circular products require a support stand to stay upright during shooting. Using Darktable's `retouch` clone path tool, the blue holder corners beneath the lower curve were seamlessly replaced with adjacent clean sweep, preserving the natural bottom shadow.*
 
 ### Darktable Module Quick-Guide Table
 
@@ -247,14 +259,12 @@ A 1200 x 1200 WebP asset at 90 quality averages roughly **65 KB to 95 KB** per i
 
 ## 5. The Systemic Takeaway: Repeatable Engineering Over Ad-Hoc Hustle
 
-When visitors browse the catalog at [thomsfoolery.com/store](https://thomsfoolery.com/store), they see a coherent, distraction-free grid where the fine craftsmanship of the laser engraving speaks for itself:
+When visitors browse the catalog at [thomsfoolery.com/store](https://thomsfoolery.com/store), they see a coherent, distraction-free grid where the fine craftsmanship of the laser engraving speaks for itself across our core substrate materials:
 
-```
-[ Natural Slate ]      [ Walnut & Brass ]      [ Carrara Marble ]
-  1200x1200 WebP         1200x1200 WebP          1200x1200 WebP
-  Pure #FFFFFF           Pure #FFFFFF            Pure #FFFFFF
-  Grounding Shadow       Grounding Shadow        Grounding Shadow
-```
+| Natural Slate | Solid Timber | Carrara Marble & Acacia |
+|:---:|:---:|:---:|
+| ![Laser-engraved puppy on square natural slate](/store/images/coasters/slate/square/slate-square-puppy.jpg) | ![Laser-engraved puppy on solid wood](/store/images/coasters/wood/square/wood-square-puppy.jpg) | ![Polished Carrara marble and acacia wood coaster](/store/images/coasters/marble+acacia/square/marble-acacia-square-blank.jpg) |
+| **Natural Chipped Slate**<br>1200×1200 WebP (88 KB)<br>Pure `#FFFFFF` & contact shadow | **Solid Pine / Timber**<br>1200×1200 WebP (72 KB)<br>Natural wood warmth preserved | **Marble & Acacia Split**<br>1200×1200 WebP (68 KB)<br>High-key white-on-white separation |
 
 The real success of this workflow is not just that we produced crisp product photos on a shoestring budget. The true victory is **systemic repeatability**:
 - The physical staging takes three minutes to roll out on any flat table.
