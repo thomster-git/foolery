@@ -2,6 +2,8 @@
  * Project Atlas — Lightweight Markdown Body Parser
  */
 
+import { getLocalImageDimensions } from "./seo-helpers.js";
+
 export default function parseMarkdown(markdownText = "") {
   if (!markdownText) return "";
 
@@ -41,7 +43,11 @@ export default function parseMarkdown(markdownText = "") {
   text = text.replace(/^---$/gm, '<hr>');
 
   // Images ![alt](url)
-  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" class="article-image" loading="lazy" />');
+  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
+    const dims = getLocalImageDimensions(src.trim());
+    const sizeAttrs = dims ? ` width="${dims.width}" height="${dims.height}"` : "";
+    return `<img src="${src}" alt="${alt}" class="article-image"${sizeAttrs} loading="lazy" decoding="async" />`;
+  });
 
   // Inline formatting: bold, italic, inline code, links
   text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');

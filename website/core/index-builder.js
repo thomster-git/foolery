@@ -5,6 +5,13 @@ import { fileURLToPath } from "url";
 import Renderer from "./renderer.js";
 import ComponentBuilder from "./component-builder.js";
 import config from "../config/atlas.config.js";
+import {
+    escapeHtmlAttr,
+    safeJsonLd,
+    buildWebSiteSchema,
+    slugifyTag,
+    getLocalImageDimensions
+} from "./seo-helpers.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -70,7 +77,8 @@ export default class IndexBuilder {
             "article",
             "Long-form essays, personal stories, technical reflections, and gated member content.",
             articles.length,
-            cardsHtml
+            cardsHtml,
+            { noindex: articles.length === 0 }
         );
 
     }
@@ -78,35 +86,49 @@ export default class IndexBuilder {
     //--------------------------------------------------
 
     async buildLive(content) {
-        const fs = await import('fs/promises');
-        const path = await import('path');
         const liveHtml = await fs.readFile(path.join(this.layouts, "live.html"), "utf8");
         const headerPartial = await fs.readFile(path.join(this.partials, "header.html"), "utf8");
         const footerPartial = await fs.readFile(path.join(this.partials, "footer.html"), "utf8");
         const baseTemplate = await fs.readFile(path.join(this.layouts, "base.html"), "utf8");
-        
+
+        const siteUrl = config.site.url.replace(/\/$/, "");
         const title = "Live Stream";
-        const description = "Thoms Foolery Live Stream";
-        
-        const fullHtml = this.renderer.render(baseTemplate, {
-            page_title:            `${title} — ${config.site.title}`,
-            site_title:            config.site.title,
-            site_url:              config.site.url,
-            site_author:           config.site.author,
-            lang:                  config.site.language || "en",
-            meta_description:      description,
-            meta_description_json: JSON.stringify(description).slice(1, -1),
-            breadcrumb_schema:     "",
-            og_title:              title,
-            og_type:               "website",
-            canonical_url:         `${config.site.url}/live/`,
-            og_image:              `${config.site.url}/images/social-preview.png`,
-            google_adsense:        "",
-            header: headerPartial,
-            footer: footerPartial,
-            content: liveHtml
+        const description = "Watch Jonathan Thoms live on Twitch: systems engineering, open-source web tools, digital garden builds, ocarina practice, and community Q&A.";
+        const canonicalUrl = `${siteUrl}/live/`;
+        const ogImage = `${siteUrl}/images/og-card.jpg`;
+        const imageDims = getLocalImageDimensions(ogImage, siteUrl);
+        const websiteSchema = buildWebSiteSchema(siteUrl, description);
+        const breadcrumbSchema = safeJsonLd({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": `${siteUrl}/` },
+                { "@type": "ListItem", "position": 2, "name": title, "item": canonicalUrl }
+            ]
         });
-        
+
+        const fullHtml = this.renderer.render(baseTemplate, {
+            page_title:        escapeHtmlAttr(`${title} — ${config.site.title}`),
+            site_title:        escapeHtmlAttr(config.site.title),
+            site_url:          siteUrl,
+            site_author:       escapeHtmlAttr(config.site.author),
+            lang:              escapeHtmlAttr(config.site.language || "en"),
+            robots_meta:       "",
+            meta_description:  escapeHtmlAttr(description),
+            website_schema:    websiteSchema,
+            breadcrumb_schema: breadcrumbSchema,
+            og_title:          escapeHtmlAttr(title),
+            og_type:           "website",
+            canonical_url:     escapeHtmlAttr(canonicalUrl),
+            og_image:          escapeHtmlAttr(ogImage),
+            og_image_width:    imageDims ? String(imageDims.width) : "",
+            og_image_height:   imageDims ? String(imageDims.height) : "",
+            google_adsense:    "",
+            header:            headerPartial,
+            footer:            footerPartial,
+            content:           liveHtml
+        });
+
         const dir = path.join(this.output, "live");
         await fs.mkdir(dir, { recursive: true });
         await fs.writeFile(path.join(dir, "index.html"), fullHtml);
@@ -117,6 +139,7 @@ export default class IndexBuilder {
     async buildShitList(content) {
 
         const shitListItems = content.filter(x => x.metadata.type === "shit-list");
+        const publishedCount = shitListItems.filter(x => x.metadata.status !== "draft").length;
         
         // Let's create a custom styling for the Shit List card grid that looks grungier and darker
         const customStyles = `
@@ -201,7 +224,8 @@ export default class IndexBuilder {
             "shit-list",
             "Companies, products, software, and services that I explicitly do NOT recommend, and exactly why they failed me.",
             shitListItems.length,
-            fullHtml
+            fullHtml,
+            { noindex: publishedCount === 0 }
         );
 
     }
@@ -211,6 +235,7 @@ export default class IndexBuilder {
     async buildProjects(content) {
 
         const projects = content.filter(x => x.metadata.type === "project");
+        const publishedCount = projects.filter(x => x.metadata.status !== "draft").length;
         
         const active = projects.filter(p => p.metadata.status === 'active');
         const drawingBoard = projects.filter(p => p.metadata.status === 'drawing-board');
@@ -234,7 +259,8 @@ export default class IndexBuilder {
             "project",
             "Active technical projects, hardware builds, laser craftsmanship, and software developments.",
             projects.length,
-            cardsHtml
+            cardsHtml,
+            { noindex: publishedCount === 0 }
         );
 
     }
@@ -244,6 +270,7 @@ export default class IndexBuilder {
     async buildTopics(content) {
 
         const topics = content.filter(x => x.metadata.type === "topic");
+        const publishedCount = topics.filter(x => x.metadata.status !== "draft").length;
         const cards = topics.map(topic => this.components.topicCard(topic)).join("\n");
 
         await this.writeIndex(
@@ -252,7 +279,8 @@ export default class IndexBuilder {
             "topic",
             "Subjects and domains organizing knowledge across the Project Atlas network.",
             topics.length,
-            cards
+            cards,
+            { noindex: publishedCount === 0 }
         );
 
     }
@@ -262,6 +290,7 @@ export default class IndexBuilder {
     async buildThemes(content) {
 
         const themes = content.filter(x => x.metadata.type === "theme");
+        const publishedCount = themes.filter(x => x.metadata.status !== "draft").length;
         const cards = themes.map(t => this.components.themeCard(t)).join("\n");
 
         await this.writeIndex(
@@ -270,7 +299,8 @@ export default class IndexBuilder {
             "theme",
             "Overarching philosophical and personal themes shaping thought and writing.",
             themes.length,
-            cards
+            cards,
+            { noindex: publishedCount === 0 }
         );
 
     }
@@ -281,6 +311,7 @@ export default class IndexBuilder {
         const tweets = content
             .filter(x => x.metadata.type === "tweet")
             .sort((a, b) => new Date(b.metadata.created) - new Date(a.metadata.created));
+        const publishedCount = tweets.filter(x => x.metadata.status !== "draft").length;
             
         const feedHtml = this.components.twitterFeed(tweets);
 
@@ -290,7 +321,8 @@ export default class IndexBuilder {
             "tweet",
             "A complete archive of extracted tweets, threads, and connected ideas from the digital garden.",
             tweets.length,
-            feedHtml
+            feedHtml,
+            { noindex: publishedCount === 0 }
         );
     }
 
@@ -299,6 +331,7 @@ export default class IndexBuilder {
     async buildCollections(content) {
 
         const collections = content.filter(x => x.metadata.type === "collection");
+        const publishedCount = collections.filter(x => x.metadata.status !== "draft").length;
         const cards = collections.map(c => this.components.collectionCard(c)).join("\n");
 
         await this.writeIndex(
@@ -307,7 +340,8 @@ export default class IndexBuilder {
             "collection",
             "Physical and digital collections owned, curated, and cataloged.",
             collections.length,
-            cards
+            cards,
+            { noindex: publishedCount === 0 }
         );
 
     }
@@ -528,20 +562,24 @@ export default class IndexBuilder {
             </script>
         `;
 
+        const publishedLibraryCount = allLibraryItems.filter(x => x.metadata.status !== "draft").length;
+
         await this.writeIndex(
             "library",
             "Library & Recommended Gear",
             "library",
             "Curated sensory tools, books, hardware, software, YouTube creators, and recommended products with affiliate links.",
             allLibraryItems.length,
-            fullBookshelfHtml
+            fullBookshelfHtml,
+            { noindex: publishedLibraryCount === 0 }
         );
 
         // Individual type indexes
         for (const type of libraryTypes) {
             const items = content.filter(x => x.metadata.type === type);
             if (items.length === 0) continue;
-            
+
+            const publishedTypeCount = items.filter(x => x.metadata.status !== "draft").length;
             const plural = this.getPlural(type);
             const categories = {};
             
@@ -578,11 +616,12 @@ export default class IndexBuilder {
 
             await this.writeIndex(
                 `library/${plural}`,
-                this.capitalize(plural),
+                `${this.capitalize(plural)} Library`,
                 type,
-                `Catalog of ${plural} reference items in the Project Atlas library.`,
+                `Curated catalog of ${plural} reference items and recommendations in the Thoms Foolery digital garden library.`,
                 items.length,
-                contentHtml
+                contentHtml,
+                { noindex: publishedTypeCount === 0 }
             );
         }
 
@@ -598,19 +637,23 @@ export default class IndexBuilder {
             if (item.metadata?.status === "draft") return;
             const tags = item.metadata.tags || [];
             tags.forEach(tag => {
-                const slug = tag.toLowerCase().trim();
+                const slug = slugifyTag(tag);
+                if (!slug) return;
                 if (!tagMap.has(slug)) {
-                    tagMap.set(slug, []);
+                    tagMap.set(slug, { display: String(tag).trim(), items: [] });
                 }
-                tagMap.get(slug).push(item);
+                const entry = tagMap.get(slug);
+                if (!entry.items.some(existing => existing.metadata.id === item.metadata.id)) {
+                    entry.items.push(item);
+                }
             });
         });
 
         // Build main /tags/ index directory page
-        const tagEntries = Array.from(tagMap.entries()).sort((a, b) => b[1].length - a[1].length);
-        const tagCards = tagEntries.map(([tag, items]) => `
+        const tagEntries = Array.from(tagMap.entries()).sort((a, b) => b[1].items.length - a[1].items.length);
+        const tagCards = tagEntries.map(([slug, { items }]) => `
             <article class="card tag-directory-card">
-              <h2><a href="/tags/${tag}.html">#${tag}</a></h2>
+              <h2><a href="/tags/${slug}.html">#${slug}</a></h2>
               <p>Contains <strong>${items.length}</strong> connected articles, projects, topics, and library items.</p>
             </article>
         `).join("\n");
@@ -619,19 +662,21 @@ export default class IndexBuilder {
             "tags",
             "Tag Directory",
             "tag",
-            "Browse knowledge connections grouped by specific tags.",
+            "Browse knowledge connections grouped by specific tags across essays, engineering projects, topics, and library entries.",
             tagEntries.length,
-            tagCards
+            tagCards,
+            { noindex: tagEntries.length === 0 }
         );
 
         // Build individual /tags/<tag>.html pages
-        for (const [tag, items] of tagMap.entries()) {
+        for (const [slug, { items }] of tagMap.entries()) {
             const cards = items.map(item => this.components.card(item)).join("\n");
+            const entryWord = items.length === 1 ? "published entry" : "published entries";
             await this.writeCustomTagIndex(
-                tag,
-                `#${tag}`,
+                slug,
+                `#${slug}`,
                 "tag",
-                `All content items tagged with #${tag}.`,
+                `Browse ${items.length} ${entryWord} tagged with #${slug} across Jonathan Thoms' digital garden, technical essays, and engineering projects.`,
                 items.length,
                 cards
             );
@@ -639,7 +684,7 @@ export default class IndexBuilder {
 
     }
 
-    async writeCustomTagIndex(tagSlug, title, type, description, count, cards) {
+    async writeCustomTagIndex(tagSlug, headingTitle, type, description, count, cards) {
         await fs.mkdir(path.join(this.output, "tags"), { recursive: true });
 
         const layoutTemplate = await fs.readFile(path.join(this.layouts, "index.html"), "utf8");
@@ -654,7 +699,7 @@ export default class IndexBuilder {
 </section>`;
 
         const contentHtml = this.renderer.render(layoutTemplate, {
-            title,
+            title: headingTitle,
             type,
             description,
             count,
@@ -663,35 +708,44 @@ export default class IndexBuilder {
             graph_html: graphHtml
         });
 
+        const siteUrl = config.site.url.replace(/\/$/, "");
+        const seoTitle = `${headingTitle} — Tagged Essays & Projects`;
         const desc = description || config.site.description;
-        const breadcrumbSchema = `<script type="application/ld+json">${JSON.stringify({
+        const canonicalUrl = `${siteUrl}/tags/${tagSlug}.html`;
+        const ogImage = `${siteUrl}/images/og-card.jpg`;
+        const imageDims = getLocalImageDimensions(ogImage, siteUrl);
+        const websiteSchema = buildWebSiteSchema(siteUrl, desc);
+        const breadcrumbSchema = safeJsonLd({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Home", "item": `${config.site.url}/` },
-                { "@type": "ListItem", "position": 2, "name": "Tags", "item": `${config.site.url}/tags/` },
-                { "@type": "ListItem", "position": 3, "name": title, "item": `${config.site.url}/tags/${tagSlug}.html` }
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": `${siteUrl}/` },
+                { "@type": "ListItem", "position": 2, "name": "Tags", "item": `${siteUrl}/tags/` },
+                { "@type": "ListItem", "position": 3, "name": headingTitle, "item": canonicalUrl }
             ]
-        })}</script>`;
+        });
 
         const fullHtml = this.renderer.render(baseTemplate, {
-            page_title:            `${title} — ${config.site.title}`,
-            site_title:            config.site.title,
-            site_url:              config.site.url,
-            site_author:           config.site.author,
-            lang:                  config.site.language || "en",
-            meta_description:      desc,
-            meta_description_json: JSON.stringify(desc).slice(1, -1),
-            breadcrumb_schema:     breadcrumbSchema,
-            og_title:              title,
-            og_type:               "website",
-            canonical_url:         `${config.site.url}/tags/${tagSlug}.html`,
-            og_image:              `${config.site.url}/images/social-preview.png`,
-            google_adsense:        "",
-            focus_tag:             tagSlug,
-            header: headerPartial,
-            footer: footerPartial,
-            content: contentHtml
+            page_title:        escapeHtmlAttr(`${seoTitle} — ${config.site.title}`),
+            site_title:        escapeHtmlAttr(config.site.title),
+            site_url:          siteUrl,
+            site_author:       escapeHtmlAttr(config.site.author),
+            lang:              escapeHtmlAttr(config.site.language || "en"),
+            robots_meta:       "",
+            meta_description:  escapeHtmlAttr(desc),
+            website_schema:    websiteSchema,
+            breadcrumb_schema: breadcrumbSchema,
+            og_title:          escapeHtmlAttr(seoTitle),
+            og_type:           "website",
+            canonical_url:     escapeHtmlAttr(canonicalUrl),
+            og_image:          escapeHtmlAttr(ogImage),
+            og_image_width:    imageDims ? String(imageDims.width) : "",
+            og_image_height:   imageDims ? String(imageDims.height) : "",
+            google_adsense:    "",
+            focus_tag:         tagSlug,
+            header:            headerPartial,
+            footer:            footerPartial,
+            content:           contentHtml
         });
 
         await fs.writeFile(path.join(this.output, "tags", `${tagSlug}.html`), fullHtml);
@@ -704,7 +758,7 @@ export default class IndexBuilder {
 
     //--------------------------------------------------
 
-    async writeIndex(folder, title, type, description, count, cards) {
+    async writeIndex(folder, title, type, description, count, cards, options = {}) {
 
         await fs.mkdir(path.join(this.output, folder), { recursive: true });
 
@@ -731,33 +785,52 @@ export default class IndexBuilder {
             graph_html: graphHtml
         });
 
+        const siteUrl = config.site.url.replace(/\/$/, "");
         const desc = description || config.site.description;
-        const breadcrumbSchema = `<script type="application/ld+json">${JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Home", "item": `${config.site.url}/` },
-                { "@type": "ListItem", "position": 2, "name": title, "item": `${config.site.url}/${folder}/` }
-            ]
-        })}</script>`;
+        const canonicalUrl = `${siteUrl}/${folder}/`;
+        const ogImage = `${siteUrl}/images/og-card.jpg`;
+        const imageDims = getLocalImageDimensions(ogImage, siteUrl);
+        const robotsMeta = options.noindex ? "noindex, nofollow" : "";
+        const websiteSchema = buildWebSiteSchema(siteUrl, desc);
+
+        const breadcrumbItems = [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": `${siteUrl}/` }
+        ];
+        if (folder.startsWith("library/")) {
+            breadcrumbItems.push({ "@type": "ListItem", "position": 2, "name": "Library", "item": `${siteUrl}/library/` });
+            breadcrumbItems.push({ "@type": "ListItem", "position": 3, "name": title, "item": canonicalUrl });
+        } else {
+            breadcrumbItems.push({ "@type": "ListItem", "position": 2, "name": title, "item": canonicalUrl });
+        }
+
+        const breadcrumbSchema = options.noindex
+            ? ""
+            : safeJsonLd({
+                  "@context": "https://schema.org",
+                  "@type": "BreadcrumbList",
+                  "itemListElement": breadcrumbItems
+              });
 
         const fullHtml = this.renderer.render(baseTemplate, {
-            page_title:            `${title} — ${config.site.title}`,
-            site_title:            config.site.title,
-            site_url:              config.site.url,
-            site_author:           config.site.author,
-            lang:                  config.site.language || "en",
-            meta_description:      desc,
-            meta_description_json: JSON.stringify(desc).slice(1, -1),
-            breadcrumb_schema:     breadcrumbSchema,
-            og_title:              title,
-            og_type:               "website",
-            canonical_url:         `${config.site.url}/${folder}/`,
-            og_image:              `${config.site.url}/images/social-preview.png`,
-            google_adsense:        "",
-            header: headerPartial,
-            footer: footerPartial,
-            content: contentHtml
+            page_title:        escapeHtmlAttr(`${title} — ${config.site.title}`),
+            site_title:        escapeHtmlAttr(config.site.title),
+            site_url:          siteUrl,
+            site_author:       escapeHtmlAttr(config.site.author),
+            lang:              escapeHtmlAttr(config.site.language || "en"),
+            robots_meta:       escapeHtmlAttr(robotsMeta),
+            meta_description:  escapeHtmlAttr(desc),
+            website_schema:    websiteSchema,
+            breadcrumb_schema: breadcrumbSchema,
+            og_title:          escapeHtmlAttr(title),
+            og_type:           "website",
+            canonical_url:     escapeHtmlAttr(canonicalUrl),
+            og_image:          escapeHtmlAttr(ogImage),
+            og_image_width:    imageDims ? String(imageDims.width) : "",
+            og_image_height:   imageDims ? String(imageDims.height) : "",
+            google_adsense:    "",
+            header:            headerPartial,
+            footer:            footerPartial,
+            content:           contentHtml
         });
 
         await fs.writeFile(path.join(this.output, folder, "index.html"), fullHtml);

@@ -1177,14 +1177,18 @@ function initThemeSwitcher() {
   
   let currentTheme = localStorage.getItem("atlas_theme") || "light";
   document.documentElement.setAttribute("data-theme", currentTheme);
-  btn.textContent = icons[currentTheme] || "☀️";
+  const syncThemeBtn = () => {
+    btn.textContent = icons[currentTheme] || "☀️";
+    btn.setAttribute("aria-pressed", currentTheme === "dark" ? "true" : "false");
+  };
+  syncThemeBtn();
 
   btn.addEventListener("click", () => {
     const idx = (themes.indexOf(currentTheme) + 1) % themes.length;
     currentTheme = themes[idx];
     document.documentElement.setAttribute("data-theme", currentTheme);
     localStorage.setItem("atlas_theme", currentTheme);
-    btn.textContent = icons[currentTheme] || "☀️";
+    syncThemeBtn();
   });
 }
 

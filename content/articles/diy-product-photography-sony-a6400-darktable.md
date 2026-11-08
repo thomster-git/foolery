@@ -12,7 +12,6 @@ date: "2026-11-02"
 summary: "How we built a repeatable tabletop photography studio for Thom's Foolery using an open matte sweep, a single softbox, locked manual settings on a Sony a6400 kit lens, and a batch RAW pipeline in Darktable. From mastering histogram curves on dark slate to one-click storefront exports."
 topics:
   - technology
-  - craftsmanship
 themes:
   - craftsmanship
   - systems-thinking

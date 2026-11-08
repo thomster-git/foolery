@@ -89,7 +89,7 @@ export default class Exporter {
 
     async writeRobotsTxt() {
         const siteUrl = config.site.url.replace(/\/$/, "");
-        const robots = `User-agent: *\nAllow: /\nSitemap: ${siteUrl}/sitemap.xml\n`;
+        const robots = `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`;
         await fs.writeFile(path.join(this.outputDirectory, "robots.txt"), robots);
     }
 

@@ -16,9 +16,9 @@
   <meta property="og:title" content="EtchCentric Laser Workshop | Thoms Foolery">
   <meta property="og:description" content="Custom laser-engraved slate coasters, acacia &amp; marble hardwood, and personalized goods handcrafted by Jonathan Thoms.">
   <meta property="og:url" content="https://thomsfoolery.com/store/">
-  <meta property="og:image" content="https://thomsfoolery.com/images/social-preview.png">
+  <meta property="og:image" content="https://thomsfoolery.com/images/og-card.jpg">
   <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <meta property="og:image:height" content="670">
   <meta property="og:locale" content="en_CA">
 
   <!-- Twitter / X Card -->
@@ -27,15 +27,42 @@
   <meta name="twitter:creator" content="@ThomsFoolery">
   <meta name="twitter:title" content="EtchCentric Laser Workshop | Thoms Foolery">
   <meta name="twitter:description" content="Custom laser-engraved slate coasters, acacia &amp; marble hardwood, and personalized goods handcrafted by Jonathan Thoms.">
-  <meta name="twitter:image" content="https://thomsfoolery.com/images/social-preview.png">
+  <meta name="twitter:image" content="https://thomsfoolery.com/images/og-card.jpg">
 
   <!-- Favicon & Search Identity -->
-  <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
-  <link rel="icon" type="image/png" sizes="192x192" href="/images/logo-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="/images/logo-512.png">
-  <link rel="shortcut icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/images/logo-192.png">
+  <link rel="icon" type="image/svg+xml" href="https://thomsfoolery.com/images/logo.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="https://thomsfoolery.com/images/logo-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="https://thomsfoolery.com/images/logo-512.png">
+  <link rel="shortcut icon" href="https://thomsfoolery.com/favicon.ico">
+  <link rel="apple-touch-icon" href="https://thomsfoolery.com/images/logo-192.png">
   <meta name="theme-color" content="#0b0f19">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Store",
+        "name": "EtchCentric Laser Engraving Workshop — Thoms Foolery",
+        "description": "Custom laser-engraved slate coasters, acacia & marble hardwood, and personalized goods handcrafted by Jonathan Thoms.",
+        "url": "https://thomsfoolery.com/store/",
+        "image": "https://thomsfoolery.com/images/og-card.jpg",
+        "founder": {
+          "@type": "Person",
+          "name": "Jonathan Thoms",
+          "url": "https://thomsfoolery.com/"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://thomsfoolery.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Laser Store", "item": "https://thomsfoolery.com/store/" }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <!-- Google Fonts: Outfit & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -502,7 +529,7 @@
     <a href="/store/" style="color: var(--accent-cyan); font-weight: 700;">Store</a>
     <a href="/resume/">Resume</a>
     <a href="/interests/">Interests</a>
-    <button id="theme-toggle-btn" class="theme-toggle-btn" title="Toggle Visual Theme (Obsidian / Light)">🌙</button>
+    <button id="theme-toggle-btn" class="theme-toggle-btn" title="Toggle dark mode" aria-label="Toggle dark mode" aria-pressed="false" type="button"><span aria-hidden="true">🌙</span></button>
   </nav>
 </header>
 

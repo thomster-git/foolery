@@ -3026,7 +3026,7 @@ function openOotPopout() {
 }
 
 function copyObsSourceUrl(btn) {
-  const origin = window.location.origin || 'https://www.thomsfoolery.com';
+  const origin = window.location.origin || 'https://thomsfoolery.com';
   const isTransparent = document.documentElement.getAttribute('data-overlay-bg') === 'transparent';
   const bgParam = isTransparent ? '&bg=transparent' : '';
   const url = `${origin}/tools/ocarina/?popout=oot${bgParam}`;

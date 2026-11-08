@@ -100,40 +100,7 @@
         </section>
 
         <!-- SEO: Structured Data / JSON-LD -->
-        <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "Article",
-          "headline": "{{title_json}}",
-          "description": "{{summary_json}}",
-          "image": "{{og_image}}",
-          "url": "{{canonical_url}}",
-          "datePublished": "{{created_iso}}",
-          "dateModified": "{{updated_iso}}",
-          "wordCount": {{word_count}},
-          {{paywall_schema}}
-          "author": {
-            "@type": "Person",
-            "name": "Jonathan Thoms",
-            "url": "https://thomsfoolery.com",
-            "sameAs": [
-              "https://x.com/ThomsFoolery",
-              "https://www.linkedin.com/in/jonathan-thoms-a43b65a4/"
-            ]
-          },
-          "publisher": {
-            "@type": "Person",
-            "name": "Jonathan Thoms",
-            "url": "https://thomsfoolery.com"
-          },
-          "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "{{canonical_url}}"
-          },
-          "inLanguage": "en-CA",
-          "keywords": [{{tags_json}}]
-        }
-        </script>
+        {{article_schema}}
 
     </article>
 

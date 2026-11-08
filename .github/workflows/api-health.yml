@@ -1,0 +1,115 @@
+name: Sports API Health Check
+
+on:
+  schedule:
+    - cron: '17 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  api-health:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Sports API Health Check
+        id: check
+        shell: bash
+        run: |
+          set -o pipefail
+          node scripts/api-health/check.js 2>&1 | tee api-health-report.txt
+
+      - name: Open or Update API Health Issue on Failure
+        if: failure() && steps.check.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('node:fs');
+            const labelName = 'api-health';
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const nowIso = new Date().toISOString();
+
+            let report = 'No diagnostic output captured.';
+            try {
+              report = fs.readFileSync('api-health-report.txt', 'utf8').trim().slice(0, 12000);
+            } catch (e) {
+              // Ignore missing file fallback
+            }
+
+            // Ensure the `api-health` label exists so listing/creating with it never errors
+            try {
+              await github.rest.issues.getLabel({ owner, repo, name: labelName });
+            } catch (err) {
+              if (err.status === 404) {
+                await github.rest.issues.createLabel({
+                  owner,
+                  repo,
+                  name: labelName,
+                  color: 'd93f0b',
+                  description: 'Automated upstream sports API health and schema check alerts'
+                });
+              }
+            }
+
+            const { data: openIssues } = await github.rest.issues.listForRepo({
+              owner,
+              repo,
+              state: 'open',
+              labels: labelName,
+              per_page: 20
+            });
+
+            const existingIssue = openIssues.find(issue => !issue.pull_request);
+            const title = 'Sports Trend Analyzer API Health Check Failure';
+            const body = [
+              '### Upstream Sports API Health Check Failed',
+              '',
+              `One or more upstream endpoints or required JSON schema paths used by the NFL, NHL, or MLB Trend Analyzers failed validation.`,
+              '',
+              `- **Last Failure (UTC):** \`${nowIso}\``,
+              `- **Workflow Run:** [View GitHub Actions Run](${runUrl})`,
+              `- **Trigger:** \`${context.eventName}\``,
+              '',
+              '#### Diagnostic Output',
+              '```text',
+              report,
+              '```',
+              '',
+              '_This issue is automatically maintained by `.github/workflows/api-health.yml`._'
+            ].join('\n');
+
+            if (existingIssue) {
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: existingIssue.number,
+                body
+              });
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: existingIssue.number,
+                body: `Still failing as of \`${nowIso}\` — see [Workflow Run #${context.runNumber}](${runUrl}).\n\n\`\`\`text\n${report}\n\`\`\``
+              });
+              core.info(`Updated existing open issue #${existingIssue.number}`);
+            } else {
+              const { data: created } = await github.rest.issues.create({
+                owner,
+                repo,
+                title,
+                body,
+                labels: [labelName]
+              });
+              core.info(`Created new issue #${created.number}`);
+            }

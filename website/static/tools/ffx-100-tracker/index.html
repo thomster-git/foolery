@@ -3,7 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FFX 100% Tracker | Project Atlas</title>
+  <title>Final Fantasy X Missables &amp; Platinum Checklist (Classic) — Thoms Foolery</title>
+  <meta name="description" content="Classic Final Fantasy X missables, Al Bhed Primers, Celestial Weapons, and Monster Arena checklist prototype (superseded by the full FFX 100% Tracker).">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://thomsfoolery.com/tools/ffx-tracker/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Thoms Foolery">
+  <meta property="og:title" content="Final Fantasy X Missables &amp; Platinum Checklist (Classic) — Thoms Foolery">
+  <meta property="og:description" content="Classic Final Fantasy X missables, Al Bhed Primers, Celestial Weapons, and Monster Arena checklist.">
+  <meta property="og:url" content="https://thomsfoolery.com/tools/ffx-tracker/">
+  <meta property="og:image" content="https://thomsfoolery.com/images/og-card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="670">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@ThomsFoolery">
+  <meta name="twitter:title" content="Final Fantasy X Missables &amp; Platinum Checklist (Classic) — Thoms Foolery">
+  <meta name="twitter:description" content="Classic Final Fantasy X missables, Al Bhed Primers, Celestial Weapons, and Monster Arena checklist.">
+  <meta name="twitter:image" content="https://thomsfoolery.com/images/og-card.jpg">
   <style>
     :root {
       --bg: #0f172a;
@@ -110,13 +126,13 @@ const data = {
     { id: 'm1', title: 'Al Bhed Primer Vol. XIX', desc: 'Located outside the Al Bhed Home. If you enter the Home and finish the sequence, you can never get this back.', tags: ['missable', 'al-bhed'] },
     { id: 'm2', title: 'Al Bhed Primer Vol. XX', desc: 'Inside the Al Bhed Home, in the Living Quarters. Grab it before proceeding.', tags: ['missable', 'al-bhed'] },
     { id: 'm3', title: 'Al Bhed Primer Vol. XXI', desc: 'Inside the Al Bhed Home, Main Corridor.', tags: ['missable', 'al-bhed'] },
-    { id: 'm4', title: 'Al Bhed Primer Vol. XXII', desc: 'Bevelle Temple - Priests\\' Passage. Immediately after the wedding crash.', tags: ['missable', 'al-bhed'] },
+    { id: 'm4', title: 'Al Bhed Primer Vol. XXII', desc: 'Bevelle Temple - Priests\' Passage. Immediately after the wedding crash.', tags: ['missable', 'al-bhed'] },
     { id: 'm5', title: 'No Encounters Weapon Drop', desc: 'When fighting Geosgaeno (Baaj Temple underwater boss), it has a rare chance to drop a weapon with No Encounters. This is the ONLY No Encounters weapon in the game (others are armor).', tags: ['missable', 'drop'] }
   ],
   weapons: [
     { id: 'w1', title: 'Tidus: Caladbolg', desc: '1. Win Chocobo Race at Remiem Temple (Cloudy Mirror). 2. Power it up at Macalania Woods (Celestial Mirror). 3. Win Catcher Chocobo with a time of 0:0:0 in Calm Lands (Sun Sigil).', tags: ['tidus', 'grind'] },
-    { id: 'w2', title: 'Yuna: Nirvana', desc: '1. Capture 1 of every fiend in Calm Lands (Nirvana). 2. Defeat all of Belgemine\\'s Aeons at Remiem Temple (Moon Sigil).', tags: ['yuna'] },
-    { id: 'w3', title: 'Auron: Masamune', desc: '1. Get Rusty Sword near Cavern of Stolen Fayth. 2. Place on Lord Mi\\'ihen statue in Mushroom Rock. 3. Collect all 10 Jecht Spheres worldwide (Mars Sigil).', tags: ['auron'] },
+    { id: 'w2', title: 'Yuna: Nirvana', desc: '1. Capture 1 of every fiend in Calm Lands (Nirvana). 2. Defeat all of Belgemine\'s Aeons at Remiem Temple (Moon Sigil).', tags: ['yuna'] },
+    { id: 'w3', title: 'Auron: Masamune', desc: '1. Get Rusty Sword near Cavern of Stolen Fayth. 2. Place on Lord Mi\'ihen statue in Mushroom Rock. 3. Collect all 10 Jecht Spheres worldwide (Mars Sigil).', tags: ['auron'] },
     { id: 'w4', title: 'Wakka: World Champion', desc: '1. Talk to bartender in Luca Cafe. 2. Win Blitzball Tournaments to get Attack Reels, Status Reels, Aurochs Reels, and Jupiter Sigil. (Recruit Brother and Ropp!)', tags: ['wakka', 'blitzball', 'grind'] },
     { id: 'w5', title: 'Lulu: Onion Knight', desc: '1. Return to Baaj Temple underwater. 2. Dodge 200 Lightning Strikes in a row in the Thunder Plains (Venus Sigil). Equip No Encounters!', tags: ['lulu', 'grind'] },
     { id: 'w6', title: 'Rikku: Godhand', desc: '1. Input GODHAND as an airship password. 2. Complete the Cactuar Village minigame in Bikanel Desert (Mercury Sigil).', tags: ['rikku'] },
@@ -125,13 +141,13 @@ const data = {
   aeons: [
     { id: 'a1', title: 'Anima (Destruction Spheres)', desc: 'You must use the Destruction Sphere to get the hidden treasure in all 6 Cloisters of Trials (Besaid, Kilika, Djose, Macalania, Bevelle, Zanarkand). Then visit Baaj Temple.', tags: ['aeon', 'missable-warning'] },
     { id: 'a2', title: 'Yojimbo', desc: 'Cavern of the Stolen Fayth in Calm Lands. Choose "To defeat the most powerful of enemies" to lower his asking price.', tags: ['aeon'] },
-    { id: 'a3', title: 'Magus Sisters', desc: '1. Capture every fiend in Mt. Gagazet (Blossom Crown). 2. Defeat all of Belgemine\\'s Aeons up to Bahamut (Flower Scepter). 3. Unlock Anima and Yojimbo. 4. Go to Remiem Temple.', tags: ['aeon'] }
+    { id: 'a3', title: 'Magus Sisters', desc: '1. Capture every fiend in Mt. Gagazet (Blossom Crown). 2. Defeat all of Belgemine\'s Aeons up to Bahamut (Flower Scepter). 3. Unlock Anima and Yojimbo. 4. Go to Remiem Temple.', tags: ['aeon'] }
   ],
   arena: [
     { id: 'ar1', title: 'Unlock Don Tonberry (AP Trick)', desc: 'Capture 1 of every fiend in the Cavern of the Stolen Fayth. Equip weapons with Overdrive->AP, Triple AP, and Triple Overdrive. Set Overdrive mode to Stoic/Comrade.', tags: ['arena', 'grind'] },
     { id: 'ar2', title: 'Strength Spheres (Juggernaut)', desc: 'Capture 5 of every horned fiend (Dual Horn, Valaha, Grendel) to unlock Juggernaut. Drops Strength Spheres.', tags: ['stats'] },
     { id: 'ar3', title: 'Defense Spheres (Tanket)', desc: 'Capture 3 of every armored fiend (Helm, Buna, Mura) to unlock Tanket. Drops Defense Spheres.', tags: ['stats'] },
-    { id: 'ar4', title: 'Magic Spheres (Jumbo Flan)', desc: 'Capture 3 of every Flan to unlock Jumbo Flan. Drops Magic Spheres (use Anima\\'s Pain to kill it).', tags: ['stats'] },
+    { id: 'ar4', title: 'Magic Spheres (Jumbo Flan)', desc: 'Capture 3 of every Flan to unlock Jumbo Flan. Drops Magic Spheres (use Anima\'s Pain to kill it).', tags: ['stats'] },
     { id: 'ar5', title: 'Agility Spheres (Fenrir)', desc: 'Capture 3 of every Wolf fiend to unlock Fenrir. Drops Agility Spheres.', tags: ['stats'] },
     { id: 'ar6', title: 'Luck Spheres (Greater Sphere)', desc: 'Unlock 2 Species Conquests to fight Greater Sphere. Drops Luck Spheres. (Hardest grind in the game).', tags: ['stats', 'grind'] },
     { id: 'ar7', title: 'Fortune Spheres (Earth Eater)', desc: 'Unlock 2 Area Conquests to fight Earth Eater. Drops Fortune Spheres to activate Luck nodes.', tags: ['stats', 'grind'] }
@@ -144,23 +160,23 @@ function toggleItem(id) {
   render();
 }
 
-const svgCheck = \`<svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>\`;
+const svgCheck = `<svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
 function renderList(containerId, items) {
   const container = document.getElementById(containerId);
   container.innerHTML = items.map(item => {
     const isDone = state[item.id];
-    const tags = item.tags.map(t => \`<span class="tag \${t}">\${t}</span>\`).join('');
-    return \`
-      <div class="check-item \${isDone ? 'done' : ''}" onclick="toggleItem('\${item.id}')">
-        <div class="checkbox">\${svgCheck}</div>
+    const tags = item.tags.map(t => `<span class="tag ${t}">${t}</span>`).join('');
+    return `
+      <div class="check-item ${isDone ? 'done' : ''}" onclick="toggleItem('${item.id}')">
+        <div class="checkbox">${svgCheck}</div>
         <div class="content">
-          <h3>\${item.title}</h3>
-          <p>\${item.desc}</p>
-          <div>\${tags}</div>
+          <h3>${item.title}</h3>
+          <p>${item.desc}</p>
+          <div>${tags}</div>
         </div>
       </div>
-    \`;
+    `;
   }).join('');
 }
 

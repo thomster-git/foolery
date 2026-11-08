@@ -116,7 +116,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     MLB_TEAMS_META.forEach(t => { teamColors[t.id] = t.color; });
 
     // Process game arrays into rich sabermetric timeseries
-    function processTeamPerformance(teamMap, teamPerformance) {
+    function processTeamPerformance(teamMap, teamPerformance, opts) {
+        const includeZeroGameTeams = Boolean(opts && opts.includeZeroGameTeams);
         const teamsData = Object.keys(teamPerformance).map(teamId => {
             const info = teamMap[teamId];
             if (!info) return null;
@@ -266,7 +267,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 awayWinPct: awayWinPctData,
                 color: teamColors[teamId] || '#999999'
             };
-        }).filter(t => t !== null && t.runDiff.length > 1);
+        }).filter(t => t !== null && (includeZeroGameTeams || t.runDiff.length > 1));
 
         // Compute Playoff Odds based on Pythagorean projected wins
         const maxGames = Math.max(...teamsData.map(t => t.runDiff.length), 0);
@@ -402,100 +403,176 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function fetchData(selectedSeason) {
+        const AF = window.AtlasFetch;
         const season = selectedSeason || (seasonSelect ? seasonSelect.value : '2026');
         currentSeason = season;
 
-        try {
-            loading.style.display = 'flex';
-            errorDiv.style.display = 'none';
+        if (loading) loading.style.display = 'flex';
+        if (errorDiv) errorDiv.style.display = 'none';
+        if (AF && AF.ui) {
+            AF.ui.setNotice(errorDiv, 'mlb-data-notice', null);
+            AF.ui.setNotice(errorDiv, 'mlb-offseason-notice', null);
+        }
 
-            // Fetch teams to build team select and map division/leagues
-            const teamsResponse = await fetch(`https://statsapi.mlb.com/api/v1/teams?sportId=1&season=${season}`);
-            if (!teamsResponse.ok) throw new Error(`HTTP ${teamsResponse.status} from teams endpoint`);
-            const teamsData = await teamsResponse.json();
-            
+        const teamsUrl = `https://statsapi.mlb.com/api/v1/teams?sportId=1&season=${season}`;
+        const scheduleUrl = `https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=${season}&gameType=R`;
+
+        const [teamsSettled, scheduleSettled] = await Promise.allSettled([
+            AF.fetchJson(teamsUrl, {
+                timeoutMs: 10000,
+                retries: 2,
+                ttlMs: AF.TTL_SCHEDULE_MS,
+                validate: AF.validators.mlbTeams
+            }),
+            AF.fetchJson(scheduleUrl, {
+                timeoutMs: 12000,
+                retries: 2,
+                ttlMs: AF.TTL_SCHEDULE_MS,
+                validate: AF.validators.mlbSchedule
+            })
+        ]);
+
+        if (scheduleSettled.status === 'rejected') {
+            console.error(`[MLB Trend Analyzer] Failed to load MLB schedule for season ${season}:`, scheduleSettled.reason);
+            if (teamsSettled.status === 'rejected') {
+                console.error(`[MLB Trend Analyzer] Failed to load MLB teams for season ${season}:`, teamsSettled.reason);
+            }
+            allTeamsData = generateFallbackMlbData(season);
+            if (AF && AF.ui) {
+                AF.ui.showError(
+                    errorDiv,
+                    `Unable to load live ${season} MLB data from the MLB Stats API right now. Displaying simulated fallback dataset — click Retry to reload live stats.`,
+                    () => fetchData(season)
+                );
+            } else if (errorDiv) {
+                errorDiv.style.display = 'block';
+            }
+        } else {
+            let usedFallbackTeams = false;
+            const anyStale = (teamsSettled.status === 'fulfilled' && teamsSettled.value.stale) || scheduleSettled.value.stale;
             const teamMap = {};
-            (teamsData.teams || []).forEach(t => {
-                teamMap[t.id] = {
-                    id: t.id,
-                    name: t.name,
-                    leagueId: t.league ? t.league.id : null,
-                    divisionId: t.division ? t.division.id : null
-                };
+
+            if (teamsSettled.status === 'fulfilled') {
+                (teamsSettled.value.data.teams || []).forEach(t => {
+                    teamMap[t.id] = {
+                        id: t.id,
+                        name: t.name,
+                        leagueId: t.league ? t.league.id : null,
+                        divisionId: t.division ? t.division.id : null
+                    };
+                });
+            } else {
+                usedFallbackTeams = true;
+                console.error(`[MLB Trend Analyzer] Failed to load MLB teams metadata for season ${season}, falling back to built-in team directory:`, teamsSettled.reason);
+                MLB_TEAMS_META.forEach(t => {
+                    if (t.id === 122) return; // Legacy duplicate ID; MLB Stats API uses 133 for Athletics
+                    teamMap[t.id] = {
+                        id: t.id,
+                        name: t.name,
+                        leagueId: t.leagueId,
+                        divisionId: t.divisionId
+                    };
+                });
+            }
+
+            const scheduleData = scheduleSettled.value.data;
+            const teamPerformance = {};
+            Object.keys(teamMap).forEach(tid => {
+                teamPerformance[tid] = { games: [] };
             });
 
-            // Fetch schedule for the target season
-            const scheduleResponse = await fetch(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&season=${season}&gameType=R`);
-            if (!scheduleResponse.ok) throw new Error(`HTTP ${scheduleResponse.status} from schedule endpoint`);
-            const scheduleData = await scheduleResponse.json();
-
-            if (!scheduleData.dates || scheduleData.dates.length === 0) {
-                console.warn(`No schedule dates returned for season ${season}. Using realistic verified fallback dataset.`);
-                allTeamsData = generateFallbackMlbData(season);
-            } else {
-                const teamPerformance = {};
-                Object.keys(teamMap).forEach(tid => {
-                    teamPerformance[tid] = { games: [] };
-                });
-
-                scheduleData.dates.forEach(dateObj => {
-                    (dateObj.games || []).forEach(game => {
-                        if (game.status && (game.status.statusCode === 'F' || game.status.statusCode === 'O')) {
-                            const homeTeam = game.teams.home;
-                            const awayTeam = game.teams.away;
+            let completedGamesCount = 0;
+            (scheduleData.dates || []).forEach(dateObj => {
+                (dateObj.games || []).forEach(game => {
+                    if (game.status && (game.status.statusCode === 'F' || game.status.statusCode === 'O')) {
+                        const homeTeam = game.teams && game.teams.home;
+                        const awayTeam = game.teams && game.teams.away;
+                        
+                        if (homeTeam && awayTeam && homeTeam.team && awayTeam.team && homeTeam.score !== undefined && awayTeam.score !== undefined) {
+                            completedGamesCount++;
+                            const homeId = homeTeam.team.id;
+                            const awayId = awayTeam.team.id;
+                            const homeWin = homeTeam.score > awayTeam.score ? 1 : 0;
+                            const awayWin = awayTeam.score > homeTeam.score ? 1 : 0;
                             
-                            if (homeTeam && awayTeam && homeTeam.score !== undefined && awayTeam.score !== undefined) {
-                                const homeId = homeTeam.team.id;
-                                const awayId = awayTeam.team.id;
-                                const homeWin = homeTeam.score > awayTeam.score ? 1 : 0;
-                                const awayWin = awayTeam.score > homeTeam.score ? 1 : 0;
-                                
-                                // Determine linescore traits if available
-                                let homeScoredFirst = false;
-                                let awayScoredFirst = false;
-                                if (game.linescore && Array.isArray(game.linescore.innings) && game.linescore.innings.length > 0) {
-                                    for (const inn of game.linescore.innings) {
-                                        if (Number(inn.away?.runs) > 0) { awayScoredFirst = true; break; }
-                                        if (Number(inn.home?.runs) > 0) { homeScoredFirst = true; break; }
-                                    }
-                                } else {
-                                    awayScoredFirst = awayWin === 1;
-                                    homeScoredFirst = homeWin === 1;
+                            // Determine linescore traits if available
+                            let homeScoredFirst = false;
+                            let awayScoredFirst = false;
+                            if (game.linescore && Array.isArray(game.linescore.innings) && game.linescore.innings.length > 0) {
+                                for (const inn of game.linescore.innings) {
+                                    if (Number(inn.away?.runs) > 0) { awayScoredFirst = true; break; }
+                                    if (Number(inn.home?.runs) > 0) { homeScoredFirst = true; break; }
                                 }
+                            } else {
+                                awayScoredFirst = awayWin === 1;
+                                homeScoredFirst = homeWin === 1;
+                            }
 
-                                if (teamPerformance[homeId]) {
-                                    teamPerformance[homeId].games.push({
-                                        rs: homeTeam.score,
-                                        ra: awayTeam.score,
-                                        w: homeWin,
-                                        isHome: true,
-                                        scoredFirst: homeScoredFirst,
-                                        isComeback: homeWin === 1 && !homeScoredFirst && awayTeam.score > 0
-                                    });
-                                }
-                                if (teamPerformance[awayId]) {
-                                    teamPerformance[awayId].games.push({
-                                        rs: awayTeam.score,
-                                        ra: homeTeam.score,
-                                        w: awayWin,
-                                        isHome: false,
-                                        scoredFirst: awayScoredFirst,
-                                        isComeback: awayWin === 1 && !awayScoredFirst && homeTeam.score > 0
-                                    });
-                                }
+                            if (teamPerformance[homeId]) {
+                                teamPerformance[homeId].games.push({
+                                    rs: homeTeam.score,
+                                    ra: awayTeam.score,
+                                    w: homeWin,
+                                    isHome: true,
+                                    scoredFirst: homeScoredFirst,
+                                    isComeback: homeWin === 1 && !homeScoredFirst && awayTeam.score > 0
+                                });
+                            }
+                            if (teamPerformance[awayId]) {
+                                teamPerformance[awayId].games.push({
+                                    rs: awayTeam.score,
+                                    ra: homeTeam.score,
+                                    w: awayWin,
+                                    isHome: false,
+                                    scoredFirst: awayScoredFirst,
+                                    isComeback: awayWin === 1 && !awayScoredFirst && homeTeam.score > 0
+                                });
                             }
                         }
-                    });
+                    }
                 });
+            });
 
-                allTeamsData = processTeamPerformance(teamMap, teamPerformance);
+            if (completedGamesCount === 0) {
+                allTeamsData = processTeamPerformance(teamMap, teamPerformance, { includeZeroGameTeams: true });
+                if (AF && AF.ui) {
+                    AF.ui.setNotice(
+                        errorDiv,
+                        'mlb-offseason-notice',
+                        `Offseason / Preseason: No completed regular-season MLB games have been played yet for the ${season} season.`
+                    );
+                }
+            } else {
+                allTeamsData = processTeamPerformance(teamMap, teamPerformance, { includeZeroGameTeams: false });
                 if (!allTeamsData || allTeamsData.length === 0) {
                     allTeamsData = generateFallbackMlbData(season);
                 }
             }
-        } catch (e) {
-            console.warn(`MLB API live fetch unavailable (${e.message}). Loading verified historical & statistical dataset for ${season}:`, e);
-            allTeamsData = generateFallbackMlbData(season);
+
+            if (AF && AF.ui) {
+                if (usedFallbackTeams && anyStale) {
+                    AF.ui.setNotice(
+                        errorDiv,
+                        'mlb-data-notice',
+                        `Partial / cached data: MLB team directory unavailable and live schedule unreachable — using built-in team metadata and cached ${season} schedule.`,
+                        () => fetchData(season)
+                    );
+                } else if (usedFallbackTeams) {
+                    AF.ui.setNotice(
+                        errorDiv,
+                        'mlb-data-notice',
+                        'Partial data: MLB team directory endpoint was unavailable; using built-in team metadata with live schedule results.',
+                        () => fetchData(season)
+                    );
+                } else if (anyStale) {
+                    AF.ui.setNotice(
+                        errorDiv,
+                        'mlb-data-notice',
+                        `Live MLB Stats API update unavailable — showing cached ${season} season data.`,
+                        () => fetchData(season)
+                    );
+                }
+            }
         }
 
         // Populate Team Select dropdown
@@ -521,7 +598,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
-        loading.style.display = 'none';
+        if (loading) loading.style.display = 'none';
         populateAwardsAndStandings();
         renderChart();
         syncUrlParams();
@@ -686,7 +763,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
 
-        const ctx = document.getElementById('trendChart').getContext('2d');
+        const canvasEl = document.getElementById('trendChart');
+        if (!canvasEl) return;
+        const ctx = canvasEl.getContext('2d');
 
         if (chartInstance) {
             chartInstance.destroy();
@@ -1166,6 +1245,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
         });
 
+        if (stats.every(s => s.gamesCount === 0)) {
+            container.style.display = 'none';
+            return;
+        }
+
         const sortedTop = [...stats].sort((a, b) => b.finalWinPct - a.finalWinPct || b.finalDiff - a.finalDiff);
         const top10 = sortedTop.slice(0, 10);
         const bottom10 = [...sortedTop].reverse().slice(0, 10);
@@ -1337,5 +1421,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         copyAwardsBtn.addEventListener('click', () => copyAwardsTable(copyAwardsBtn));
     }
 
-    fetchData(currentSeason);
+    await fetchData(currentSeason);
 });

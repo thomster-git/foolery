@@ -11,13 +11,13 @@ This document tracks active bugs, pending note corrections, UI modernization pla
 
 ### 1.1 Songbook Melodic Corrections (High Priority)
 - [ ] **`littleroot` — Littleroot Town (Pokémon R/S/E)**
-  - *Location:* `ocarina.html` (lines ~1396–1409, `SONGS['littleroot']`)
+  - *Location:* `ocarina.html` (temporarily removed from `SONGS` and cleared from `localStorage` in `initSongs()` pending re-transcription)
   - *Issue:* Note pitches and measure groupings in the opening phrases do not accurately match the original Hoenn town theme.
-  - *Action Required:* Transcribe authentic GBA soundfont melody into 12-hole Alto C range ($C_5$ to $F_6$), fixing accidentals and note durations.
+  - *Action Required:* Transcribe authentic GBA soundfont melody into 12-hole Alto C range ($C_5$ to $F_6$), fixing accidentals and note durations, then restore to `SONGS`.
 - [ ] **`blue-bird` — Blue Bird (Naruto Shippuden OP 3)**
-  - *Location:* `ocarina.html` (lines ~1411–1427, `SONGS['blue-bird']`)
+  - *Location:* `ocarina.html` (temporarily removed from `SONGS` and cleared from `localStorage` in `initSongs()` pending re-transcription)
   - *Issue:* Vocal cadence and rhythmic subdivisions in the chorus hook need realignment to match Ikimono-gakari's vocal melody.
-  - *Action Required:* Audit note values (`dur: 'q'`, `'e'`, `'h'`) and adjust octave leaps for smooth 12-hole breath pressure.
+  - *Action Required:* Audit note values (`dur: 'q'`, `'e'`, `'h'`), adjust octave leaps for smooth 12-hole breath pressure, then restore to `SONGS`.
 
 ---
 
@@ -56,13 +56,13 @@ The current `OOT_MELODIES` dictionary (lines ~1610–1624) stores only the brief
 
 The goal is to compose/add **complete, multi-measure playable pieces** in the main **📖 Songbook tab** for each iconic theme:
 
-- [ ] **Ocarina of Time Start Menu / Title Screen Theme**
+- [x] **Ocarina of Time Start Menu / Title Screen Theme** ✅
   - *Structure:* The iconic introductory piano & ocarina duet that plays when the N64 game boots up. Needs full A and B melodies arranged for Alto C.
 - [x] **Saria's Song (Lost Woods Theme)** ✅
   - *Structure:* Extended beyond the opening `F5-A5-B5 F5-A5-B5` cue to include the playful syncopated bridge and looping chorus.
-- [ ] **Song of Time (Temple of Time Choral Theme)**
+- [x] **Song of Time (Temple of Time Choral Theme)** ✅
   - *Structure:* Extended beyond the 6-note cue into the full solemn Dorian hymn.
-- [ ] **Song of Storms (Windmill Hut Waltz)**
+- [x] **Song of Storms (Windmill Hut Waltz)** ✅
   - *Structure:* Complete 3/4 waltz arrangement with the rising minor arpeggio loop and harmonic resolve.
 - [ ] **Minuet of Forest (Sacred Forest Meadow Theme)**
   - *Structure:* Complete peaceful pastoral progression leading up to the Forest Temple entrance.
@@ -83,7 +83,7 @@ The goal is to compose/add **complete, multi-measure playable pieces** in the ma
 
 ## 2. 🐉 Dragonwilds Tracker (`/tools/dragonwilds-tracker/`)
 
-- [ ] **Dedicated Server Vault Respawn Timer:** Build real-time countdown tracking the 72-minute (3 in-game days) core respawn cadence with audio/visual notification.
+- [x] **Dedicated Server Vault Respawn Timer:** Build real-time countdown tracking the 72-minute (3 in-game days) core respawn cadence with audio/visual notification. ✅
 - [ ] **Interactive Regional Fishing Map:** Sourcing and embedding interactive spot coordinates matching the 5 rod tiers.
 - [ ] **Shareable Collection Goal / Supply Log:** Sync URL state mechanism via URL hash / localStorage.
 
@@ -91,6 +91,6 @@ The goal is to compose/add **complete, multi-measure playable pieces** in the ma
 
 ## 3. 🌐 Project Atlas Infrastructure & Polish
 
-- [ ] **Lemon.js Checkout Overlay Integration:** Wire PWYW PDF checkouts directly into tools/articles without page redirects.
+- [x] **Lemon.js Checkout Overlay Integration:** Wire PWYW PDF checkouts directly into tools/articles without page redirects. ✅
 - [ ] **Full Autobiography Access Flow:** Transition the `/contact/` mailto gate into an automated Supporter Token / Tally vetting flow.
 - [ ] **Mobile Performance & View Transitions:** Audit scroll-driven animations and CWV metrics on low-powered mobile devices.

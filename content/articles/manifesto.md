@@ -11,7 +11,6 @@ title: "Everything Is Connected: The Project Atlas Manifesto"
 author: "Jonathan Thoms"
 summary: "The central philosophy of Project Atlas — that present decisions are the mechanical product of every prior circumstance, why associative systems thinking replaces chronological blogs, and how a graph-based digital garden brings it all together."
 topics:
-  - systems-thinking
   - technology
 themes:
   - connection

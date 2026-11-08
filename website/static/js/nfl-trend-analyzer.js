@@ -440,14 +440,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const game = regularSeasonGames[i];
             const comp = game.competitions[0];
             const competitors = comp.competitors || [];
-            const teamData = competitors.find(c => String(c.id) === String(teamMeta.id));
-            const oppData = competitors.find(c => String(c.id) !== String(teamMeta.id));
+            const teamData = competitors.find(c => String(c.id) === String(teamMeta.id) || (c.team && String(c.team.id) === String(teamMeta.id)));
+            const oppData = competitors.find(c => c !== teamData);
 
             if (!teamData || !oppData || !teamData.score || !oppData.score) continue;
 
             gamesPlayed++;
-            const pf = parseFloat(teamData.score.value ?? teamData.score.displayValue) || 0;
-            const pa = parseFloat(oppData.score.value ?? oppData.score.displayValue) || 0;
+            const pf = parseFloat(teamData.score.value ?? teamData.score.displayValue ?? teamData.score) || 0;
+            const pa = parseFloat(oppData.score.value ?? oppData.score.displayValue ?? oppData.score) || 0;
             const isOT = comp.status && comp.status.period > 4;
 
             cumPF += pf;
@@ -737,16 +737,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             .map(e => String(e.id))
             .filter(id => id && !summaryBoxscoreCache.has(id));
 
-        if (missingGameIds.length > 0) {
+        const AF = window.AtlasFetch;
+        if (missingGameIds.length > 0 && AF) {
             await fetchInChunks(missingGameIds, 6, async (gameId) => {
                 const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${gameId}`;
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000);
                 try {
-                    const res = await fetch(url, { signal: controller.signal });
-                    clearTimeout(timeoutId);
-                    if (!res.ok) return;
-                    const summaryData = await res.json();
+                    const res = await AF.fetchJson(url, {
+                        timeoutMs: 8000,
+                        retries: 2,
+                        ttlMs: AF.TTL_COMPLETED_SUMMARY_MS,
+                        validate: AF.validators.espnSummary
+                    });
+                    const summaryData = res.data;
                     const teamsArr = summaryData && summaryData.boxscore && Array.isArray(summaryData.boxscore.teams)
                         ? summaryData.boxscore.teams
                         : [];
@@ -759,8 +761,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         });
                         summaryBoxscoreCache.set(gameId, gameMap);
                     }
-                } catch (e) {
-                    clearTimeout(timeoutId);
+                } catch (err) {
+                    console.error(`[NFL Trend Analyzer] Failed to load game summary ${gameId} for team ${teamId}:`, err);
                 }
             });
         }
@@ -775,22 +777,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function fetchRealData() {
+        const AF = window.AtlasFetch;
+        if (loading) loading.style.display = 'flex';
+        if (errorDiv) errorDiv.style.display = 'none';
+        if (AF && AF.ui) {
+            AF.ui.setNotice(errorDiv, 'nfl-data-notice', null);
+            AF.ui.setNotice(errorDiv, 'nfl-offseason-notice', null);
+        }
+        rawScheduleByTeam.clear();
+        enrichedTeams.clear();
+
+        let staleCount = 0;
+        const failedTeams = [];
+
         try {
             const teamFetchFn = async (t) => {
                 const url = `https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/${t.id}/schedule`;
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000);
                 try {
-                    const res = await fetch(url, { signal: controller.signal });
-                    clearTimeout(timeoutId);
-                    if (!res.ok) throw new Error(`Failed to fetch ${t.id}: ${res.statusText}`);
-                    const data = await res.json();
-                    const events = data.events || [];
+                    const res = await AF.fetchJson(url, {
+                        timeoutMs: 10000,
+                        retries: 2,
+                        ttlMs: AF.TTL_SCHEDULE_MS,
+                        validate: AF.validators.espnSchedule
+                    });
+                    if (res.stale) staleCount++;
+                    const events = res.data.events || [];
                     rawScheduleByTeam.set(String(t.id), { meta: t, events });
                     return computeTeamSeries(t, events);
                 } catch (err) {
-                    clearTimeout(timeoutId);
-                    console.warn(`Could not load schedule for ${t.name}:`, err);
+                    console.error(`[NFL Trend Analyzer] Could not load schedule for ${t.name} (id=${t.id}):`, err);
+                    failedTeams.push(t.name);
                     return null;
                 }
             };
@@ -804,47 +820,106 @@ document.addEventListener('DOMContentLoaded', async () => {
                 throw new Error("No NFL team data could be retrieved from ESPN API");
             }
 
-            // Populate Team Select
+            // Populate Team Select (reset options first so retries never duplicate entries)
+            const prevSelect1 = teamSelect ? teamSelect.value : 'none';
+            const prevSelect2 = teamSelect2 ? teamSelect2.value : 'none';
+            if (teamSelect) teamSelect.innerHTML = '<option value="none">None</option>';
+            if (teamSelect2) teamSelect2.innerHTML = '<option value="none">None</option>';
+
             allTeamsData.sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
-                const option = document.createElement('option');
-                option.value = t.id;
-                option.textContent = t.name;
-                teamSelect.appendChild(option);
-                
-                const option2 = document.createElement('option');
-                option2.value = t.id;
-                option2.textContent = t.name;
-                teamSelect2.appendChild(option2);
+                if (teamSelect) {
+                    const option = document.createElement('option');
+                    option.value = t.id;
+                    option.textContent = t.name;
+                    teamSelect.appendChild(option);
+                }
+                if (teamSelect2) {
+                    const option2 = document.createElement('option');
+                    option2.value = t.id;
+                    option2.textContent = t.name;
+                    teamSelect2.appendChild(option2);
+                }
             });
 
-            if (paramTeam && Array.from(teamSelect.options).some(o => String(o.value) === String(paramTeam))) {
-                teamSelect.value = paramTeam;
-            } else {
-                const savedTeam = localStorage.getItem(STORAGE_KEY_TEAM);
-                if (savedTeam && Array.from(teamSelect.options).some(o => o.value === savedTeam)) {
-                    teamSelect.value = savedTeam;
+            if (teamSelect) {
+                if (prevSelect1 !== 'none' && Array.from(teamSelect.options).some(o => String(o.value) === String(prevSelect1))) {
+                    teamSelect.value = prevSelect1;
+                } else if (paramTeam && Array.from(teamSelect.options).some(o => String(o.value) === String(paramTeam))) {
+                    teamSelect.value = paramTeam;
+                } else {
+                    const savedTeam = localStorage.getItem(STORAGE_KEY_TEAM);
+                    if (savedTeam && Array.from(teamSelect.options).some(o => o.value === savedTeam)) {
+                        teamSelect.value = savedTeam;
+                    }
                 }
             }
-            if (paramTeam2 && Array.from(teamSelect2.options).some(o => String(o.value) === String(paramTeam2))) {
-                teamSelect2.value = paramTeam2;
-            } else {
-                const savedTeam2 = localStorage.getItem(STORAGE_KEY_TEAM2);
-                if (savedTeam2 && Array.from(teamSelect2.options).some(o => o.value === savedTeam2)) {
-                    teamSelect2.value = savedTeam2;
+            if (teamSelect2) {
+                if (prevSelect2 !== 'none' && Array.from(teamSelect2.options).some(o => String(o.value) === String(prevSelect2))) {
+                    teamSelect2.value = prevSelect2;
+                } else if (paramTeam2 && Array.from(teamSelect2.options).some(o => String(o.value) === String(paramTeam2))) {
+                    teamSelect2.value = paramTeam2;
+                } else {
+                    const savedTeam2 = localStorage.getItem(STORAGE_KEY_TEAM2);
+                    if (savedTeam2 && Array.from(teamSelect2.options).some(o => o.value === savedTeam2)) {
+                        teamSelect2.value = savedTeam2;
+                    }
                 }
             }
 
-            loading.style.display = 'none';
+            if (AF && AF.ui) {
+                if (failedTeams.length > 0 && staleCount > 0) {
+                    AF.ui.setNotice(
+                        errorDiv,
+                        'nfl-data-notice',
+                        `Partial / cached data: loaded ${allTeamsData.length} of ${nflTeams.length} NFL teams (${failedTeams.length} unavailable; ${staleCount} served from cache).`,
+                        () => fetchRealData()
+                    );
+                } else if (failedTeams.length > 0) {
+                    const sample = failedTeams.slice(0, 4).join(', ') + (failedTeams.length > 4 ? '…' : '');
+                    AF.ui.setNotice(
+                        errorDiv,
+                        'nfl-data-notice',
+                        `Partial data: loaded ${allTeamsData.length} of ${nflTeams.length} NFL teams (${failedTeams.length} unavailable: ${sample}).`,
+                        () => fetchRealData()
+                    );
+                } else if (staleCount > 0) {
+                    AF.ui.setNotice(
+                        errorDiv,
+                        'nfl-data-notice',
+                        `Live ESPN update unavailable — showing cached schedule data for ${staleCount} team${staleCount === 1 ? '' : 's'}.`,
+                        () => fetchRealData()
+                    );
+                }
+
+                const totalCompletedGames = allTeamsData.reduce((sum, t) => sum + (t.rawGames ? t.rawGames.length : 0), 0);
+                if (totalCompletedGames === 0) {
+                    AF.ui.setNotice(
+                        errorDiv,
+                        'nfl-offseason-notice',
+                        'Offseason / Preseason: No completed regular-season NFL games have been played yet for the current season.'
+                    );
+                }
+            }
+
+            if (loading) loading.style.display = 'none';
             renderChart();
             syncUrlParams();
 
             // Enrich initially highlighted teams with exact game summaries in the background
-            if (teamSelect.value !== 'none') enrichTeamWithBoxscores(teamSelect.value);
-            if (teamSelect2.value !== 'none') enrichTeamWithBoxscores(teamSelect2.value);
+            if (teamSelect && teamSelect.value !== 'none') await enrichTeamWithBoxscores(teamSelect.value);
+            if (teamSelect2 && teamSelect2.value !== 'none') await enrichTeamWithBoxscores(teamSelect2.value);
         } catch (error) {
             console.error("Error fetching NFL data:", error);
-            loading.style.display = 'none';
-            errorDiv.style.display = 'block';
+            if (loading) loading.style.display = 'none';
+            if (AF && AF.ui) {
+                AF.ui.showError(
+                    errorDiv,
+                    'Unable to load NFL data from ESPN right now. Please check your connection and try again.',
+                    () => fetchRealData()
+                );
+            } else if (errorDiv) {
+                errorDiv.style.display = 'block';
+            }
         }
     }
 
@@ -853,6 +928,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const TWO_DEC_METRICS = new Set(['yardsPerPlay', 'sacksMade', 'sacksAllowed', 'takeaways', 'giveaways', 'possessionMins', 'penalties']);
 
     function renderChart() {
+        if (typeof Chart === 'undefined') {
+            console.warn('Chart.js library is not loaded yet');
+            return;
+        }
         const metricVal = metricSelect.value;
         const isSupportedMetric = NFL_ROLLING_SUPPORTED_METRICS.has(metricVal);
         const windowVal = (windowSelect && isSupportedMetric) ? windowSelect.value : 'cumulative';
@@ -896,7 +975,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
 
-        const ctx = document.getElementById('trendChart').getContext('2d');
+        const canvasEl = document.getElementById('trendChart');
+        if (!canvasEl) return;
+        const ctx = canvasEl.getContext('2d');
 
         if (chartInstance) {
             chartInstance.destroy();
@@ -1397,5 +1478,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    fetchRealData();
+    await fetchRealData();
 });

@@ -4,6 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Content Creator — Thoms Foolery Dev Tools</title>
+  <meta name="description" content="Internal Project Atlas administrator tool for authoring markdown frontmatter, publishing notes, and previewing digital garden entries.">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="canonical" href="https://thomsfoolery.com/tools/content-creator/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Thoms Foolery">
+  <meta property="og:title" content="Content Creator — Thoms Foolery Dev Tools">
+  <meta property="og:description" content="Internal Project Atlas administrator tool for authoring markdown frontmatter and digital garden entries.">
+  <meta property="og:url" content="https://thomsfoolery.com/tools/content-creator/">
+  <meta property="og:image" content="https://thomsfoolery.com/images/og-card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="670">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@ThomsFoolery">
+  <meta name="twitter:title" content="Content Creator — Thoms Foolery Dev Tools">
+  <meta name="twitter:description" content="Internal Project Atlas administrator tool for authoring markdown frontmatter and digital garden entries.">
+  <meta name="twitter:image" content="https://thomsfoolery.com/images/og-card.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
@@ -764,7 +780,7 @@ function renderTags(field) {
   state[field].forEach((tag, i) => {
     const pill = document.createElement('div');
     pill.className = 'tag-pill-item';
-    pill.innerHTML = `${tag} <button onclick="removeTag('${field}', ${i})">×</button>`;
+    pill.innerHTML = `${tag} <button aria-label="Remove tag ${tag}" onclick="removeTag('${field}', ${i})">×</button>`;
     container.insertBefore(pill, rawInput);
   });
 }
@@ -990,8 +1006,8 @@ function renderDraftsList() {
         <div style="font-size:0.8rem;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.name || 'Untitled'}</div>
         <div style="font-size:0.7rem;color:var(--muted);">${d.type} · ${d.savedAt}</div>
       </div>
-      <button onclick="loadDraft(${i})" title="Load" style="background:none;border:none;color:var(--accent2);cursor:pointer;font-size:0.8rem;padding:0.1rem 0.3rem;">↩</button>
-      <button onclick="deleteDraft(${i})" title="Delete" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.9rem;padding:0.1rem 0.3rem;">×</button>
+      <button onclick="loadDraft(${i})" title="Load" aria-label="Load draft ${d.name || 'Untitled'}" style="background:none;border:none;color:var(--accent2);cursor:pointer;font-size:0.8rem;padding:0.1rem 0.3rem;">↩</button>
+      <button onclick="deleteDraft(${i})" title="Delete" aria-label="Delete draft ${d.name || 'Untitled'}" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.9rem;padding:0.1rem 0.3rem;">×</button>
     </div>
   `).join('');
 }

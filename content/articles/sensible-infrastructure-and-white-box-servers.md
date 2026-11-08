@@ -11,7 +11,6 @@ title: "The $34,000 White-Box Blueprint: How to Slay Enterprise MSP Markups with
 summary: "Why I specced a $34,000 custom single-socket Proxmox server for a remote industrial mine site instead of spending $80,000 on proprietary vendor lock-in. From PC gaming hardware literacy and slaying MSP per-core licensing traps, to architecting on-shelf warm spares and writing a 3:00 AM disaster recovery runbook that anyone can follow."
 topics:
   - technology
-  - systems-thinking
 themes:
   - craftsmanship
   - systems-thinking

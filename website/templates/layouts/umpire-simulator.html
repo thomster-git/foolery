@@ -64,63 +64,63 @@
                     <canvas id="umpire-canvas" style="width: 100%; height: 100%; display: block; cursor: crosshair;"></canvas>
 
                     <!-- In-Canvas HUD: Radar Gun Display -->
-                    <div id="radar-hud" style="position: absolute; top: 1.2rem; right: 1.2rem; background: rgba(0, 0, 0, 0.75); border: 1px solid rgba(255, 255, 255, 0.15); backdrop-filter: blur(8px); padding: 0.5rem 1rem; border-radius: 8px; text-align: right; pointer-events: none;">
-                        <div style="font-size: 0.7rem; color: var(--text-muted); letter-spacing: 1px; font-weight: 700;">STATCAST RADAR</div>
-                        <div id="radar-mph" style="font-family: var(--font-mono); font-size: 1.8rem; font-weight: 900; color: #fbbf24; line-height: 1;">-- <span style="font-size: 0.9rem; color: #94a3b8;">MPH</span></div>
-                        <div id="radar-pitch-name" style="font-size: 0.8rem; color: var(--accent-cyan); font-weight: 700;">Ready</div>
+                    <div id="radar-hud" class="radar-hud">
+                        <div class="radar-hud-label">STATCAST RADAR</div>
+                        <div id="radar-mph" class="radar-hud-mph">-- <span style="font-size: 0.9rem; color: #94a3b8;">MPH</span></div>
+                        <div id="radar-pitch-name" class="radar-hud-pitch">Ready</div>
                     </div>
 
                     <!-- In-Canvas Verdict Banner (Overlaid right as pitch crosses) -->
-                    <div id="verdict-banner" style="display: none; position: absolute; top: 18%; left: 50%; transform: translate(-50%, -50%); padding: 0.8rem 2rem; border-radius: 12px; font-family: var(--font-sans); font-size: 1.8rem; font-weight: 900; letter-spacing: 1px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); text-align: center; pointer-events: none; z-index: 20; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+                    <div id="verdict-banner" class="verdict-banner" style="display: none;">
                         <div id="verdict-title">STRIKE!</div>
-                        <div id="verdict-subtitle" style="font-size: 0.95rem; font-weight: 600; margin-top: 0.2rem; opacity: 0.95;"></div>
+                        <div id="verdict-subtitle" class="verdict-subtitle"></div>
                     </div>
 
                     <!-- Call Prompt / Big Action Overlay during CALL_WINDOW -->
-                    <div id="call-prompt-overlay" style="display: none; position: absolute; bottom: 5%; left: 50%; transform: translateX(-50%); z-index: 25; text-align: center;">
-                        <div style="color: #fff; font-weight: 800; font-size: 1.1rem; text-shadow: 0 2px 6px #000; margin-bottom: 0.6rem;">MAKE YOUR CALL!</div>
-                        <div style="display: flex; gap: 1rem; justify-content: center;">
-                            <button id="overlay-btn-strike" style="background: #ef4444; color: white; border: 2px solid #b91c1c; font-size: 1.2rem; font-weight: 900; padding: 0.7rem 1.8rem; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); transition: transform 0.1s;">
-                                🔴 STRIKE <kbd style="background: rgba(0,0,0,0.3); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">S</kbd>
+                    <div id="call-prompt-overlay" class="call-prompt-overlay" style="display: none;">
+                        <div class="call-prompt-heading">MAKE YOUR CALL!</div>
+                        <div class="call-prompt-actions">
+                            <button id="overlay-btn-strike" class="overlay-call-btn overlay-call-strike">
+                                🔴 STRIKE <kbd>S</kbd>
                             </button>
-                            <button id="overlay-btn-ball" style="background: #10b981; color: white; border: 2px solid #047857; font-size: 1.2rem; font-weight: 900; padding: 0.7rem 1.8rem; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); transition: transform 0.1s;">
-                                🟢 BALL <kbd style="background: rgba(0,0,0,0.3); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">B</kbd>
+                            <button id="overlay-btn-ball" class="overlay-call-btn overlay-call-ball">
+                                🟢 BALL <kbd>B</kbd>
                             </button>
                         </div>
                     </div>
 
                     <!-- Pitch Delivery Action Button (When idle / ready) -->
-                    <div id="pitch-action-overlay" style="position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); z-index: 15;">
-                        <button id="btn-throw-pitch" style="background: var(--accent-cyan); color: #000; border: none; font-size: 1.1rem; font-weight: 900; padding: 0.75rem 2rem; border-radius: 30px; cursor: pointer; box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4); display: inline-flex; align-items: center; gap: 0.5rem; transition: transform 0.15s, background 0.15s;">
-                            <span>⚾</span> THROW PITCH <kbd style="background: rgba(0,0,0,0.15); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Space</kbd>
+                    <div id="pitch-action-overlay" class="pitch-action-overlay">
+                        <button id="btn-throw-pitch" class="btn-throw-pitch">
+                            <span>⚾</span> THROW PITCH <kbd>Space</kbd>
                         </button>
                     </div>
 
                 </div>
 
                 <!-- Direct Control Bar underneath the Canvas -->
-                <div style="background: rgba(15, 23, 42, 0.95); border-top: 1px solid var(--border-color); padding: 0.8rem 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+                <div class="umpire-control-bar">
                     
                     <!-- Left: Call Buttons -->
-                    <div style="display: flex; gap: 0.6rem; align-items: center;">
-                        <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-right: 0.2rem;">CALL:</span>
-                        <button id="btn-call-strike" class="btn" style="background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #f87171; font-weight: 800; padding: 0.45rem 1rem; border-radius: 6px; cursor: pointer;">
+                    <div style="display: flex; gap: 0.55rem; align-items: center; flex-wrap: wrap;">
+                        <span class="ctrl-label" style="margin-right: 0.15rem;">CALL:</span>
+                        <button id="btn-call-strike" class="btn" style="background: rgba(239, 68, 68, 0.18); border: 1px solid #ef4444; color: #fca5a5; font-weight: 800; padding: 0.42rem 0.9rem; border-radius: 6px; cursor: pointer;">
                             🔴 Strike (S)
                         </button>
-                        <button id="btn-call-ball" class="btn" style="background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #34d399; font-weight: 800; padding: 0.45rem 1rem; border-radius: 6px; cursor: pointer;">
+                        <button id="btn-call-ball" class="btn" style="background: rgba(16, 185, 129, 0.18); border: 1px solid #10b981; color: #6ee7b7; font-weight: 800; padding: 0.42rem 0.9rem; border-radius: 6px; cursor: pointer;">
                             🟢 Ball (B)
                         </button>
-                        <button id="btn-next-pitch" class="btn" style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-bright); font-weight: 700; padding: 0.45rem 0.9rem; border-radius: 6px; cursor: pointer; display: none;">
+                        <button id="btn-next-pitch" class="btn ctrl-btn-next" style="display: none;">
                             Next Pitch ⏭️ (Space)
                         </button>
                     </div>
 
                     <!-- Right: Practice & Visual Toggles -->
-                    <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center;">
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.65rem 0.8rem; align-items: center;">
                         <!-- Speed Mode -->
-                        <div style="display: flex; align-items: center; gap: 0.35rem;">
-                            <label for="speed-select" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">SPEED:</label>
-                            <select id="speed-select" style="background: var(--bg-dark); color: var(--text-bright); border: 1px solid var(--border-color); padding: 0.35rem 0.5rem; border-radius: 4px; font-size: 0.82rem; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 0.3rem;">
+                            <label for="speed-select" class="ctrl-label">SPEED:</label>
+                            <select id="speed-select" class="ctrl-select">
                                 <option value="1.0">Game Speed (100%)</option>
                                 <option value="0.75">Practice (75%)</option>
                                 <option value="0.5">Slow-Mo (50%)</option>
@@ -128,18 +128,18 @@
                         </div>
 
                         <!-- Batter Stance -->
-                        <div style="display: flex; align-items: center; gap: 0.35rem;">
-                            <label for="batter-select" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">BATTER:</label>
-                            <select id="batter-select" style="background: var(--bg-dark); color: var(--text-bright); border: 1px solid var(--border-color); padding: 0.35rem 0.5rem; border-radius: 4px; font-size: 0.82rem; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 0.3rem;">
+                            <label for="batter-select" class="ctrl-label">BATTER:</label>
+                            <select id="batter-select" class="ctrl-select">
                                 <option value="RHH">Right-Handed</option>
                                 <option value="LHH">Left-Handed</option>
                             </select>
                         </div>
 
                         <!-- Pitch Selection -->
-                        <div style="display: flex; align-items: center; gap: 0.35rem;">
-                            <label for="pitch-type-select" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 700;">PITCH:</label>
-                            <select id="pitch-type-select" style="background: var(--bg-dark); color: var(--text-bright); border: 1px solid var(--border-color); padding: 0.35rem 0.5rem; border-radius: 4px; font-size: 0.82rem; cursor: pointer;">
+                        <div style="display: flex; align-items: center; gap: 0.3rem;">
+                            <label for="pitch-type-select" class="ctrl-label">PITCH:</label>
+                            <select id="pitch-type-select" class="ctrl-select">
                                 <option value="RANDOM">🎲 Random Arsenal</option>
                                 <option value="FASTBALL">🔥 4-Seam Fastball (95 mph)</option>
                                 <option value="SLIDER">🌪️ Slider (85 mph)</option>
@@ -149,13 +149,13 @@
                         </div>
 
                         <!-- Strike Zone Overlay Toggle -->
-                        <label style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 700; cursor: pointer;">
+                        <label class="ctrl-toggle-label">
                             <input type="checkbox" id="chk-show-zone" style="cursor: pointer;">
                             Show Box in Flight
                         </label>
 
                         <!-- Pitch Trail Toggle -->
-                        <label style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-muted); font-weight: 700; cursor: pointer;">
+                        <label class="ctrl-toggle-label">
                             <input type="checkbox" id="chk-show-trail" checked style="cursor: pointer;">
                             Pitch Trail
                         </label>
@@ -168,53 +168,64 @@
             <!-- Right Column: Statcast Pitch Breakdown Card (Side-by-side on PC) -->
             <div class="statcast-sidebar-card">
                 <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.65rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.65rem;">
                         <div style="display: flex; align-items: center; gap: 0.5rem;">
                             <span style="font-size: 1.3rem;">📡</span>
-                            <h3 style="margin: 0; font-size: 1.15rem; color: var(--text-bright); font-weight: 800;">Statcast Pitch Breakdown</h3>
+                            <h3 style="margin: 0; font-size: 1.12rem; color: var(--text-bright); font-weight: 800;">Statcast Pitch Breakdown</h3>
                         </div>
-                        <span id="stat-subzone-badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); font-weight: 800; font-size: 0.75rem; padding: 3px 9px; border-radius: 4px; text-transform: uppercase;">Awaiting Pitch</span>
+                        <span id="stat-subzone-badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); font-weight: 800; font-size: 0.74rem; padding: 3px 9px; border-radius: 4px; text-transform: uppercase; white-space: nowrap;">Awaiting Pitch</span>
                     </div>
 
                     <!-- Large Pitch Speed & Type Hero Readout -->
-                    <div style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.9rem 1rem; margin-bottom: 0.9rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div class="ump-subcard" style="padding: 0.85rem 1rem; margin-bottom: 0.8rem; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
                         <div>
                             <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Pitch Classification</div>
-                            <div id="stat-pitch-type-hero" style="font-size: 1.15rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">Ready for Delivery</div>
+                            <div id="stat-pitch-type-hero" style="font-size: 1.12rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">Ready for Delivery</div>
                             <!-- Hidden span for JS backward compatibility -->
                             <span id="stat-pitch-type" style="display: none;">--</span>
                         </div>
                         <div style="text-align: right;">
                             <div style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Velo at Release</div>
-                            <div id="stat-velo-hero" style="font-family: var(--font-mono); font-size: 1.4rem; font-weight: 900; color: #fbbf24; margin-top: 2px;">-- mph</div>
+                            <div id="stat-velo-hero" class="ump-amber-text" style="font-family: var(--font-mono); font-size: 1.35rem; font-weight: 900; margin-top: 2px;">-- mph</div>
                             <!-- Hidden span for JS backward compatibility -->
                             <span id="stat-velo" style="display: none;">--</span>
                         </div>
                     </div>
 
                     <!-- 4 Advanced Statcast Kinematics in 2x2 Grid -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.9rem;">
-                        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.65rem 0.8rem;">
-                            <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Horizontal Break</div>
-                            <div id="stat-pfx-x" style="font-size: 0.98rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">--</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 0.8rem;">
+                        <div class="ump-subcard-tile">
+                            <div style="color: var(--text-muted); font-size: 0.71rem; text-transform: uppercase; font-weight: 700;">Horizontal Break</div>
+                            <div id="stat-pfx-x" style="font-size: 0.96rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">--</div>
                         </div>
-                        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.65rem 0.8rem;">
-                            <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Induced Vertical Drop</div>
-                            <div id="stat-pfx-z" style="font-size: 0.98rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">--</div>
+                        <div class="ump-subcard-tile">
+                            <div style="color: var(--text-muted); font-size: 0.71rem; text-transform: uppercase; font-weight: 700;">Induced Vert Drop</div>
+                            <div id="stat-pfx-z" style="font-size: 0.96rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">--</div>
                         </div>
-                        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.65rem 0.8rem;">
-                            <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Spin Rate &amp; Tilt</div>
-                            <div id="stat-spin" style="font-size: 0.98rem; font-weight: 800; color: var(--text-main); margin-top: 2px;">--</div>
+                        <div class="ump-subcard-tile">
+                            <div style="color: var(--text-muted); font-size: 0.71rem; text-transform: uppercase; font-weight: 700;">Spin Rate &amp; Tilt</div>
+                            <div id="stat-spin" style="font-size: 0.96rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">--</div>
                         </div>
-                        <div style="background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.65rem 0.8rem;">
-                            <div style="color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Zone Edge Margin</div>
-                            <div id="stat-margin" style="font-size: 0.98rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">--</div>
+                        <div class="ump-subcard-tile">
+                            <div style="color: var(--text-muted); font-size: 0.71rem; text-transform: uppercase; font-weight: 700;">Zone Edge Margin</div>
+                            <div id="stat-margin" style="font-size: 0.96rem; font-weight: 800; color: var(--text-bright); margin-top: 2px;">--</div>
+                        </div>
+                    </div>
+
+                    <!-- Compact ABS Attack Zone Reference -->
+                    <div class="ump-subcard" style="padding: 0.7rem 0.85rem;">
+                        <div style="font-size: 0.71rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; margin-bottom: 0.4rem; letter-spacing: 0.03em;">ABS Attack Zone Tiers</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem 0.65rem; font-size: 0.76rem; color: var(--text-muted);">
+                            <div><strong style="color: var(--text-bright);">Heart:</strong> &gt;1.45&Prime; inside</div>
+                            <div><strong class="ump-amber-text">Shadow:</strong> &plusmn;1.45&Prime; edge</div>
+                            <div><strong style="color: var(--text-bright);">Chase:</strong> 1.45&Prime;&ndash;4.35&Prime; out</div>
+                            <div><strong style="color: var(--text-bright);">Waste:</strong> &gt;4.35&Prime; outside</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="rulebook-geometry-box" style="background: rgba(0, 0, 0, 0.25); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.85rem 0.95rem; font-size: 0.82rem; line-height: 1.5; color: var(--text-muted); margin-top: auto;">
-                    <strong style="color: var(--accent-cyan); display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.25rem;">
+                <div class="rulebook-geometry-box ump-subcard" style="padding: 0.8rem 0.95rem; font-size: 0.81rem; line-height: 1.5; color: var(--text-muted); margin-top: auto;">
+                    <strong style="color: var(--accent-cyan); display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.2rem;">
                         <span>⚖️</span> Rulebook Collision Geometry:
                     </strong>
                     Official MLB rules stipulate that if any 1.45″ radius boundary of the sphere contacts the 17″ pentagonal prism over home plate, the pitch is a legal strike.
@@ -238,7 +249,7 @@
                     <button id="btn-share-scorecard" class="btn btn-share-scorecard" title="Copy verified Umpire Scorecard image to clipboard">
                         <span>📸</span> Share Scorecard (Copy Image)
                     </button>
-                    <button id="btn-reset-scorecard" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.82rem; padding: 0.5rem 0.9rem; border-radius: 6px; cursor: pointer; font-weight: 700; transition: background 0.15s;">
+                    <button id="btn-reset-scorecard" class="btn-reset-scorecard">
                         ↺ Reset Scorecard
                     </button>
                 </div>
@@ -251,38 +262,46 @@
                 <div class="scorecard-stats-column">
                     <div class="scorecard-tiles-grid">
                         <div class="sc-tile">
-                            <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Overall Acc</div>
-                            <div id="sc-overall-acc" style="font-size: 1.4rem; font-weight: 900; color: var(--accent-cyan); margin-top: 2px;">100%</div>
+                            <div class="sc-tile-label">Overall Acc</div>
+                            <div id="sc-overall-acc" class="sc-tile-val" style="color: var(--accent-cyan);">100%</div>
+                            <div id="sc-overall-sub" class="sc-tile-sub">MLB Ump Avg: ~94.0%</div>
                         </div>
                         <div class="sc-tile">
-                            <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Strike Acc</div>
-                            <div id="sc-strike-acc" style="font-size: 1.4rem; font-weight: 900; color: #f87171; margin-top: 2px;">--</div>
+                            <div class="sc-tile-label">Strike Acc</div>
+                            <div id="sc-strike-acc" class="sc-tile-val ump-red-text">--</div>
+                            <div id="sc-strike-sub" class="sc-tile-sub">0 / 0 called strikes</div>
                         </div>
                         <div class="sc-tile">
-                            <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Ball Acc</div>
-                            <div id="sc-ball-acc" style="font-size: 1.4rem; font-weight: 900; color: #34d399; margin-top: 2px;">--</div>
+                            <div class="sc-tile-label">Ball Acc</div>
+                            <div id="sc-ball-acc" class="sc-tile-val ump-green-text">--</div>
+                            <div id="sc-ball-sub" class="sc-tile-sub">0 / 0 called balls</div>
                         </div>
                         <div class="sc-tile">
-                            <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Shadow Zone</div>
-                            <div id="sc-shadow-acc" style="font-size: 1.4rem; font-weight: 900; color: #fbbf24; margin-top: 2px;">--</div>
+                            <div class="sc-tile-label">Shadow Zone</div>
+                            <div id="sc-shadow-acc" class="sc-tile-val ump-amber-text">--</div>
+                            <div id="sc-shadow-sub" class="sc-tile-sub">±1.45&Prime; edge (~88% MLB)</div>
                         </div>
                         <div class="sc-tile">
-                            <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Net Run Favor</div>
-                            <div id="sc-favor" style="font-size: 1.4rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">0.00</div>
+                            <div class="sc-tile-label">Net Run Favor</div>
+                            <div id="sc-favor" class="sc-tile-val" style="color: var(--text-bright);">0.00</div>
+                            <div id="sc-favor-sub" class="sc-tile-sub">Neutral Favor</div>
                         </div>
                         <div class="sc-tile">
-                            <div style="color: var(--text-muted); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">Total Pitches</div>
-                            <div id="sc-total-count" style="font-size: 1.4rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">0</div>
+                            <div class="sc-tile-label">Total Pitches</div>
+                            <div id="sc-total-count" class="sc-tile-val" style="color: var(--text-bright);">0</div>
+                            <div id="sc-total-sub" class="sc-tile-sub">Streak: 0 in a row</div>
                         </div>
                     </div>
 
-                    <!-- Recent Call History Reel -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem;">
-                        <span style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Recent Pitches (Latest 15)</span>
-                        <span style="color: var(--text-dim); font-size: 0.72rem; font-weight: 600;">Scroll &harr;</span>
-                    </div>
-                    <div id="recent-pitches-reel">
-                        <span style="font-size: 0.82rem; color: var(--text-dim);">No pitches thrown yet. Press Throw Pitch to begin!</span>
+                    <!-- Recent Call History Reel grouped together so heading stays coupled to reel -->
+                    <div class="recent-pitches-panel">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <span style="color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; font-weight: 700;">Recent Pitches (Latest 15)</span>
+                            <span style="color: var(--text-dim); font-size: 0.72rem; font-weight: 600;">Scroll &harr;</span>
+                        </div>
+                        <div id="recent-pitches-reel">
+                            <span style="font-size: 0.82rem; color: var(--text-muted);">No pitches thrown yet. Press Throw Pitch to begin!</span>
+                        </div>
                     </div>
                 </div>
 
@@ -300,7 +319,7 @@
                     <div style="position: relative; background: #070b14; border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem 0.5rem; text-align: center;">
                         <canvas id="virtual-zone-canvas" width="300" height="250" style="width: 100%; max-width: 300px; height: 250px; display: block; margin: 0 auto;"></canvas>
                         
-                        <div style="display: flex; justify-content: center; gap: 0.85rem; font-size: 0.74rem; color: var(--text-muted); margin-top: 0.55rem; flex-wrap: wrap;">
+                        <div style="display: flex; justify-content: center; gap: 0.85rem; font-size: 0.74rem; color: #cbd5e1; margin-top: 0.55rem; flex-wrap: wrap;">
                             <span style="display: inline-flex; align-items: center; gap: 0.3rem;"><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#22c55e;"></span> Correct</span>
                             <span style="display: inline-flex; align-items: center; gap: 0.3rem;"><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:#ef4444;"></span> Missed</span>
                             <span style="display: inline-flex; align-items: center; gap: 0.3rem;"><span style="display:inline-block; width:10px; height:6px; border:1px dashed #ffffff; background:transparent;"></span> Rulebook</span>
@@ -337,24 +356,24 @@
         <nav aria-label="Related Sports Analytics Tools" class="umpire-related-nav">
             <h2 style="font-size: 1.2rem; color: var(--accent-cyan); margin: 0 0 0.85rem 0;">Explore Related Baseball &amp; Sports Analytics Tools</h2>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.75rem;">
-                <a href="/tools/baseball-trend-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">⚾ MLB 162-Game Trend Analyzer (2016–2026) &rarr;</a>
-                <a href="/tools/postseason-baseball-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">⚾🔥 MLB Postseason Momentum Analyzer &rarr;</a>
-                <a href="/tools/f1-championship-calculator/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">🏎️ F1 2026 Championship Calculator &rarr;</a>
-                <a href="/tools/nhl-trend-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">🏒 NHL 25-Metric Trend Analyzer &rarr;</a>
-                <a href="/tools/nfl-trend-analyzer/" style="text-decoration: none; padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.88rem;">🏈 NFL Point Differential Analyzer &rarr;</a>
+                <a href="/tools/baseball-trend-analyzer/" class="umpire-related-link">⚾ MLB 162-Game Trend Analyzer (2016–2026) &rarr;</a>
+                <a href="/tools/postseason-baseball-analyzer/" class="umpire-related-link">⚾🔥 MLB Postseason Momentum Analyzer &rarr;</a>
+                <a href="/tools/f1-championship-calculator/" class="umpire-related-link">🏎️ F1 2026 Championship Calculator &rarr;</a>
+                <a href="/tools/nhl-trend-analyzer/" class="umpire-related-link">🏒 NHL 25-Metric Trend Analyzer &rarr;</a>
+                <a href="/tools/nfl-trend-analyzer/" class="umpire-related-link">🏈 NFL Point Differential Analyzer &rarr;</a>
             </div>
         </nav>
 
         <!-- Share Scorecard Modal (<dialog>) -->
-        <dialog id="scorecard-share-modal" style="background: var(--bg-card); color: var(--text-main); border: 1px solid var(--accent-cyan); border-radius: var(--radius-md); max-width: 680px; width: 92%; padding: 1.5rem; box-shadow: 0 20px 50px rgba(0,0,0,0.75);">
+        <dialog id="scorecard-share-modal" closedby="any" aria-labelledby="share-modal-title">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                <h3 style="margin: 0; color: var(--accent-cyan); font-size: 1.3rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 800;">
+                <h3 id="share-modal-title" style="margin: 0; color: var(--accent-cyan); font-size: 1.25rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 800;">
                     <span>📸</span> Share Umpire Scorecard
                 </h3>
-                <button type="button" id="btn-close-share-modal" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; line-height: 1;">&times;</button>
+                <button type="button" id="btn-close-share-modal" aria-label="Close Share Scorecard Modal" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; line-height: 1; padding: 0.2rem 0.4rem;">&times;</button>
             </div>
             
-            <div id="share-feedback-pill" style="background: rgba(34, 197, 94, 0.15); border: 1px solid #22c55e; color: #4ade80; padding: 0.65rem 1rem; border-radius: 8px; font-size: 0.86rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+            <div id="share-feedback-pill" class="share-feedback-pill is-copied">
                 <span>✅</span> <strong>Scorecard Image Copied to Clipboard!</strong> Paste directly into Discord, X, or Reddit.
             </div>
 
@@ -363,25 +382,28 @@
                 <img id="scorecard-preview-img" alt="MLB Umpire Scorecard Preview" style="width: 100%; height: auto; display: block; max-height: 380px; object-fit: contain;">
             </div>
 
-            <div style="margin-bottom: 1.25rem;">
-                <label style="display: block; font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.3rem;">Verification Text (matches image hash):</label>
-                <textarea id="scorecard-share-text" readonly rows="3" style="width: 100%; font-family: var(--font-mono); font-size: 0.82rem; padding: 0.55rem; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-bright);"></textarea>
+            <div style="margin-bottom: 1.15rem;">
+                <label for="scorecard-share-text" style="display: block; font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.3rem;">Verification Text (matches image hash):</label>
+                <textarea id="scorecard-share-text" readonly rows="3" style="width: 100%; box-sizing: border-box; resize: vertical; font-family: var(--font-mono); font-size: 0.82rem; padding: 0.55rem; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-bright);"></textarea>
             </div>
 
             <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.6rem;">
                 <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                    <button type="button" id="btn-copy-image-again" style="background: var(--accent-cyan); color: #000; font-weight: 800; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                    <button type="button" id="btn-copy-image-again" style="background: var(--accent-cyan); color: #fff; font-weight: 800; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
                         📋 Copy Image
                     </button>
-                    <button type="button" id="btn-download-scorecard-png" style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-bright); font-weight: 700; padding: 0.5rem 0.9rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                    <button type="button" id="btn-download-scorecard-png" class="modal-secondary-btn">
                         💾 Download PNG
                     </button>
-                    <button type="button" id="btn-copy-text" style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-muted); font-weight: 600; padding: 0.5rem 0.85rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem;">
+                    <button type="button" id="btn-copy-text" class="modal-secondary-btn">
                         Copy Text
+                    </button>
+                    <button type="button" id="btn-native-share" class="modal-secondary-btn" style="display: none;">
+                        📱 Share…
                     </button>
                 </div>
                 <div style="display: flex; gap: 0.5rem; align-items: center;">
-                    <button type="button" id="btn-share-x" style="background: #000; color: #fff; border: 1px solid var(--border-color); padding: 0.5rem 0.85rem; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.82rem;">
+                    <button type="button" id="btn-share-x" style="background: #0f172a; color: #fff; border: 1px solid #334155; padding: 0.5rem 0.85rem; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.82rem;">
                         Share on X
                     </button>
                     <button type="button" id="btn-share-reddit" style="background: #ff4500; color: #fff; border: none; padding: 0.5rem 0.85rem; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.82rem;">
@@ -395,6 +417,42 @@
 </div>
 
 <style>
+/* Theme-aware tokens for Umpire Simulator (crisp contrast in both Light & Dark themes) */
+.tool-layout {
+    --ump-subcard-bg: #f1f5f9;
+    --ump-subcard-tile-bg: #f8fafc;
+    --ump-red: #dc2626;
+    --ump-green: #059669;
+    --ump-amber: #b45309;
+}
+
+[data-theme="dark"] .tool-layout {
+    --ump-subcard-bg: rgba(15, 23, 42, 0.62);
+    --ump-subcard-tile-bg: rgba(15, 23, 42, 0.45);
+    --ump-red: #f87171;
+    --ump-green: #34d399;
+    --ump-amber: #fbbf24;
+}
+
+.ump-red-text { color: var(--ump-red); }
+.ump-green-text { color: var(--ump-green); }
+.ump-amber-text { color: var(--ump-amber); }
+
+.ump-subcard {
+    background: var(--ump-subcard-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+}
+
+.ump-subcard-tile {
+    background: var(--ump-subcard-tile-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.65rem 0.8rem;
+    box-sizing: border-box;
+}
+
 /* Layout Top Grid: 3D Simulator on Left, Statcast Breakdown on Right (PC) */
 .umpire-layout-top-grid {
     display: grid;
@@ -418,14 +476,14 @@
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     overflow: hidden;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-card);
     display: flex;
     flex-direction: column;
     min-width: 0;
     box-sizing: border-box;
 }
 
-/* More vertical 4:3 canvas viewport */
+/* Vertical / 4:3 canvas viewport */
 .canvas-viewport-wrap {
     position: relative;
     width: 100%;
@@ -437,7 +495,202 @@
 }
 
 #umpire-canvas {
-    touch-action: none;
+    touch-action: manipulation;
+}
+
+/* In-Canvas HUD & Overlays */
+.radar-hud {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(2, 6, 23, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(8px);
+    padding: 0.5rem 0.95rem;
+    border-radius: 8px;
+    text-align: right;
+    pointer-events: none;
+    z-index: 12;
+}
+.radar-hud-label {
+    font-size: 0.68rem;
+    color: #94a3b8;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+.radar-hud-mph {
+    font-family: var(--font-mono);
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: #fbbf24;
+    line-height: 1.05;
+}
+.radar-hud-pitch {
+    font-size: 0.78rem;
+    color: #38bdf8;
+    font-weight: 700;
+}
+
+.verdict-banner {
+    position: absolute;
+    top: 18%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: max-content;
+    max-width: calc(100% - 1.5rem);
+    box-sizing: border-box;
+    padding: 0.75rem 1.75rem;
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    font-size: 1.7rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    pointer-events: none;
+    z-index: 20;
+}
+.verdict-subtitle {
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin-top: 0.2rem;
+    opacity: 0.95;
+    white-space: normal;
+}
+
+.call-prompt-overlay {
+    position: absolute;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 1.5rem);
+    max-width: 420px;
+    z-index: 25;
+    text-align: center;
+}
+.call-prompt-heading {
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 1.05rem;
+    text-shadow: 0 2px 6px #000000;
+    margin-bottom: 0.55rem;
+}
+.call-prompt-actions {
+    display: flex;
+    gap: 0.85rem;
+    justify-content: center;
+}
+.overlay-call-btn {
+    color: #ffffff;
+    font-size: 1.15rem;
+    font-weight: 900;
+    padding: 0.65rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    transition: transform 0.1s;
+}
+.overlay-call-btn kbd {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 0.72rem;
+    padding: 1px 5px;
+    border-radius: 4px;
+}
+.overlay-call-strike {
+    background: #ef4444;
+    border: 2px solid #b91c1c;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.45);
+}
+.overlay-call-ball {
+    background: #10b981;
+    border: 2px solid #047857;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.45);
+}
+
+.pitch-action-overlay {
+    position: absolute;
+    bottom: 7%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+}
+.btn-throw-pitch {
+    background: var(--accent-cyan);
+    color: #ffffff;
+    border: none;
+    font-size: 1.05rem;
+    font-weight: 900;
+    padding: 0.7rem 1.75rem;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    white-space: nowrap;
+    transition: transform 0.15s, filter 0.15s;
+}
+.btn-throw-pitch:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+}
+.btn-throw-pitch kbd {
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    font-size: 0.72rem;
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+/* Direct Control Bar (always dark stadium bezel) */
+.umpire-control-bar {
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.65rem 0.9rem;
+}
+.ctrl-label {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    font-weight: 700;
+}
+.ctrl-select {
+    background: #1e293b;
+    color: #f8fafc;
+    border: 1px solid #334155;
+    padding: 0.34rem 0.5rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+.ctrl-btn-next {
+    background: #1e293b;
+    border: 1px solid #475569;
+    color: #f8fafc;
+    font-weight: 700;
+    padding: 0.42rem 0.85rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.ctrl-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 0.32rem;
+    font-size: 0.78rem;
+    color: #cbd5e1;
+    font-weight: 700;
+    cursor: pointer;
 }
 
 /* Statcast Sidebar Card */
@@ -445,13 +698,13 @@
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
-    padding: 1.25rem;
-    box-shadow: var(--shadow-md);
+    padding: 1.2rem;
+    box-shadow: var(--shadow-card);
     display: flex;
     flex-direction: column;
     min-width: 0;
     box-sizing: border-box;
-    gap: 1rem;
+    gap: 0.85rem;
 }
 
 /* Umpire Scorecard Section (Full Width, Contained) */
@@ -461,10 +714,11 @@
     border-radius: var(--radius-md);
     padding: 1.5rem;
     margin-bottom: 2rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-card);
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
+    scroll-margin-top: 5rem;
 }
 
 .scorecard-header-bar {
@@ -499,6 +753,21 @@
     box-shadow: 0 6px 18px rgba(6, 182, 212, 0.5);
 }
 
+.btn-reset-scorecard {
+    background: var(--ump-subcard-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background 0.15s, color 0.15s;
+}
+.btn-reset-scorecard:hover {
+    color: var(--text-bright);
+}
+
 /* Scorecard Main Grid: Metrics on Left, Virtual Zone on Right */
 .scorecard-main-grid {
     display: grid;
@@ -520,6 +789,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    gap: 1rem;
     min-width: 0;
     width: 100%;
     box-sizing: border-box;
@@ -530,9 +800,15 @@
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.75rem;
-    margin-bottom: 1.25rem;
     width: 100%;
     box-sizing: border-box;
+}
+
+@media (min-width: 880px) {
+    .scorecard-tiles-grid {
+        flex: 1;
+        grid-auto-rows: 1fr;
+    }
 }
 
 @media (max-width: 620px) {
@@ -542,14 +818,53 @@
 }
 
 .sc-tile {
-    background: rgba(0, 0, 0, 0.28);
+    background: var(--ump-subcard-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    padding: 0.85rem 1rem;
+    padding: 0.95rem 1.05rem;
     text-align: left;
     min-width: 0;
     box-sizing: border-box;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.15rem;
+}
+
+.sc-tile-label {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.sc-tile-val {
+    font-size: 1.55rem;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-top: 1px;
+}
+
+.sc-tile-sub {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recent-pitches-panel {
+    background: var(--ump-subcard-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.85rem 1rem 0.65rem;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 #recent-pitches-reel {
@@ -557,26 +872,26 @@
     gap: 0.45rem;
     overflow-x: auto;
     overflow-y: hidden;
-    padding-bottom: 0.6rem;
-    min-height: 44px;
+    padding-bottom: 0.45rem;
+    min-height: 38px;
     align-items: center;
     width: 100%;
     max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
     scrollbar-width: thin;
-    scrollbar-color: var(--accent-cyan) rgba(255, 255, 255, 0.05);
+    scrollbar-color: var(--accent-cyan) rgba(148, 163, 184, 0.18);
 }
 
 #recent-pitches-reel::-webkit-scrollbar {
     height: 6px;
 }
 #recent-pitches-reel::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(148, 163, 184, 0.15);
     border-radius: 3px;
 }
 #recent-pitches-reel::-webkit-scrollbar-thumb {
-    background: rgba(6, 182, 212, 0.4);
+    background: rgba(6, 182, 212, 0.55);
     border-radius: 3px;
 }
 #recent-pitches-reel::-webkit-scrollbar-thumb:hover {
@@ -584,7 +899,7 @@
 }
 
 .virtual-zone-panel {
-    background: rgba(0, 0, 0, 0.22);
+    background: var(--ump-subcard-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 1rem;
@@ -597,8 +912,8 @@
 }
 
 .scorecard-footnote {
-    background: rgba(6, 182, 212, 0.05);
-    border: 1px solid rgba(6, 182, 212, 0.2);
+    background: rgba(6, 182, 212, 0.06);
+    border: 1px solid rgba(6, 182, 212, 0.25);
     border-left: 4px solid var(--accent-cyan);
     border-radius: 6px;
     padding: 1rem 1.25rem;
@@ -616,9 +931,10 @@
     border-radius: var(--radius-md);
     padding: 1.75rem;
     margin-bottom: 2rem;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-card);
     width: 100%;
     box-sizing: border-box;
+    scroll-margin-top: 5rem;
 }
 
 /* Related Tools Navigation (Full Width) */
@@ -628,8 +944,25 @@
     border-radius: var(--radius-md);
     padding: 1.5rem;
     margin-bottom: 2rem;
+    box-shadow: var(--shadow-card);
     width: 100%;
     box-sizing: border-box;
+}
+
+.umpire-related-link {
+    text-decoration: none;
+    padding: 0.8rem 1rem;
+    background: var(--ump-subcard-tile-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: border-color 0.15s, color 0.15s;
+}
+.umpire-related-link:hover {
+    border-color: var(--accent-cyan);
+    color: var(--accent-cyan);
 }
 
 /* History chips */
@@ -642,20 +975,148 @@
     white-space: nowrap;
 }
 .call-correct {
-    background: rgba(34, 197, 94, 0.2);
-    border: 1px solid #22c55e;
-    color: #4ade80;
+    background: rgba(22, 163, 74, 0.12);
+    border: 1px solid #16a34a;
+    color: #15803d;
 }
 .call-wrong {
+    background: rgba(220, 38, 38, 0.12);
+    border: 1px solid #dc2626;
+    color: #b91c1c;
+}
+[data-theme="dark"] .call-correct {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: #22c55e;
+    color: #4ade80;
+}
+[data-theme="dark"] .call-wrong {
     background: rgba(239, 68, 68, 0.2);
-    border: 1px solid #ef4444;
+    border-color: #ef4444;
     color: #f87171;
 }
 
-/* Share modal backdrop */
+/* Share Modal & Backdrop */
+dialog#scorecard-share-modal {
+    background: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--accent-cyan);
+    border-radius: var(--radius-md);
+    max-width: 680px;
+    width: 92%;
+    padding: 1.4rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+    box-sizing: border-box;
+}
 dialog#scorecard-share-modal::backdrop {
     background: rgba(0, 0, 0, 0.75);
     backdrop-filter: blur(4px);
+}
+.share-feedback-pill {
+    padding: 0.65rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.share-feedback-pill.is-copied {
+    background: rgba(22, 163, 74, 0.12);
+    border: 1px solid #16a34a;
+    color: #15803d;
+}
+[data-theme="dark"] .share-feedback-pill.is-copied {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: #22c55e;
+    color: #4ade80;
+}
+.share-feedback-pill.is-ready {
+    background: rgba(6, 182, 212, 0.12);
+    border: 1px solid #0891b2;
+    color: #0e7490;
+}
+[data-theme="dark"] .share-feedback-pill.is-ready {
+    background: rgba(6, 182, 212, 0.15);
+    border-color: #06b6d4;
+    color: #38bdf8;
+}
+.modal-secondary-btn {
+    background: var(--ump-subcard-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-bright);
+    font-weight: 700;
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.84rem;
+}
+
+html {
+    overflow-x: clip;
+}
+.footer-social {
+    flex-wrap: wrap;
+}
+
+/* Mobile Viewport Adjustments (<= 640px) */
+@media (max-width: 640px) {
+    .canvas-viewport-wrap {
+        min-height: 260px;
+        aspect-ratio: 4 / 3;
+    }
+    .radar-hud {
+        top: 0.55rem;
+        right: 0.55rem;
+        padding: 0.35rem 0.65rem;
+    }
+    .radar-hud-label {
+        font-size: 0.58rem;
+    }
+    .radar-hud-mph {
+        font-size: 1.25rem;
+    }
+    .radar-hud-pitch {
+        font-size: 0.68rem;
+    }
+    .verdict-banner {
+        top: 0.65rem;
+        transform: translateX(-50%);
+        padding: 0.42rem 0.85rem;
+        font-size: 1.05rem;
+    }
+    .verdict-subtitle {
+        font-size: 0.74rem;
+    }
+    .call-prompt-heading {
+        font-size: 0.9rem;
+        margin-bottom: 0.4rem;
+    }
+    .call-prompt-actions {
+        gap: 0.55rem;
+    }
+    .overlay-call-btn {
+        font-size: 0.95rem;
+        padding: 0.55rem 1rem;
+    }
+    .overlay-call-btn kbd,
+    .btn-throw-pitch kbd {
+        display: none;
+    }
+    .btn-throw-pitch {
+        font-size: 0.92rem;
+        padding: 0.58rem 1.3rem;
+    }
+    .umpire-scorecard-section,
+    .umpire-methodology-section,
+    .umpire-related-nav {
+        padding: 1.15rem;
+        scroll-margin-top: 9.75rem;
+    }
+    dialog#scorecard-share-modal {
+        width: 95%;
+        padding: 1rem;
+    }
 }
 </style>
 
@@ -1089,7 +1550,7 @@ dialog#scorecard-share-modal::backdrop {
         document.getElementById('call-prompt-overlay').style.display = 'none';
         document.getElementById('btn-next-pitch').style.display = 'inline-block';
         document.getElementById('pitch-action-overlay').style.display = 'block';
-        document.getElementById('btn-throw-pitch').innerHTML = '<span>⏭️</span> NEXT PITCH <kbd style="background: rgba(0,0,0,0.15); font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; margin-left: 4px;">Space</kbd>';
+        document.getElementById('btn-throw-pitch').innerHTML = '<span>⏭️</span> NEXT PITCH <kbd>Space</kbd>';
     }
 
     function displayVerdict(isCorrect, userCall, trueVerdict) {
@@ -1196,16 +1657,36 @@ dialog#scorecard-share-modal::backdrop {
         document.getElementById('sc-favor').innerText = (scorecard.netFavor > 0 ? '+' : '') + scorecard.netFavor.toFixed(2);
         document.getElementById('sc-total-count').innerText = scorecard.total;
 
+        const elOverallSub = document.getElementById('sc-overall-sub');
+        if (elOverallSub) elOverallSub.innerText = scorecard.total ? `${scorecard.correct} / ${scorecard.total} correct calls` : 'MLB Ump Avg: ~94.0%';
+        const elStrikeSub = document.getElementById('sc-strike-sub');
+        if (elStrikeSub) elStrikeSub.innerText = `${scorecard.correctStrikes} / ${scorecard.calledStrikes} called strikes`;
+        const elBallSub = document.getElementById('sc-ball-sub');
+        if (elBallSub) elBallSub.innerText = `${scorecard.correctBalls} / ${scorecard.calledBalls} called balls`;
+        const elShadowSub = document.getElementById('sc-shadow-sub');
+        if (elShadowSub) elShadowSub.innerText = scorecard.shadowPitches ? `${scorecard.correctShadow} / ${scorecard.shadowPitches} borderline` : '±1.45″ edge (~88% MLB)';
+        const elFavorSub = document.getElementById('sc-favor-sub');
+        if (elFavorSub) elFavorSub.innerText = scorecard.netFavor > 0.05 ? 'Favors Batters' : (scorecard.netFavor < -0.05 ? 'Favors Pitchers' : 'Neutral Favor');
+        const elTotalSub = document.getElementById('sc-total-sub');
+        if (elTotalSub) elTotalSub.innerText = `Streak: ${state.streak} in a row`;
+
         // Render Recent History Reel
         const reel = document.getElementById('recent-pitches-reel');
         reel.innerHTML = '';
-        scorecard.history.forEach((h, idx) => {
-            const chip = document.createElement('div');
-            chip.className = `call-badge-chip ${h.isCorrect ? 'call-correct' : 'call-wrong'}`;
-            chip.innerText = `#${scorecard.total - idx} ${h.call} (${h.trueStrike ? 'K' : 'B'})`;
-            chip.title = `${h.name} @ ${h.velo}mph - ${h.subZone}`;
-            reel.appendChild(chip);
-        });
+        if (scorecard.history.length === 0) {
+            const emptySpan = document.createElement('span');
+            emptySpan.style.cssText = 'font-size: 0.82rem; color: var(--text-muted);';
+            emptySpan.innerText = 'No pitches thrown yet. Press Throw Pitch to begin!';
+            reel.appendChild(emptySpan);
+        } else {
+            scorecard.history.forEach((h, idx) => {
+                const chip = document.createElement('div');
+                chip.className = `call-badge-chip ${h.isCorrect ? 'call-correct' : 'call-wrong'}`;
+                chip.innerText = `#${scorecard.total - idx} ${h.call} (${h.trueStrike ? 'K' : 'B'})`;
+                chip.title = `${h.name} @ ${h.velo}mph - ${h.subZone}`;
+                reel.appendChild(chip);
+            });
+        }
     }
 
     // ----------------------------------------------------
@@ -2730,20 +3211,21 @@ dialog#scorecard-share-modal::backdrop {
         g.fillText(`${correct} of ${total} Called Pitches Correct`, heroX + 22, heroY + 132);
 
         // Quick streak tag in hero card (right side)
-        const streakX = heroX + heroW - 140, streakY = heroY + 25;
+        const streakW = 152, streakH = 48;
+        const streakX = heroX + heroW - streakW - 20, streakY = heroY + 24;
         g.fillStyle = 'rgba(34, 197, 94, 0.15)';
         g.strokeStyle = '#22c55e';
         g.lineWidth = 1;
         g.beginPath();
-        g.roundRect ? g.roundRect(streakX, streakY, 120, 48, 6) : g.rect(streakX, streakY, 120, 48);
+        g.roundRect ? g.roundRect(streakX, streakY, streakW, streakH, 6) : g.rect(streakX, streakY, streakW, streakH);
         g.fill();
         g.stroke();
         g.fillStyle = '#a7f3d0';
         g.font = '700 10px -apple-system, BlinkMacSystemFont, sans-serif';
         g.fillText("CURRENT STREAK", streakX + 12, streakY + 18);
         g.fillStyle = '#22c55e';
-        g.font = '900 20px "SF Mono", monospace';
-        g.fillText(`${state.streak} IN A ROW`, streakX + 12, streakY + 40);
+        g.font = '900 17px "SF Mono", Menlo, Consolas, monospace';
+        g.fillText(`${state.streak} IN A ROW`, streakX + 12, streakY + 39);
 
         // 4 Metrics Grid (2x2)
         const gridY = 256;
@@ -2819,26 +3301,27 @@ dialog#scorecard-share-modal::backdrop {
         g.stroke();
 
         g.fillStyle = '#38bdf8';
-        g.font = '800 13px -apple-system, BlinkMacSystemFont, sans-serif';
-        g.fillText("ESTABLISHED VIRTUAL STRIKE ZONE", vzX + 16, vzY + 26);
+        g.font = '800 12.5px -apple-system, BlinkMacSystemFont, sans-serif';
+        g.fillText("VIRTUAL STRIKE ZONE", vzX + 16, vzY + 26);
 
         // Draw the 2D Virtual Strike Zone inside
         const innerVzX = vzX + 16, innerVzY = vzY + 40, innerVzW = vzW - 32, innerVzH = vzH - 85;
         const tendBadge = drawVirtualZoneToContext(g, innerVzX, innerVzY, innerVzW, innerVzH, scorecard.allPitches, true);
 
-        // Tendency pill badge in top right of Virtual Zone
+        // Tendency pill badge in top right of Virtual Zone (measure AFTER setting target font)
+        g.font = '700 10px -apple-system, BlinkMacSystemFont, sans-serif';
+        const tendTextW = g.measureText ? g.measureText(tendBadge).width : 124;
+        const badgeW = Math.min(206, Math.max(110, Math.ceil(tendTextW + 18)));
+        const badgeX = vzX + vzW - 16 - badgeW, badgeY = vzY + 12;
         g.fillStyle = 'rgba(6, 182, 212, 0.2)';
         g.strokeStyle = '#06b6d4';
         g.lineWidth = 1;
-        const badgeW = g.measureText ? Math.max(120, g.measureText(tendBadge).width + 16) : 140;
-        const badgeX = vzX + vzW - 16 - badgeW, badgeY = vzY + 12;
         g.beginPath();
         g.roundRect ? g.roundRect(badgeX, badgeY, badgeW, 20, 4) : g.rect(badgeX, badgeY, badgeW, 20);
         g.fill();
         g.stroke();
         g.fillStyle = '#38bdf8';
-        g.font = '700 10px -apple-system, BlinkMacSystemFont, sans-serif';
-        g.fillText(tendBadge, badgeX + 8, badgeY + 14);
+        g.fillText(tendBadge, badgeX + Math.max(8, (badgeW - tendTextW) / 2), badgeY + 13.5);
 
         // Legend at bottom of Virtual Zone Card
         const legY = vzY + vzH - 24;
@@ -2892,6 +3375,9 @@ dialog#scorecard-share-modal::backdrop {
     // Scorecard Share & Clipboard Handling (Dragonwilds Pattern)
     // ----------------------------------------------------
     let currentScorecardBlob = null;
+    let currentScorecardFile = null;
+    let currentShareTitle = '';
+    let currentShareText = '';
     let currentVerId = '';
 
     async function shareUmpireScorecard() {
@@ -2906,7 +3392,10 @@ Overall Accuracy: ${cardData.accStr}% (${cardData.correct}/${cardData.total} pit
 Strike Acc: ${cardData.strikeAcc} | Ball Acc: ${cardData.ballAcc}
 Shadow Zone: ${cardData.shadowAcc} | Net Run Favor: ${cardData.favorStr}
 Verify graphic & test your eyes against 95mph Statcast pitches:
-https://www.thomsfoolery.com/tools/umpire-simulator/`;
+https://thomsfoolery.com/tools/umpire-simulator/`;
+
+        currentShareTitle = shareTitle;
+        currentShareText = shareText;
 
         const shareTextEl = document.getElementById('scorecard-share-text');
         if (shareTextEl) shareTextEl.value = shareText;
@@ -2915,25 +3404,18 @@ https://www.thomsfoolery.com/tools/umpire-simulator/`;
         if (previewImg) previewImg.src = cardData.canvas.toDataURL('image/png');
 
         const feedbackPill = document.getElementById('share-feedback-pill');
+        const nativeShareBtn = document.getElementById('btn-native-share');
 
         cardData.canvas.toBlob(async (blob) => {
             if (!blob) return;
             currentScorecardBlob = blob;
 
             const file = new File([blob], `umpire-scorecard-${cardData.hash}.png`, { type: 'image/png' });
+            currentScorecardFile = file;
 
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                try {
-                    await navigator.share({
-                        files: [file],
-                        title: shareTitle,
-                        text: shareText
-                    });
-                    return;
-                } catch (err) {
-                    if (err.name === 'AbortError') return;
-                    console.warn('Native share failed, falling back to clipboard modal:', err);
-                }
+            if (nativeShareBtn) {
+                const canNativeShare = !!(navigator.canShare && navigator.canShare({ files: [file] }));
+                nativeShareBtn.style.display = canNativeShare ? 'inline-flex' : 'none';
             }
 
             let copied = false;
@@ -2948,23 +3430,20 @@ https://www.thomsfoolery.com/tools/umpire-simulator/`;
             }
 
             if (feedbackPill) {
+                feedbackPill.removeAttribute('style');
                 if (copied) {
-                    feedbackPill.innerHTML = '<span>✅</span> <strong>Scorecard Image Copied to Clipboard!</strong> Paste (Ctrl+V) directly into Discord, X, or Reddit.';
-                    feedbackPill.style.background = 'rgba(34, 197, 94, 0.15)';
-                    feedbackPill.style.borderColor = '#22c55e';
-                    feedbackPill.style.color = '#4ade80';
+                    feedbackPill.className = 'share-feedback-pill is-copied';
+                    feedbackPill.innerHTML = '<span>✅</span> <span><strong>Scorecard Image Copied to Clipboard!</strong> Paste (Ctrl+V) directly into Discord, X, or Reddit.</span>';
                 } else {
-                    feedbackPill.innerHTML = '<span>📋</span> <strong>Scorecard Ready!</strong> Copy image or download below to share your verified score.';
-                    feedbackPill.style.background = 'rgba(6, 182, 212, 0.15)';
-                    feedbackPill.style.borderColor = '#06b6d4';
-                    feedbackPill.style.color = 'var(--accent-cyan)';
+                    feedbackPill.className = 'share-feedback-pill is-ready';
+                    feedbackPill.innerHTML = '<span>📋</span> <span><strong>Scorecard Ready!</strong> Copy image or download PNG below to share your verified score.</span>';
                 }
             }
 
             const modal = document.getElementById('scorecard-share-modal');
             if (modal) {
                 if (typeof modal.showModal === 'function') {
-                    modal.showModal();
+                    if (!modal.open) modal.showModal();
                 } else {
                     modal.style.display = 'block';
                 }
@@ -3020,14 +3499,28 @@ https://www.thomsfoolery.com/tools/umpire-simulator/`;
         drawVirtualStrikeZone();
     });
 
-    // Share Modal Actions
+    // Share Modal Actions & Light-Dismiss Fallback
+    const shareModal = document.getElementById('scorecard-share-modal');
+    if (shareModal && !('closedBy' in HTMLDialogElement.prototype)) {
+        shareModal.addEventListener('click', (event) => {
+            if (event.target !== shareModal) return;
+            const rect = shareModal.getBoundingClientRect();
+            const isDialogContent = (
+                rect.top <= event.clientY &&
+                event.clientY <= rect.top + rect.height &&
+                rect.left <= event.clientX &&
+                event.clientX <= rect.left + rect.width
+            );
+            if (!isDialogContent) shareModal.close();
+        });
+    }
+
     const closeBtn = document.getElementById('btn-close-share-modal');
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
-            const modal = document.getElementById('scorecard-share-modal');
-            if (modal) {
-                if (typeof modal.close === 'function') modal.close();
-                else modal.style.display = 'none';
+            if (shareModal) {
+                if (typeof shareModal.close === 'function') shareModal.close();
+                else shareModal.style.display = 'none';
             }
         });
     }
@@ -3041,8 +3534,9 @@ https://www.thomsfoolery.com/tools/umpire-simulator/`;
                     const item = new ClipboardItem({ 'image/png': currentScorecardBlob });
                     await navigator.clipboard.write([item]);
                     if (feedbackPill) {
+                        feedbackPill.removeAttribute('style');
+                        feedbackPill.className = 'share-feedback-pill is-copied';
                         feedbackPill.innerHTML = '<span>✅</span> <strong>Scorecard Image Copied to Clipboard!</strong>';
-                        feedbackPill.style.color = '#4ade80';
                     }
                     return;
                 } catch (err) {
@@ -3053,6 +3547,8 @@ https://www.thomsfoolery.com/tools/umpire-simulator/`;
             if (shareTextEl && navigator.clipboard) {
                 await navigator.clipboard.writeText(shareTextEl.value);
                 if (feedbackPill) {
+                    feedbackPill.removeAttribute('style');
+                    feedbackPill.className = 'share-feedback-pill is-copied';
                     feedbackPill.innerHTML = '<span>📋</span> <strong>Verification text copied to clipboard!</strong>';
                 }
             }
@@ -3082,8 +3578,26 @@ https://www.thomsfoolery.com/tools/umpire-simulator/`;
                 await navigator.clipboard.writeText(shareTextEl.value);
                 const feedbackPill = document.getElementById('share-feedback-pill');
                 if (feedbackPill) {
+                    feedbackPill.removeAttribute('style');
+                    feedbackPill.className = 'share-feedback-pill is-copied';
                     feedbackPill.innerHTML = '<span>📋</span> <strong>Verification text copied to clipboard!</strong>';
                 }
+            }
+        });
+    }
+
+    const nativeShareBtn = document.getElementById('btn-native-share');
+    if (nativeShareBtn) {
+        nativeShareBtn.addEventListener('click', async () => {
+            if (!currentScorecardFile || !navigator.share) return;
+            try {
+                await navigator.share({
+                    files: [currentScorecardFile],
+                    title: currentShareTitle,
+                    text: currentShareText
+                });
+            } catch (err) {
+                if (err.name !== 'AbortError') console.warn('Native share error:', err);
             }
         });
     }

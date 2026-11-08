@@ -10,6 +10,7 @@
   "scripts": {
     "admin": "node website/server/admin-server.js",
     "build": "node website/main.js",
+    "check": "node scripts/ci/check-js-syntax.js && node scripts/ci/check-content.js && node scripts/ci/check-dist.js && node scripts/api-health/test-analyzers.js && node scripts/ci/test-tool-math.js",
     "cli": "node website/cli/atlas.js",
     "deploy": "node website/cli/commands/deploy.js",
     "dev": "node website/main.js",
@@ -17,7 +18,8 @@
     "enrich-tweets": "node scripts/enrich-tweets.js",
     "import-tweets": "node scripts/import-archive.js",
     "preview": "npx --yes serve website/dist",
-    "test": "node website/main.js"
+    "smoke": "node scripts/ci/smoke-tools.js",
+    "test": "npm run build && npm run check"
   },
   "keywords": [
     "digital-garden",

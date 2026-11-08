@@ -3,7 +3,7 @@ stage: "teaser"
 type: "project"
 id: ocarina-practice-tool
 title: Ocarina Practice Tool
-status: published
+status: active
 created: 2026-09-21
 summary: A 12-hole ocarina practice tool featuring a full fingering chart, a live pitch tuner using the Web Audio API, and a custom Zelda songbook editor.
 tags:

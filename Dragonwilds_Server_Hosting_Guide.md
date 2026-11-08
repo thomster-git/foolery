@@ -3,7 +3,7 @@
 > **Project Atlas Technical Companion Series • Field Operations Manual**  
 > *Author:* Jonathan Thoms • Founder, Thoms Foolery  
 > *Edition:* Second Edition • Version 1.4.1 (October 2026) • Pay-What-You-Want Digital Companion  
-> *Companion Tools:* [Live 72-Minute Vault Timers & Tracker](https://www.thomsfoolery.com/tools/dragonwilds-tracker/)
+> *Companion Tools:* [Live 72-Minute Vault Timers & Tracker](https://thomsfoolery.com/tools/dragonwilds-tracker/)
 
 ---
 
@@ -318,11 +318,11 @@ This manual is maintained by **Jonathan Thoms** as part of the **Project Atlas**
 
 ### Interactive Tools on Project Atlas
 - **72-Minute Vault Respawn Timers:** Live countdowns, audio notifications, and loot tracking:  
-  [https://www.thomsfoolery.com/tools/dragonwilds-tracker/#timers](https://www.thomsfoolery.com/tools/dragonwilds-tracker/#timers)
+  [https://thomsfoolery.com/tools/dragonwilds-tracker/#timers](https://thomsfoolery.com/tools/dragonwilds-tracker/#timers)
 - **Comprehensive Progression Checklist:** Quest tracking, Urn locations, and gear tiers:  
-  [https://www.thomsfoolery.com/tools/dragonwilds-tracker/#guide](https://www.thomsfoolery.com/tools/dragonwilds-tracker/#guide)
+  [https://thomsfoolery.com/tools/dragonwilds-tracker/#guide](https://thomsfoolery.com/tools/dragonwilds-tracker/#guide)
 - **Official Server Hosting Web Manual:** On-page interactive server ops guide:  
-  [https://www.thomsfoolery.com/tools/dragonwilds-tracker/#server](https://www.thomsfoolery.com/tools/dragonwilds-tracker/#server)
+  [https://thomsfoolery.com/tools/dragonwilds-tracker/#server](https://thomsfoolery.com/tools/dragonwilds-tracker/#server)
 
 ---
 *Published by Thoms Foolery Digital Press • Distributed under Pay-What-You-Want Terms via Lemon Squeezy*  

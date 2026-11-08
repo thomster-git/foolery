@@ -7,6 +7,14 @@ import ComponentBuilder from "./component-builder.js";
 import Router from "./router.js";
 import parseMarkdown from "./markdown-parser.js";
 import config from "../config/atlas.config.js";
+import {
+    escapeHtmlAttr,
+    safeJsonLd,
+    buildWebSiteSchema,
+    slugifyTag,
+    getLocalImageDimensions,
+    buildRedirectStub
+} from "./seo-helpers.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -111,7 +119,7 @@ export default class PageBuilder {
             tweet => this.buildTweet(tweet)
         );
 
-        const libraryTypes = ["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "music", "tv-show"];
+        const libraryTypes = ["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "music"];
         await this.buildCollection(
             content.filter(x => libraryTypes.includes(x.metadata.type)),
             item => this.buildLibraryItem(item)
@@ -202,7 +210,7 @@ export default class PageBuilder {
 
             }),
 
-            config.site.title,
+            "Thoms Foolery — Digital Garden, Systems Engineering & Interactive Tools",
             { description: config.site.description, path: "/", ogType: "website" }
 
         );
@@ -234,10 +242,16 @@ export default class PageBuilder {
             { ad_sidebar: adSidebar }
         );
 
+        const title = "Twitter URL Database Generator";
         let html = await this.wrapPage(
             contentHtml,
-            "Twitter DB Tool | Thoms Foolery",
-            { description: "Generate JSON structure for tweet ingestion", path: "/tools/twitter-db/", ogType: "website" }
+            title,
+            {
+                description: "Internal developer utility for generating structured JSON records for Project Atlas tweet ingestion.",
+                path: "/tools/twitter-db/",
+                ogType: "website",
+                noindex: true
+            }
         );
 
         await fs.writeFile(
@@ -246,7 +260,7 @@ export default class PageBuilder {
         );
         await fs.writeFile(
             path.join(this.output, "tools", "twitter-db.html"),
-            html
+            buildRedirectStub("/tools/twitter-db/", title, config.site.url)
         );
     }
 
@@ -259,9 +273,10 @@ export default class PageBuilder {
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const suggestionsCta = await this.loadPartial("suggestions-cta.html");
 
+        const title = "12-Hole Ocarina Fingering Chart, Live Pitch Tuner & Zelda OoT Songbook";
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "12-Hole Ocarina Fingering Chart, Live Pitch Tuner & Zelda OoT Songbook",
+            title,
             {
                 description: "Free interactive 12-hole Alto C ocarina practice tool featuring a complete fingering chart, live microphone pitch tuner, playable Zelda: Ocarina of Time melodies, and OBS stream overlay.",
                 path: "/tools/ocarina/",
@@ -270,7 +285,10 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
-        await fs.writeFile(path.join(this.output, "tools", "ocarina.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools", "ocarina.html"),
+            buildRedirectStub("/tools/ocarina/", title, config.site.url)
+        );
 
         // Dedicated direct URL aliases for each Ocarina tab (matching /tools/dragonwilds-profile/)
         const ocarinaTabs = [
@@ -285,7 +303,7 @@ export default class PageBuilder {
 
         for (const tab of ocarinaTabs) {
             const targetPath = tab.target || `/tools/ocarina/${tab.hash}`;
-            const redirectHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>${tab.title} - Thoms Foolery</title><link rel="canonical" href="https://thomsfoolery.com${targetPath}"><meta http-equiv="refresh" content="0; url=${targetPath}"><script>window.location.replace('${targetPath}');</script></head><body><p>Redirecting to <a href="${targetPath}">${tab.title}</a>...</p></body></html>`;
+            const redirectHtml = buildRedirectStub(targetPath, tab.title, config.site.url);
 
             const aliasName = `ocarina-${tab.slug}`;
             const aliasFolder = path.join(this.output, "tools", aliasName);
@@ -310,8 +328,13 @@ export default class PageBuilder {
         const template = await this.loadLayout("devtools.html");
         const html = await this.wrapPage(
             this.renderer.render(template, { title: "Dev Tools" }),
-            "Dev Tools - Thoms Foolery",
-            { description: "Internal developer utilities and publishing tools for Project Atlas.", path: "/devtools/", ogType: "website" }
+            "Dev & Internal Tools",
+            {
+                description: "Internal developer utilities and publishing tools for Project Atlas.",
+                path: "/devtools/",
+                ogType: "website",
+                noindex: true
+            }
         );
         const dir = path.resolve(this.output, "devtools");
         await fs.mkdir(dir, { recursive: true });
@@ -326,9 +349,10 @@ export default class PageBuilder {
         
         const contentHtml = this.renderer.render(template, {});
 
+        const title = "Interactive Gaming, Sports Analytics & Music Tools";
         let html = await this.wrapPage(
             contentHtml,
-            "Interactive Gaming, Sports Analytics & Music Tools",
+            title,
             {
                 description: "Free interactive web tools by Jonathan Thoms: RuneScape: Dragonwilds Progression Guide, 12-Hole Ocarina Tuner & Zelda OoT Songbook, 2026 F1 Championship Calculator, MLB Umpire Simulator, and NHL/NFL/MLB Trend Analyzers.",
                 path: "/tools/",
@@ -337,7 +361,10 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
-        await fs.writeFile(path.join(this.output, "tools.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools.html"),
+            buildRedirectStub("/tools/", title, config.site.url)
+        );
     }
 
     // Sports Betting Tracker
@@ -347,9 +374,10 @@ export default class PageBuilder {
 
         const template = await this.loadLayout("sports-betting.html");
         
+        const title = "Sports Betting & Bankroll Analytics Tracker";
         let html = await this.wrapPage(
             this.renderer.render(template, {}),
-            "Sports Betting & Bankroll Analytics Tracker",
+            title,
             {
                 description: "Interactive sports betting slip tracker, ROI analyzer, and bankroll performance log across NHL, NFL, and MLB markets.",
                 path: "/tools/sports-betting/",
@@ -357,10 +385,13 @@ export default class PageBuilder {
             }
         );
 
-        await fs.writeFile(path.join(folder, "sports-betting.html"), html);
         const cleanFolder = path.join(folder, "sports-betting");
         await fs.mkdir(cleanFolder, { recursive: true });
         await fs.writeFile(path.join(cleanFolder, "index.html"), html);
+        await fs.writeFile(
+            path.join(folder, "sports-betting.html"),
+            buildRedirectStub("/tools/sports-betting/", title, config.site.url)
+        );
     }
 
     // Jays Tracker
@@ -371,9 +402,10 @@ export default class PageBuilder {
         const template = await this.loadLayout("blue-jays.html");
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         
+        const title = "Toronto Blue Jays Postseason Odds & Standings Tracker";
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar }),
-            "Toronto Blue Jays Postseason Odds & Standings Tracker",
+            title,
             {
                 description: "Live tracker and statistical breakdown for the Toronto Blue Jays AL East standings, Wild Card race, and postseason probabilities.",
                 path: "/tools/blue-jays/",
@@ -381,10 +413,13 @@ export default class PageBuilder {
             }
         );
 
-        await fs.writeFile(path.join(folder, "blue-jays.html"), html);
         const cleanFolder = path.join(folder, "blue-jays");
         await fs.mkdir(cleanFolder, { recursive: true });
         await fs.writeFile(path.join(cleanFolder, "index.html"), html);
+        await fs.writeFile(
+            path.join(folder, "blue-jays.html"),
+            buildRedirectStub("/tools/blue-jays/", title, config.site.url)
+        );
     }
 
     // FFX Tracker
@@ -396,9 +431,10 @@ export default class PageBuilder {
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
+        const title = "Final Fantasy X (FFX) 100% Completionist Guide & Checklist Tracker";
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "Final Fantasy X (FFX) 100% Completionist Guide & Checklist Tracker",
+            title,
             {
                 description: "Comprehensive interactive Final Fantasy X 100% completionist tracker: Al Bhed Primers, Celestial Weapons, Monster Arena captures, Sphere Grid stat maxing, and Dark Aeon strategies.",
                 path: "/tools/ffx-tracker/",
@@ -407,7 +443,10 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
-        await fs.writeFile(path.join(this.output, "tools", "ffx-tracker.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools", "ffx-tracker.html"),
+            buildRedirectStub("/tools/ffx-tracker/", title, config.site.url)
+        );
     }
 
     // Dragonwilds Tracker
@@ -419,9 +458,10 @@ export default class PageBuilder {
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
+        const title = "RuneScape: Dragonwilds Progression Guide, Quest Checklist & Gear Tracker";
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "RuneScape: Dragonwilds Progression Guide, Quest Checklist & Gear Tracker",
+            title,
             {
                 description: "Complete interactive RuneScape: Dragonwilds progression walkthrough (Chapters 1–10), quest checklist, all 13 Dreaming Stone shard locations, armor tier stats, vault timers, and dedicated server guide.",
                 path: "/tools/dragonwilds-tracker/",
@@ -430,12 +470,15 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
-        await fs.writeFile(path.join(this.output, "tools", "dragonwilds-tracker.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools", "dragonwilds-tracker.html"),
+            buildRedirectStub("/tools/dragonwilds-tracker/", title, config.site.url)
+        );
 
         // Dedicated direct URL alias for the profile tool (/tools/dragonwilds-profile/)
         const profileFolder = path.join(this.output, "tools", "dragonwilds-profile");
         await fs.mkdir(profileFolder, { recursive: true });
-        const redirectHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Dragonwilds Profile Generator - Thoms Foolery</title><link rel="canonical" href="https://thomsfoolery.com/tools/dragonwilds-tracker/#stats"><meta http-equiv="refresh" content="0; url=/tools/dragonwilds-tracker/#stats"><script>window.location.replace('/tools/dragonwilds-tracker/#stats');</script></head><body><p>Redirecting to <a href="/tools/dragonwilds-tracker/#stats">Dragonwilds Profile Generator</a>...</p></body></html>`;
+        const redirectHtml = buildRedirectStub("/tools/dragonwilds-tracker/#stats", "Dragonwilds Profile Generator", config.site.url);
         await fs.writeFile(path.join(profileFolder, "index.html"), redirectHtml);
         await fs.writeFile(path.join(this.output, "tools", "dragonwilds-profile.html"), redirectHtml);
     }
@@ -449,9 +492,10 @@ export default class PageBuilder {
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
+        const title = "Interactive Tier List Maker — Instant Clipboard Paste & Export";
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "Interactive Tier List Maker — Instant Clipboard Paste & Export",
+            title,
             {
                 description: "Free browser-based Tier List Creator with instant screenshot clipboard pasting, multi-image drag-and-drop, customizable S–F rows, and high-res PNG export.",
                 path: "/tools/tier-list/",
@@ -460,7 +504,10 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
-        await fs.writeFile(path.join(this.output, "tools", "tier-list.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools", "tier-list.html"),
+            buildRedirectStub("/tools/tier-list/", title, config.site.url)
+        );
     }
 
     // Umpire Simulator
@@ -472,9 +519,10 @@ export default class PageBuilder {
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
+        const title = "MLB 3D Umpire Simulator — Call Balls & Strikes Behind Home Plate";
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "MLB 3D Umpire Simulator — Call Balls & Strikes Behind Home Plate",
+            title,
             {
                 description: "Interactive 3D MLB baseball umpire simulator behind home plate featuring swept-sphere Statcast pitch physics, shadow zone accuracy grading, and post-game ABS challenge scorecards.",
                 path: "/tools/umpire-simulator/",
@@ -483,7 +531,10 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
-        await fs.writeFile(path.join(this.output, "tools", "umpire-simulator.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools", "umpire-simulator.html"),
+            buildRedirectStub("/tools/umpire-simulator/", title, config.site.url)
+        );
     }
 
     // F1 Championship Calculator
@@ -495,9 +546,10 @@ export default class PageBuilder {
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
+        const title = "F1 2026 Championship Calculator — WDC & WCC Clinch & Elimination Scenarios";
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "F1 2026 Championship Calculator — WDC & WCC Clinch & Elimination Scenarios",
+            title,
             {
                 description: "Interactive 2026 Formula 1 Championship Calculator. Simulate Grand Prix and Sprint finishes to compute exact WDC Driver and WCC Constructor title clinch and elimination scenarios.",
                 path: "/tools/f1-championship-calculator/",
@@ -506,7 +558,10 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
-        await fs.writeFile(path.join(this.output, "tools", "f1-championship-calculator.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools", "f1-championship-calculator.html"),
+            buildRedirectStub("/tools/f1-championship-calculator/", title, config.site.url)
+        );
     }
 
     // Stream Schedule Calendar
@@ -518,9 +573,10 @@ export default class PageBuilder {
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
+        const title = "Live Stream Broadcast Schedule & Local Timezone Calendar";
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "Live Stream Broadcast Schedule & Local Timezone Calendar",
+            title,
             {
                 description: "Interactive Twitch broadcast schedule for Jonathan Thoms (Thoms Foolery) with automatic local timezone conversion, weekly/monthly grid views, and RFC 5545 iCal (.ics) export.",
                 path: "/tools/stream-schedule/",
@@ -529,7 +585,10 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
-        await fs.writeFile(path.join(this.output, "tools", "stream-schedule.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools", "stream-schedule.html"),
+            buildRedirectStub("/tools/stream-schedule/", title, config.site.url)
+        );
     }
 
     // Consolidated Article Redirects
@@ -546,7 +605,7 @@ export default class PageBuilder {
         await fs.mkdir(articlesDir, { recursive: true });
 
         for (const item of redirects) {
-            const redirectHtml = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>${item.title} - Thoms Foolery</title><link rel="canonical" href="https://thomsfoolery.com${item.target}"><meta http-equiv="refresh" content="0; url=${item.target}"><script>window.location.replace('${item.target}');</script></head><body><p>Redirecting to <a href="${item.target}">${item.title}</a>...</p></body></html>`;
+            const redirectHtml = buildRedirectStub(item.target, item.title, config.site.url);
             
             // Output to /articles/[slug].html
             await fs.writeFile(path.join(articlesDir, `${item.slug}.html`), redirectHtml);
@@ -567,9 +626,10 @@ export default class PageBuilder {
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
+        const title = "NHL Team Trend Analyzer — 25 Advanced Metrics, PDO & Special Teams";
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "NHL Team Trend Analyzer — 25 Advanced Metrics, PDO & Special Teams",
+            title,
             {
                 description: "Compare all 32 NHL teams across 25 game-by-game metrics: Points Pace, Pythagorean Expectation, 5-on-5 Goal Differential, Power Play & Penalty Kill Net Efficiency, PDO, and One-Goal Wins.",
                 path: "/tools/nhl-trend-analyzer/",
@@ -578,7 +638,10 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
-        await fs.writeFile(path.join(this.output, "tools", "nhl-trend-analyzer.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools", "nhl-trend-analyzer.html"),
+            buildRedirectStub("/tools/nhl-trend-analyzer/", title, config.site.url)
+        );
     }
 
     // NFL Trend Analyzer
@@ -590,9 +653,10 @@ export default class PageBuilder {
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
+        const title = "NFL Team Trend Analyzer — Point Differential, Pythagorean Win % & Form";
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "NFL Team Trend Analyzer — Point Differential, Pythagorean Win % & Form",
+            title,
             {
                 description: "Interactive NFL team performance visualizer comparing all 32 franchises across Cumulative Point Differential, Pythagorean Win Percentage, Offensive/Defensive PPG, and Rolling Form.",
                 path: "/tools/nfl-trend-analyzer/",
@@ -601,7 +665,10 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
-        await fs.writeFile(path.join(this.output, "tools", "nfl-trend-analyzer.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools", "nfl-trend-analyzer.html"),
+            buildRedirectStub("/tools/nfl-trend-analyzer/", title, config.site.url)
+        );
     }
 
     // Baseball Trend Analyzer
@@ -613,9 +680,10 @@ export default class PageBuilder {
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
+        const title = "MLB Baseball Trend Analyzer (2016–2026) — Run Differential & Sabermetrics";
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "MLB Baseball Trend Analyzer (2016–2026) — Run Differential & Sabermetrics",
+            title,
             {
                 description: "Explore 10+ seasons of MLB team trajectories (2016–2026) across 20 metrics: Run Differential, Pythagorean Win %, Luck Gap, 1-Run Games, Blowout Wins, Shutouts, and Home/Road splits.",
                 path: "/tools/baseball-trend-analyzer/",
@@ -624,7 +692,10 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
-        await fs.writeFile(path.join(this.output, "tools", "baseball-trend-analyzer.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools", "baseball-trend-analyzer.html"),
+            buildRedirectStub("/tools/baseball-trend-analyzer/", title, config.site.url)
+        );
     }
 
     // MLB Postseason Analyzer
@@ -636,9 +707,10 @@ export default class PageBuilder {
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const suggestionsCta = await this.loadPartial("suggestions-cta.html");
         
+        const title = "MLB Postseason Momentum Analyzer — Round-Aligned Playoff Trajectories";
         let html = await this.wrapPage(
             this.renderer.render(template, { ad_sidebar: adSidebar, "suggestions-cta": suggestionsCta }),
-            "MLB Postseason Momentum Analyzer — Round-Aligned Playoff Trajectories",
+            title,
             {
                 description: "Interactive MLB Postseason Momentum Index (PMI) visualizer featuring round-milestone alignment, rest bridge trajectories, velocity swings, and historical World Series winner comparisons.",
                 path: "/tools/postseason-baseball-analyzer/",
@@ -647,7 +719,10 @@ export default class PageBuilder {
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
-        await fs.writeFile(path.join(this.output, "tools", "postseason-baseball-analyzer.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools", "postseason-baseball-analyzer.html"),
+            buildRedirectStub("/tools/postseason-baseball-analyzer/", title, config.site.url)
+        );
     }
 
     //--------------------------------------------------
@@ -682,7 +757,7 @@ export default class PageBuilder {
         const html = await this.wrapPage(
             this.renderer.render(template, {}),
             "Page Not Found",
-            { description: "Signal Lost - Room 404", path: "/404.html", ogType: "website" }
+            { description: "Signal Lost - Room 404", path: "/404.html", ogType: "website", noindex: true }
         );
 
         await fs.writeFile(
@@ -704,7 +779,12 @@ export default class PageBuilder {
         const html = await this.wrapPage(
             this.renderer.render(template, {}),
             "Check Your Inbox",
-            { description: "Please confirm your subscription to the Thoms Foolery newsletter.", path: "/subscribed/", ogType: "website" }
+            {
+                description: "Please confirm your subscription to the Thoms Foolery newsletter.",
+                path: "/subscribed/",
+                ogType: "website",
+                noindex: true
+            }
         );
 
         await fs.writeFile(
@@ -722,7 +802,12 @@ export default class PageBuilder {
         const html = await this.wrapPage(
             this.renderer.render(template, {}),
             "Subscription Confirmed",
-            { description: "You are officially subscribed to the Thoms Foolery newsletter.", path: "/confirmed/", ogType: "website" }
+            {
+                description: "You are officially subscribed to the Thoms Foolery newsletter.",
+                path: "/confirmed/",
+                ogType: "website",
+                noindex: true
+            }
         );
 
         await fs.writeFile(
@@ -762,26 +847,59 @@ export default class PageBuilder {
         await fs.mkdir(folder, { recursive: true });
 
         const template = await this.loadLayout("labyrinth.html");
-        const siteUrl = config.site.url;
+        const siteUrl = config.site.url.replace(/\/$/, "");
+        const ogImage = `${siteUrl}/images/og-card.jpg`;
+        const dims = getLocalImageDimensions(ogImage, siteUrl) || { width: 1200, height: 670 };
+        const desc = "Navigate Jonathan Thoms' interconnected digital garden as an interactive 2D isometric Mind Labyrinth.";
+        const jsonLd = safeJsonLd({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Mind Labyrinth — Interactive Knowledge Explorer",
+            "description": desc,
+            "url": `${siteUrl}/labyrinth/`,
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Web Browser",
+            "author": {
+                "@type": "Person",
+                "name": "Jonathan Thoms",
+                "url": siteUrl
+            }
+        });
 
         const baseHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mind Labyrinth — Interactive Knowledge Explorer | Thoms Foolery</title>
-    <meta name="description" content="Navigate Jonathan Thoms' digital garden as an interactive 2D Mind Labyrinth.">
+    <title>Mind Labyrinth — Interactive 2D Knowledge Explorer — Thoms Foolery</title>
+    <meta name="description" content="${escapeHtmlAttr(desc)}">
+    <meta name="author" content="Jonathan Thoms">
     <link rel="canonical" href="${siteUrl}/labyrinth/">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Mind Labyrinth — Thoms Foolery">
-    <meta property="og:description" content="Navigate Jonathan Thoms' digital garden as an interactive 2D Mind Labyrinth.">
+    <meta property="og:site_name" content="Thoms Foolery">
+    <meta property="og:title" content="Mind Labyrinth — Interactive 2D Knowledge Explorer">
+    <meta property="og:description" content="${escapeHtmlAttr(desc)}">
     <meta property="og:url" content="${siteUrl}/labyrinth/">
-    <meta property="og:image" content="${siteUrl}/images/og-card.jpg">
+    <meta property="og:image" content="${ogImage}">
+    <meta property="og:image:width" content="${dims.width}">
+    <meta property="og:image:height" content="${dims.height}">
+    <meta property="og:locale" content="en_CA">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ThomsFoolery">
+    <meta name="twitter:creator" content="@ThomsFoolery">
+    <meta name="twitter:title" content="Mind Labyrinth — Interactive 2D Knowledge Explorer">
+    <meta name="twitter:description" content="${escapeHtmlAttr(desc)}">
+    <meta name="twitter:image" content="${ogImage}">
     <link rel="icon" type="image/svg+xml" href="${siteUrl}/images/logo.svg">
     <link rel="stylesheet" href="/css/atlas.css">
-    <style>body, html { margin: 0; padding: 0; overflow: hidden; background: #0b0f19; }</style>
+    ${jsonLd}
+    <style>
+        body, html { margin: 0; padding: 0; overflow: hidden; background: #0b0f19; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    </style>
 </head>
 <body>
+    <h1 class="sr-only">Mind Labyrinth — Interactive 2D Knowledge Explorer</h1>
     ${template}
 </body>
 </html>`;
@@ -797,26 +915,59 @@ export default class PageBuilder {
         await fs.mkdir(folder, { recursive: true });
 
         const template = await this.loadLayout("labyrinth3d.html");
-        const siteUrl = config.site.url;
+        const siteUrl = config.site.url.replace(/\/$/, "");
+        const ogImage = `${siteUrl}/images/og-card.jpg`;
+        const dims = getLocalImageDimensions(ogImage, siteUrl) || { width: 1200, height: 670 };
+        const desc = "Explore Jonathan Thoms' digital garden in a first-person 3D WebGL labyrinth of connected essays, tools, and engineering projects.";
+        const jsonLd = safeJsonLd({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Mind Labyrinth 3D — WebGL Knowledge Explorer",
+            "description": desc,
+            "url": `${siteUrl}/labyrinth3d/`,
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Web Browser",
+            "author": {
+                "@type": "Person",
+                "name": "Jonathan Thoms",
+                "url": siteUrl
+            }
+        });
 
         const baseHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mind Labyrinth 3D — WebGL Knowledge Explorer | Thoms Foolery</title>
-    <meta name="description" content="Explore the Thom's Foolery digital garden in a first-person 3D WebGL labyrinth.">
+    <title>Mind Labyrinth 3D — WebGL Knowledge Explorer — Thoms Foolery</title>
+    <meta name="description" content="${escapeHtmlAttr(desc)}">
+    <meta name="author" content="Jonathan Thoms">
     <link rel="canonical" href="${siteUrl}/labyrinth3d/">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Mind Labyrinth 3D — Thoms Foolery">
-    <meta property="og:description" content="Explore the Thom's Foolery digital garden in a first-person 3D WebGL labyrinth.">
+    <meta property="og:site_name" content="Thoms Foolery">
+    <meta property="og:title" content="Mind Labyrinth 3D — WebGL Knowledge Explorer">
+    <meta property="og:description" content="${escapeHtmlAttr(desc)}">
     <meta property="og:url" content="${siteUrl}/labyrinth3d/">
-    <meta property="og:image" content="${siteUrl}/images/og-card.jpg">
+    <meta property="og:image" content="${ogImage}">
+    <meta property="og:image:width" content="${dims.width}">
+    <meta property="og:image:height" content="${dims.height}">
+    <meta property="og:locale" content="en_CA">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ThomsFoolery">
+    <meta name="twitter:creator" content="@ThomsFoolery">
+    <meta name="twitter:title" content="Mind Labyrinth 3D — WebGL Knowledge Explorer">
+    <meta name="twitter:description" content="${escapeHtmlAttr(desc)}">
+    <meta name="twitter:image" content="${ogImage}">
     <link rel="icon" type="image/svg+xml" href="${siteUrl}/images/logo.svg">
     <link rel="stylesheet" href="/css/atlas.css">
-    <style>body, html { margin: 0; padding: 0; overflow: hidden; background: #0b0f19; }</style>
+    ${jsonLd}
+    <style>
+        body, html { margin: 0; padding: 0; overflow: hidden; background: #0b0f19; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    </style>
 </head>
 <body>
+    <h1 class="sr-only">Mind Labyrinth 3D — WebGL Knowledge Explorer</h1>
     ${template}
 </body>
 </html>`;
@@ -859,9 +1010,10 @@ export default class PageBuilder {
 
         const template = await this.loadLayout("interests.html");
 
+        const title = "Interests & Obsessions - Jonathan Thoms";
         const html = await this.wrapPage(
             this.renderer.render(template, {}),
-            "Interests & Obsessions - Jonathan Thoms",
+            title,
             { description: "Jonathan Thoms - Broad interests, deep technical curiosities, and personal obsessions.", path: "/interests/", ogType: "website" }
         );
 
@@ -871,7 +1023,7 @@ export default class PageBuilder {
         );
         await fs.writeFile(
             path.join(this.output, "interests.html"),
-            html
+            buildRedirectStub("/interests/", title, config.site.url)
         );
     }
 
@@ -885,9 +1037,10 @@ export default class PageBuilder {
 
         const template = await this.loadLayout("hire.html");
 
+        const title = "Work With Jonathan Thoms - Pragmatic Systems & Rapid Micro-Builds";
         const html = await this.wrapPage(
             this.renderer.render(template, {}),
-            "Work With Jonathan Thoms - Pragmatic Systems & Rapid Micro-Builds",
+            title,
             { description: "Hire Jonathan Thoms for high-density 1-on-1 systems architecture reviews, 5-day custom web tool micro-builds, and autonomous community automation bots.", path: "/hire/", ogType: "website" }
         );
 
@@ -897,7 +1050,7 @@ export default class PageBuilder {
         );
         await fs.writeFile(
             path.join(this.output, "hire.html"),
-            html
+            buildRedirectStub("/hire/", title, config.site.url)
         );
     }
 
@@ -914,7 +1067,11 @@ export default class PageBuilder {
         const html = await this.wrapPage(
             this.renderer.render(template, {}),
             "Fitness Lock-In Dashboard",
-            { description: "Jonathan Thoms - Fitness & Body Recomposition Progress", path: "/fitness/", ogType: "website" }
+            {
+                description: "Jonathan Thoms' personal fitness lock-in dashboard tracking strength training, body recomposition metrics, daily habits, and health milestones.",
+                path: "/fitness/",
+                ogType: "website"
+            }
         );
 
         await fs.writeFile(
@@ -1048,7 +1205,7 @@ export default class PageBuilder {
                 </div>
 
                 <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
-                  <input type="text" id="passcode-input" placeholder="Paste License Key or Supporter Token" autocomplete="off" spellcheck="false" style="flex: 1; margin: 0; padding: 0.65rem 0.85rem; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-main); font-size: 0.9rem;" />
+                  <input type="text" id="passcode-input" placeholder="Paste License Key or Supporter Token" aria-label="Paste License Key or Supporter Token" autocomplete="off" spellcheck="false" style="flex: 1; margin: 0; padding: 0.65rem 0.85rem; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-main); font-size: 0.9rem;" />
                   <button class="btn" id="passcode-submit-btn" onclick="checkArticlePasscode()" style="padding: 0.65rem 1.1rem; font-weight: 600; white-space: nowrap; cursor: pointer;">Unlock</button>
                 </div>
                 <p id="auth-error" style="color: #ef4444; display: none; font-size: 0.82rem; margin: 0.4rem 0 0; text-align: left; line-height: 1.4;"></p>
@@ -1322,19 +1479,26 @@ export default class PageBuilder {
         const updatedIso = `${updatedStringForIso}T08:00:00-02:30`;
 
         const articleTags = article.metadata.tags || [];
-        const tagsJson = articleTags.map(t => `"${t.replace(/"/g, '\'')}"`).join(", ");
-
+        const siteUrl = config.site.url.replace(/\/$/, "");
         const articlePath = `/articles/${article.metadata.id}.html`;
-        const canonicalUrl = `${config.site.url}${articlePath}`;
+        const canonicalUrl = `${siteUrl}${articlePath}`;
         const ogImage = article.metadata.image
-            ? (article.metadata.image.startsWith('http') ? article.metadata.image : `${config.site.url}${article.metadata.image.startsWith('/') ? '' : '/'}${article.metadata.image}`)
-            : `${config.site.url}/images/og-card.jpg`;
+            ? (article.metadata.image.startsWith('http') ? article.metadata.image : `${siteUrl}${article.metadata.image.startsWith('/') ? '' : '/'}${article.metadata.image}`)
+            : `${siteUrl}/images/og-card.jpg`;
 
-        const escapeJsonStr = (s) => JSON.stringify(String(s || "")).slice(1, -1);
         const isGated = (article.metadata.access === "paid" || article.metadata.access === "members");
-        const paywallSchema = isGated
-            ? `"isAccessibleForFree": false,\n          "hasPart": { "@type": "WebPageElement", "isAccessibleForFree": false, "cssSelector": ".gated-full-content" },`
-            : `"isAccessibleForFree": true,`;
+        const articleSchema = this.buildArticleJsonLd({
+            title: article.metadata.title,
+            summary: article.metadata.summary,
+            ogImage,
+            canonicalUrl,
+            createdIso,
+            updatedIso,
+            wordsCount,
+            isGated,
+            authorName: "Jonathan Thoms",
+            tags: articleTags
+        });
 
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const newsletterSignup = await this.loadPartial("newsletter.html");
@@ -1393,9 +1557,7 @@ export default class PageBuilder {
 
                 id: article.metadata.id,
                 title: article.metadata.title,
-                title_json: escapeJsonStr(article.metadata.title),
                 summary: article.metadata.summary,
-                summary_json: escapeJsonStr(article.metadata.summary),
                 og_image: ogImage,
                 created: rawDate,
                 created_formatted: createdFormatted,
@@ -1403,8 +1565,7 @@ export default class PageBuilder {
                 updated_iso: updatedIso,
                 canonical_url: canonicalUrl,
                 word_count: wordsCount,
-                paywall_schema: paywallSchema,
-                tags_json: tagsJson,
+                article_schema: articleSchema,
                 author: "Jonathan Thoms",
                 reading_time: readingTimeStr,
                 body: bodyHtml,
@@ -1425,7 +1586,7 @@ export default class PageBuilder {
             article.metadata.title,
             {
                 description: article.metadata.summary,
-                path: `/articles/${article.metadata.id}.html`,
+                path: articlePath,
                 ogType: "article",
                 image: article.metadata.image
             }
@@ -1437,14 +1598,71 @@ export default class PageBuilder {
             html
         );
 
-        // Also output directory index (/articles/<slug>/index.html) so trailing-slash URLs resolve cleanly
+        // Redirect trailing-slash directory URL (/articles/<slug>/) cleanly to canonical .html URL
         const subFolder = path.join(folder, article.metadata.id);
         await fs.mkdir(subFolder, { recursive: true });
         await fs.writeFile(
             path.join(subFolder, "index.html"),
-            html
+            buildRedirectStub(articlePath, article.metadata.title, config.site.url)
         );
 
+    }
+
+    buildArticleJsonLd({
+        title,
+        summary,
+        ogImage,
+        canonicalUrl,
+        createdIso,
+        updatedIso,
+        wordsCount,
+        isGated = false,
+        authorName = "Jonathan Thoms",
+        tags = []
+    }) {
+        const siteUrl = config.site.url.replace(/\/$/, "");
+        const schema = {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": String(title || ""),
+            "description": String(summary || ""),
+            "image": ogImage,
+            "url": canonicalUrl,
+            "datePublished": createdIso,
+            "dateModified": updatedIso,
+            "wordCount": wordsCount,
+            "isAccessibleForFree": !isGated,
+            ...(isGated
+                ? {
+                      "hasPart": {
+                          "@type": "WebPageElement",
+                          "isAccessibleForFree": false,
+                          "cssSelector": ".gated-full-content"
+                      }
+                  }
+                : {}),
+            "author": {
+                "@type": "Person",
+                "name": authorName,
+                "url": siteUrl,
+                "sameAs": [
+                    "https://x.com/ThomsFoolery",
+                    "https://www.linkedin.com/in/jonathan-thoms-a43b65a4/"
+                ]
+            },
+            "publisher": {
+                "@type": "Person",
+                "name": "Jonathan Thoms",
+                "url": siteUrl
+            },
+            "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": canonicalUrl
+            },
+            "inLanguage": "en-CA",
+            "keywords": Array.isArray(tags) ? tags.map(t => String(t)) : []
+        };
+        return safeJsonLd(schema);
     }
 
     //--------------------------------------------------
@@ -1488,9 +1706,10 @@ export default class PageBuilder {
 
             topic.metadata.title,
             {
-                description: topic.metadata.summary,
+                description: topic.metadata.summary || `Explore essays and projects related to ${topic.metadata.title} on Thoms Foolery.`,
                 path: `/topics/${topic.metadata.id}.html`,
-                ogType: "website"
+                ogType: "website",
+                noindex: topic.metadata.status === "draft"
             }
 
         );
@@ -1558,10 +1777,11 @@ export default class PageBuilder {
 
             project.metadata.title,
             {
-                description: project.metadata.summary,
+                description: project.metadata.summary || `Case study and technical overview of ${project.metadata.title}.`,
                 path: `/projects/${project.metadata.id}.html`,
                 ogType: "website",
-                image: project.metadata.image
+                image: project.metadata.image,
+                noindex: project.metadata.status === "draft"
             }
 
         );
@@ -1604,9 +1824,10 @@ export default class PageBuilder {
             }),
             theme.metadata.title,
             {
-                description: theme.metadata.summary,
+                description: theme.metadata.summary || `Essays and reflections exploring the theme of ${theme.metadata.title}.`,
                 path: `/themes/${theme.metadata.id}.html`,
-                ogType: "website"
+                ogType: "website",
+                noindex: theme.metadata.status === "draft"
             }
         );
 
@@ -1638,9 +1859,10 @@ export default class PageBuilder {
             }),
             col.metadata.title,
             {
-                description: col.metadata.summary,
+                description: col.metadata.summary || `Curated collection: ${col.metadata.title}.`,
                 path: `/collections/${col.metadata.id}.html`,
-                ogType: "website"
+                ogType: "website",
+                noindex: col.metadata.status === "draft"
             }
         );
 
@@ -1657,29 +1879,39 @@ export default class PageBuilder {
         const template = await this.loadLayout("article.html");
         const adSidebar = await this.loadPartial("ad-sidebar.html");
         const newsletterSignup = await this.loadPartial("newsletter.html");
-        const escapeJsonStr = (s) => JSON.stringify(String(s || "")).slice(1, -1);
+        const siteUrl = config.site.url.replace(/\/$/, "");
         const rawDate = tweet.metadata.created || "2026-09-14";
         const dateStr = rawDate instanceof Date ? rawDate.toISOString().split('T')[0] : String(rawDate);
         const createdIso = `${dateStr}T08:00:00-02:30`;
-        const canonicalUrl = `${config.site.url}/tweets/${tweet.metadata.id}.html`;
+        const canonicalUrl = `${siteUrl}/tweets/${tweet.metadata.id}.html`;
+        const ogImage = `${siteUrl}/images/og-card.jpg`;
         const wordsCount = String(tweet.body || "").trim().split(/\s+/).filter(Boolean).length;
+        const articleSchema = this.buildArticleJsonLd({
+            title: tweet.metadata.title,
+            summary: tweet.metadata.summary || "",
+            ogImage,
+            canonicalUrl,
+            createdIso,
+            updatedIso: createdIso,
+            wordsCount,
+            isGated: false,
+            authorName: "Jonathan Thoms",
+            tags: tweet.metadata.tags || []
+        });
 
         const html = await this.wrapPage(
             this.renderer.render(template, {
                 id: tweet.metadata.id,
                 title: tweet.metadata.title,
-                title_json: escapeJsonStr(tweet.metadata.title),
                 summary: tweet.metadata.summary || "",
-                summary_json: escapeJsonStr(tweet.metadata.summary || ""),
-                og_image: `${config.site.url}/images/og-card.jpg`,
+                og_image: ogImage,
                 created: dateStr,
                 created_formatted: this.formatDate(rawDate),
                 created_iso: createdIso,
                 updated_iso: createdIso,
                 canonical_url: canonicalUrl,
                 word_count: wordsCount,
-                paywall_schema: `"isAccessibleForFree": true,`,
-                tags_json: "",
+                article_schema: articleSchema,
                 author: "Jonathan Thoms",
                 reading_time: "1 min read",
                 audio_player: "",
@@ -1702,9 +1934,10 @@ export default class PageBuilder {
             }),
             tweet.metadata.title,
             {
-                description: tweet.metadata.summary,
+                description: tweet.metadata.summary || `Archived tweet and notes: ${tweet.metadata.title}.`,
                 path: `/tweets/${tweet.metadata.id}.html`,
-                ogType: "article"
+                ogType: "article",
+                noindex: tweet.metadata.status === "draft"
             }
         );
         await fs.writeFile(path.join(folder, `${tweet.metadata.id}.html`), html);
@@ -1734,9 +1967,10 @@ export default class PageBuilder {
             }),
             item.metadata.title,
             {
-                description: item.metadata.summary,
+                description: item.metadata.summary || `${item.metadata.title} — recommended ${item.metadata.type} in the Thoms Foolery library.`,
                 path: `/library/${this.getPlural(item.metadata.type)}/${item.metadata.id}.html`,
-                ogType: "website"
+                ogType: "website",
+                noindex: item.metadata.status === "draft"
             }
         );
 
@@ -1782,7 +2016,7 @@ export default class PageBuilder {
               <h3 style="color: #ff6b6b;">Gated Anti-Recommendation</h3>
               <p style="color: #ffaaaa; font-size: 0.9rem;">Please enter the Master Passcode to unlock the full reasons.</p>
               <div style="margin: 1rem 0;">
-                <input type="password" id="passcode-input" placeholder="Passcode" style="border-color: #ff4444;" />
+                <input type="password" id="passcode-input" placeholder="Passcode" aria-label="Passcode" style="border-color: #ff4444;" />
               </div>
               <button class="btn" style="width: 100%; justify-content: center; background: #ff4444; color: #111;" onclick="checkPasscode(this)">Unlock</button>
               <p id="auth-error" style="color: #ffaaaa; display: none; font-size: 0.8rem; margin-top: 0.5rem;">Incorrect Passcode</p>
@@ -1807,24 +2041,32 @@ export default class PageBuilder {
             </div>
         `;
 
-        const escapeJsonStr = (s) => JSON.stringify(String(s || "")).slice(1, -1);
+        const siteUrl = config.site.url.replace(/\/$/, "");
         const rawDate = item.metadata.created || new Date().toISOString().split('T')[0];
         const dateStr = rawDate instanceof Date ? rawDate.toISOString().split('T')[0] : String(rawDate);
         const createdIso = `${dateStr}T08:00:00-02:30`;
-        const canonicalUrl = `${config.site.url}/shit-list/${item.metadata.id}.html`;
+        const canonicalUrl = `${siteUrl}/shit-list/${item.metadata.id}.html`;
+        const ogImage = `${siteUrl}/images/og-card.jpg`;
         const wordsCount = String(item.body || "").trim().split(/\s+/).filter(Boolean).length;
-        const paywallSchema = isGated
-            ? `"isAccessibleForFree": false,\n          "hasPart": { "@type": "WebPageElement", "isAccessibleForFree": false, "cssSelector": ".gated-full-content" },`
-            : `"isAccessibleForFree": true,`;
+        const articleSchema = this.buildArticleJsonLd({
+            title: item.metadata.title,
+            summary: item.metadata.summary || "",
+            ogImage,
+            canonicalUrl,
+            createdIso,
+            updatedIso: createdIso,
+            wordsCount,
+            isGated,
+            authorName: item.metadata.author || "Jonathan Thoms",
+            tags: item.metadata.tags || []
+        });
 
         const html = await this.wrapPage(
             this.renderer.render(template, {
                 id: item.metadata.id,
                 title: item.metadata.title,
-                title_json: escapeJsonStr(item.metadata.title),
                 summary: item.metadata.summary || "",
-                summary_json: escapeJsonStr(item.metadata.summary || ""),
-                og_image: `${config.site.url}/images/og-card.jpg`,
+                og_image: ogImage,
                 body: customBodyHtml,
                 created: dateStr,
                 created_formatted: this.formatDate(rawDate),
@@ -1832,8 +2074,7 @@ export default class PageBuilder {
                 updated_iso: createdIso,
                 canonical_url: canonicalUrl,
                 word_count: wordsCount,
-                paywall_schema: paywallSchema,
-                tags_json: (item.metadata.tags || []).map(t => `"${String(t).replace(/"/g, '\'')}"`).join(", "),
+                article_schema: articleSchema,
                 author: item.metadata.author || "Jonathan Thoms",
                 reading_time: `${Math.max(1, Math.ceil(wordsCount / 200))} min read`,
                 audio_player: "",
@@ -1850,9 +2091,10 @@ export default class PageBuilder {
             }),
             item.metadata.title,
             {
-                description: item.metadata.summary,
+                description: item.metadata.summary || `Critical review of ${item.metadata.title} on The Shit List.`,
                 path: `/shit-list/${item.metadata.id}.html`,
-                ogType: "article"
+                ogType: "article",
+                noindex: item.metadata.status === "draft"
             }
         );
 
@@ -1886,9 +2128,10 @@ export default class PageBuilder {
             }),
             item.metadata.title,
             {
-                description: item.metadata.summary,
+                description: item.metadata.summary || `${item.metadata.title} — TV Show notes in the Thoms Foolery library.`,
                 path: `/tv-shows/${item.metadata.id}.html`,
-                ogType: "website"
+                ogType: "website",
+                noindex: item.metadata.status === "draft"
             }
         );
 
@@ -1908,25 +2151,33 @@ export default class PageBuilder {
         const footer = await this.loadPartial("footer.html");
         const google_adsense = await this.loadPartial("google-adsense.html");
 
-        const siteTitle   = config.site.title;
-        const siteUrl     = config.site.url;
-        const siteDesc    = config.site.description;
-        const siteAuthor  = config.site.author;
+        const siteTitle    = config.site.title;
+        const siteUrl      = config.site.url.replace(/\/$/, "");
+        const siteDesc     = config.site.description;
+        const siteAuthor   = config.site.author;
         const siteLanguage = config.site.language || "en";
 
-        const pageTitle        = title || siteTitle;
-        const fullPageTitle    = title && title !== siteTitle ? `${title} — ${siteTitle}` : siteTitle;
-        const metaDescription  = meta.description || siteDesc;
-        const metaDescriptionJson = JSON.stringify(String(metaDescription)).slice(1, -1);
-        const ogTitle          = pageTitle;
-        const ogType           = meta.ogType || "website";
-        const pagePath         = meta.path || "/";
-        const canonicalUrl     = `${siteUrl}${pagePath}`;
-        const ogImage          = meta.image ? (meta.image.startsWith('http') ? meta.image : `${siteUrl}${meta.image.startsWith('/') ? '' : '/'}${meta.image}`) : `${siteUrl}/images/og-card.jpg`;
+        const pageTitle = title || siteTitle;
+        const hasBrand  = title && title.toLowerCase().includes(siteTitle.toLowerCase());
+        const fullPageTitle = title ? (hasBrand ? title : `${title} — ${siteTitle}`) : siteTitle;
+        const metaDescription = meta.description || siteDesc;
+        const ogTitle   = pageTitle;
+        const ogType    = meta.ogType || "website";
+        const pagePath  = meta.path || "/";
+        const canonicalUrl = `${siteUrl}${pagePath}`;
+        const ogImage   = meta.image
+            ? (meta.image.startsWith("http") ? meta.image : `${siteUrl}${meta.image.startsWith("/") ? "" : "/"}${meta.image}`)
+            : `${siteUrl}/images/og-card.jpg`;
+        const imageDims = getLocalImageDimensions(ogImage, siteUrl);
+        const robotsMeta = meta.noindex
+            ? (typeof meta.noindex === "string" ? meta.noindex : "noindex, nofollow")
+            : "";
 
-        // Build BreadcrumbList JSON-LD for non-root pages
+        const websiteSchema = buildWebSiteSchema(siteUrl, metaDescription);
+
+        // Build BreadcrumbList JSON-LD for non-root indexable pages
         let breadcrumbSchema = "";
-        if (pagePath && pagePath !== "/" && pagePath !== "/404.html") {
+        if (pagePath && pagePath !== "/" && pagePath !== "/404.html" && !meta.noindex) {
             const segments = pagePath.replace(/^\/|\/$/g, "").split("/").filter(Boolean);
             const items = [
                 {
@@ -1943,7 +2194,11 @@ export default class PageBuilder {
                 topics: "Topics",
                 themes: "Themes",
                 tags: "Tags",
-                library: "Library"
+                library: "Library",
+                collections: "Collections",
+                tweets: "Tweets",
+                "shit-list": "The Shit List",
+                "tv-shows": "TV Shows"
             };
             if (segments.length > 1 && sectionNames[segments[0]]) {
                 items.push({
@@ -1966,28 +2221,31 @@ export default class PageBuilder {
                     "item": canonicalUrl
                 });
             }
-            breadcrumbSchema = `<script type="application/ld+json">${JSON.stringify({
+            breadcrumbSchema = safeJsonLd({
                 "@context": "https://schema.org",
                 "@type": "BreadcrumbList",
                 "itemListElement": items
-            })}</script>`;
+            });
         }
 
         return this.renderer.render(layout, {
 
-            page_title:      fullPageTitle,
-            site_title:      siteTitle,
-            site_url:        siteUrl,
-            site_author:     siteAuthor,
-            lang:            siteLanguage,
-            meta_description: metaDescription,
-            meta_description_json: metaDescriptionJson,
-            og_title:        ogTitle,
-            og_type:         ogType,
-            og_image:        ogImage,
-            canonical_url:   canonicalUrl,
+            page_title:        escapeHtmlAttr(fullPageTitle),
+            site_title:        escapeHtmlAttr(siteTitle),
+            site_url:          siteUrl,
+            site_author:       escapeHtmlAttr(siteAuthor),
+            lang:              escapeHtmlAttr(siteLanguage),
+            robots_meta:       escapeHtmlAttr(robotsMeta),
+            meta_description:  escapeHtmlAttr(metaDescription),
+            og_title:          escapeHtmlAttr(ogTitle),
+            og_type:           escapeHtmlAttr(ogType),
+            og_image:          escapeHtmlAttr(ogImage),
+            og_image_width:    imageDims ? String(imageDims.width) : "",
+            og_image_height:   imageDims ? String(imageDims.height) : "",
+            canonical_url:     escapeHtmlAttr(canonicalUrl),
+            website_schema:    websiteSchema,
             breadcrumb_schema: breadcrumbSchema,
-            google_adsense:  google_adsense,
+            google_adsense:    google_adsense,
             header,
             footer,
             content
@@ -2034,7 +2292,7 @@ export default class PageBuilder {
 
         const html = await this.wrapPage(
             template,
-            "What I Use | Thoms Foolery",
+            "What I Use — Hardware, Homelab & Software Stack",
             {
                 description: "A curated list of the hardware, software, and everyday carry that powers Thoms Foolery.",
                 path: "/uses/",
@@ -2122,7 +2380,7 @@ export default class PageBuilder {
             return "<em>None</em>";
         }
         return tags.map(tag => {
-            const slug = String(tag).toLowerCase().trim().replace(/[^a-z0-9-_]+/g, "-");
+            const slug = slugifyTag(tag);
             return `<a href="/tags/${slug}.html" class="tag-pill">#${tag}</a>`;
         }).join(" ");
     }

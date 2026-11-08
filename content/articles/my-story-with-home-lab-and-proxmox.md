@@ -19,8 +19,8 @@ tags:
   - self-hosting
   - infrastructure
 related:
-  - next-gen-proxmox-home-lab
-  - proxmox-ve
+  - sensible-infrastructure-and-white-box-servers
+  - project-atlas
   - audhd-and-systems-thinking
 ---
 

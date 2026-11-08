@@ -149,3 +149,13 @@ scratch/
 # Inkscape autosaves
 *.svg.20*
 *.svg.*.svg
+
+# Build output, backups, logs, and Python/archive artifacts
+/website/dist/
+/backups/
+build_log*.txt
+*.bak
+__pycache__/
+*.py[cod]
+/data/twitter-*/
+/data/*.zip

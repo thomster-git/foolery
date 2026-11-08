@@ -4,8 +4,8 @@ This file contains manual tasks you need to complete when deploying the site to 
 
 ## SEO & Domain
 - [ ] **Buy/Connect Domain:** Ensure your domain (e.g., `thomsfoolery.com`) is connected to your host (Netlify, Vercel, Cloudflare Pages).
-- [ ] **Update Robots.txt:** Open `website/static/robots.txt` and replace `https://yourdomain.com` with your actual domain name.
-- [ ] **Update .env / Configs:** Ensure any environment variables or hardcoded base URLs in your project are set to the live domain so canonical URLs resolve correctly.
+- [x] **Update Robots.txt:** Open `website/static/robots.txt` and replace `https://yourdomain.com` with your actual domain name.
+- [x] **Update .env / Configs:** Ensure any environment variables or hardcoded base URLs in your project are set to the live domain so canonical URLs resolve correctly.
 - [ ] **Google Search Console:** 
   1. Go to Google Search Console and add your domain as a property.
   2. Verify domain ownership (usually via DNS TXT record).
@@ -17,8 +17,8 @@ This file contains manual tasks you need to complete when deploying the site to 
 
 ## Content & Guides Roadmap (Post-Launch)
 - [ ] Write missing expansions for articles.
-- [ ] **Option A: Corporate Communication vs. Organic Communities (`discord-vs-corporate-comms.md`):** Why modern enterprise communication suites produce asynchronous burnout and fragmentation, contrasted with how modular Discord architectures enable low-friction community operations.
-- [ ] **Option C: Digital Garden Philosophy (`manifesto.md` / `my-story-with-everything-is-connected.md`):** The foundational essay behind Project Atlas—why chronological blogging fails associative thinking, and how an interconnected digital garden models systems-first exploration.
+- [x] **Option A: Corporate Communication vs. Organic Communities (`discord-vs-corporate-comms.md`):** Why modern enterprise communication suites produce asynchronous burnout and fragmentation, contrasted with how modular Discord architectures enable low-friction community operations.
+- [x] **Option C: Digital Garden Philosophy (`manifesto.md` / `my-story-with-everything-is-connected.md`):** The foundational essay behind Project Atlas—why chronological blogging fails associative thinking, and how an interconnected digital garden models systems-first exploration.
 - [ ] Continue linking new thoughts using the `[[wikilink]]` syntax to expand the Knowledge Graph.
 - [ ] **Ocarina of Time Remake Progression Guide & Audio Hub (Target: Nov 5):**
   - [ ] Playthrough notes, dungeon pathing, and authentic in-game screenshots along the journey.
@@ -33,8 +33,8 @@ This file contains manual tasks you need to complete when deploying the site to 
   - [ ] **Area-Based Quest Regrouping:** Re-organize all quests by physical area, with prerequisite gating warnings (e.g. quests started in early zones that require later-game unlocks).
   - [ ] **ADHD/Autistic-Friendly Lore Summaries:** Clear, executive-summary breakdowns of the opening lore and the first two core questlines (Valgar and Imaru).
   - [ ] **Vault Revisit Guides:** Optimal routing and checklists for efficient vault core collection and law rune siphoning.
-- [ ] **Resume & Profile Polish:**
-  - [ ] **Interests Taxonomy & Progressive Dropdowns:** Add hierarchical, multi-level dropdown accordion under Resume or dedicated tab:
+- [x] **Resume & Profile Polish:**
+  - [x] **Interests Taxonomy & Progressive Dropdowns:** Add hierarchical, multi-level dropdown accordion under Resume or dedicated tab:
     - *Sports:* Baseball / MLB Sabermetrics, NFL, NHL, Formula 1
     - *Video Games:* Zelda (OoT), Final Fantasy X, Dragonwilds, Retro / N64
     - *Music:* Ocarina practice, ear training, phrase transcription, Web Audio synth
@@ -43,9 +43,9 @@ This file contains manual tasks you need to complete when deploying the site to 
     - *Entertainment:* Chess puzzles, community gamification, trivia engineering
 
 ## Hosting & Deployment Strategy
-- [ ] **Choose a Hosting Provider:** Decide between Cloudflare Pages, AWS (S3 + CloudFront), a rented VPS (DigitalOcean/Linode), or a combination.
-- [ ] **Configure Build Pipeline:** Set up the host to run `npm run build` whenever you push to your GitHub `main` branch.
-- [ ] **Set Output Directory:** Ensure the hosting provider knows to serve the `website/dist` folder.
+- [x] **Choose a Hosting Provider:** Decide between Cloudflare Pages, AWS (S3 + CloudFront), a rented VPS (DigitalOcean/Linode), or a combination.
+- [x] **Configure Build Pipeline:** Set up the host to run `npm run build` whenever you push to your GitHub `main` branch.
+- [x] **Set Output Directory:** Ensure the hosting provider knows to serve the `website/dist` folder.
 - [ ] **DNS & SSL:** Point your domain to the new host and ensure a free SSL certificate (Let's Encrypt) is provisioned.
 
 ## Monetization Milestones & Roadmap

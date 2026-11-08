@@ -11,6 +11,9 @@
 <title>{{page_title}}</title>
 <meta name="description" content="{{meta_description}}">
 <meta name="author" content="{{site_author}}">
+{{#if robots_meta}}
+<meta name="robots" content="{{robots_meta}}">
+{{/if}}
 
 <!-- Canonical -->
 <link rel="canonical" href="{{canonical_url}}">
@@ -22,8 +25,12 @@
 <meta property="og:description" content="{{meta_description}}">
 <meta property="og:url" content="{{canonical_url}}">
 <meta property="og:image" content="{{og_image}}">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+{{#if og_image_width}}
+<meta property="og:image:width" content="{{og_image_width}}">
+{{/if}}
+{{#if og_image_height}}
+<meta property="og:image:height" content="{{og_image_height}}">
+{{/if}}
 <meta property="og:locale" content="en_CA">
 
 <!-- Twitter / X Card -->
@@ -44,31 +51,7 @@
 <meta name="theme-color" content="#0b0f19">
 
 <!-- Structured Data for Google Search Indexing & Brand Identity -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": "{{site_url}}/#website",
-      "url": "{{site_url}}/",
-      "name": "Thoms Foolery",
-      "description": "{{meta_description_json}}",
-      "publisher": {
-        "@type": "Person",
-        "@id": "{{site_url}}/#author",
-        "name": "Jonathan Thoms",
-        "url": "{{site_url}}/",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "{{site_url}}/images/logo.svg"
-        },
-        "image": "{{site_url}}/images/logo-512.png"
-      }
-    }
-  ]
-}
-</script>
+{{website_schema}}
 {{breadcrumb_schema}}
 
 <!-- RSS Feed Autodiscovery -->
@@ -108,7 +91,7 @@
   <div class="search-overlay" id="search-overlay"></div>
   <div class="search-dialog" role="dialog" aria-modal="true" aria-label="Knowledge Graph Search">
     <div class="search-header">
-      <input type="search" id="search-input" placeholder="Search articles, topics, projects, themes..." autofocus autocomplete="off">
+      <input type="search" id="search-input" placeholder="Search articles, topics, projects, themes..." autofocus autocomplete="off" aria-label="Search articles, topics, projects, themes">
       <button id="search-close" class="search-close" aria-label="Close Search">&times;</button>
     </div>
     <div id="search-results" class="search-results">

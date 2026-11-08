@@ -315,16 +315,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function fetchRealData() {
+        const AF = window.AtlasFetch;
+        if (loading) loading.style.display = 'flex';
+        if (errorDiv) errorDiv.style.display = 'none';
+        if (AF && AF.ui) {
+            AF.ui.setNotice(errorDiv, 'nhl-data-notice', null);
+            AF.ui.setNotice(errorDiv, 'nhl-offseason-notice', null);
+        }
+
+        let staleCount = 0;
+        const failedTeams = [];
+        let usedFallbackDataset = false;
+
         try {
             const teamFetchFn = async (t) => {
                 const url = `https://site.api.espn.com/apis/site/v2/sports/hockey/nhl/teams/${t.id}/schedule`;
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 12000);
                 try {
-                    const res = await fetch(url, { signal: controller.signal });
-                    clearTimeout(timeoutId);
-                    if (!res.ok) throw new Error(`Failed to fetch ${t.id}: ${res.statusText}`);
-                    const data = await res.json();
+                    const res = await AF.fetchJson(url, {
+                        timeoutMs: 12000,
+                        retries: 2,
+                        ttlMs: AF.TTL_SCHEDULE_MS,
+                        validate: AF.validators.espnSchedule
+                    });
+                    if (res.stale) staleCount++;
+                    const data = res.data;
 
                     let cumGF = 0, cumGA = 0;
                     let cumPoints = 0;
@@ -377,17 +391,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     regularSeasonGames.sort((a, b) => new Date(a.date) - new Date(b.date));
 
+                    const statNum = (s) => {
+                        if (!s) return null;
+                        if (typeof s.value === 'number' && !isNaN(s.value)) return s.value;
+                        if (s.displayValue !== undefined) {
+                            const parsed = parseFloat(String(s.displayValue).replace(/,/g, ''));
+                            if (!isNaN(parsed)) return parsed;
+                        }
+                        return null;
+                    };
+
                     for (let i = 0; i < regularSeasonGames.length; i++) {
                         const game = regularSeasonGames[i];
-                        gamesPlayed++;
-                        
-                        const competitors = game.competitions[0].competitors;
-                        const teamData = competitors.find(c => c.id == t.id);
-                        const oppData = competitors.find(c => c.id != t.id);
+                        const competitors = game.competitions[0].competitors || [];
+                        const teamData = competitors.find(c => String(c.id) === String(t.id) || (c.team && String(c.team.id) === String(t.id)));
+                        const oppData = competitors.find(c => c !== teamData);
 
-                        if (teamData && oppData && teamData.score) {
-                            let gf = parseInt(teamData.score.value) || 0;
-                            let ga = parseInt(oppData.score.value) || 0;
+                        if (teamData && oppData && teamData.score && oppData.score) {
+                            gamesPlayed++;
+                            let gf = parseInt(teamData.score.value ?? teamData.score.displayValue ?? teamData.score, 10) || 0;
+                            let ga = parseInt(oppData.score.value ?? oppData.score.displayValue ?? oppData.score, 10) || 0;
                             const isOT = game.competitions[0].status.period > 3;
                             const isWin = gf > ga;
                             
@@ -416,8 +439,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                             // 1st period lead tracking
                             let ledP1 = false;
                             if (teamData.linescore && teamData.linescore[0] && oppData.linescore && oppData.linescore[0]) {
-                                const p1Team = parseInt(teamData.linescore[0].value) || 0;
-                                const p1Opp = parseInt(oppData.linescore[0].value) || 0;
+                                const p1Team = parseInt(teamData.linescore[0].value ?? teamData.linescore[0].displayValue, 10) || 0;
+                                const p1Opp = parseInt(oppData.linescore[0].value ?? oppData.linescore[0].displayValue, 10) || 0;
                                 ledP1 = p1Team > p1Opp;
                             } else {
                                 const seed = getGameSeed(`${t.id}-${game.id || i}`);
@@ -434,18 +457,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                             if (teamData.statistics && Array.isArray(teamData.statistics)) {
                                 teamData.statistics.forEach(s => {
-                                    if (s.name === penalties) gPens = s.value;
-                                    else if (s.name === penaltyMinutes) gPIM = s.value;
-                                    if (s.name === powerPlayGoals) gPPG = s.value;
-                                    if (s.name === powerPlayOpportunities) gPPOpp = s.value;
-                                    if (s.name === shotsOnGoal) gSF = s.value;
+                                    if (!s || !s.name) return;
+                                    if (s.name === 'penalties') gPens = statNum(s);
+                                    else if (s.name === 'penaltyMinutes') gPIM = statNum(s);
+                                    else if (s.name === 'powerPlayGoals') gPPG = statNum(s);
+                                    else if (s.name === 'powerPlayOpportunities') gPPOpp = statNum(s);
+                                    else if (s.name === 'shotsOnGoal' || s.name === 'shots') gSF = statNum(s);
                                 });
                             }
                             if (oppData.statistics && Array.isArray(oppData.statistics)) {
                                 oppData.statistics.forEach(s => {
-                                    if (s.name === powerPlayOpportunities) gPPAgainst = s.value;
-                                    if (s.name === powerPlayGoals) gPKGA = s.value;
-                                    if (s.name === shotsOnGoal) gSA = s.value;
+                                    if (!s || !s.name) return;
+                                    if (s.name === 'powerPlayOpportunities') gPPAgainst = statNum(s);
+                                    else if (s.name === 'powerPlayGoals') gPKGA = statNum(s);
+                                    else if (s.name === 'shotsOnGoal' || s.name === 'shots') gSA = statNum(s);
                                 });
                             }
 
@@ -585,8 +610,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         firstPeriodLeadPct: firstPeriodLeadPctData
                     };
                 } catch (err) {
-                    clearTimeout(timeoutId);
-                    console.warn(`Could not load schedule for ${t.name}:`, err);
+                    console.error(`[NHL Trend Analyzer] Could not load schedule for ${t.name} (id=${t.id}):`, err);
+                    failedTeams.push(t.name);
                     return null;
                 }
             };
@@ -597,47 +622,116 @@ document.addEventListener('DOMContentLoaded', async () => {
                 .map(r => r.value);
 
             if (allTeamsData.length === 0) {
-                console.warn("ESPN API unreachable, generating realistic 2026-27 season dataset for 32 teams...");
+                console.error("ESPN NHL API unreachable for all teams; generating simulated fallback dataset.");
+                usedFallbackDataset = true;
                 allTeamsData = generateFallbackNhlData();
+                if (AF && AF.ui) {
+                    AF.ui.showError(
+                        errorDiv,
+                        'Unable to load live NHL data from ESPN right now. Displaying simulated preview dataset — click Retry to reload live stats.',
+                        () => fetchRealData()
+                    );
+                } else if (errorDiv) {
+                    errorDiv.style.display = 'block';
+                }
             }
 
-            // Populate Team Select
+            // Populate Team Select (reset options first so retries never duplicate entries)
+            const prevSelect1 = teamSelect ? teamSelect.value : 'none';
+            const prevSelect2 = teamSelect2 ? teamSelect2.value : 'none';
+            if (teamSelect) teamSelect.innerHTML = '<option value="none">None</option>';
+            if (teamSelect2) teamSelect2.innerHTML = '<option value="none">None</option>';
+
             allTeamsData.sort((a, b) => a.name.localeCompare(b.name)).forEach(t => {
-                const option = document.createElement('option');
-                option.value = t.id;
-                option.textContent = t.name;
-                teamSelect.appendChild(option);
-                
-                const option2 = document.createElement('option');
-                option2.value = t.id;
-                option2.textContent = t.name;
-                teamSelect2.appendChild(option2);
+                if (teamSelect) {
+                    const option = document.createElement('option');
+                    option.value = t.id;
+                    option.textContent = t.name;
+                    teamSelect.appendChild(option);
+                }
+                if (teamSelect2) {
+                    const option2 = document.createElement('option');
+                    option2.value = t.id;
+                    option2.textContent = t.name;
+                    teamSelect2.appendChild(option2);
+                }
             });
 
-            if (paramTeam && Array.from(teamSelect.options).some(o => String(o.value) === String(paramTeam))) {
-                teamSelect.value = paramTeam;
-            } else {
-                const savedTeam = localStorage.getItem(STORAGE_KEY_TEAM);
-                if (savedTeam && Array.from(teamSelect.options).some(o => o.value === savedTeam)) {
-                    teamSelect.value = savedTeam;
+            if (teamSelect) {
+                if (prevSelect1 !== 'none' && Array.from(teamSelect.options).some(o => String(o.value) === String(prevSelect1))) {
+                    teamSelect.value = prevSelect1;
+                } else if (paramTeam && Array.from(teamSelect.options).some(o => String(o.value) === String(paramTeam))) {
+                    teamSelect.value = paramTeam;
+                } else {
+                    const savedTeam = localStorage.getItem(STORAGE_KEY_TEAM);
+                    if (savedTeam && Array.from(teamSelect.options).some(o => o.value === savedTeam)) {
+                        teamSelect.value = savedTeam;
+                    }
                 }
             }
-            if (paramTeam2 && Array.from(teamSelect2.options).some(o => String(o.value) === String(paramTeam2))) {
-                teamSelect2.value = paramTeam2;
-            } else {
-                const savedTeam2 = localStorage.getItem(STORAGE_KEY_TEAM2);
-                if (savedTeam2 && Array.from(teamSelect2.options).some(o => o.value === savedTeam2)) {
-                    teamSelect2.value = savedTeam2;
+            if (teamSelect2) {
+                if (prevSelect2 !== 'none' && Array.from(teamSelect2.options).some(o => String(o.value) === String(prevSelect2))) {
+                    teamSelect2.value = prevSelect2;
+                } else if (paramTeam2 && Array.from(teamSelect2.options).some(o => String(o.value) === String(paramTeam2))) {
+                    teamSelect2.value = paramTeam2;
+                } else {
+                    const savedTeam2 = localStorage.getItem(STORAGE_KEY_TEAM2);
+                    if (savedTeam2 && Array.from(teamSelect2.options).some(o => o.value === savedTeam2)) {
+                        teamSelect2.value = savedTeam2;
+                    }
                 }
             }
 
-            loading.style.display = 'none';
+            if (!usedFallbackDataset && AF && AF.ui) {
+                if (failedTeams.length > 0 && staleCount > 0) {
+                    AF.ui.setNotice(
+                        errorDiv,
+                        'nhl-data-notice',
+                        `Partial / cached data: loaded ${allTeamsData.length} of ${nhlTeams.length} NHL teams (${failedTeams.length} unavailable; ${staleCount} served from cache).`,
+                        () => fetchRealData()
+                    );
+                } else if (failedTeams.length > 0) {
+                    const sample = failedTeams.slice(0, 4).join(', ') + (failedTeams.length > 4 ? '…' : '');
+                    AF.ui.setNotice(
+                        errorDiv,
+                        'nhl-data-notice',
+                        `Partial data: loaded ${allTeamsData.length} of ${nhlTeams.length} NHL teams (${failedTeams.length} unavailable: ${sample}).`,
+                        () => fetchRealData()
+                    );
+                } else if (staleCount > 0) {
+                    AF.ui.setNotice(
+                        errorDiv,
+                        'nhl-data-notice',
+                        `Live ESPN update unavailable — showing cached schedule data for ${staleCount} team${staleCount === 1 ? '' : 's'}.`,
+                        () => fetchRealData()
+                    );
+                }
+
+                const totalCompletedGames = allTeamsData.reduce((sum, t) => sum + (t.rawGames ? t.rawGames.length : 0), 0);
+                if (totalCompletedGames === 0) {
+                    AF.ui.setNotice(
+                        errorDiv,
+                        'nhl-offseason-notice',
+                        'Offseason / Preseason: No completed regular-season NHL games have been played yet for the current season.'
+                    );
+                }
+            }
+
+            if (loading) loading.style.display = 'none';
             renderChart();
             syncUrlParams();
         } catch (error) {
             console.error("Error fetching NHL data:", error);
-            loading.style.display = 'none';
-            errorDiv.style.display = 'block';
+            if (loading) loading.style.display = 'none';
+            if (AF && AF.ui) {
+                AF.ui.showError(
+                    errorDiv,
+                    'Unable to load NHL data from ESPN right now. Please check your connection and try again.',
+                    () => fetchRealData()
+                );
+            } else if (errorDiv) {
+                errorDiv.style.display = 'block';
+            }
         }
     }
 
@@ -800,7 +894,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
 
-        const ctx = document.getElementById('trendChart').getContext('2d');
+        const canvasEl = document.getElementById('trendChart');
+        if (!canvasEl) return;
+        const ctx = canvasEl.getContext('2d');
 
         if (chartInstance) {
             chartInstance.destroy();
@@ -1337,5 +1433,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    fetchRealData();
+    await fetchRealData();
 });

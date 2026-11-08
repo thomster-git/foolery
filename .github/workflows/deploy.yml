@@ -38,6 +38,9 @@ jobs:
       - name: Build Atlas Engine
         run: npm run build
 
+      - name: Verify Build Output
+        run: npm run check
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
         with:
