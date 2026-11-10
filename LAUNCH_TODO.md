@@ -15,6 +15,12 @@ This file contains manual tasks you need to complete when deploying the site to 
 - [ ] **Verify OG Card:** We generated a placeholder PNG for social sharing (`website/static/images/og-card.png`). If you have a custom logo or design you prefer, overwrite that file.
 - [ ] **Test Links:** Paste your URL into Discord or Twitter to ensure the preview card looks correct.
 
+## Release 1.7.0 Whiteboard & Feature Pipeline
+- [x] **OSRS Bank Skilling & Magic/Alch Profit Calculator (`/tools/osrs-bank-skilling/`):** Standalone real-time GE profit calculator for Fletching, Herblore, Crafting, Magic (High Alch & Superheat), Smithing, and Cooking. Integrated with OSRS Wiki API, 2% GE tax logic, GP/XP metrics, and 4h buy limits. Added upgrade banner to `/tools/runescape-bond-tracker/` for staged decommissioning.
+- [ ] **"Next Time I Go Up/Down" Hardware & App Spec:** IoT BLE RSSI proximity + directional break-beam sensor logic for stairway micro-task notifications.
+- [ ] **Async Question & Opinion Queue ("Async Sync"):** Lightweight, zero-account, low-friction opinion queue for non-urgent decision batching.
+- [ ] **Disability Awareness Front-Facing License Plates:** 12"x6" physical plate specs, clear communication icons, and in-vehicle emergency cards.
+
 ## Content & Guides Roadmap (Post-Launch)
 - [ ] Write missing expansions for articles.
 - [x] **Option A: Corporate Communication vs. Organic Communities (`discord-vs-corporate-comms.md`):** Why modern enterprise communication suites produce asynchronous burnout and fragmentation, contrasted with how modular Discord architectures enable low-friction community operations.

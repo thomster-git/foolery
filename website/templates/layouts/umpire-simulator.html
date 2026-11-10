@@ -127,12 +127,26 @@
                             </select>
                         </div>
 
-                        <!-- Batter Stance -->
+                        <!-- Batter Stance & Zone Profile -->
                         <div style="display: flex; align-items: center; gap: 0.3rem;">
                             <label for="batter-select" class="ctrl-label">BATTER:</label>
                             <select id="batter-select" class="ctrl-select">
-                                <option value="RHH">Right-Handed</option>
-                                <option value="LHH">Left-Handed</option>
+                                <option value="DYNAMIC" selected>🎲 Dynamic MLB Rotation</option>
+                                <optgroup label="Handedness (Varying Heights)">
+                                    <option value="RHH">Right-Handed (All Heights)</option>
+                                    <option value="LHH">Left-Handed (All Heights)</option>
+                                </optgroup>
+                                <optgroup label="Statcast Batter Profiles">
+                                    <option value="altuve">Jose Altuve (5'6" RHH • 1.34'–3.16')</option>
+                                    <option value="kwan">Steven Kwan (5'9" LHH • 1.38'–3.28')</option>
+                                    <option value="betts">Mookie Betts (5'9" RHH • 1.42'–3.36')</option>
+                                    <option value="witt">Bobby Witt Jr. (6'1" RHH • 1.48'–3.50')</option>
+                                    <option value="soto">Juan Soto (6'2" LHH • 1.48'–3.52')</option>
+                                    <option value="trout">Mike Trout (6'2" RHH • 1.50'–3.56')</option>
+                                    <option value="ohtani">Shohei Ohtani (6'4" LHH • 1.54'–3.68')</option>
+                                    <option value="judge">Aaron Judge (6'7" RHH • 1.72'–3.94')</option>
+                                    <option value="cruz">Oneil Cruz (6'7" LHH • 1.70'–3.92')</option>
+                                </optgroup>
                             </select>
                         </div>
 
@@ -189,6 +203,18 @@
                             <div id="stat-velo-hero" class="ump-amber-text" style="font-family: var(--font-mono); font-size: 1.35rem; font-weight: 900; margin-top: 2px;">-- mph</div>
                             <!-- Hidden span for JS backward compatibility -->
                             <span id="stat-velo" style="display: none;">--</span>
+                        </div>
+                    </div>
+
+                    <!-- Batter Matchup & Dynamic Strike Zone Readout -->
+                    <div class="ump-subcard" style="padding: 0.75rem 1rem; margin-bottom: 0.8rem; display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
+                        <div>
+                            <div style="font-size: 0.70rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Batter at Plate</div>
+                            <div id="stat-batter-hero" style="font-size: 0.98rem; font-weight: 900; color: var(--text-bright); margin-top: 2px;">Aaron Judge (6'7" RHH)</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.70rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Statcast Strike Zone</div>
+                            <div id="stat-batter-zone" class="ump-cyan-text" style="font-family: var(--font-mono); font-size: 0.92rem; font-weight: 900; margin-top: 2px;">1.72' – 3.94' (26.6")</div>
                         </div>
                     </div>
 
@@ -348,7 +374,7 @@
             </p>
             <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--text-bright);">Pentagonal Prism Swept-Sphere Strike Evaluation &amp; Shadow Zone</h3>
             <p style="margin-bottom: 0; color: var(--text-muted); font-size: 0.94rem; line-height: 1.6;">
-                Per Official Baseball Rules, home plate is a 17-inch-wide pentagon (8.5″ half-width) extending from the front edge (<em>z</em> = 0) to the rear apex (<em>z</em> = −17″). A pitch is a rulebook strike if any portion of the baseball (1.45″ radius sphere) intersects the 3D pentagonal prism between the batter's knees (1.5 ft) and midpoint of the torso (3.5 ft). Pitches within ±1.45″ of the outer boundary are classified into the <strong>Shadow Zone</strong>—where MLB umpires and the Automated Ball-Strike (ABS) challenge system face the toughest calls.
+                Per Official Baseball Rules, home plate is a 17-inch-wide pentagon (8.5″ half-width) extending from the front edge (<em>z</em> = 0) to the rear apex (<em>z</em> = −17″). A pitch is a rulebook strike if any portion of the baseball (1.45″ radius sphere) intersects the 3D pentagonal prism between the batter's knees and midpoint of the torso. In MLB Statcast tracking, this vertical zone dynamically scales with batter height and stance—ranging from a compact ~1.34'–3.16' zone for a 5'6" hitter (Jose Altuve) to an elevated ~1.72'–3.94' zone for a 6'7" slugger (Aaron Judge). The 3D batter model and strike zone box dynamically adapt to each hitter's true height and batting box side. Pitches within ±1.45″ of the outer boundary are classified into the <strong>Shadow Zone</strong>—where MLB umpires and the Automated Ball-Strike (ABS) challenge system face the toughest calls.
             </p>
         </section>
 
@@ -1243,8 +1269,149 @@ html {
     const HALF_PLATE_WIDTH = 8.5 / 12.0; // 0.7083 ft (17" width)
     const CORNER_Z = -8.5 / 12.0; // -0.7083 ft
     const APEX_Z = -17.0 / 12.0; // -1.4167 ft
-    const SZ_BOT = 1.5; // ft (knees)
-    const SZ_TOP = 3.5; // ft (chest midpoint)
+    const DEFAULT_SZ_BOT = 1.5; // ft (knees)
+    const DEFAULT_SZ_TOP = 3.5; // ft (chest midpoint)
+
+    // Statcast Batter Profiles with authentic height, stance & vertical strike zone limits
+    const BATTER_PROFILES = [
+        {
+            id: 'judge',
+            name: 'Aaron Judge',
+            team: 'NYY',
+            number: '99',
+            heightStr: "6'7\"",
+            heightInches: 79,
+            stand: 'RHH',
+            sz_bot: 1.72,
+            sz_top: 3.94,
+            description: "Towering Power Slugger (6'7\" RHH • Large Elevated Zone)"
+        },
+        {
+            id: 'altuve',
+            name: 'Jose Altuve',
+            team: 'HOU',
+            number: '27',
+            heightStr: "5'6\"",
+            heightInches: 66,
+            stand: 'RHH',
+            sz_bot: 1.34,
+            sz_top: 3.16,
+            description: "Compact Contact Machine (5'6\" RHH • Low Compact Zone)"
+        },
+        {
+            id: 'ohtani',
+            name: 'Shohei Ohtani',
+            team: 'LAD',
+            number: '17',
+            heightStr: "6'4\"",
+            heightInches: 76,
+            stand: 'LHH',
+            sz_bot: 1.54,
+            sz_top: 3.68,
+            description: "Elite Two-Way Phenom (6'4\" LHH • Tall Dynamic Zone)"
+        },
+        {
+            id: 'kwan',
+            name: 'Steven Kwan',
+            team: 'CLE',
+            number: '38',
+            heightStr: "5'9\"",
+            heightInches: 69,
+            stand: 'LHH',
+            sz_bot: 1.38,
+            sz_top: 3.28,
+            description: "Disciplined Contact Leadoff (5'9\" LHH • Compact Zone)"
+        },
+        {
+            id: 'soto',
+            name: 'Juan Soto',
+            team: 'NYY',
+            number: '22',
+            heightStr: "6'2\"",
+            heightInches: 74,
+            stand: 'LHH',
+            sz_bot: 1.48,
+            sz_top: 3.52,
+            description: "Master Zone Disciplinarian (6'2\" LHH • Prototypical Zone)"
+        },
+        {
+            id: 'betts',
+            name: 'Mookie Betts',
+            team: 'LAD',
+            number: '50',
+            heightStr: "5'9\"",
+            heightInches: 69,
+            stand: 'RHH',
+            sz_bot: 1.42,
+            sz_top: 3.36,
+            description: "Athletic MVP Talent (5'9\" RHH • Mid-Compact Zone)"
+        },
+        {
+            id: 'trout',
+            name: 'Mike Trout',
+            team: 'LAA',
+            number: '27',
+            heightStr: "6'2\"",
+            heightInches: 74,
+            stand: 'RHH',
+            sz_bot: 1.50,
+            sz_top: 3.56,
+            description: "Standard MLB Benchmark Hitter (6'2\" RHH • Calibrated Zone)"
+        },
+        {
+            id: 'cruz',
+            name: 'Oneil Cruz',
+            team: 'PIT',
+            number: '15',
+            heightStr: "6'7\"",
+            heightInches: 79,
+            stand: 'LHH',
+            sz_bot: 1.70,
+            sz_top: 3.92,
+            description: "Ultra-Tall Power Slugger (6'7\" LHH • Elevated Zone)"
+        },
+        {
+            id: 'witt',
+            name: 'Bobby Witt Jr.',
+            team: 'KC',
+            number: '7',
+            heightStr: "6'1\"",
+            heightInches: 73,
+            stand: 'RHH',
+            sz_bot: 1.48,
+            sz_top: 3.50,
+            description: "Dynamic Speed & Power Star (6'1\" RHH • Standard Zone)"
+        }
+    ];
+
+    function getCurrentSzBot() {
+        return (state && state.pitchTrajectory && state.pitchTrajectory.sz_bot)
+            || (state && state.currentBatter && state.currentBatter.sz_bot)
+            || DEFAULT_SZ_BOT;
+    }
+
+    function getCurrentSzTop() {
+        return (state && state.pitchTrajectory && state.pitchTrajectory.sz_top)
+            || (state && state.currentBatter && state.currentBatter.sz_top)
+            || DEFAULT_SZ_TOP;
+    }
+
+    function resolveBatterProfile(setting) {
+        if (!setting || setting === 'DYNAMIC') {
+            const currentId = state && state.currentBatter ? state.currentBatter.id : null;
+            const candidates = BATTER_PROFILES.filter(b => b.id !== currentId);
+            return candidates[Math.floor(Math.random() * candidates.length)] || BATTER_PROFILES[0];
+        }
+        if (setting === 'RHH') {
+            const rhh = BATTER_PROFILES.filter(b => b.stand === 'RHH');
+            return rhh[Math.floor(Math.random() * rhh.length)] || BATTER_PROFILES[0];
+        }
+        if (setting === 'LHH') {
+            const lhh = BATTER_PROFILES.filter(b => b.stand === 'LHH');
+            return lhh[Math.floor(Math.random() * lhh.length)] || BATTER_PROFILES[2];
+        }
+        return BATTER_PROFILES.find(b => b.id === setting) || BATTER_PROFILES[0];
+    }
 
     function solvePitchTrajectory(pitchConfig, targetX, targetY, isRHP = true, speedMultiplier = 1.0) {
         const v0 = (pitchConfig.velo * speedMultiplier) * 1.467; // ft/s
@@ -1291,6 +1458,8 @@ html {
         let isStrike = false;
         let minMargin = Infinity;
         let crossingPoint = null;
+        const sz_bot = trajectory.sz_bot || getCurrentSzBot();
+        const sz_top = trajectory.sz_top || getCurrentSzTop();
 
         for (let i = 0; i <= steps; i++) {
             const t = (trajectory.tf * 0.88) + (trajectory.tf * 0.22) * (i / steps);
@@ -1301,8 +1470,8 @@ html {
                     crossingPoint = { ...pos, t };
                 }
 
-                // Vertical check
-                const inY = (pos.y >= (SZ_BOT - BALL_RADIUS)) && (pos.y <= (SZ_TOP + BALL_RADIUS));
+                // Vertical check against dynamic strike zone
+                const inY = (pos.y >= (sz_bot - BALL_RADIUS)) && (pos.y <= (sz_top + BALL_RADIUS));
                 let inHoriz = false;
 
                 if (inY) {
@@ -1328,7 +1497,7 @@ html {
 
                 // Margin to 2D front rectangle
                 const dx = Math.max(0, Math.abs(pos.x) - HALF_PLATE_WIDTH);
-                const dy = Math.max(0, SZ_BOT - pos.y, pos.y - SZ_TOP);
+                const dy = Math.max(0, sz_bot - pos.y, pos.y - sz_top);
                 const margin = Math.hypot(dx, dy) - BALL_RADIUS;
                 if (margin < minMargin) {
                     minMargin = margin;
@@ -1413,12 +1582,25 @@ html {
         streak: 0,
         // Configs
         speedSetting: 1.0,
-        batterHandedness: 'RHH',
+        batterSetting: 'DYNAMIC',
+        currentBatter: BATTER_PROFILES[0],
+        batterHandedness: BATTER_PROFILES[0].stand,
         pitchTypeSetting: 'RANDOM',
         showZoneInFlight: false,
         showTrail: true,
         mittTarget: { x: 0.0, y: 2.5 }
     };
+
+    function updateBatterDisplay(batter) {
+        if (!batter) return;
+        const elHero = document.getElementById('stat-batter-hero');
+        if (elHero) elHero.innerText = `${batter.name} (${batter.heightStr} ${batter.stand})`;
+        const elZone = document.getElementById('stat-batter-zone');
+        if (elZone) {
+            const zoneHeightInches = ((batter.sz_top - batter.sz_bot) * 12).toFixed(1);
+            elZone.innerText = `${batter.sz_bot.toFixed(2)}' – ${batter.sz_top.toFixed(2)}' (${zoneHeightInches}")`;
+        }
+    }
 
     const scorecard = {
         total: 0,
@@ -1449,7 +1631,7 @@ html {
     // ----------------------------------------------------
     // Generator: Random Statcast Pitch Targets
     // ----------------------------------------------------
-    function generateTargetLocation() {
+    function generateTargetLocation(sz_bot = getCurrentSzBot(), sz_top = getCurrentSzTop()) {
         // Generates realistic target distributions:
         // ~50% edge/borderline pitches to challenge the umpire, ~30% in zone, ~20% clear chase
         const roll = Math.random();
@@ -1461,30 +1643,30 @@ html {
             if (edgeSide < 0.25) {
                 // Left edge
                 targetX = -HALF_PLATE_WIDTH + (Math.random() * 0.4 - 0.2);
-                targetY = SZ_BOT + Math.random() * (SZ_TOP - SZ_BOT);
+                targetY = sz_bot + Math.random() * (sz_top - sz_bot);
             } else if (edgeSide < 0.50) {
                 // Right edge
                 targetX = HALF_PLATE_WIDTH + (Math.random() * 0.4 - 0.2);
-                targetY = SZ_BOT + Math.random() * (SZ_TOP - SZ_BOT);
+                targetY = sz_bot + Math.random() * (sz_top - sz_bot);
             } else if (edgeSide < 0.75) {
                 // High edge
                 targetX = (Math.random() * 2 - 1) * HALF_PLATE_WIDTH;
-                targetY = SZ_TOP + (Math.random() * 0.4 - 0.2);
+                targetY = sz_top + (Math.random() * 0.4 - 0.2);
             } else {
                 // Low edge (knees)
                 targetX = (Math.random() * 2 - 1) * HALF_PLATE_WIDTH;
-                targetY = SZ_BOT + (Math.random() * 0.4 - 0.2);
+                targetY = sz_bot + (Math.random() * 0.4 - 0.2);
             }
         } else if (roll < 0.80) {
             // Heart of strike zone
             targetX = (Math.random() * 2 - 1) * (HALF_PLATE_WIDTH * 0.7);
-            targetY = SZ_BOT + 0.3 + Math.random() * (SZ_TOP - SZ_BOT - 0.6);
+            targetY = sz_bot + 0.3 + Math.random() * Math.max(0.1, (sz_top - sz_bot - 0.6));
         } else {
             // Clear Ball (Chase/Waste)
             const angle = Math.random() * Math.PI * 2;
             const r = 1.0 + Math.random() * 0.8;
             targetX = Math.cos(angle) * r;
-            targetY = 2.5 + Math.sin(angle) * r;
+            targetY = ((sz_top + sz_bot) / 2) + Math.sin(angle) * r;
         }
 
         return { x: targetX, y: targetY };
@@ -1493,6 +1675,12 @@ html {
     function throwNewPitch() {
         getAudioContext(); // user gesture unlock
         
+        // Batter selection based on dynamic setting or fixed choice
+        const batter = resolveBatterProfile(state.batterSetting);
+        state.currentBatter = batter;
+        state.batterHandedness = batter.stand;
+        updateBatterDisplay(batter);
+
         // Pitch configuration
         let pKey = state.pitchTypeSetting;
         if (pKey === 'RANDOM') {
@@ -1501,11 +1689,15 @@ html {
         }
         const pitchConfig = PITCH_ARSENAL[pKey] || PITCH_ARSENAL.FASTBALL;
 
-        const target = generateTargetLocation();
+        const target = generateTargetLocation(batter.sz_bot, batter.sz_top);
         state.mittTarget = { ...target };
 
         const isRHP = Math.random() > 0.3; // mostly RHP
         const traj = solvePitchTrajectory(pitchConfig, target.x, target.y, isRHP, state.speedSetting);
+        traj.batter = batter;
+        traj.sz_bot = batter.sz_bot;
+        traj.sz_top = batter.sz_top;
+
         const verdict = evaluateVerdict(traj);
 
         state.pitchTrajectory = traj;
@@ -1575,6 +1767,7 @@ html {
 
         // Statcast Breakdown Card update
         const traj = state.pitchTrajectory;
+        if (traj.batter) updateBatterDisplay(traj.batter);
         const heroPitchType = document.getElementById('stat-pitch-type-hero');
         if (heroPitchType) heroPitchType.innerText = traj.config.name;
         const heroVelo = document.getElementById('stat-velo-hero');
@@ -1630,7 +1823,12 @@ html {
             subZone: trueVerdict.subZone,
             x: crossPos.x,
             y: crossPos.y,
-            marginInches: trueVerdict.marginInches
+            marginInches: trueVerdict.marginInches,
+            batterName: traj.batter ? traj.batter.name : (state.currentBatter ? state.currentBatter.name : 'MLB Batter'),
+            batterStand: traj.batter ? traj.batter.stand : state.batterHandedness,
+            batterHeight: traj.batter ? traj.batter.heightStr : "6'1\"",
+            sz_bot: traj.sz_bot || getCurrentSzBot(),
+            sz_top: traj.sz_top || getCurrentSzTop()
         };
 
         scorecard.history.unshift(pitchEntry);
@@ -2378,14 +2576,45 @@ html {
     }
 
     function drawBatter() {
-        const isRHH = (state.batterHandedness === 'RHH');
+        const batter = (state.pitchTrajectory && state.pitchTrajectory.batter) || state.currentBatter || BATTER_PROFILES[0];
+        const isRHH = (batter.stand === 'RHH');
         // RHH stands on Left (X = -2.8); LHH stands on Right (X = +2.8) - inside the 4 ft box
         const bx = isRHH ? -2.8 : 2.8;
         const bz = -0.75; // centered on the plate depth
         const dir = isRHH ? 1 : -1; // 1 facing right (toward plate), -1 facing left
 
+        const sz_bot = (state.pitchTrajectory && state.pitchTrajectory.sz_bot) || batter.sz_bot || getCurrentSzBot();
+        const sz_top = (state.pitchTrajectory && state.pitchTrajectory.sz_top) || batter.sz_top || getCurrentSzTop();
+
+        // Proportional scale factor relative to MLB benchmark (6'1", 73 in, nominal sz: 1.50 - 3.42)
+        const totalHeightInches = batter.heightInches || 73;
+        const scaleFactor = totalHeightInches / 73;
+        const legScale = sz_bot / 1.50; // knees align dynamically with sz_bot
+        const torsoScale = (sz_top - sz_bot) / 1.92; // strike zone height relative to nominal 1.92 ft
+        const radScale = Math.max(0.85, Math.min(1.18, scaleFactor));
+        const batScale = Math.max(0.90, Math.min(1.10, scaleFactor));
+        const stanceW = Math.max(0.85, Math.min(1.15, scaleFactor));
+
+        // Piecewise vertical mapping from reference 6'1" crouch coordinates to dynamic batter:
+        // refY:
+        // 0.00: ground (cleats)
+        // 0.30: ankles
+        // 1.50: knee level (matches sz_bot)
+        // 2.75 - 2.90: hips & waist
+        // 3.75: mid-chest / hollow beneath midpoint of chest (matches sz_top)
+        // 4.58 - 4.70: shoulders
+        // 4.95: hands
+        // 5.35 - 5.55: neck & head center
+        // 6.00: helmet top
+        const mapY = (refY) => {
+            if (refY <= 0) return 0;
+            if (refY <= 1.50) return refY * legScale;
+            if (refY <= 3.75) return sz_bot + (refY - 1.50) * ((sz_top - sz_bot) / 2.25);
+            return sz_top + (refY - 3.75) * Math.max(0.75, torsoScale);
+        };
+
         // Local rig coordinates [u (toward plate), y (up), v (toward pitcher)] -> world
-        const L = (u, y, v) => [bx + u * dir, y, bz + v];
+        const L = (u, y, v) => [bx + (u * stanceW) * dir, mapY(y), bz + (v * stanceW)];
         const pt = (a) => camera.project(a[0], a[1], a[2]);
         const loc = (u, y, v) => pt(L(u, y, v));
 
@@ -2395,19 +2624,21 @@ html {
 
         const pants = '#e8edf4', jersey = '#1b2a4a', skin = '#c68a5b';
 
-        // Stance joints (athletic crouch: ~6 ft tall standing, hips dropped, knees flexed)
+        // Stance joints (athletic crouch dynamically mapped to strike zone bounds)
         const hipB = L(-0.28, 2.75, -0.30), hipF = L(0.28, 2.75, 0.30);
         const ankB = L(-0.55, 0.30, -0.90), ankF = L(0.50, 0.30, 0.90);
-        // Reverse mirror for IK poles (u axis flips for LHH)
-        const legB = ik3(hipB, ankB, 1.45, 1.45, [dir * 0.9, 0.0, -0.2]);
-        const legF = ik3(hipF, ankF, 1.45, 1.45, [dir * 0.9, 0.0, 0.2]);
+        // Bone lengths scaled with leg scale
+        const legBone = 1.45 * legScale;
+        const legB = ik3(hipB, ankB, legBone, legBone, [dir * 0.9, 0.0, -0.2]);
+        const legF = ik3(hipF, ankF, legBone, legBone, [dir * 0.9, 0.0, 0.2]);
 
         const shB = L(-0.45, 4.7, -0.50), shF = L(0.55, 4.58, 0.50);
         const waistB = L(-0.34, 2.9, -0.38), waistF = L(0.34, 2.9, 0.38);
-        const handsL = [-0.6, 4.95, -0.2];
-        const hands = L(handsL[0], handsL[1], handsL[2]);
-        const armB = ik3(shB, hands, 1.0, 1.0, [dir * -0.35, -0.9, -0.45]);
-        const armF = ik3(shF, hands, 1.0, 1.0, [0, -1, 0.1]);
+        const handsL = [-0.6 * stanceW, mapY(4.95), -0.2 * stanceW];
+        const hands = [bx + handsL[0] * dir, handsL[1], bz + handsL[2]];
+        const armBone = 1.0 * Math.max(0.85, Math.min(1.15, torsoScale));
+        const armB = ik3(shB, hands, armBone, armBone, [dir * -0.35, -0.9, -0.45]);
+        const armF = ik3(shF, hands, armBone, armBone, [0, -1, 0.1]);
 
         ctx.save();
         ctx.lineCap = 'round';
@@ -2415,7 +2646,7 @@ html {
 
         // Ground shadow under batter (soft, stretched away from the lights)
         const gs = ground.scale;
-        const shadow = ctx.createRadialGradient(ground.px + gs * 0.3, ground.py - gs * 0.1, 0, ground.px + gs * 0.3, ground.py - gs * 0.1, gs * 1.7);
+        const shadow = ctx.createRadialGradient(ground.px + gs * 0.3, ground.py - gs * 0.1, 0, ground.px + gs * 0.3, ground.py - gs * 0.1, gs * 1.7 * stanceW);
         shadow.addColorStop(0, 'rgba(0,0,0,0.55)');
         shadow.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.save();
@@ -2423,15 +2654,15 @@ html {
         ctx.scale(1, 0.32);
         ctx.translate(-ground.px, -ground.py);
         ctx.beginPath();
-        ctx.arc(ground.px + gs * 0.3, ground.py - gs * 0.1, gs * 1.7, 0, Math.PI * 2);
+        ctx.arc(ground.px + gs * 0.3, ground.py - gs * 0.1, gs * 1.7 * stanceW, 0, Math.PI * 2);
         ctx.fillStyle = shadow;
         ctx.fill();
         ctx.restore();
 
         const drawLeg = (hip, leg, ank, sideSign) => {
             const pHip = pt(hip), pKnee = pt(leg.joint), pAnk = pt(leg.end);
-            limb(pHip, pKnee, 0.66, 0.46, pants);
-            limb(pKnee, pAnk, 0.46, 0.32, pants);
+            limb(pHip, pKnee, 0.66 * radScale, 0.46 * radScale, pants);
+            limb(pKnee, pAnk, 0.46 * radScale, 0.32 * radScale, pants);
             // Blue piping down the outside of the pant leg
             if (pHip && pKnee && pAnk) {
                 ctx.strokeStyle = '#0ea5e9';
@@ -2444,11 +2675,11 @@ html {
                 ctx.stroke();
             }
             // Sock, then cleat pointing toward the plate
-            const sockLow = pt([leg.end[0], leg.end[1] - 0.18, leg.end[2]]);
-            limb(pAnk, sockLow, 0.32, 0.3, '#16233f');
-            const toe = pt([leg.end[0] + dir * 0.62, 0.06, leg.end[2]]);
-            const heel = pt([leg.end[0] - dir * 0.12, 0.12, leg.end[2]]);
-            limb(heel, toe, 0.34, 0.3, '#0b1220');
+            const sockLow = pt([leg.end[0], leg.end[1] - 0.18 * legScale, leg.end[2]]);
+            limb(pAnk, sockLow, 0.32 * radScale, 0.3 * radScale, '#16233f');
+            const toe = pt([leg.end[0] + dir * 0.62 * stanceW, 0.06, leg.end[2]]);
+            const heel = pt([leg.end[0] - dir * 0.12 * stanceW, 0.12, leg.end[2]]);
+            limb(heel, toe, 0.34 * radScale, 0.3 * radScale, '#0b1220');
         };
         // Far (front) leg first, near (back) leg after
         drawLeg(hipF, legF, ankF, 1);
@@ -2456,8 +2687,8 @@ html {
 
         // Front arm (far side, partly hidden behind torso)
         const pShF = pt(shF), pShB = pt(shB), pHands = pt(hands);
-        limb(pShF, pt(armF.joint), 0.4, 0.3, jersey);
-        limb(pt(armF.joint), pHands, 0.3, 0.22, skin);
+        limb(pShF, pt(armF.joint), 0.4 * radScale, 0.3 * radScale, jersey);
+        limb(pt(armF.joint), pHands, 0.3 * radScale, 0.22 * radScale, skin);
 
         // Torso & jersey: filled shoulder-to-waist shape with rounded, thick edges
         const pwB = pt(waistB), pwF = pt(waistF);
@@ -2469,37 +2700,38 @@ html {
             tg.addColorStop(1, shade(jersey, -0.4));
             ctx.fillStyle = tg;
             ctx.strokeStyle = tg;
-            ctx.lineWidth = Math.max(3, 0.34 * pShB.scale);
+            ctx.lineWidth = Math.max(3, 0.34 * pShB.scale * radScale);
             ctx.fill();
             ctx.stroke();
 
             // Jersey hem & belt
-            limb(pwB, pwF, 0.16, 0.16, '#0b1220');
+            limb(pwB, pwF, 0.16 * radScale, 0.16 * radScale, '#0b1220');
             ctx.fillStyle = '#d9a441';
             const bc = { px: (pwB.px + pwF.px) / 2, py: (pwB.py + pwF.py) / 2 };
             ctx.fillRect(bc.px - 2, bc.py - 2, 4, 4);
 
-            // Jersey back number
+            // Jersey back number (dynamically matches active batter)
+            const batterNumber = (batter && batter.number) ? String(batter.number) : '24';
             const nc = { px: (pShB.px + pShF.px) / 2 + 0, py: (pShB.py + pwB.py) / 2 + 0.2 * pShB.scale };
             ctx.fillStyle = '#e0f2fe';
-            ctx.font = `bold ${Math.max(8, Math.round(0.72 * pShB.scale))}px sans-serif`;
+            ctx.font = `bold ${Math.max(8, Math.round(0.72 * pShB.scale * radScale))}px sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText('24', nc.px, nc.py);
+            ctx.fillText(batterNumber, nc.px, nc.py);
             // Name-plate stripe above the number
             ctx.fillStyle = 'rgba(224,242,254,0.55)';
-            ctx.fillRect(nc.px - 0.45 * pShB.scale, nc.py - 0.58 * pShB.scale, 0.9 * pShB.scale, Math.max(1, 0.06 * pShB.scale));
+            ctx.fillRect(nc.px - 0.45 * pShB.scale * radScale, nc.py - 0.58 * pShB.scale, 0.9 * pShB.scale * radScale, Math.max(1, 0.06 * pShB.scale));
         }
 
         // Neck, head & batting helmet
         const pNeckBase = loc(0.05, 4.95, -0.05), pNeckTop = loc(0.1, 5.35, 0);
-        limb(pNeckBase, pNeckTop, 0.36, 0.32, skin);
+        limb(pNeckBase, pNeckTop, 0.36 * radScale, 0.32 * radScale, skin);
         const pHeadC = loc(0.12, 5.55, 0.0);
         if (pHeadC) {
-            blob(pHeadC, 0.36, skin);
+            blob(pHeadC, 0.36 * radScale, skin);
             // Helmet dome (covers the top/back of the head), rim ends near the ears
             const hc = loc(0.12, 5.72, 0.0);
-            const r = 0.43 * hc.scale;
+            const r = 0.43 * hc.scale * radScale;
             const hg = ctx.createRadialGradient(hc.px - r * 0.4, hc.py - r * 0.45, r * 0.1, hc.px, hc.py, r * 1.05);
             hg.addColorStop(0, '#38a5e0');
             hg.addColorStop(0.5, '#0369a1');
@@ -2509,7 +2741,7 @@ html {
             ctx.fillStyle = hg;
             ctx.fill();
             // Helmet ear-flap on the pitcher-facing side & the bill peeking toward the plate
-            limb(loc(0.42, 5.55, 0.18), loc(0.7, 5.5, 0.16), 0.2, 0.14, '#0a3a5c');
+            limb(loc(0.42, 5.55, 0.18), loc(0.7, 5.5, 0.16), 0.2 * radScale, 0.14 * radScale, '#0a3a5c');
             // Glossy highlight
             ctx.beginPath();
             ctx.ellipse(hc.px - r * 0.3, hc.py - r * 0.5, r * 0.28, r * 0.14, -0.5, 0, Math.PI * 2);
@@ -2518,33 +2750,33 @@ html {
         }
 
         // Back arm (near side): shoulder -> elbow raised out -> hands
-        limb(pShB, pt(armB.joint), 0.44, 0.32, jersey);
-        limb(pt(armB.joint), pHands, 0.32, 0.22, skin);
+        limb(pShB, pt(armB.joint), 0.44 * radScale, 0.32 * radScale, jersey);
+        limb(pt(armB.joint), pHands, 0.32 * radScale, 0.22 * radScale, skin);
 
         // Bat: cocked over the back shoulder, barrel up and angled back
         const bdl = [-0.62, 0.66, -0.2];
         const bl = Math.hypot(bdl[0], bdl[1], bdl[2]);
         const bd = [bdl[0] / bl, bdl[1] / bl, bdl[2] / bl];
-        const knobL = [handsL[0] - bd[0] * 0.45, handsL[1] - bd[1] * 0.45, handsL[2] - bd[2] * 0.45];
-        const bp = (s) => loc(knobL[0] + bd[0] * s, knobL[1] + bd[1] * s, knobL[2] + bd[2] * s);
-        limb(bp(0.0), bp(0.15), 0.17, 0.1, '#111827');
-        limb(bp(0.15), bp(1.05), 0.09, 0.09, '#1f2937'); // black grip tape
-        limb(bp(1.05), bp(1.95), 0.09, 0.23, '#c88a4a'); // taper
-        limb(bp(1.9), bp(2.78), 0.23, 0.23, '#d49a58'); // barrel
-        limb(bp(2.76), bp(2.84), 0.2, 0.15, '#b9793a'); // end cap
+        const knobL = [hands[0] - bd[0] * 0.45 * batScale, hands[1] - bd[1] * 0.45 * batScale, hands[2] - bd[2] * 0.45 * batScale];
+        const bp = (s) => pt([knobL[0] + bd[0] * s * batScale, knobL[1] + bd[1] * s * batScale, knobL[2] + bd[2] * s * batScale]);
+        limb(bp(0.0), bp(0.15), 0.17 * radScale, 0.1 * radScale, '#111827');
+        limb(bp(0.15), bp(1.05), 0.09 * radScale, 0.09 * radScale, '#1f2937'); // black grip tape
+        limb(bp(1.05), bp(1.95), 0.09 * radScale, 0.23 * radScale, '#c88a4a'); // taper
+        limb(bp(1.9), bp(2.78), 0.23 * radScale, 0.23 * radScale, '#d49a58'); // barrel
+        limb(bp(2.76), bp(2.84), 0.2 * radScale, 0.15 * radScale, '#b9793a'); // end cap
         // Dark finish band on the barrel
-        limb(bp(2.1), bp(2.3), 0.235, 0.235, '#7a4a20');
+        limb(bp(2.1), bp(2.3), 0.235 * radScale, 0.235 * radScale, '#7a4a20');
 
         // Batting gloves over the bat handle
         const gloveP = pt(hands);
         if (gloveP) {
-            blob(gloveP, 0.15, '#f8fafc');
-            const g2 = loc(handsL[0] - 0.05, handsL[1] + 0.2, handsL[2] + 0.02);
-            blob(g2, 0.14, '#e2e8f0');
+            blob(gloveP, 0.15 * radScale, '#f8fafc');
+            const g2 = [hands[0] - 0.05 * dir, hands[1] + 0.2 * torsoScale, hands[2] + 0.02];
+            blob(pt(g2), 0.14 * radScale, '#e2e8f0');
             ctx.strokeStyle = '#0ea5e9';
             ctx.lineWidth = Math.max(1, 0.03 * gloveP.scale);
             ctx.beginPath();
-            ctx.arc(gloveP.px, gloveP.py, 0.15 * gloveP.scale, Math.PI * 0.1, Math.PI * 0.9);
+            ctx.arc(gloveP.px, gloveP.py, 0.15 * gloveP.scale * radScale, Math.PI * 0.1, Math.PI * 0.9);
             ctx.stroke();
         }
 
@@ -2661,16 +2893,19 @@ html {
     }
 
     function drawStrikeZone(isLitStrike = false) {
+        const sz_top = (state.pitchTrajectory && state.pitchTrajectory.sz_top) || getCurrentSzTop();
+        const sz_bot = (state.pitchTrajectory && state.pitchTrajectory.sz_bot) || getCurrentSzBot();
+
         // Front plane (Z = 0)
-        const tl = camera.project(-HALF_PLATE_WIDTH, SZ_TOP, 0);
-        const tr = camera.project(HALF_PLATE_WIDTH, SZ_TOP, 0);
-        const br = camera.project(HALF_PLATE_WIDTH, SZ_BOT, 0);
-        const bl = camera.project(-HALF_PLATE_WIDTH, SZ_BOT, 0);
+        const tl = camera.project(-HALF_PLATE_WIDTH, sz_top, 0);
+        const tr = camera.project(HALF_PLATE_WIDTH, sz_top, 0);
+        const br = camera.project(HALF_PLATE_WIDTH, sz_bot, 0);
+        const bl = camera.project(-HALF_PLATE_WIDTH, sz_bot, 0);
         // Back plane (rear apex of the plate) for a 3D prism read
-        const btl = camera.project(-HALF_PLATE_WIDTH, SZ_TOP, CORNER_Z);
-        const btr = camera.project(HALF_PLATE_WIDTH, SZ_TOP, CORNER_Z);
-        const bbr = camera.project(HALF_PLATE_WIDTH, SZ_BOT, CORNER_Z);
-        const bbl = camera.project(-HALF_PLATE_WIDTH, SZ_BOT, CORNER_Z);
+        const btl = camera.project(-HALF_PLATE_WIDTH, sz_top, CORNER_Z);
+        const btr = camera.project(HALF_PLATE_WIDTH, sz_top, CORNER_Z);
+        const bbr = camera.project(HALF_PLATE_WIDTH, sz_bot, CORNER_Z);
+        const bbl = camera.project(-HALF_PLATE_WIDTH, sz_bot, CORNER_Z);
 
         if (!tl || !tr || !br || !bl) return;
 
@@ -2954,10 +3189,13 @@ html {
         targetCtx.stroke();
 
         // 2. Shadow Zone Boundary (faint dashed yellow)
+        const activeSzTop = (state.currentBatter && state.currentBatter.sz_top) || getCurrentSzTop();
+        const activeSzBot = (state.currentBatter && state.currentBatter.sz_bot) || getCurrentSzBot();
+
         const szX1 = toX(-HALF_PLATE_WIDTH - BALL_RADIUS);
         const szX2 = toX(HALF_PLATE_WIDTH + BALL_RADIUS);
-        const szY1 = toY(SZ_TOP + BALL_RADIUS);
-        const szY2 = toY(SZ_BOT - BALL_RADIUS);
+        const szY1 = toY(activeSzTop + BALL_RADIUS);
+        const szY2 = toY(activeSzBot - BALL_RADIUS);
         targetCtx.strokeStyle = 'rgba(251, 191, 36, 0.28)';
         targetCtx.lineWidth = 1;
         targetCtx.setLineDash([3, 3]);
@@ -2967,8 +3205,8 @@ html {
         // 3. MLB Rulebook Strike Zone (17" wide, knees to chest midpoint)
         const rzX = toX(-HALF_PLATE_WIDTH);
         const rzW = toX(HALF_PLATE_WIDTH) - rzX;
-        const rzY = toY(SZ_TOP);
-        const rzH = toY(SZ_BOT) - rzY;
+        const rzY = toY(activeSzTop);
+        const rzH = toY(activeSzBot) - rzY;
 
         // 3x3 Grid
         targetCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
@@ -2996,8 +3234,8 @@ html {
         const strikeCalls = pitches.filter(p => p.call === 'STRIKE');
         let estMinX = -HALF_PLATE_WIDTH;
         let estMaxX = HALF_PLATE_WIDTH;
-        let estMinY = SZ_BOT;
-        let estMaxY = SZ_TOP;
+        let estMinY = activeSzBot;
+        let estMaxY = activeSzTop;
         let tendencyBadge = "ABS Calibrated (Default)";
 
         if (strikeCalls.length >= 3) {
@@ -3011,8 +3249,8 @@ html {
             const blend = Math.min(1.0, strikeCalls.length / 10);
             estMinX = (-HALF_PLATE_WIDTH) * (1 - blend) + uMinX * blend;
             estMaxX = (HALF_PLATE_WIDTH) * (1 - blend) + uMaxX * blend;
-            estMinY = (SZ_BOT) * (1 - blend) + uMinY * blend;
-            estMaxY = (SZ_TOP) * (1 - blend) + uMaxY * blend;
+            estMinY = (activeSzBot) * (1 - blend) + uMinY * blend;
+            estMaxY = (activeSzTop) * (1 - blend) + uMaxY * blend;
 
             estMinX = Math.max(-1.15, Math.min(-0.35, estMinX));
             estMaxX = Math.min(1.15, Math.max(0.35, estMaxX));
@@ -3466,7 +3704,14 @@ https://thomsfoolery.com/tools/umpire-simulator/`;
         state.speedSetting = parseFloat(e.target.value);
     });
     document.getElementById('batter-select').addEventListener('change', (e) => {
-        state.batterHandedness = e.target.value;
+        state.batterSetting = e.target.value;
+        const b = resolveBatterProfile(state.batterSetting);
+        if (b) {
+            state.currentBatter = b;
+            state.batterHandedness = b.stand;
+            updateBatterDisplay(b);
+            drawVirtualStrikeZone();
+        }
     });
     document.getElementById('pitch-type-select').addEventListener('change', (e) => {
         state.pitchTypeSetting = e.target.value;
@@ -3642,7 +3887,8 @@ https://thomsfoolery.com/tools/umpire-simulator/`;
     // Window resize also updates virtual zone
     window.addEventListener('resize', drawVirtualStrikeZone);
 
-    // Initial draw of virtual strike zone
+    // Initial setup of batter display and virtual strike zone
+    updateBatterDisplay(state.currentBatter);
     drawVirtualStrikeZone();
 
     // Start Animation Loop

@@ -71,6 +71,7 @@ export default class SitemapBuilder {
             "/tools/nhl-trend-analyzer/",
             "/tools/nfl-trend-analyzer/",
             "/tools/stream-schedule/",
+            "/tools/osrs-bank-skilling/",
             "/tools/runescape-bond-tracker/",
             "/tools/fitness/",
             "/tools/skill-building/"

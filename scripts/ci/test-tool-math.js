@@ -192,6 +192,25 @@ test('Clear ball outside (12 inches, 2.5 ft)', () => {
   assert.equal(result.isRulebookStrike, false);
 });
 
+test('Dynamic Statcast batter strike zones (Altuve 5\'6" vs Judge 6\'7")', () => {
+  const altuveBot = 1.34, altuveTop = 3.16;
+  const judgeBot = 1.72, judgeTop = 3.94;
+
+  // High pitch at Y = 3.65 ft (middle of plate X = 0)
+  // Inside Judge's tall zone, but high ball against Altuve
+  const pitchHighAltuve = evaluatePitchAtPlate(0, 3.65, altuveBot, altuveTop);
+  const pitchHighJudge = evaluatePitchAtPlate(0, 3.65, judgeBot, judgeTop);
+  assert.equal(pitchHighAltuve.isRulebookStrike, false, '3.65ft should be a high ball for Altuve');
+  assert.equal(pitchHighJudge.isRulebookStrike, true, '3.65ft should be a strike for Judge');
+
+  // Low pitch at Y = 1.40 ft (middle of plate X = 0)
+  // Low strike at Altuve\'s knees, but ball below the knees for Judge
+  const pitchLowAltuve = evaluatePitchAtPlate(0, 1.40, altuveBot, altuveTop);
+  const pitchLowJudge = evaluatePitchAtPlate(0, 1.40, judgeBot, judgeTop);
+  assert.equal(pitchLowAltuve.isRulebookStrike, true, '1.40ft should be a strike at Altuve\'s knees');
+  assert.equal(pitchLowJudge.isRulebookStrike, false, '1.40ft should be a low ball for Judge');
+});
+
 test('Umpire Run Value Favor calculation', () => {
   // When a true strike is called a ball: favors batter by ~+0.14 runs on average
   // When a true ball is called a strike: favors pitcher by ~-0.14 runs

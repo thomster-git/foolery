@@ -1,0 +1,1736 @@
+<div class="page-container" style="width: 100%;">
+    <div class="content-wrapper tool-layout" style="width: 100%; max-width: 1380px; margin: 1.5rem auto; padding: 0 1rem;">
+        
+        <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "OSRS Bank Skilling & Magic/Alch Profit Calculator",
+          "url": "https://thomsfoolery.com/tools/osrs-bank-skilling/",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Any",
+          "offers": {
+            "@type": "Offer",
+            "price": "0"
+          },
+          "description": "Real-time Old School RuneScape (OSRS) bank skilling profit calculator. Live GE margins, GP/XP, GP/hr, and 2% GE tax calculations for Fletching, Herblore, Crafting, High Alch, Smithing, and Cooking."
+        }
+        </script>
+
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs" style="margin-bottom: 1.5rem;">
+            <a href="/">Home</a> &gt;
+            <a href="/tools/">Tools</a> &gt;
+            <span>OSRS Bank Skilling Profit Calculator</span>
+        </div>
+
+        <!-- Tool Header -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 1.5rem; margin-bottom: 1.5rem;">
+            <div>
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.4rem;">
+                    <span style="font-size: 2.2rem;">⚖️</span>
+                    <h1 style="font-size: 2.2rem; font-weight: 800; color: #d4a843; margin: 0; font-family: 'Cinzel', serif, system-ui;">OSRS Bank Skilling Profit Calculator</h1>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0; max-width: 850px;">
+                    Real-time margins for bank standing skills powered by the official OSRS Wiki Prices API. Tracks multi-ingredient recipe costs, accurate 2% GE tax (with 5M cap), GP/XP ratios, and estimated GP/hour.
+                </p>
+            </div>
+
+            <!-- API Status & Refresh Button -->
+            <div style="display: flex; align-items: center; gap: 0.8rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 0.6rem 1rem; border-radius: var(--radius-md);">
+                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                    <span id="apiStatusText" style="font-size: 0.75rem; color: #10b981; font-weight: 600; display: flex; align-items: center; gap: 0.35rem;">
+                        <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span> Live Wiki API
+                    </span>
+                    <span id="lastUpdatedText" style="font-size: 0.7rem; color: var(--text-muted);">Syncing prices...</span>
+                </div>
+                <button id="refreshBtn" onclick="fetchLiveData(true)" style="background: rgba(212, 168, 67, 0.15); border: 1px solid #d4a843; color: #d4a843; padding: 0.45rem 0.85rem; border-radius: 6px; font-weight: 600; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;">
+                    🔄 Refresh
+                </button>
+            </div>
+        </div>
+
+        <!-- Strategy Controls & Global Rates Panel -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: center;">
+            
+            <!-- Left: Mode Toggle -->
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;">
+                <div>
+                    <label style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Pricing Mode</label>
+                    <div style="display: flex; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; background: var(--bg-dark);">
+                        <button type="button" class="mode-btn active" id="modeInstant" onclick="setPricingMode('instant')" title="Buy ingredients at instant-buy (high) and sell product at instant-sell (low) or alch. Safe, immediate numbers.">
+                            ⚡ Instant (Fast / Dump)
+                        </button>
+                        <button type="button" class="mode-btn" id="modePatient" onclick="setPricingMode('patient')" title="Buy ingredients at slow-buy (low) and sell at slow-sell (high). Maximum merchant margins.">
+                            ⏳ Patient (Margin Orders)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Min Volume Filter -->
+                <div>
+                    <label style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Min 1h Volume</label>
+                    <select id="minVolumeSelect" onchange="renderAll()" style="background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.45rem 0.75rem; border-radius: 6px; font-size: 0.85rem;">
+                        <option value="0">All Items (No Limit)</option>
+                        <option value="50" selected>≥ 50 / hr (Moderate)</option>
+                        <option value="250">≥ 250 / hr (High Liquidity)</option>
+                        <option value="1000">≥ 1,000 / hr (Very Active)</option>
+                    </select>
+                </div>
+
+                <!-- Profit Filter -->
+                <div>
+                    <label style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Profit Filter</label>
+                    <select id="profitFilterSelect" onchange="renderAll()" style="background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.45rem 0.75rem; border-radius: 6px; font-size: 0.85rem;">
+                        <option value="all">Show All Recipes</option>
+                        <option value="profit" selected>Profitable Only (Net &gt; 0)</option>
+                        <option value="loss">Training Losses (XP Focused)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Right: Search & Global Overrides -->
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;">
+                <div>
+                    <label style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Search Item / Method</label>
+                    <input type="text" id="recipeSearch" oninput="renderAll()" placeholder="e.g. Magic longbow, Ranarr..." style="background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.45rem 0.85rem; border-radius: 6px; font-size: 0.85rem; width: 200px;">
+                </div>
+
+                <div>
+                    <label style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Nature Rune (GP)</label>
+                    <input type="number" id="natureRuneOverride" oninput="updateNaturePrice()" style="background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.45rem 0.65rem; border-radius: 6px; font-size: 0.85rem; width: 85px;" value="100">
+                </div>
+            </div>
+        </div>
+
+        <!-- Skill Tabs Bar -->
+        <div class="skill-tabs-wrapper">
+            <button class="skill-tab active" data-skill="all" onclick="selectSkillTab('all')">
+                🌐 All Skills <span class="tab-badge" id="count-all">0</span>
+            </button>
+            <button class="skill-tab" data-skill="fletching" onclick="selectSkillTab('fletching')">
+                🏹 Fletching <span class="tab-badge" id="count-fletching">0</span>
+            </button>
+            <button class="skill-tab" data-skill="herblore" onclick="selectSkillTab('herblore')">
+                🌿 Herblore <span class="tab-badge" id="count-herblore">0</span>
+            </button>
+            <button class="skill-tab" data-skill="crafting" onclick="selectSkillTab('crafting')">
+                💎 Crafting <span class="tab-badge" id="count-crafting">0</span>
+            </button>
+            <button class="skill-tab" data-skill="magic" onclick="selectSkillTab('magic')">
+                🪄 Magic &amp; Alch <span class="tab-badge" id="count-magic">0</span>
+            </button>
+            <button class="skill-tab" data-skill="smithing" onclick="selectSkillTab('smithing')">
+                ⚒️ Smithing <span class="tab-badge" id="count-smithing">0</span>
+            </button>
+            <button class="skill-tab" data-skill="cooking" onclick="selectSkillTab('cooking')">
+                🍲 Cooking <span class="tab-badge" id="count-cooking">0</span>
+            </button>
+        </div>
+
+        <!-- Sub-category Filter Pills (Dynamic) -->
+        <div id="subCategoryBar" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem;">
+            <!-- Dynamically populated -->
+        </div>
+
+        <!-- Stats Overview Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+            <div class="summary-stat-card">
+                <span class="stat-label">Top Profit / Item</span>
+                <span class="stat-val pos" id="topProfitItem">—</span>
+                <span class="stat-sub" id="topProfitItemName">Loading...</span>
+            </div>
+            <div class="summary-stat-card">
+                <span class="stat-label">Top Hourly GP</span>
+                <span class="stat-val pos" id="topHourlyGP">—</span>
+                <span class="stat-sub" id="topHourlyName">Loading...</span>
+            </div>
+            <div class="summary-stat-card">
+                <span class="stat-label">Best Free / Profitable XP</span>
+                <span class="stat-val neutral" id="bestXpRatio">—</span>
+                <span class="stat-sub" id="bestXpName">Loading...</span>
+            </div>
+            <div class="summary-stat-card">
+                <span class="stat-label">Tax Saved via Alch</span>
+                <span class="stat-val gold" id="alchTaxNotice">0% Alch Tax</span>
+                <span class="stat-sub">GE sales incur 2% tax</span>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 2rem;">
+            
+            <div style="overflow-x: auto;">
+                <table class="osrs-table" id="recipeTable">
+                    <thead>
+                        <tr>
+                            <th onclick="setSort('name')">Method / Recipe <span class="sort-icon" id="sort-name">↕</span></th>
+                            <th onclick="setSort('skill')">Skill <span class="sort-icon" id="sort-skill">↕</span></th>
+                            <th>Ingredients Breakdown</th>
+                            <th onclick="setSort('cost')">Cost <span class="sort-icon" id="sort-cost">↕</span></th>
+                            <th onclick="setSort('revenue')">Revenue <span class="sort-icon" id="sort-revenue">↕</span></th>
+                            <th onclick="setSort('profit')">Profit / Action <span class="sort-icon" id="sort-profit">▼</span></th>
+                            <th onclick="setSort('gpxp')">GP / XP <span class="sort-icon" id="sort-gpxp">↕</span></th>
+                            <th onclick="setSort('gphr')">Est. GP / Hr <span class="sort-icon" id="sort-gphr">↕</span></th>
+                            <th onclick="setSort('limit')">4h Limit <span class="sort-icon" id="sort-limit">↕</span></th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recipeTableBody">
+                        <tr>
+                            <td colspan="10" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                                <div style="display: inline-block; animation: spin 1s linear infinite; font-size: 1.5rem; margin-bottom: 0.5rem;">⏳</div>
+                                <div>Connecting to OSRS Wiki Prices API &amp; computing recipe margins...</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Table Footer -->
+            <div style="padding: 0.85rem 1.25rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.82rem; color: var(--text-muted); background: var(--bg-dark);">
+                <div id="recipeCountDisplay">Showing 0 recipes</div>
+                <div>All prices fetched live via <code>prices.runescape.wiki</code> • GE tax accurately capped at 5M GP</div>
+            </div>
+        </div>
+
+        <!-- Batch Calculator Drawer / Modal -->
+        <div id="calcModal" class="calc-modal" style="display: none;">
+            <div class="calc-modal-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <span id="modalIcon" style="font-size: 1.5rem;">🏹</span>
+                        <h3 id="modalTitle" style="margin: 0; color: #d4a843; font-size: 1.3rem;">Batch Profit Calculator</h3>
+                    </div>
+                    <button onclick="closeModal()" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer;">&times;</button>
+                </div>
+
+                <div id="modalBody">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Guide & Explanation Section -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; line-height: 1.7; color: var(--text-muted); font-size: 0.92rem;">
+            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-top: 0; margin-bottom: 0.75rem;">About This OSRS Bank Skilling Profit Engine</h3>
+            <p>
+                Bank standing skills in Old School RuneScape (Fletching, Herblore, Crafting, Magic, Smithing, and Cooking) often represent massive GP drains for casual players. However, because high-level players pay a premium for fast XP, intermediate steps (like stringing bows, cutting uncut gems, cleaning grimy herbs, or making unfinished potions) frequently offer substantial profit margins for players willing to process materials at the Grand Exchange.
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; border-left: 3px solid #d4a843;">
+                    <strong style="color: #d4a843; display: block; margin-bottom: 0.3rem;">2% GE Tax Accuracy:</strong>
+                    When selling crafted items back to the Grand Exchange, the tool automatically calculates the 2% tax (capped at 5M GP). For items converted via <strong>High Alchemy</strong> or shop sales, 0% tax is applied.
+                </div>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; border-left: 3px solid #10b981;">
+                    <strong style="color: #10b981; display: block; margin-bottom: 0.3rem;">GP / XP Efficiency:</strong>
+                    Positive GP/XP numbers in green indicate methods where you <em>make</em> money while gaining skill XP. A negative number indicates the exact GP cost per XP gained.
+                </div>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; border-left: 3px solid #06b6d4;">
+                    <strong style="color: #06b6d4; display: block; margin-bottom: 0.3rem;">4-Hour GE Limits:</strong>
+                    The Grand Exchange enforces strict 4-hour buy quotas. The "4h Limit" column reveals your maximum theoretical profit per 4-hour resting cycle before you must switch items.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    .mode-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        padding: 0.45rem 0.85rem;
+        font-size: 0.82rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .mode-btn.active {
+        background: #d4a843;
+        color: #000;
+    }
+    .skill-tabs-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.75rem;
+    }
+    .skill-tab {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        padding: 0.55rem 1rem;
+        border-radius: 8px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+    }
+    .skill-tab:hover {
+        border-color: #d4a843;
+        color: var(--text-main);
+    }
+    .skill-tab.active {
+        background: rgba(212, 168, 67, 0.15);
+        border-color: #d4a843;
+        color: #d4a843;
+    }
+    .tab-badge {
+        font-size: 0.7rem;
+        background: var(--bg-dark);
+        padding: 2px 6px;
+        border-radius: 10px;
+        color: var(--text-muted);
+    }
+    .skill-tab.active .tab-badge {
+        background: #d4a843;
+        color: #000;
+        font-weight: 700;
+    }
+    .sub-cat-pill {
+        background: var(--bg-dark);
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        font-size: 0.78rem;
+        padding: 0.3rem 0.75rem;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .sub-cat-pill:hover, .sub-cat-pill.active {
+        border-color: #06b6d4;
+        color: #06b6d4;
+        background: rgba(6, 182, 212, 0.1);
+    }
+    .summary-stat-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    .stat-label {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .stat-val {
+        font-size: 1.4rem;
+        font-weight: 700;
+        font-family: var(--font-mono, monospace);
+    }
+    .stat-val.pos { color: #10b981; }
+    .stat-val.neg { color: #ef4444; }
+    .stat-val.neutral { color: #06b6d4; }
+    .stat-val.gold { color: #d4a843; }
+    .stat-sub {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .osrs-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+        text-align: left;
+    }
+    .osrs-table th {
+        background: var(--bg-dark);
+        color: var(--text-muted);
+        font-weight: 600;
+        padding: 0.85rem 1rem;
+        cursor: pointer;
+        user-select: none;
+        border-bottom: 1px solid var(--border-color);
+        white-space: nowrap;
+    }
+    .osrs-table th:hover {
+        color: #d4a843;
+    }
+    .osrs-table td {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        vertical-align: middle;
+    }
+    .osrs-table tr:hover td {
+        background: rgba(255, 255, 255, 0.02);
+    }
+    .sort-icon {
+        font-size: 0.75rem;
+        opacity: 0.6;
+        margin-left: 0.25rem;
+    }
+    .val-pos {
+        color: #10b981;
+        font-weight: 600;
+    }
+    .val-neg {
+        color: #ef4444;
+        font-weight: 600;
+    }
+    .val-neutral {
+        color: var(--text-muted);
+    }
+    .val-gold {
+        color: #d4a843;
+        font-weight: 600;
+    }
+    .calc-btn {
+        background: rgba(6, 182, 212, 0.1);
+        border: 1px solid #06b6d4;
+        color: #06b6d4;
+        padding: 0.3rem 0.6rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+    .calc-btn:hover {
+        background: #06b6d4;
+        color: #000;
+    }
+    .calc-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        padding: 1rem;
+    }
+    .calc-modal-content {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        width: 100%;
+        max-width: 600px;
+        padding: 1.5rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    }
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+</style>
+
+<script>
+// ── OSRS BANK SKILLING PROFIT ENGINE ────────────────────────────
+(function() {
+    'use strict';
+
+    // State
+    const state = {
+        pricingMode: 'instant', // 'instant' (buy high, sell low) or 'patient' (buy low, sell high)
+        selectedSkill: 'all',
+        selectedSubCat: 'all',
+        minVolume: 50,
+        profitFilter: 'profit',
+        searchQuery: '',
+        naturePriceOverride: 100,
+        sortBy: 'profit',
+        sortAsc: false,
+        lastFetchTime: null,
+        autoRefreshInterval: null
+    };
+
+    // Global in-memory cache
+    let livePrices = { latest: {}, mapping: {}, hour: {} };
+
+    // Common action rates (actions/hour)
+    const RATES = {
+        fletch_string: 1800,
+        fletch_cut: 1400,
+        fletch_bolts: 20000,
+        fletch_darts: 15000,
+        herblore_clean: 3500,
+        herblore_unf: 2400,
+        herblore_pot: 2400,
+        craft_cut_gem: 2500,
+        craft_jewelry: 1200,
+        craft_glass: 1600,
+        craft_dhide: 1200,
+        craft_staff: 2000,
+        smith_blast_furnace: 4000,
+        smith_furnace: 1200,
+        smith_cballs: 550, // bars/hr (x4 or x8 cannonballs)
+        cook_fish: 1300,
+        cook_karambwan_1t: 4000,
+        cook_wine: 2200,
+        magic_alch: 1200,
+        magic_superheat: 1800,
+        magic_plank: 1600
+    };
+
+    // Standard Multi-Ingredient Recipes Database
+    const RECIPES = [
+        // ── 🏹 FLETCHING: BOW STRINGING ──
+        {
+            id: 'fl_str_magic_long',
+            name: 'String Magic Longbow',
+            skill: 'fletching',
+            subCat: 'Stringing',
+            icon: '🏹',
+            rate: RATES.fletch_string,
+            xp: 91.5,
+            inputs: [
+                { id: 70, name: 'Magic longbow (u)', qty: 1 },
+                { id: 1777, name: 'Bow string', qty: 1 }
+            ],
+            output: { id: 859, name: 'Magic longbow', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'fl_str_magic_short',
+            name: 'String Magic Shortbow',
+            skill: 'fletching',
+            subCat: 'Stringing',
+            icon: '🏹',
+            rate: RATES.fletch_string,
+            xp: 83.3,
+            inputs: [
+                { id: 72, name: 'Magic shortbow (u)', qty: 1 },
+                { id: 1777, name: 'Bow string', qty: 1 }
+            ],
+            output: { id: 861, name: 'Magic shortbow', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'fl_str_yew_long',
+            name: 'String Yew Longbow',
+            skill: 'fletching',
+            subCat: 'Stringing',
+            icon: '🏹',
+            rate: RATES.fletch_string,
+            xp: 75.0,
+            inputs: [
+                { id: 66, name: 'Yew longbow (u)', qty: 1 },
+                { id: 1777, name: 'Bow string', qty: 1 }
+            ],
+            output: { id: 855, name: 'Yew longbow', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'fl_str_yew_short',
+            name: 'String Yew Shortbow',
+            skill: 'fletching',
+            subCat: 'Stringing',
+            icon: '🏹',
+            rate: RATES.fletch_string,
+            xp: 67.5,
+            inputs: [
+                { id: 68, name: 'Yew shortbow (u)', qty: 1 },
+                { id: 1777, name: 'Bow string', qty: 1 }
+            ],
+            output: { id: 857, name: 'Yew shortbow', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'fl_str_maple_long',
+            name: 'String Maple Longbow',
+            skill: 'fletching',
+            subCat: 'Stringing',
+            icon: '🏹',
+            rate: RATES.fletch_string,
+            xp: 58.3,
+            inputs: [
+                { id: 62, name: 'Maple longbow (u)', qty: 1 },
+                { id: 1777, name: 'Bow string', qty: 1 }
+            ],
+            output: { id: 851, name: 'Maple longbow', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'fl_str_willow_long',
+            name: 'String Willow Longbow',
+            skill: 'fletching',
+            subCat: 'Stringing',
+            icon: '🏹',
+            rate: RATES.fletch_string,
+            xp: 41.5,
+            inputs: [
+                { id: 58, name: 'Willow longbow (u)', qty: 1 },
+                { id: 1777, name: 'Bow string', qty: 1 }
+            ],
+            output: { id: 847, name: 'Willow longbow', qty: 1 },
+            limit: 11000
+        },
+
+        // ── 🏹 FLETCHING: CUTTING LOGS ──
+        {
+            id: 'fl_cut_magic_long',
+            name: 'Cut Magic Longbow (u)',
+            skill: 'fletching',
+            subCat: 'Cutting',
+            icon: '🪓',
+            rate: RATES.fletch_cut,
+            xp: 91.5,
+            inputs: [{ id: 1513, name: 'Magic logs', qty: 1 }],
+            output: { id: 70, name: 'Magic longbow (u)', qty: 1 },
+            limit: 12000
+        },
+        {
+            id: 'fl_cut_yew_long',
+            name: 'Cut Yew Longbow (u)',
+            skill: 'fletching',
+            subCat: 'Cutting',
+            icon: '🪓',
+            rate: RATES.fletch_cut,
+            xp: 75.0,
+            inputs: [{ id: 1515, name: 'Yew logs', qty: 1 }],
+            output: { id: 66, name: 'Yew longbow (u)', qty: 1 },
+            limit: 12000
+        },
+        {
+            id: 'fl_cut_maple_long',
+            name: 'Cut Maple Longbow (u)',
+            skill: 'fletching',
+            subCat: 'Cutting',
+            icon: '🪓',
+            rate: RATES.fletch_cut,
+            xp: 58.3,
+            inputs: [{ id: 1517, name: 'Maple logs', qty: 1 }],
+            output: { id: 62, name: 'Maple longbow (u)', qty: 1 },
+            limit: 12000
+        },
+
+        // ── 🏹 FLETCHING: BOLTS & DARTS ──
+        {
+            id: 'fl_bolt_broad',
+            name: 'Fletch Broad Bolts (x10)',
+            skill: 'fletching',
+            subCat: 'Bolts',
+            icon: '🎯',
+            rate: RATES.fletch_bolts,
+            xp: 100, // 10 per bolt
+            inputs: [
+                { id: 11875, name: 'Unfinished broad bolts', qty: 10 },
+                { id: 314, name: 'Feather', qty: 10 }
+            ],
+            output: { id: 4160, name: 'Broad bolts', qty: 10 },
+            limit: 10000
+        },
+        {
+            id: 'fl_bolt_diamond_tip',
+            name: 'Tip Diamond Bolts (x10)',
+            skill: 'fletching',
+            subCat: 'Bolts',
+            icon: '💎',
+            rate: RATES.fletch_bolts,
+            xp: 70,
+            inputs: [
+                { id: 9143, name: 'Adamant bolts', qty: 10 },
+                { id: 9192, name: 'Diamond bolt tips', qty: 10 }
+            ],
+            output: { id: 9340, name: 'Diamond bolts', qty: 10 },
+            limit: 11000
+        },
+        {
+            id: 'fl_bolt_ruby_tip',
+            name: 'Tip Ruby Bolts (x10)',
+            skill: 'fletching',
+            subCat: 'Bolts',
+            icon: '🔴',
+            rate: RATES.fletch_bolts,
+            xp: 63,
+            inputs: [
+                { id: 9143, name: 'Adamant bolts', qty: 10 },
+                { id: 9191, name: 'Ruby bolt tips', qty: 10 }
+            ],
+            output: { id: 9339, name: 'Ruby bolts', qty: 10 },
+            limit: 11000
+        },
+        {
+            id: 'fl_bolt_dragonstone_tip',
+            name: 'Tip Dragonstone Bolts (x10)',
+            skill: 'fletching',
+            subCat: 'Bolts',
+            icon: '🟣',
+            rate: RATES.fletch_bolts,
+            xp: 82,
+            inputs: [
+                { id: 9144, name: 'Runite bolts', qty: 10 },
+                { id: 9193, name: 'Dragonstone bolt tips', qty: 10 }
+            ],
+            output: { id: 9341, name: 'Dragonstone bolts', qty: 10 },
+            limit: 11000
+        },
+        {
+            id: 'fl_dart_adamant',
+            name: 'Fletch Adamant Darts (x10)',
+            skill: 'fletching',
+            subCat: 'Darts',
+            icon: '🗡️',
+            rate: RATES.fletch_darts,
+            xp: 150,
+            inputs: [
+                { id: 823, name: 'Adamant dart tip', qty: 10 },
+                { id: 314, name: 'Feather', qty: 10 }
+            ],
+            output: { id: 810, name: 'Adamant dart', qty: 10 },
+            limit: 11000
+        },
+        {
+            id: 'fl_dart_rune',
+            name: 'Fletch Rune Darts (x10)',
+            skill: 'fletching',
+            subCat: 'Darts',
+            icon: '🗡️',
+            rate: RATES.fletch_darts,
+            xp: 188,
+            inputs: [
+                { id: 824, name: 'Rune dart tip', qty: 10 },
+                { id: 314, name: 'Feather', qty: 10 }
+            ],
+            output: { id: 811, name: 'Rune dart', qty: 10 },
+            limit: 11000
+        },
+
+        // ── 🌿 HERBLORE: HERB CLEANING ──
+        {
+            id: 'hb_cln_ranarr',
+            name: 'Clean Grimy Ranarr',
+            skill: 'herblore',
+            subCat: 'Cleaning',
+            icon: '🌿',
+            rate: RATES.herblore_clean,
+            xp: 7.5,
+            inputs: [{ id: 207, name: 'Grimy ranarr weed', qty: 1 }],
+            output: { id: 257, name: 'Ranarr weed', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'hb_cln_snapdragon',
+            name: 'Clean Grimy Snapdragon',
+            skill: 'herblore',
+            subCat: 'Cleaning',
+            icon: '🌿',
+            rate: RATES.herblore_clean,
+            xp: 11.8,
+            inputs: [{ id: 3051, name: 'Grimy snapdragon', qty: 1 }],
+            output: { id: 3000, name: 'Snapdragon', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'hb_cln_torstol',
+            name: 'Clean Grimy Torstol',
+            skill: 'herblore',
+            subCat: 'Cleaning',
+            icon: '🌿',
+            rate: RATES.herblore_clean,
+            xp: 15.0,
+            inputs: [{ id: 219, name: 'Grimy torstol', qty: 1 }],
+            output: { id: 269, name: 'Torstol', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'hb_cln_toadflax',
+            name: 'Clean Grimy Toadflax',
+            skill: 'herblore',
+            subCat: 'Cleaning',
+            icon: '🌿',
+            rate: RATES.herblore_clean,
+            xp: 8.0,
+            inputs: [{ id: 3049, name: 'Grimy toadflax', qty: 1 }],
+            output: { id: 2998, name: 'Toadflax', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'hb_cln_kwuarm',
+            name: 'Clean Grimy Kwuarm',
+            skill: 'herblore',
+            subCat: 'Cleaning',
+            icon: '🌿',
+            rate: RATES.herblore_clean,
+            xp: 11.3,
+            inputs: [{ id: 213, name: 'Grimy kwuarm', qty: 1 }],
+            output: { id: 263, name: 'Kwuarm', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'hb_cln_cadantine',
+            name: 'Clean Grimy Cadantine',
+            skill: 'herblore',
+            subCat: 'Cleaning',
+            icon: '🌿',
+            rate: RATES.herblore_clean,
+            xp: 12.5,
+            inputs: [{ id: 215, name: 'Grimy cadantine', qty: 1 }],
+            output: { id: 265, name: 'Cadantine', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'hb_cln_avantoe',
+            name: 'Clean Grimy Avantoe',
+            skill: 'herblore',
+            subCat: 'Cleaning',
+            icon: '🌿',
+            rate: RATES.herblore_clean,
+            xp: 10.0,
+            inputs: [{ id: 211, name: 'Grimy avantoe', qty: 1 }],
+            output: { id: 261, name: 'Avantoe', qty: 1 },
+            limit: 11000
+        },
+
+        // ── 🌿 HERBLORE: UNFINISHED POTIONS ──
+        {
+            id: 'hb_unf_ranarr',
+            name: 'Make Ranarr Potion (unf)',
+            skill: 'herblore',
+            subCat: 'Unfinished Potions',
+            icon: '🧪',
+            rate: RATES.herblore_unf,
+            xp: 0,
+            inputs: [
+                { id: 257, name: 'Ranarr weed', qty: 1 },
+                { id: 227, name: 'Vial of water', qty: 1 }
+            ],
+            output: { id: 99, name: 'Ranarr potion (unf)', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'hb_unf_snapdragon',
+            name: 'Make Snapdragon Potion (unf)',
+            skill: 'herblore',
+            subCat: 'Unfinished Potions',
+            icon: '🧪',
+            rate: RATES.herblore_unf,
+            xp: 0,
+            inputs: [
+                { id: 3000, name: 'Snapdragon', qty: 1 },
+                { id: 227, name: 'Vial of water', qty: 1 }
+            ],
+            output: { id: 3004, name: 'Snapdragon potion (unf)', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'hb_unf_toadflax',
+            name: 'Make Toadflax Potion (unf)',
+            skill: 'herblore',
+            subCat: 'Unfinished Potions',
+            icon: '🧪',
+            rate: RATES.herblore_unf,
+            xp: 0,
+            inputs: [
+                { id: 2998, name: 'Toadflax', qty: 1 },
+                { id: 227, name: 'Vial of water', qty: 1 }
+            ],
+            output: { id: 3002, name: 'Toadflax potion (unf)', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'hb_unf_torstol',
+            name: 'Make Torstol Potion (unf)',
+            skill: 'herblore',
+            subCat: 'Unfinished Potions',
+            icon: '🧪',
+            rate: RATES.herblore_unf,
+            xp: 0,
+            inputs: [
+                { id: 269, name: 'Torstol', qty: 1 },
+                { id: 227, name: 'Vial of water', qty: 1 }
+            ],
+            output: { id: 111, name: 'Torstol potion (unf)', qty: 1 },
+            limit: 11000
+        },
+
+        // ── 🌿 HERBLORE: FINISHED POTIONS ──
+        {
+            id: 'hb_pot_prayer',
+            name: 'Brew Prayer Potion (3)',
+            skill: 'herblore',
+            subCat: 'Finished Potions',
+            icon: '🍶',
+            rate: RATES.herblore_pot,
+            xp: 87.5,
+            inputs: [
+                { id: 99, name: 'Ranarr potion (unf)', qty: 1 },
+                { id: 231, name: 'Snape grass', qty: 1 }
+            ],
+            output: { id: 139, name: 'Prayer potion(3)', qty: 1 },
+            limit: 10000
+        },
+        {
+            id: 'hb_pot_super_restore',
+            name: 'Brew Super Restore (3)',
+            skill: 'herblore',
+            subCat: 'Finished Potions',
+            icon: '🍶',
+            rate: RATES.herblore_pot,
+            xp: 142.5,
+            inputs: [
+                { id: 3004, name: 'Snapdragon potion (unf)', qty: 1 },
+                { id: 223, name: "Red spiders' eggs", qty: 1 }
+            ],
+            output: { id: 3026, name: 'Super restore(3)', qty: 1 },
+            limit: 10000
+        },
+        {
+            id: 'hb_pot_saradomin_brew',
+            name: 'Brew Saradomin Brew (3)',
+            skill: 'herblore',
+            subCat: 'Finished Potions',
+            icon: '🍶',
+            rate: RATES.herblore_pot,
+            xp: 180.0,
+            inputs: [
+                { id: 3002, name: 'Toadflax potion (unf)', qty: 1 },
+                { id: 6693, name: "Crushed bird nest", qty: 1 }
+            ],
+            output: { id: 6687, name: 'Saradomin brew(3)', qty: 1 },
+            limit: 10000
+        },
+
+        // ── 💎 CRAFTING: GEM CUTTING ──
+        {
+            id: 'cr_gem_sapphire',
+            name: 'Cut Sapphire',
+            skill: 'crafting',
+            subCat: 'Gem Cutting',
+            icon: '💎',
+            rate: RATES.craft_cut_gem,
+            xp: 50.0,
+            inputs: [{ id: 1623, name: 'Uncut sapphire', qty: 1 }],
+            output: { id: 1607, name: 'Sapphire', qty: 1 },
+            limit: 13000
+        },
+        {
+            id: 'cr_gem_emerald',
+            name: 'Cut Emerald',
+            skill: 'crafting',
+            subCat: 'Gem Cutting',
+            icon: '💎',
+            rate: RATES.craft_cut_gem,
+            xp: 67.5,
+            inputs: [{ id: 1621, name: 'Uncut emerald', qty: 1 }],
+            output: { id: 1605, name: 'Emerald', qty: 1 },
+            limit: 13000
+        },
+        {
+            id: 'cr_gem_ruby',
+            name: 'Cut Ruby',
+            skill: 'crafting',
+            subCat: 'Gem Cutting',
+            icon: '💎',
+            rate: RATES.craft_cut_gem,
+            xp: 85.0,
+            inputs: [{ id: 1619, name: 'Uncut ruby', qty: 1 }],
+            output: { id: 1603, name: 'Ruby', qty: 1 },
+            limit: 13000
+        },
+        {
+            id: 'cr_gem_diamond',
+            name: 'Cut Diamond',
+            skill: 'crafting',
+            subCat: 'Gem Cutting',
+            icon: '💎',
+            rate: RATES.craft_cut_gem,
+            xp: 107.5,
+            inputs: [{ id: 1617, name: 'Uncut diamond', qty: 1 }],
+            output: { id: 1601, name: 'Diamond', qty: 1 },
+            limit: 2500
+        },
+        {
+            id: 'cr_gem_dragonstone',
+            name: 'Cut Dragonstone',
+            skill: 'crafting',
+            subCat: 'Gem Cutting',
+            icon: '💎',
+            rate: RATES.craft_cut_gem,
+            xp: 137.5,
+            inputs: [{ id: 1631, name: 'Uncut dragonstone', qty: 1 }],
+            output: { id: 1615, name: 'Dragonstone', qty: 1 },
+            limit: 2500
+        },
+
+        // ── 💎 CRAFTING: JEWELRY ──
+        {
+            id: 'cr_jwl_diamond_bracelet',
+            name: 'Craft Diamond Bracelet',
+            skill: 'crafting',
+            subCat: 'Jewelry',
+            icon: '💍',
+            rate: RATES.craft_jewelry,
+            xp: 95.0,
+            inputs: [
+                { id: 2357, name: 'Gold bar', qty: 1 },
+                { id: 1601, name: 'Diamond', qty: 1 }
+            ],
+            output: { id: 11092, name: 'Diamond bracelet', qty: 1 },
+            limit: 10000
+        },
+        {
+            id: 'cr_jwl_ruby_bracelet',
+            name: 'Craft Ruby Bracelet',
+            skill: 'crafting',
+            subCat: 'Jewelry',
+            icon: '💍',
+            rate: RATES.craft_jewelry,
+            xp: 80.0,
+            inputs: [
+                { id: 2357, name: 'Gold bar', qty: 1 },
+                { id: 1603, name: 'Ruby', qty: 1 }
+            ],
+            output: { id: 11085, name: 'Ruby bracelet', qty: 1 },
+            limit: 10000
+        },
+        {
+            id: 'cr_jwl_gold_bracelet',
+            name: 'Craft Gold Bracelet',
+            skill: 'crafting',
+            subCat: 'Jewelry',
+            icon: '💍',
+            rate: RATES.craft_jewelry,
+            xp: 25.0,
+            inputs: [{ id: 2357, name: 'Gold bar', qty: 1 }],
+            output: { id: 11069, name: 'Gold bracelet', qty: 1 },
+            limit: 10000
+        },
+
+        // ── 💎 CRAFTING: BATTLESTAVES ──
+        {
+            id: 'cr_stf_air',
+            name: 'Craft Air Battlestaff',
+            skill: 'crafting',
+            subCat: 'Battlestaves',
+            icon: '🪄',
+            rate: RATES.craft_staff,
+            xp: 137.5,
+            inputs: [
+                { id: 1391, name: 'Battlestaff', qty: 1 },
+                { id: 573, name: 'Air orb', qty: 1 }
+            ],
+            output: { id: 1397, name: 'Air battlestaff', qty: 1 },
+            limit: 11000
+        },
+        {
+            id: 'cr_stf_fire',
+            name: 'Craft Fire Battlestaff',
+            skill: 'crafting',
+            subCat: 'Battlestaves',
+            icon: '🪄',
+            rate: RATES.craft_staff,
+            xp: 125.0,
+            inputs: [
+                { id: 1391, name: 'Battlestaff', qty: 1 },
+                { id: 569, name: 'Fire orb', qty: 1 }
+            ],
+            output: { id: 1393, name: 'Fire battlestaff', qty: 1 },
+            limit: 11000
+        },
+
+        // ── ⚒️ SMITHING: BLAST FURNACE & BARS ──
+        {
+            id: 'sm_bf_steel',
+            name: 'Smelt Steel Bar (Blast Furnace)',
+            skill: 'smithing',
+            subCat: 'Blast Furnace',
+            icon: '⚒️',
+            rate: RATES.smith_blast_furnace,
+            xp: 17.5,
+            inputs: [
+                { id: 440, name: 'Iron ore', qty: 1 },
+                { id: 453, name: 'Coal', qty: 1 }
+            ],
+            output: { id: 2353, name: 'Steel bar', qty: 1 },
+            limit: 10000
+        },
+        {
+            id: 'sm_bf_mithril',
+            name: 'Smelt Mithril Bar (Blast Furnace)',
+            skill: 'smithing',
+            subCat: 'Blast Furnace',
+            icon: '⚒️',
+            rate: RATES.smith_blast_furnace,
+            xp: 30.0,
+            inputs: [
+                { id: 447, name: 'Mithril ore', qty: 1 },
+                { id: 453, name: 'Coal', qty: 2 }
+            ],
+            output: { id: 2359, name: 'Mithril bar', qty: 1 },
+            limit: 10000
+        },
+        {
+            id: 'sm_bf_adamantite',
+            name: 'Smelt Adamantite Bar (Blast Furnace)',
+            skill: 'smithing',
+            subCat: 'Blast Furnace',
+            icon: '⚒️',
+            rate: RATES.smith_blast_furnace,
+            xp: 37.5,
+            inputs: [
+                { id: 449, name: 'Adamantite ore', qty: 1 },
+                { id: 453, name: 'Coal', qty: 3 }
+            ],
+            output: { id: 2361, name: 'Adamantite bar', qty: 1 },
+            limit: 10000
+        },
+        {
+            id: 'sm_bf_runite',
+            name: 'Smelt Runite Bar (Blast Furnace)',
+            skill: 'smithing',
+            subCat: 'Blast Furnace',
+            icon: '⚒️',
+            rate: RATES.smith_blast_furnace,
+            xp: 50.0,
+            inputs: [
+                { id: 451, name: 'Runite ore', qty: 1 },
+                { id: 453, name: 'Coal', qty: 4 }
+            ],
+            output: { id: 2363, name: 'Runite bar', qty: 1 },
+            limit: 10000
+        },
+        {
+            id: 'sm_cball_double',
+            name: 'Smith Cannonballs (Double Mould)',
+            skill: 'smithing',
+            subCat: 'Cannonballs',
+            icon: '💣',
+            rate: RATES.smith_cballs * 2,
+            xp: 25.6,
+            inputs: [{ id: 2353, name: 'Steel bar', qty: 1 }],
+            output: { id: 2, name: 'Cannonball', qty: 4 },
+            limit: 10000
+        },
+
+        // ── 🍲 COOKING ──
+        {
+            id: 'ck_karambwan',
+            name: 'Cook Raw Karambwan (1-Tick)',
+            skill: 'cooking',
+            subCat: 'Fish',
+            icon: '🐟',
+            rate: RATES.cook_karambwan_1t,
+            xp: 190.0,
+            inputs: [{ id: 3142, name: 'Raw karambwan', qty: 1 }],
+            output: { id: 3144, name: 'Cooked karambwan', qty: 1 },
+            limit: 13000
+        },
+        {
+            id: 'ck_shark',
+            name: 'Cook Raw Shark',
+            skill: 'cooking',
+            subCat: 'Fish',
+            icon: '🦈',
+            rate: RATES.cook_fish,
+            xp: 210.0,
+            inputs: [{ id: 383, name: 'Raw shark', qty: 1 }],
+            output: { id: 385, name: 'Shark', qty: 1 },
+            limit: 13000
+        },
+        {
+            id: 'ck_anglerfish',
+            name: 'Cook Raw Anglerfish',
+            skill: 'cooking',
+            subCat: 'Fish',
+            icon: '🐠',
+            rate: RATES.cook_fish,
+            xp: 230.0,
+            inputs: [{ id: 13439, name: 'Raw anglerfish', qty: 1 }],
+            output: { id: 13441, name: 'Anglerfish', qty: 1 },
+            limit: 13000
+        },
+        {
+            id: 'ck_wine',
+            name: 'Make Jug of Wine',
+            skill: 'cooking',
+            subCat: 'Wines',
+            icon: '🍷',
+            rate: RATES.cook_wine,
+            xp: 200.0,
+            inputs: [
+                { id: 1987, name: 'Grapes', qty: 1 },
+                { id: 1937, name: 'Jug of water', qty: 1 }
+            ],
+            output: { id: 1993, name: 'Jug of wine', qty: 1 },
+            limit: 13000
+        }
+    ];
+
+    // High Alch curated top targets (expanded with dynamic scan)
+    const HIGH_ALCH_CANDIDATES = [
+        { id: 1319, name: 'Rune 2h sword' },
+        { id: 1079, name: 'Rune platelegs' },
+        { id: 1093, name: 'Rune plateskirt' },
+        { id: 1127, name: 'Rune platebody' },
+        { id: 1201, name: 'Rune kiteshield' },
+        { id: 1373, name: 'Rune battleaxe' },
+        { id: 1113, name: 'Rune chainbody' },
+        { id: 1147, name: 'Rune med helm' },
+        { id: 1163, name: 'Rune full helm' },
+        { id: 1135, name: "Green d'hide body" },
+        { id: 2499, name: "Blue d'hide body" },
+        { id: 2501, name: "Red d'hide body" },
+        { id: 2503, name: "Black d'hide body" },
+        { id: 859, name: 'Magic longbow' },
+        { id: 861, name: 'Magic shortbow' },
+        { id: 9243, name: 'Diamond bolts (e)' },
+        { id: 9244, name: 'Dragonstone bolts (e)' },
+        { id: 9245, name: 'Onyx bolts (e)' },
+        { id: 1149, name: 'Dragon med helm' },
+        { id: 1397, name: 'Air battlestaff' },
+        { id: 1393, name: 'Fire battlestaff' },
+        { id: 1395, name: 'Water battlestaff' },
+        { id: 1399, name: 'Earth battlestaff' }
+    ];
+
+    // ── API ENGINE ───────────────────────────────────────────────
+    async function fetchWikiAPI(endpoint) {
+        const url = `https://prices.runescape.wiki/api/v1/osrs/${endpoint}`;
+        const res = await fetch(url, {
+            headers: {
+                'User-Agent': 'ThomsFoolery-OSRSBankSkillingCalculator/1.0 (Contact: @ThomsFoolery)'
+            }
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status} from ${endpoint}`);
+        return await res.json();
+    }
+
+    window.fetchLiveData = async function(manual) {
+        const btn = document.getElementById('refreshBtn');
+        const statusText = document.getElementById('apiStatusText');
+        const updatedText = document.getElementById('lastUpdatedText');
+
+        if (manual && btn) {
+            btn.textContent = '⏳ Loading...';
+            btn.disabled = true;
+        }
+
+        try {
+            // Load mapping if not cached
+            if (!livePrices.mapping || Object.keys(livePrices.mapping).length === 0) {
+                const mapArr = await fetchWikiAPI('mapping');
+                livePrices.mapping = {};
+                mapArr.forEach(item => {
+                    livePrices.mapping[item.id] = item;
+                });
+            }
+
+            // Fetch live prices and 1h volume in parallel
+            const [latestData, hourData] = await Promise.all([
+                fetchWikiAPI('latest'),
+                fetchWikiAPI('1h')
+            ]);
+
+            livePrices.latest = latestData.data || {};
+            livePrices.hour = hourData.data || {};
+            state.lastFetchTime = new Date();
+
+            // Auto-detect Nature Rune price
+            const natLatest = livePrices.latest[561];
+            if (natLatest && !manual) {
+                const autoNat = natLatest.high || 100;
+                document.getElementById('natureRuneOverride').value = autoNat;
+                state.naturePriceOverride = autoNat;
+            }
+
+            statusText.innerHTML = '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;"></span> Live Wiki API';
+            updatedText.textContent = `Updated ${state.lastFetchTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}`;
+
+            renderAll();
+        } catch (err) {
+            console.error('Failed to load OSRS prices:', err);
+            statusText.innerHTML = '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#ef4444;"></span> Offline / Rate-limited';
+            updatedText.textContent = 'Using cached or fallback estimates';
+            renderAll();
+        } finally {
+            if (btn) {
+                btn.textContent = '🔄 Refresh';
+                btn.disabled = false;
+            }
+        }
+    };
+
+    // ── MATH & CALCULATION ENGINE ────────────────────────────────
+    function getItemPrice(itemId, role) {
+        // Nature rune override
+        if (itemId === 561) {
+            return parseInt(document.getElementById('natureRuneOverride').value) || 100;
+        }
+
+        const quote = livePrices.latest[itemId];
+        if (!quote) return 0;
+
+        if (state.pricingMode === 'instant') {
+            // Instant buy ingredients at high; instant dump outputs at low
+            return role === 'input' ? (quote.high || quote.low || 0) : (quote.low || quote.high || 0);
+        } else {
+            // Patient buy ingredients at low; patient sell outputs at high
+            return role === 'input' ? (quote.low || quote.high || 0) : (quote.high || quote.low || 0);
+        }
+    }
+
+    function calculateRecipe(recipe) {
+        let inputCost = 0;
+        let ingredientsDetail = [];
+
+        recipe.inputs.forEach(inp => {
+            const price = getItemPrice(inp.id, 'input');
+            const total = price * inp.qty;
+            inputCost += total;
+            ingredientsDetail.push({
+                name: inp.name,
+                qty: inp.qty,
+                price: price,
+                total: total
+            });
+        });
+
+        const outItem = livePrices.mapping[recipe.output.id] || {};
+        const outQuote = livePrices.latest[recipe.output.id] || {};
+        const outHour = livePrices.hour[recipe.output.id] || {};
+
+        const unitSellPrice = getItemPrice(recipe.output.id, 'output');
+        const grossRev = unitSellPrice * recipe.output.qty;
+
+        // GE Tax 2% capped at 5M
+        const geTax = Math.min(5000000, Math.floor(grossRev * 0.02));
+        const netRev = grossRev - geTax;
+        const netProfit = netRev - inputCost;
+
+        const volume = (outHour.highPriceVolume || 0) + (outHour.lowPriceVolume || 0);
+        const hourlyGP = Math.round(netProfit * recipe.rate);
+        
+        let gpXp = 0;
+        if (recipe.xp > 0) {
+            // Negative means cost per XP; positive means profit per XP
+            gpXp = (netProfit / recipe.xp);
+        }
+
+        const fourHourProfit = (recipe.limit || outItem.limit || 0) * netProfit;
+
+        return {
+            ...recipe,
+            inputCost,
+            grossRev,
+            geTax,
+            netRev,
+            netProfit,
+            hourlyGP,
+            gpXp,
+            volume,
+            buyLimit: recipe.limit || outItem.limit || 0,
+            fourHourProfit,
+            ingredientsDetail,
+            outItem
+        };
+    }
+
+    function generateHighAlchList() {
+        const natPrice = parseInt(document.getElementById('natureRuneOverride').value) || 100;
+        const list = [];
+
+        HIGH_ALCH_CANDIDATES.forEach(c => {
+            const mapItem = livePrices.mapping[c.id];
+            const quote = livePrices.latest[c.id];
+            const hour = livePrices.hour[c.id] || {};
+
+            if (!mapItem || !mapItem.highalch || !quote) return;
+
+            const buyPrice = state.pricingMode === 'instant' ? (quote.high || quote.low || 0) : (quote.low || quote.high || 0);
+            if (buyPrice <= 0) return;
+
+            const inputCost = buyPrice + natPrice;
+            const alchRev = mapItem.highalch; // 0% GE tax!
+            const netProfit = alchRev - inputCost;
+            const volume = (hour.highPriceVolume || 0) + (hour.lowPriceVolume || 0);
+            const hourlyGP = Math.round(netProfit * RATES.magic_alch);
+            const xp = 65.0; // Standard High Alch XP
+            const gpXp = netProfit / xp;
+            const buyLimit = mapItem.limit || 70;
+
+            list.push({
+                id: `alch_${c.id}`,
+                name: `Alch ${c.name}`,
+                skill: 'magic',
+                subCat: 'High Alchemy',
+                icon: '🔥',
+                rate: RATES.magic_alch,
+                xp: xp,
+                inputCost: inputCost,
+                grossRev: alchRev,
+                geTax: 0,
+                netRev: alchRev,
+                netProfit: netProfit,
+                hourlyGP: hourlyGP,
+                gpXp: gpXp,
+                volume: volume,
+                buyLimit: buyLimit,
+                fourHourProfit: buyLimit * netProfit,
+                ingredientsDetail: [
+                    { name: c.name, qty: 1, price: buyPrice, total: buyPrice },
+                    { name: 'Nature rune', qty: 1, price: natPrice, total: natPrice }
+                ],
+                outItem: { name: `${mapItem.highalch} GP (Alched)` }
+            });
+        });
+
+        return list;
+    }
+
+    // ── RENDER ENGINE ────────────────────────────────────────────
+    window.renderAll = function() {
+        const tbody = document.getElementById('recipeTableBody');
+        const countDisplay = document.getElementById('recipeCountDisplay');
+
+        // Calculate all standard recipes
+        let list = RECIPES.map(calculateRecipe);
+
+        // Include high alch methods
+        list = list.concat(generateHighAlchList());
+
+        // Update Skill Tab Badges
+        updateSkillBadges(list);
+
+        // Filter by skill
+        if (state.selectedSkill !== 'all') {
+            list = list.filter(r => r.skill === state.selectedSkill);
+        }
+
+        // Filter by sub-category
+        if (state.selectedSubCat !== 'all') {
+            list = list.filter(r => r.subCat === state.selectedSubCat);
+        }
+
+        // Filter by min volume
+        const minVol = parseInt(document.getElementById('minVolumeSelect').value) || 0;
+        if (minVol > 0) {
+            list = list.filter(r => r.volume >= minVol);
+        }
+
+        // Filter by profit
+        const pFilter = document.getElementById('profitFilterSelect').value;
+        if (pFilter === 'profit') {
+            list = list.filter(r => r.netProfit > 0);
+        } else if (pFilter === 'loss') {
+            list = list.filter(r => r.netProfit <= 0);
+        }
+
+        // Filter by search query
+        const query = (document.getElementById('recipeSearch').value || '').trim().toLowerCase();
+        if (query) {
+            list = list.filter(r => 
+                r.name.toLowerCase().includes(query) || 
+                r.skill.toLowerCase().includes(query) ||
+                r.subCat.toLowerCase().includes(query) ||
+                r.ingredientsDetail.some(i => i.name.toLowerCase().includes(query))
+            );
+        }
+
+        // Sort list
+        list.sort((a, b) => {
+            let valA = a[state.sortBy];
+            let valB = b[state.sortBy];
+            if (typeof valA === 'string') {
+                return state.sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+            }
+            return state.sortAsc ? (valA - valB) : (valB - valA);
+        });
+
+        // Update Top Summary Cards
+        updateSummaryStats(list);
+
+        // Render Table Rows
+        if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:2.5rem;color:var(--text-muted);">No matching recipes found under current filter thresholds. Try lowering the volume filter or switching to 'All Recipes'.</td></tr>`;
+            countDisplay.textContent = 'Showing 0 recipes';
+            return;
+        }
+
+        let html = '';
+        list.forEach(r => {
+            const profitCls = r.netProfit > 0 ? 'val-pos' : r.netProfit < 0 ? 'val-neg' : 'val-neutral';
+            const profitSign = r.netProfit > 0 ? '+' : '';
+            const hourlyCls = r.hourlyGP > 0 ? 'val-pos' : r.hourlyGP < 0 ? 'val-neg' : 'val-neutral';
+            
+            // GP/XP display
+            let gpxpDisplay = '—';
+            let gpxpCls = 'val-neutral';
+            if (r.xp > 0) {
+                if (r.gpXp > 0) {
+                    gpxpDisplay = `+${r.gpXp.toFixed(2)} gp/xp`;
+                    gpxpCls = 'val-pos';
+                } else {
+                    gpxpDisplay = `${r.gpXp.toFixed(2)} gp/xp`;
+                    gpxpCls = 'val-neg';
+                }
+            }
+
+            // Ingredients badge preview
+            const ingrHtml = r.ingredientsDetail.map(i => `<span style="display:inline-block;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;font-size:0.75rem;margin:1px;">${i.qty > 1 ? i.qty + 'x ' : ''}${i.name} (${fmtGP(i.price)})</span>`).join(' ');
+
+            html += `
+                <tr>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:0.4rem;font-weight:600;color:var(--text-main);">
+                            <span>${r.icon}</span> <span>${r.name}</span>
+                        </div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;">
+                            ${r.subCat} • ${r.volume > 0 ? fmtGP(r.volume) + '/hr vol' : 'Low vol'}
+                        </div>
+                    </td>
+                    <td><span style="text-transform:capitalize;font-size:0.8rem;background:rgba(212,168,67,0.1);color:#d4a843;padding:2px 8px;border-radius:12px;font-weight:600;">${r.skill}</span></td>
+                    <td style="max-width:240px;">${ingrHtml}</td>
+                    <td class="val-neutral">${fmtGP(r.inputCost)} GP</td>
+                    <td style="color:var(--text-main);">${fmtGP(r.netRev)} GP ${r.geTax > 0 ? `<span style="font-size:0.7rem;color:var(--text-muted);display:block;">(-${fmtGP(r.geTax)} tax)</span>` : ''}</td>
+                    <td class="${profitCls}" style="font-size:0.95rem;">${profitSign}${fmtGP(r.netProfit)} GP</td>
+                    <td class="${gpxpCls}">${gpxpDisplay}</td>
+                    <td class="${hourlyCls}" style="font-weight:700;">${r.hourlyGP > 0 ? '+' : ''}${fmtGP(r.hourlyGP)}/hr</td>
+                    <td style="font-size:0.8rem;color:var(--text-muted);">${r.buyLimit > 0 ? fmtGP(r.buyLimit) + ' (' + (r.fourHourProfit > 0 ? '+' : '') + fmtGP(r.fourHourProfit) + ')' : '—'}</td>
+                    <td>
+                        <button class="calc-btn" onclick="openBatchModal('${r.id}')">🧮 Calc</button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tbody.innerHTML = html;
+        countDisplay.textContent = `Showing ${list.length} recipe${list.length === 1 ? '' : 's'}`;
+    };
+
+    function updateSkillBadges(allList) {
+        const counts = { all: allList.length, fletching: 0, herblore: 0, crafting: 0, magic: 0, smithing: 0, cooking: 0 };
+        allList.forEach(r => {
+            if (counts[r.skill] !== undefined) counts[r.skill]++;
+        });
+        Object.keys(counts).forEach(k => {
+            const el = document.getElementById(`count-${k}`);
+            if (el) el.textContent = counts[k];
+        });
+    }
+
+    function updateSummaryStats(filteredList) {
+        if (!filteredList || filteredList.length === 0) return;
+
+        // Top Profit Item
+        const topItem = [...filteredList].sort((a,b) => b.netProfit - a.netProfit)[0];
+        if (topItem && topItem.netProfit > 0) {
+            document.getElementById('topProfitItem').textContent = `+${fmtGP(topItem.netProfit)} GP`;
+            document.getElementById('topProfitItemName').textContent = topItem.name;
+        } else {
+            document.getElementById('topProfitItem').textContent = '—';
+            document.getElementById('topProfitItemName').textContent = 'No profitable item';
+        }
+
+        // Top Hourly GP
+        const topHourly = [...filteredList].sort((a,b) => b.hourlyGP - a.hourlyGP)[0];
+        if (topHourly && topHourly.hourlyGP > 0) {
+            document.getElementById('topHourlyGP').textContent = `+${fmtGP(topHourly.hourlyGP)}/hr`;
+            document.getElementById('topHourlyName').textContent = topHourly.name;
+        } else {
+            document.getElementById('topHourlyGP').textContent = '—';
+            document.getElementById('topHourlyName').textContent = 'No positive method';
+        }
+
+        // Best Profitable XP
+        const profitableXp = filteredList.filter(r => r.xp > 0 && r.netProfit > 0).sort((a,b) => b.gpXp - a.gpXp)[0];
+        if (profitableXp) {
+            document.getElementById('bestXpRatio').textContent = `+${profitableXp.gpXp.toFixed(2)} gp/xp`;
+            document.getElementById('bestXpName').textContent = profitableXp.name;
+        } else {
+            document.getElementById('bestXpRatio').textContent = '—';
+            document.getElementById('bestXpName').textContent = 'No profitable training';
+        }
+    }
+
+    // ── CONTROLS & INTERACTION ───────────────────────────────────
+    window.setPricingMode = function(mode) {
+        state.pricingMode = mode;
+        document.getElementById('modeInstant').classList.toggle('active', mode === 'instant');
+        document.getElementById('modePatient').classList.toggle('active', mode === 'patient');
+        renderAll();
+    };
+
+    window.selectSkillTab = function(skill) {
+        state.selectedSkill = skill;
+        state.selectedSubCat = 'all';
+
+        document.querySelectorAll('.skill-tab').forEach(b => {
+            b.classList.toggle('active', b.dataset.skill === skill);
+        });
+
+        renderSubCatPills();
+        renderAll();
+    };
+
+    function renderSubCatPills() {
+        const bar = document.getElementById('subCategoryBar');
+        bar.innerHTML = '';
+
+        if (state.selectedSkill === 'all') return;
+
+        let recipes = RECIPES.filter(r => r.skill === state.selectedSkill);
+        if (state.selectedSkill === 'magic') {
+            recipes = [{ subCat: 'High Alchemy' }];
+        }
+
+        const subCats = ['all', ...new Set(recipes.map(r => r.subCat))];
+        subCats.forEach(sc => {
+            const btn = document.createElement('button');
+            btn.className = `sub-cat-pill ${state.selectedSubCat === sc ? 'active' : ''}`;
+            btn.textContent = sc === 'all' ? `All ${capitalize(state.selectedSkill)}` : sc;
+            btn.onclick = () => {
+                state.selectedSubCat = sc;
+                renderSubCatPills();
+                renderAll();
+            };
+            bar.appendChild(btn);
+        });
+    }
+
+    window.setSort = function(col) {
+        if (state.sortBy === col) {
+            state.sortAsc = !state.sortAsc;
+        } else {
+            state.sortBy = col;
+            state.sortAsc = (col === 'name' || col === 'skill');
+        }
+
+        // Update header indicator
+        document.querySelectorAll('.sort-icon').forEach(el => el.textContent = '↕');
+        const activeIcon = document.getElementById(`sort-${col}`);
+        if (activeIcon) {
+            activeIcon.textContent = state.sortAsc ? '▲' : '▼';
+        }
+
+        renderAll();
+    };
+
+    window.updateNaturePrice = function() {
+        state.naturePriceOverride = parseInt(document.getElementById('natureRuneOverride').value) || 100;
+        renderAll();
+    };
+
+    // ── BATCH MODAL ──────────────────────────────────────────────
+    window.openBatchModal = function(recipeId) {
+        let r = RECIPES.map(calculateRecipe).find(x => x.id === recipeId);
+        if (!r) {
+            r = generateHighAlchList().find(x => x.id === recipeId);
+        }
+        if (!r) return;
+
+        document.getElementById('modalIcon').textContent = r.icon;
+        document.getElementById('modalTitle').textContent = `${r.name} — Batch Calculator`;
+
+        const defaultQty = r.buyLimit > 0 ? r.buyLimit : 1000;
+
+        const body = document.getElementById('modalBody');
+        body.innerHTML = `
+            <div style="margin-bottom: 1rem;">
+                <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.4rem;">Target Batch Quantity:</label>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input type="number" id="batchQty" value="${defaultQty}" min="1" step="100" oninput="updateBatchCalc('${r.id}')" style="background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem 0.85rem; border-radius: 6px; font-size: 1rem; width: 140px;">
+                    <button onclick="setBatchQty(100, '${r.id}')" class="sub-cat-pill">100</button>
+                    <button onclick="setBatchQty(500, '${r.id}')" class="sub-cat-pill">500</button>
+                    <button onclick="setBatchQty(1000, '${r.id}')" class="sub-cat-pill">1,000</button>
+                    ${r.buyLimit > 0 ? `<button onclick="setBatchQty(${r.buyLimit}, '${r.id}')" class="sub-cat-pill">4h Limit (${fmtGP(r.buyLimit)})</button>` : ''}
+                </div>
+            </div>
+
+            <div style="background: var(--bg-dark); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
+                    <span style="color: var(--text-muted);">Total Material Investment:</span>
+                    <strong id="batchCost">—</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
+                    <span style="color: var(--text-muted);">Total Net Revenue:</span>
+                    <strong id="batchRevenue">—</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
+                    <span style="color: var(--text-muted);">Estimated Processing Time:</span>
+                    <strong id="batchTime">—</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
+                    <span style="color: var(--text-muted);">Total Skill XP Gained:</span>
+                    <strong id="batchXP" style="color: #06b6d4;">—</strong>
+                </div>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 0.75rem; margin-top: 0.5rem; display: flex; justify-content: space-between; font-size: 1.1rem;">
+                    <span>Net Profit / Loss:</span>
+                    <strong id="batchProfit" class="val-pos">—</strong>
+                </div>
+            </div>
+
+            <div style="text-align: right;">
+                <button onclick="closeModal()" style="background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem 1.25rem; border-radius: 6px; cursor: pointer; font-weight: 600;">Close</button>
+            </div>
+        `;
+
+        document.getElementById('calcModal').style.display = 'flex';
+        updateBatchCalc(r.id);
+    };
+
+    window.setBatchQty = function(qty, rId) {
+        document.getElementById('batchQty').value = qty;
+        updateBatchCalc(rId);
+    };
+
+    window.updateBatchCalc = function(recipeId) {
+        let r = RECIPES.map(calculateRecipe).find(x => x.id === recipeId);
+        if (!r) r = generateHighAlchList().find(x => x.id === recipeId);
+        if (!r) return;
+
+        const qty = parseInt(document.getElementById('batchQty').value) || 1;
+        const totalCost = r.inputCost * qty;
+        const totalRev = r.netRev * qty;
+        const totalProfit = r.netProfit * qty;
+        const totalXp = r.xp * qty;
+        const hours = (qty / r.rate);
+
+        document.getElementById('batchCost').textContent = `${fmtGP(totalCost)} GP`;
+        document.getElementById('batchRevenue').textContent = `${fmtGP(totalRev)} GP`;
+        document.getElementById('batchXP').textContent = totalXp > 0 ? `${fmtGP(Math.round(totalXp))} XP` : '0 XP';
+        document.getElementById('batchTime').textContent = hours < 1 ? `${Math.round(hours * 60)} mins` : `${hours.toFixed(1)} hours`;
+
+        const profitEl = document.getElementById('batchProfit');
+        profitEl.className = totalProfit >= 0 ? 'val-pos' : 'val-neg';
+        profitEl.textContent = `${totalProfit >= 0 ? '+' : ''}${fmtGP(totalProfit)} GP`;
+    };
+
+    window.closeModal = function() {
+        document.getElementById('calcModal').style.display = 'none';
+    };
+
+    // ── HELPERS ──────────────────────────────────────────────────
+    function fmtGP(n) {
+        if (n === null || n === undefined || isNaN(n)) return '0';
+        const sign = n < 0 ? '-' : '';
+        const abs = Math.abs(n);
+        if (abs >= 1000000) {
+            return sign + (abs / 1000000).toFixed(2).replace(/\.00$/, '') + 'M';
+        }
+        if (abs >= 1000) {
+            return sign + (abs / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+        }
+        return sign + Math.round(abs).toLocaleString();
+    }
+
+    function capitalize(s) {
+        return s.charAt(0).toUpperCase() + s.slice(1);
+    }
+
+    // Auto-refresh every 60s
+    state.autoRefreshInterval = setInterval(() => {
+        window.fetchLiveData(false);
+    }, 60000);
+
+    // Initial boot
+    document.addEventListener('DOMContentLoaded', () => {
+        window.fetchLiveData(false);
+    });
+
+})();
+</script>

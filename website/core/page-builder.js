@@ -77,6 +77,7 @@ export default class PageBuilder {
         await this.buildUmpireSimulator();
         await this.buildF1ChampionshipCalculator();
         await this.buildStreamSchedule();
+        await this.buildOsrsBankSkilling();
         await this.buildSponsorsPage();
         await this.buildArticleRedirects();
         
@@ -588,6 +589,31 @@ export default class PageBuilder {
         await fs.writeFile(
             path.join(this.output, "tools", "stream-schedule.html"),
             buildRedirectStub("/tools/stream-schedule/", title, config.site.url)
+        );
+    }
+
+    // OSRS Bank Skilling Profit Calculator
+    async buildOsrsBankSkilling() {
+        const folder = path.join(this.output, "tools", "osrs-bank-skilling");
+        await fs.mkdir(folder, { recursive: true });
+
+        const template = await this.loadLayout("osrs-bank-skilling.html");
+        
+        const title = "OSRS Bank Skilling & Magic/Alch Profit Calculator — Real-Time GE Margins";
+        let html = await this.wrapPage(
+            this.renderer.render(template, {}),
+            title,
+            {
+                description: "Real-time Old School RuneScape (OSRS) bank skilling profit calculator. Live GE margins, GP/XP, GP/hr, and 2% GE tax calculations for Fletching, Herblore, Crafting, High Alch, Smithing, and Cooking.",
+                path: "/tools/osrs-bank-skilling/",
+                ogType: "website"
+            }
+        );
+
+        await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools", "osrs-bank-skilling.html"),
+            buildRedirectStub("/tools/osrs-bank-skilling/", title, config.site.url)
         );
     }
 
