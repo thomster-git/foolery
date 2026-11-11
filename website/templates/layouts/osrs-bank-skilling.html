@@ -5,7 +5,7 @@
         {
           "@context": "https://schema.org",
           "@type": "WebApplication",
-          "name": "OSRS Bank Skilling & Magic/Alch Profit Calculator",
+          "name": "OSRS Bank Skilling & Overnight GE Flip Profit Calculator",
           "url": "https://thomsfoolery.com/tools/osrs-bank-skilling/",
           "applicationCategory": "GameApplication",
           "operatingSystem": "Any",
@@ -13,7 +13,7 @@
             "@type": "Offer",
             "price": "0"
           },
-          "description": "Real-time Old School RuneScape (OSRS) bank skilling profit calculator. Live GE margins, GP/XP, GP/hr, and 2% GE tax calculations for Fletching, Herblore, Crafting, High Alch, Smithing, and Cooking."
+          "description": "Real-time Old School RuneScape (OSRS) bank skilling profit calculator and overnight Grand Exchange flip scanner. Live GE margins, exact listing prices, GP/XP, GP/hr, and 2% GE tax calculations."
         }
         </script>
 
@@ -21,7 +21,7 @@
         <div class="breadcrumbs" style="margin-bottom: 1.5rem;">
             <a href="/">Home</a> &gt;
             <a href="/tools/">Tools</a> &gt;
-            <span>OSRS Bank Skilling Profit Calculator</span>
+            <span>OSRS Bank Skilling &amp; Overnight Flip Calculator</span>
         </div>
 
         <!-- Tool Header -->
@@ -29,10 +29,10 @@
             <div>
                 <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.4rem;">
                     <span style="font-size: 2.2rem;">⚖️</span>
-                    <h1 style="font-size: 2.2rem; font-weight: 800; color: #d4a843; margin: 0; font-family: 'Cinzel', serif, system-ui;">OSRS Bank Skilling Profit Calculator</h1>
+                    <h1 style="font-size: 2.2rem; font-weight: 800; color: #d4a843; margin: 0; font-family: 'Cinzel', serif, system-ui;">OSRS Bank Skilling &amp; Overnight Flip Engine</h1>
                 </div>
-                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0; max-width: 850px;">
-                    Real-time margins for bank standing skills powered by the official OSRS Wiki Prices API. Tracks multi-ingredient recipe costs, accurate 2% GE tax (with 5M cap), GP/XP ratios, and estimated GP/hour.
+                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0; max-width: 900px;">
+                    Real-time market analytics for bank standing skills and overnight Grand Exchange flips. Displays <strong>exact integer listing prices</strong> for Grand Exchange offers, multi-ingredient costs, accurate 2% GE tax, GP/XP ratios, and low-risk overnight dip arbitrage.
                 </p>
             </div>
 
@@ -58,7 +58,7 @@
                 <div>
                     <label style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Pricing Mode</label>
                     <div style="display: flex; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; background: var(--bg-dark);">
-                        <button type="button" class="mode-btn active" id="modeInstant" onclick="setPricingMode('instant')" title="Buy ingredients at instant-buy (high) and sell product at instant-sell (low) or alch. Safe, immediate numbers.">
+                        <button type="button" class="mode-btn active" id="modeInstant" onclick="setPricingMode('instant')" title="Buy materials at instant-buy (high) and dump outputs at instant-sell (low) or alch. Immediate, safe real-world numbers.">
                             ⚡ Instant (Fast / Dump)
                         </button>
                         <button type="button" class="mode-btn" id="modePatient" onclick="setPricingMode('patient')" title="Buy ingredients at slow-buy (low) and sell at slow-sell (high). Maximum merchant margins.">
@@ -82,7 +82,7 @@
                 <div>
                     <label style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Profit Filter</label>
                     <select id="profitFilterSelect" onchange="renderAll()" style="background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.45rem 0.75rem; border-radius: 6px; font-size: 0.85rem;">
-                        <option value="all">Show All Recipes</option>
+                        <option value="all">Show All Items</option>
                         <option value="profit" selected>Profitable Only (Net &gt; 0)</option>
                         <option value="loss">Training Losses (XP Focused)</option>
                     </select>
@@ -93,7 +93,7 @@
             <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;">
                 <div>
                     <label style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">Search Item / Method</label>
-                    <input type="text" id="recipeSearch" oninput="renderAll()" placeholder="e.g. Magic longbow, Ranarr..." style="background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.45rem 0.85rem; border-radius: 6px; font-size: 0.85rem; width: 200px;">
+                    <input type="text" id="recipeSearch" oninput="renderAll()" placeholder="e.g. Magic longbow, Blood rune..." style="background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.45rem 0.85rem; border-radius: 6px; font-size: 0.85rem; width: 220px;">
                 </div>
 
                 <div>
@@ -126,6 +126,10 @@
             <button class="skill-tab" data-skill="cooking" onclick="selectSkillTab('cooking')">
                 🍲 Cooking <span class="tab-badge" id="count-cooking">0</span>
             </button>
+            <!-- 🌙 Dedicated Overnight GE Flips Tab -->
+            <button class="skill-tab tab-overnight" data-skill="overnight" onclick="selectSkillTab('overnight')">
+                🌙 Overnight GE Flips <span class="tab-badge badge-overnight" id="count-overnight">0</span>
+            </button>
         </div>
 
         <!-- Sub-category Filter Pills (Dynamic) -->
@@ -133,27 +137,70 @@
             <!-- Dynamically populated -->
         </div>
 
+        <!-- 🌙 Dedicated Overnight Roster & Bankroll Banner (Visible only on overnight tab) -->
+        <div id="overnightBanner" style="display: none; background: linear-gradient(135deg, rgba(30, 20, 50, 0.7), rgba(20, 15, 35, 0.9)); border: 1px solid rgba(168, 85, 247, 0.35); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.25rem; margin-bottom: 1rem;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
+                        <span style="font-size: 1.6rem;">🌙</span>
+                        <h2 style="font-size: 1.4rem; color: #c084fc; margin: 0; font-family: 'Cinzel', serif;">Overnight "Sleep Flip" Scanner</h2>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; margin: 0; max-width: 800px; line-height: 1.5;">
+                        Place low-ball buy offers on staple items before bed. As people dump items overnight at low ask prices, your offers fill while you sleep—bypassing the 4-hour buy limit window! In the morning, flip them back for profit at the target sell price.
+                    </p>
+                </div>
+
+                <!-- Cash Stack Input & 8-Slot Generator -->
+                <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 8px; padding: 0.85rem 1.2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+                        <label style="font-size: 0.75rem; text-transform: uppercase; color: #c084fc; font-weight: 600;">Available Cash Stack</label>
+                        <input type="number" id="bankrollInput" value="25000000" step="5000000" oninput="renderAll()" style="background: var(--bg-dark); border: 1px solid rgba(168, 85, 247, 0.4); color: #e9d5ff; font-weight: 700; padding: 0.35rem 0.65rem; border-radius: 4px; font-size: 0.95rem; width: 140px; text-align: right;">
+                    </div>
+                    <div style="display: flex; gap: 0.4rem; justify-content: flex-end;">
+                        <button onclick="setBankroll(5000000)" class="quick-cash-btn">5M</button>
+                        <button onclick="setBankroll(10000000)" class="quick-cash-btn">10M</button>
+                        <button onclick="setBankroll(25000000)" class="quick-cash-btn">25M</button>
+                        <button onclick="setBankroll(50000000)" class="quick-cash-btn">50M</button>
+                        <button onclick="setBankroll(100000000)" class="quick-cash-btn">100M</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auto-Generated 8-Slot Allocation Preview -->
+            <div id="overnightSlotContainer" style="border-top: 1px solid rgba(168, 85, 247, 0.2); padding-top: 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                    <strong style="color: #e9d5ff; font-size: 0.88rem; display: flex; align-items: center; gap: 0.4rem;">
+                        <span>📋</span> Suggested 8-Slot GE Overnight Setup (Budget: <span id="allocatedBudgetDisplay" style="color:#d4a843;">25M GP</span>)
+                    </strong>
+                    <span id="totalSleepProfitDisplay" style="color: #10b981; font-weight: 700; font-size: 0.95rem;">Est. Morning Profit: +0 GP</span>
+                </div>
+                <div id="sleepSlotsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0.75rem;">
+                    <!-- Dynamically populated 8 slots -->
+                </div>
+            </div>
+        </div>
+
         <!-- Stats Overview Cards -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
             <div class="summary-stat-card">
-                <span class="stat-label">Top Profit / Item</span>
+                <span class="stat-label" id="summaryCard1Label">Top Profit / Item</span>
                 <span class="stat-val pos" id="topProfitItem">—</span>
                 <span class="stat-sub" id="topProfitItemName">Loading...</span>
             </div>
             <div class="summary-stat-card">
-                <span class="stat-label">Top Hourly GP</span>
+                <span class="stat-label" id="summaryCard2Label">Top Hourly GP</span>
                 <span class="stat-val pos" id="topHourlyGP">—</span>
                 <span class="stat-sub" id="topHourlyName">Loading...</span>
             </div>
             <div class="summary-stat-card">
-                <span class="stat-label">Best Free / Profitable XP</span>
+                <span class="stat-label" id="summaryCard3Label">Best Free / Profitable XP</span>
                 <span class="stat-val neutral" id="bestXpRatio">—</span>
                 <span class="stat-sub" id="bestXpName">Loading...</span>
             </div>
             <div class="summary-stat-card">
-                <span class="stat-label">Tax Saved via Alch</span>
-                <span class="stat-val gold" id="alchTaxNotice">0% Alch Tax</span>
-                <span class="stat-sub">GE sales incur 2% tax</span>
+                <span class="stat-label">GE Tax Accuracy</span>
+                <span class="stat-val gold" id="alchTaxNotice">2% GE Capped</span>
+                <span class="stat-sub">Alch = 0% Tax • Full Prices Shown</span>
             </div>
         </div>
 
@@ -162,25 +209,14 @@
             
             <div style="overflow-x: auto;">
                 <table class="osrs-table" id="recipeTable">
-                    <thead>
-                        <tr>
-                            <th onclick="setSort('name')">Method / Recipe <span class="sort-icon" id="sort-name">↕</span></th>
-                            <th onclick="setSort('skill')">Skill <span class="sort-icon" id="sort-skill">↕</span></th>
-                            <th>Ingredients Breakdown</th>
-                            <th onclick="setSort('cost')">Cost <span class="sort-icon" id="sort-cost">↕</span></th>
-                            <th onclick="setSort('revenue')">Revenue <span class="sort-icon" id="sort-revenue">↕</span></th>
-                            <th onclick="setSort('profit')">Profit / Action <span class="sort-icon" id="sort-profit">▼</span></th>
-                            <th onclick="setSort('gpxp')">GP / XP <span class="sort-icon" id="sort-gpxp">↕</span></th>
-                            <th onclick="setSort('gphr')">Est. GP / Hr <span class="sort-icon" id="sort-gphr">↕</span></th>
-                            <th onclick="setSort('limit')">4h Limit <span class="sort-icon" id="sort-limit">↕</span></th>
-                            <th>Action</th>
-                        </tr>
+                    <thead id="recipeTableHead">
+                        <!-- Dynamically adjusted between Bank Skilling and Overnight Flips -->
                     </thead>
                     <tbody id="recipeTableBody">
                         <tr>
                             <td colspan="10" style="text-align: center; padding: 3rem; color: var(--text-muted);">
                                 <div style="display: inline-block; animation: spin 1s linear infinite; font-size: 1.5rem; margin-bottom: 0.5rem;">⏳</div>
-                                <div>Connecting to OSRS Wiki Prices API &amp; computing recipe margins...</div>
+                                <div>Connecting to OSRS Wiki Prices API &amp; computing real-time margins...</div>
                             </td>
                         </tr>
                     </tbody>
@@ -190,7 +226,7 @@
             <!-- Table Footer -->
             <div style="padding: 0.85rem 1.25rem; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.82rem; color: var(--text-muted); background: var(--bg-dark);">
                 <div id="recipeCountDisplay">Showing 0 recipes</div>
-                <div>All prices fetched live via <code>prices.runescape.wiki</code> • GE tax accurately capped at 5M GP</div>
+                <div>All prices displayed in <strong>exact integer GP</strong> with 2% GE tax deducted (5M cap). Data via <code>prices.runescape.wiki</code></div>
             </div>
         </div>
 
@@ -213,22 +249,22 @@
 
         <!-- Guide & Explanation Section -->
         <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; line-height: 1.7; color: var(--text-muted); font-size: 0.92rem;">
-            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-top: 0; margin-bottom: 0.75rem;">About This OSRS Bank Skilling Profit Engine</h3>
+            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-top: 0; margin-bottom: 0.75rem;">Grand Exchange Execution &amp; Listing Guide</h3>
             <p>
-                Bank standing skills in Old School RuneScape (Fletching, Herblore, Crafting, Magic, Smithing, and Cooking) often represent massive GP drains for casual players. However, because high-level players pay a premium for fast XP, intermediate steps (like stringing bows, cutting uncut gems, cleaning grimy herbs, or making unfinished potions) frequently offer substantial profit margins for players willing to process materials at the Grand Exchange.
+                When crafting or flipping on the Grand Exchange, rounded numbers like "1.4K" or "1.8M" cause costly pricing errors. This engine provides the <strong>full unrounded GP price</strong> for every step:
             </p>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
                 <div style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; border-left: 3px solid #d4a843;">
-                    <strong style="color: #d4a843; display: block; margin-bottom: 0.3rem;">2% GE Tax Accuracy:</strong>
-                    When selling crafted items back to the Grand Exchange, the tool automatically calculates the 2% tax (capped at 5M GP). For items converted via <strong>High Alchemy</strong> or shop sales, 0% tax is applied.
+                    <strong style="color: #d4a843; display: block; margin-bottom: 0.3rem;">Exact Grand Exchange Listing Price:</strong>
+                    The <strong>GE Listing Price</strong> column shows the exact integer price to enter into the Grand Exchange sell window. The 2% GE tax (capped at 5,000,000 GP) is shown right beneath it so you see both your gross listing price and your net cash receipt.
+                </div>
+                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; border-left: 3px solid #c084fc;">
+                    <strong style="color: #c084fc; display: block; margin-bottom: 0.3rem;">Overnight "Sleep Flips":</strong>
+                    People frequently dump high-volume consumables and popular gear at the lowest current bid when logging off. By placing low-ball buy orders overnight, you snag these temporary price dips. Over 6–8 hours of sleep, you also bypass the 4-hour GE limit to collect up to 2 full allocations.
                 </div>
                 <div style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; border-left: 3px solid #10b981;">
-                    <strong style="color: #10b981; display: block; margin-bottom: 0.3rem;">GP / XP Efficiency:</strong>
-                    Positive GP/XP numbers in green indicate methods where you <em>make</em> money while gaining skill XP. A negative number indicates the exact GP cost per XP gained.
-                </div>
-                <div style="background: var(--bg-dark); padding: 1rem; border-radius: 8px; border-left: 3px solid #06b6d4;">
-                    <strong style="color: #06b6d4; display: block; margin-bottom: 0.3rem;">4-Hour GE Limits:</strong>
-                    The Grand Exchange enforces strict 4-hour buy quotas. The "4h Limit" column reveals your maximum theoretical profit per 4-hour resting cycle before you must switch items.
+                    <strong style="color: #10b981; display: block; margin-bottom: 0.3rem;">Zero-Tax High Alchemy:</strong>
+                    Items converted via <strong>High Alchemy</strong> bypass the Grand Exchange entirely, avoiding the 2% tax. When high-volume crafted items dip below alch price minus nature rune cost, alching them guarantees 100% risk-free profit.
                 </div>
             </div>
         </div>
@@ -282,6 +318,19 @@
         border-color: #d4a843;
         color: #d4a843;
     }
+    .skill-tab.tab-overnight {
+        border-color: rgba(168, 85, 247, 0.4);
+        color: #c084fc;
+    }
+    .skill-tab.tab-overnight:hover {
+        border-color: #c084fc;
+        color: #e9d5ff;
+    }
+    .skill-tab.tab-overnight.active {
+        background: rgba(168, 85, 247, 0.2);
+        border-color: #c084fc;
+        color: #e9d5ff;
+    }
     .tab-badge {
         font-size: 0.7rem;
         background: var(--bg-dark);
@@ -289,8 +338,17 @@
         border-radius: 10px;
         color: var(--text-muted);
     }
+    .tab-badge.badge-overnight {
+        background: rgba(168, 85, 247, 0.25);
+        color: #e9d5ff;
+    }
     .skill-tab.active .tab-badge {
         background: #d4a843;
+        color: #000;
+        font-weight: 700;
+    }
+    .skill-tab.tab-overnight.active .tab-badge {
+        background: #c084fc;
         color: #000;
         font-weight: 700;
     }
@@ -308,6 +366,26 @@
         border-color: #06b6d4;
         color: #06b6d4;
         background: rgba(6, 182, 212, 0.1);
+    }
+    .sub-cat-pill.purple-pill:hover, .sub-cat-pill.purple-pill.active {
+        border-color: #c084fc;
+        color: #c084fc;
+        background: rgba(168, 85, 247, 0.15);
+    }
+    .quick-cash-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        color: #e9d5ff;
+        padding: 2px 8px;
+        font-size: 0.72rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .quick-cash-btn:hover {
+        background: #c084fc;
+        color: #000;
+        font-weight: 700;
     }
     .summary-stat-card {
         background: var(--bg-card);
@@ -333,6 +411,7 @@
     .stat-val.neg { color: #ef4444; }
     .stat-val.neutral { color: #06b6d4; }
     .stat-val.gold { color: #d4a843; }
+    .stat-val.purple { color: #c084fc; }
     .stat-sub {
         font-size: 0.75rem;
         color: var(--text-muted);
@@ -403,6 +482,20 @@
         background: #06b6d4;
         color: #000;
     }
+    .copy-pill-btn {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: var(--text-muted);
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        cursor: pointer;
+        margin-left: 4px;
+    }
+    .copy-pill-btn:hover {
+        background: #d4a843;
+        color: #000;
+    }
     .calc-modal {
         position: fixed;
         inset: 0;
@@ -422,6 +515,15 @@
         padding: 1.5rem;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
     }
+    .sleep-slot-card {
+        background: rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(168, 85, 247, 0.25);
+        border-radius: 6px;
+        padding: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
     @keyframes spin {
         from { transform: rotate(0deg); }
         to { transform: rotate(360deg); }
@@ -429,7 +531,7 @@
 </style>
 
 <script>
-// ── OSRS BANK SKILLING PROFIT ENGINE ────────────────────────────
+// ── OSRS BANK SKILLING & OVERNIGHT FLIP ENGINE ──────────────────
 (function() {
     'use strict';
 
@@ -442,6 +544,7 @@
         profitFilter: 'profit',
         searchQuery: '',
         naturePriceOverride: 100,
+        bankroll: 25000000,
         sortBy: 'profit',
         sortAsc: false,
         lastFetchTime: null,
@@ -616,7 +719,7 @@
             subCat: 'Bolts',
             icon: '🎯',
             rate: RATES.fletch_bolts,
-            xp: 100, // 10 per bolt
+            xp: 100,
             inputs: [
                 { id: 11875, name: 'Unfinished broad bolts', qty: 10 },
                 { id: 314, name: 'Feather', qty: 10 }
@@ -1161,7 +1264,7 @@
         }
     ];
 
-    // High Alch curated top targets (expanded with dynamic scan)
+    // High Alch targets
     const HIGH_ALCH_CANDIDATES = [
         { id: 1319, name: 'Rune 2h sword' },
         { id: 1079, name: 'Rune platelegs' },
@@ -1188,12 +1291,64 @@
         { id: 1399, name: 'Earth battlestaff' }
     ];
 
+    // ── 🌙 OVERNIGHT "SLEEP FLIP" CANDIDATE TARGETS ───────────────
+    // Items with high overnight volume that experience temporary low-ask dumps
+    const OVERNIGHT_CANDIDATES = [
+        // Safe Consumables & High-Liquidity Staples
+        { id: 565, name: 'Blood rune', cat: 'Consumables', icon: '🩸', dipFactor: 0.99 },
+        { id: 560, name: 'Death rune', cat: 'Consumables', icon: '💀', dipFactor: 0.99 },
+        { id: 566, name: 'Soul rune', cat: 'Consumables', icon: '✨', dipFactor: 0.99 },
+        { id: 21880, name: 'Wrath rune', cat: 'Consumables', icon: '🔥', dipFactor: 0.985 },
+        { id: 561, name: 'Nature rune', cat: 'Consumables', icon: '🌿', dipFactor: 0.99 },
+        { id: 536, name: 'Dragon bones', cat: 'Consumables', icon: '🦴', dipFactor: 0.985 },
+        { id: 22124, name: 'Superior dragon bones', cat: 'Consumables', icon: '🦴', dipFactor: 0.98 },
+        { id: 6729, name: 'Dagannoth bones', cat: 'Consumables', icon: '🦴', dipFactor: 0.985 },
+        { id: 2, name: 'Cannonball', cat: 'Consumables', icon: '💣', dipFactor: 0.99 },
+        { id: 11232, name: 'Dragon dart tip', cat: 'Consumables', icon: '🗡️', dipFactor: 0.98 },
+        { id: 25853, name: 'Amethyst dart tip', cat: 'Consumables', icon: '🗡️', dipFactor: 0.985 },
+        { id: 12934, name: "Zulrah's scales", cat: 'Consumables', icon: '🐍', dipFactor: 0.99 },
+        { id: 21820, name: 'Revenant ether', cat: 'Consumables', icon: '👻', dipFactor: 0.99 },
+        { id: 2434, name: 'Prayer potion(4)', cat: 'Consumables', icon: '🍶', dipFactor: 0.985 },
+        { id: 3024, name: 'Super restore(4)', cat: 'Consumables', icon: '🍶', dipFactor: 0.985 },
+        { id: 6685, name: 'Saradomin brew(4)', cat: 'Consumables', icon: '🍶', dipFactor: 0.985 },
+        { id: 12625, name: 'Stamina potion(4)', cat: 'Consumables', icon: '🍶', dipFactor: 0.985 },
+        { id: 23685, name: 'Divine super combat potion(4)', cat: 'Consumables', icon: '🍶', dipFactor: 0.98 },
+        { id: 385, name: 'Shark', cat: 'Consumables', icon: '🦈', dipFactor: 0.985 },
+        { id: 3144, name: 'Cooked karambwan', cat: 'Consumables', icon: '🐟', dipFactor: 0.985 },
+        { id: 13441, name: 'Anglerfish', cat: 'Consumables', icon: '🐠', dipFactor: 0.985 },
+        { id: 207, name: 'Grimy ranarr weed', cat: 'Consumables', icon: '🌿', dipFactor: 0.985 },
+        { id: 3051, name: 'Grimy snapdragon', cat: 'Consumables', icon: '🌿', dipFactor: 0.985 },
+        { id: 219, name: 'Grimy torstol', cat: 'Consumables', icon: '🌿', dipFactor: 0.985 },
+        { id: 1631, name: 'Uncut dragonstone', cat: 'Consumables', icon: '💎', dipFactor: 0.98 },
+        { id: 1617, name: 'Uncut diamond', cat: 'Consumables', icon: '💎', dipFactor: 0.985 },
+        { id: 1513, name: 'Magic logs', cat: 'Consumables', icon: '🪵', dipFactor: 0.985 },
+        { id: 1777, name: 'Bow string', cat: 'Consumables', icon: '🧵', dipFactor: 0.985 },
+        { id: 2353, name: 'Steel bar', cat: 'Consumables', icon: '⚒️', dipFactor: 0.99 },
+        { id: 2361, name: 'Adamantite bar', cat: 'Consumables', icon: '⚒️', dipFactor: 0.985 },
+        { id: 2363, name: 'Runite bar', cat: 'Consumables', icon: '⚒️', dipFactor: 0.985 },
+        { id: 11959, name: 'Black chinchompa', cat: 'Consumables', icon: '🐭', dipFactor: 0.98 },
+        // High-Margin Equipment & Gear
+        { id: 4151, name: 'Abyssal whip', cat: 'Equipment', icon: '⚔️', dipFactor: 0.98 },
+        { id: 11840, name: 'Dragon boots', cat: 'Equipment', icon: '👢', dipFactor: 0.975 },
+        { id: 6585, name: 'Amulet of fury', cat: 'Equipment', icon: '📿', dipFactor: 0.98 },
+        { id: 6737, name: 'Berserker ring', cat: 'Equipment', icon: '💍', dipFactor: 0.975 },
+        { id: 12002, name: 'Occult necklace', cat: 'Equipment', icon: '📿', dipFactor: 0.975 },
+        { id: 12926, name: 'Toxic blowpipe', cat: 'Equipment', icon: '🎯', dipFactor: 0.975 },
+        { id: 11235, name: 'Dark bow', cat: 'Equipment', icon: '🏹', dipFactor: 0.975 },
+        { id: 4720, name: "Dharok's platebody", cat: 'Equipment', icon: '🛡️', dipFactor: 0.97 },
+        { id: 4716, name: "Dharok's helm", cat: 'Equipment', icon: '🪖', dipFactor: 0.97 },
+        { id: 4712, name: "Ahrim's robetop", cat: 'Equipment', icon: '🧙‍♂️', dipFactor: 0.97 },
+        { id: 4714, name: "Ahrim's robeskirt", cat: 'Equipment', icon: '🧙‍♂️', dipFactor: 0.97 },
+        { id: 4736, name: "Karil's leatherskirt", cat: 'Equipment', icon: '🏹', dipFactor: 0.97 },
+        { id: 4738, name: "Karil's top", cat: 'Equipment', icon: '🏹', dipFactor: 0.97 }
+    ];
+
     // ── API ENGINE ───────────────────────────────────────────────
     async function fetchWikiAPI(endpoint) {
         const url = `https://prices.runescape.wiki/api/v1/osrs/${endpoint}`;
         const res = await fetch(url, {
             headers: {
-                'User-Agent': 'ThomsFoolery-OSRSBankSkillingCalculator/1.0 (Contact: @ThomsFoolery)'
+                'User-Agent': 'ThomsFoolery-OSRSBankSkillingCalculator/1.1 (Contact: @ThomsFoolery)'
             }
         });
         if (!res.ok) throw new Error(`HTTP ${res.status} from ${endpoint}`);
@@ -1211,7 +1366,6 @@
         }
 
         try {
-            // Load mapping if not cached
             if (!livePrices.mapping || Object.keys(livePrices.mapping).length === 0) {
                 const mapArr = await fetchWikiAPI('mapping');
                 livePrices.mapping = {};
@@ -1220,7 +1374,6 @@
                 });
             }
 
-            // Fetch live prices and 1h volume in parallel
             const [latestData, hourData] = await Promise.all([
                 fetchWikiAPI('latest'),
                 fetchWikiAPI('1h')
@@ -1230,7 +1383,6 @@
             livePrices.hour = hourData.data || {};
             state.lastFetchTime = new Date();
 
-            // Auto-detect Nature Rune price
             const natLatest = livePrices.latest[561];
             if (natLatest && !manual) {
                 const autoNat = natLatest.high || 100;
@@ -1257,7 +1409,6 @@
 
     // ── MATH & CALCULATION ENGINE ────────────────────────────────
     function getItemPrice(itemId, role) {
-        // Nature rune override
         if (itemId === 561) {
             return parseInt(document.getElementById('natureRuneOverride').value) || 100;
         }
@@ -1266,10 +1417,8 @@
         if (!quote) return 0;
 
         if (state.pricingMode === 'instant') {
-            // Instant buy ingredients at high; instant dump outputs at low
             return role === 'input' ? (quote.high || quote.low || 0) : (quote.low || quote.high || 0);
         } else {
-            // Patient buy ingredients at low; patient sell outputs at high
             return role === 'input' ? (quote.low || quote.high || 0) : (quote.high || quote.low || 0);
         }
     }
@@ -1307,14 +1456,15 @@
         
         let gpXp = 0;
         if (recipe.xp > 0) {
-            // Negative means cost per XP; positive means profit per XP
             gpXp = (netProfit / recipe.xp);
         }
 
-        const fourHourProfit = (recipe.limit || outItem.limit || 0) * netProfit;
+        const buyLimit = recipe.limit || outItem.limit || 0;
+        const fourHourProfit = buyLimit * netProfit;
 
         return {
             ...recipe,
+            unitSellPrice,
             inputCost,
             grossRev,
             geTax,
@@ -1323,7 +1473,7 @@
             hourlyGP,
             gpXp,
             volume,
-            buyLimit: recipe.limit || outItem.limit || 0,
+            buyLimit: buyLimit,
             fourHourProfit,
             ingredientsDetail,
             outItem
@@ -1349,7 +1499,7 @@
             const netProfit = alchRev - inputCost;
             const volume = (hour.highPriceVolume || 0) + (hour.lowPriceVolume || 0);
             const hourlyGP = Math.round(netProfit * RATES.magic_alch);
-            const xp = 65.0; // Standard High Alch XP
+            const xp = 65.0;
             const gpXp = netProfit / xp;
             const buyLimit = mapItem.limit || 70;
 
@@ -1361,6 +1511,7 @@
                 icon: '🔥',
                 rate: RATES.magic_alch,
                 xp: xp,
+                unitSellPrice: alchRev,
                 inputCost: inputCost,
                 grossRev: alchRev,
                 geTax: 0,
@@ -1382,15 +1533,94 @@
         return list;
     }
 
+    // ── 🌙 OVERNIGHT FLIPS CALCULATOR ENGINE ─────────────────────
+    function calculateOvernightFlips() {
+        const list = [];
+
+        OVERNIGHT_CANDIDATES.forEach(c => {
+            const mapItem = livePrices.mapping[c.id] || {};
+            const quote = livePrices.latest[c.id] || {};
+            const hour = livePrices.hour[c.id] || {};
+
+            const high = quote.high || 0;
+            const low = quote.low || 0;
+            if (high <= 0 || low <= 0) return;
+
+            const volume = (hour.highPriceVolume || 0) + (hour.lowPriceVolume || 0);
+            const limit = mapItem.limit || 1000;
+
+            // Overnight target buy price: capture the lower edge of the spread or low dip
+            const overnightBuy = Math.floor(low * (c.dipFactor || 0.99));
+            // Morning target sell price: list right at active ask or 1 GP below high
+            const morningSell = Math.max(overnightBuy + 1, high > 1000 ? high - 1 : high);
+
+            // GE Tax 2% (capped at 5M)
+            const geTax = Math.min(5000000, Math.floor(morningSell * 0.02));
+            const netSell = morningSell - geTax;
+            const netProfit = netSell - overnightBuy;
+            const roi = overnightBuy > 0 ? (netProfit / overnightBuy) * 100 : 0;
+
+            // Overnight limit fills (over 8h sleep window, users can fill 2x limit, but we baseline at 1x limit)
+            const capitalNeeded = overnightBuy * limit;
+            const slotProfit = netProfit * limit;
+
+            list.push({
+                id: `overnight_${c.id}`,
+                name: c.name,
+                skill: 'overnight',
+                subCat: c.cat,
+                icon: c.icon || '🌙',
+                overnightBuy,
+                morningSell,
+                geTax,
+                netSell,
+                netProfit,
+                roi,
+                limit,
+                capitalNeeded,
+                slotProfit,
+                volume,
+                mapItem
+            });
+        });
+
+        return list;
+    }
+
     // ── RENDER ENGINE ────────────────────────────────────────────
     window.renderAll = function() {
+        const thead = document.getElementById('recipeTableHead');
         const tbody = document.getElementById('recipeTableBody');
         const countDisplay = document.getElementById('recipeCountDisplay');
+        const banner = document.getElementById('overnightBanner');
 
-        // Calculate all standard recipes
+        // Check if Overnight Flips tab is active
+        const isOvernightTab = state.selectedSkill === 'overnight';
+        banner.style.display = isOvernightTab ? 'block' : 'none';
+
+        if (isOvernightTab) {
+            renderOvernightView();
+            return;
+        }
+
+        // Standard Bank Skilling View
+        thead.innerHTML = `
+            <tr>
+                <th onclick="setSort('name')">Method / Recipe <span class="sort-icon" id="sort-name">↕</span></th>
+                <th onclick="setSort('skill')">Skill <span class="sort-icon" id="sort-skill">↕</span></th>
+                <th>Ingredients Breakdown</th>
+                <th onclick="setSort('cost')">Cost / Action <span class="sort-icon" id="sort-cost">↕</span></th>
+                <th onclick="setSort('revenue')">GE Listing Price (Unit) <span class="sort-icon" id="sort-revenue">↕</span></th>
+                <th onclick="setSort('profit')">Profit / Action <span class="sort-icon" id="sort-profit">▼</span></th>
+                <th onclick="setSort('gpxp')">GP / XP <span class="sort-icon" id="sort-gpxp">↕</span></th>
+                <th onclick="setSort('gphr')">Est. GP / Hr <span class="sort-icon" id="sort-gphr">↕</span></th>
+                <th onclick="setSort('limit')">4h Limit <span class="sort-icon" id="sort-limit">↕</span></th>
+                <th>Action</th>
+            </tr>
+        `;
+
+        // Calculate all standard recipes & high alch
         let list = RECIPES.map(calculateRecipe);
-
-        // Include high alch methods
         list = list.concat(generateHighAlchList());
 
         // Update Skill Tab Badges
@@ -1420,7 +1650,7 @@
             list = list.filter(r => r.netProfit <= 0);
         }
 
-        // Filter by search query
+        // Search query
         const query = (document.getElementById('recipeSearch').value || '').trim().toLowerCase();
         if (query) {
             list = list.filter(r => 
@@ -1441,12 +1671,11 @@
             return state.sortAsc ? (valA - valB) : (valB - valA);
         });
 
-        // Update Top Summary Cards
-        updateSummaryStats(list);
+        // Summary Cards for Bank Skilling
+        updateBankSkillingSummaryStats(list);
 
-        // Render Table Rows
         if (list.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:2.5rem;color:var(--text-muted);">No matching recipes found under current filter thresholds. Try lowering the volume filter or switching to 'All Recipes'.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:2.5rem;color:var(--text-muted);">No matching recipes found under current filter thresholds. Try lowering the volume filter or switching to 'All Items'.</td></tr>`;
             countDisplay.textContent = 'Showing 0 recipes';
             return;
         }
@@ -1457,7 +1686,6 @@
             const profitSign = r.netProfit > 0 ? '+' : '';
             const hourlyCls = r.hourlyGP > 0 ? 'val-pos' : r.hourlyGP < 0 ? 'val-neg' : 'val-neutral';
             
-            // GP/XP display
             let gpxpDisplay = '—';
             let gpxpCls = 'val-neutral';
             if (r.xp > 0) {
@@ -1470,8 +1698,12 @@
                 }
             }
 
-            // Ingredients badge preview
-            const ingrHtml = r.ingredientsDetail.map(i => `<span style="display:inline-block;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;font-size:0.75rem;margin:1px;">${i.qty > 1 ? i.qty + 'x ' : ''}${i.name} (${fmtGP(i.price)})</span>`).join(' ');
+            // Ingredients badge preview with EXACT prices
+            const ingrHtml = r.ingredientsDetail.map(i => 
+                `<span style="display:inline-block;background:var(--bg-dark);border:1px solid rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;font-size:0.75rem;margin:1px;">
+                    ${i.qty > 1 ? i.qty + 'x ' : ''}${i.name} <strong style="color:var(--text-main);">(${fmtExact(i.price)})</strong>
+                </span>`
+            ).join(' ');
 
             html += `
                 <tr>
@@ -1485,12 +1717,33 @@
                     </td>
                     <td><span style="text-transform:capitalize;font-size:0.8rem;background:rgba(212,168,67,0.1);color:#d4a843;padding:2px 8px;border-radius:12px;font-weight:600;">${r.skill}</span></td>
                     <td style="max-width:240px;">${ingrHtml}</td>
-                    <td class="val-neutral">${fmtGP(r.inputCost)} GP</td>
-                    <td style="color:var(--text-main);">${fmtGP(r.netRev)} GP ${r.geTax > 0 ? `<span style="font-size:0.7rem;color:var(--text-muted);display:block;">(-${fmtGP(r.geTax)} tax)</span>` : ''}</td>
-                    <td class="${profitCls}" style="font-size:0.95rem;">${profitSign}${fmtGP(r.netProfit)} GP</td>
+                    
+                    <!-- Exact Cost / Action -->
+                    <td class="val-neutral" style="font-weight:600;">
+                        ${fmtExact(r.inputCost)}
+                    </td>
+
+                    <!-- Exact Full Sell Price to List on Grand Exchange -->
+                    <td>
+                        <div style="font-weight:700;font-size:0.95rem;color:#d4a843;display:flex;align-items:center;">
+                            ${fmtExact(r.unitSellPrice)}
+                            <button class="copy-pill-btn" onclick="copyPrice(${r.unitSellPrice}, this)" title="Copy listing price to clipboard">Copy</button>
+                        </div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;">
+                            ${r.geTax > 0 ? `Net: ${fmtExact(r.netRev)} <span style="color:#ef4444;">(-${fmtExact(r.geTax)} tax)</span>` : `<span style="color:#10b981;">Alch Value (0% Tax)</span>`}
+                        </div>
+                    </td>
+
+                    <!-- Exact Profit / Action -->
+                    <td class="${profitCls}" style="font-size:0.95rem;">
+                        ${profitSign}${fmtExact(r.netProfit)}
+                    </td>
+
                     <td class="${gpxpCls}">${gpxpDisplay}</td>
                     <td class="${hourlyCls}" style="font-weight:700;">${r.hourlyGP > 0 ? '+' : ''}${fmtGP(r.hourlyGP)}/hr</td>
-                    <td style="font-size:0.8rem;color:var(--text-muted);">${r.buyLimit > 0 ? fmtGP(r.buyLimit) + ' (' + (r.fourHourProfit > 0 ? '+' : '') + fmtGP(r.fourHourProfit) + ')' : '—'}</td>
+                    <td style="font-size:0.8rem;color:var(--text-muted);">
+                        ${r.buyLimit > 0 ? fmtExact(r.buyLimit).replace(' GP','') + ' (' + (r.fourHourProfit > 0 ? '+' : '') + fmtGP(r.fourHourProfit) + ')' : '—'}
+                    </td>
                     <td>
                         <button class="calc-btn" onclick="openBatchModal('${r.id}')">🧮 Calc</button>
                     </td>
@@ -1502,31 +1755,240 @@
         countDisplay.textContent = `Showing ${list.length} recipe${list.length === 1 ? '' : 's'}`;
     };
 
-    function updateSkillBadges(allList) {
-        const counts = { all: allList.length, fletching: 0, herblore: 0, crafting: 0, magic: 0, smithing: 0, cooking: 0 };
-        allList.forEach(r => {
-            if (counts[r.skill] !== undefined) counts[r.skill]++;
+    // ── RENDER OVERNIGHT FLIPS VIEW ──────────────────────────────
+    function renderOvernightView() {
+        const thead = document.getElementById('recipeTableHead');
+        const tbody = document.getElementById('recipeTableBody');
+        const countDisplay = document.getElementById('recipeCountDisplay');
+
+        thead.innerHTML = `
+            <tr>
+                <th onclick="setSort('name')">Item / Target <span class="sort-icon" id="sort-name">↕</span></th>
+                <th onclick="setSort('subCat')">Category <span class="sort-icon" id="sort-subCat">↕</span></th>
+                <th onclick="setSort('overnightBuy')">Overnight BUY Offer <span class="sort-icon" id="sort-overnightBuy">↕</span></th>
+                <th onclick="setSort('morningSell')">Morning SELL Target <span class="sort-icon" id="sort-morningSell">↕</span></th>
+                <th>2% Tax</th>
+                <th onclick="setSort('profit')">Net Profit / Unit <span class="sort-icon" id="sort-profit">▼</span></th>
+                <th onclick="setSort('roi')">ROI % <span class="sort-icon" id="sort-roi">↕</span></th>
+                <th onclick="setSort('capitalNeeded')">Capital to Fill Limit <span class="sort-icon" id="sort-capitalNeeded">↕</span></th>
+                <th onclick="setSort('slotProfit')">Overnight Slot Profit <span class="sort-icon" id="sort-slotProfit">↕</span></th>
+                <th>Action</th>
+            </tr>
+        `;
+
+        let list = calculateOvernightFlips();
+
+        // Update Tab Badges
+        document.getElementById('count-overnight').textContent = list.filter(x => x.netProfit > 0).length;
+
+        // Sub-category filter
+        if (state.selectedSubCat !== 'all') {
+            list = list.filter(r => r.subCat === state.selectedSubCat);
+        }
+
+        // Min Volume
+        const minVol = parseInt(document.getElementById('minVolumeSelect').value) || 0;
+        if (minVol > 0) {
+            list = list.filter(r => r.volume >= minVol);
+        }
+
+        // Profit filter
+        const pFilter = document.getElementById('profitFilterSelect').value;
+        if (pFilter === 'profit') {
+            list = list.filter(r => r.netProfit > 0);
+        }
+
+        // Search query
+        const query = (document.getElementById('recipeSearch').value || '').trim().toLowerCase();
+        if (query) {
+            list = list.filter(r => 
+                r.name.toLowerCase().includes(query) || 
+                r.subCat.toLowerCase().includes(query)
+            );
+        }
+
+        // Sort
+        list.sort((a, b) => {
+            let valA = a[state.sortBy === 'profit' ? 'netProfit' : state.sortBy];
+            let valB = b[state.sortBy === 'profit' ? 'netProfit' : state.sortBy];
+            if (valA === undefined) valA = a.netProfit;
+            if (valB === undefined) valB = b.netProfit;
+            if (typeof valA === 'string') {
+                return state.sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+            }
+            return state.sortAsc ? (valA - valB) : (valB - valA);
         });
-        Object.keys(counts).forEach(k => {
-            const el = document.getElementById(`count-${k}`);
-            if (el) el.textContent = counts[k];
+
+        // Summary cards for overnight view
+        updateOvernightSummaryStats(list);
+
+        // Generate the 8-Slot Sleep Allocation Grid
+        renderSleepSlotsRoster(list);
+
+        if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;padding:2.5rem;color:var(--text-muted);">No profitable overnight flips match the current filter criteria.</td></tr>`;
+            countDisplay.textContent = 'Showing 0 items';
+            return;
+        }
+
+        let html = '';
+        list.forEach(item => {
+            const profitCls = item.netProfit > 0 ? 'val-pos' : 'val-neg';
+            const profitSign = item.netProfit > 0 ? '+' : '';
+            const slotCls = item.slotProfit > 0 ? 'val-pos' : 'val-neg';
+
+            html += `
+                <tr>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:0.4rem;font-weight:600;color:var(--text-main);">
+                            <span>${item.icon}</span> <span>${item.name}</span>
+                        </div>
+                        <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;">
+                            ${item.volume > 0 ? fmtGP(item.volume) + '/hr volume' : 'Low vol'} • Limit: ${fmtExact(item.limit).replace(' GP','')}
+                        </div>
+                    </td>
+                    <td>
+                        <span style="font-size:0.75rem;padding:2px 7px;border-radius:10px;background:rgba(168,85,247,0.15);color:#c084fc;font-weight:600;">
+                            ${item.subCat}
+                        </span>
+                    </td>
+                    <td>
+                        <div style="font-weight:700;color:#c084fc;font-size:0.95rem;display:flex;align-items:center;">
+                            ${fmtExact(item.overnightBuy)}
+                            <button class="copy-pill-btn" onclick="copyPrice(${item.overnightBuy}, this)" title="Copy buy price">Copy</button>
+                        </div>
+                        <div style="font-size:0.7rem;color:var(--text-muted);">Offer before bed</div>
+                    </td>
+                    <td>
+                        <div style="font-weight:700;color:#d4a843;font-size:0.95rem;display:flex;align-items:center;">
+                            ${fmtExact(item.morningSell)}
+                            <button class="copy-pill-btn" onclick="copyPrice(${item.morningSell}, this)" title="Copy sell price">Copy</button>
+                        </div>
+                        <div style="font-size:0.7rem;color:var(--text-muted);">List in morning</div>
+                    </td>
+                    <td class="val-neg" style="font-size:0.8rem;">
+                        -${fmtExact(item.geTax)}
+                    </td>
+                    <td class="${profitCls}" style="font-size:0.95rem;">
+                        ${profitSign}${fmtExact(item.netProfit)}
+                    </td>
+                    <td style="color:${item.roi >= 3 ? '#10b981' : 'var(--text-main)'};font-weight:600;">
+                        ${item.roi.toFixed(2)}%
+                    </td>
+                    <td class="val-neutral" style="font-size:0.85rem;">
+                        ${fmtGP(item.capitalNeeded)} GP
+                    </td>
+                    <td class="${slotCls}" style="font-size:0.95rem;font-weight:700;">
+                        ${item.slotProfit > 0 ? '+' : ''}${fmtExact(item.slotProfit)}
+                    </td>
+                    <td>
+                        <button class="calc-btn" onclick="openOvernightModal('${item.id}')">🧮 Calc</button>
+                    </td>
+                </tr>
+            `;
         });
+
+        tbody.innerHTML = html;
+        countDisplay.textContent = `Showing ${list.length} overnight flip opportunities`;
     }
 
-    function updateSummaryStats(filteredList) {
-        if (!filteredList || filteredList.length === 0) return;
+    // ── 8-SLOT SLEEP ROSTER OPTIMIZER ────────────────────────────
+    function renderSleepSlotsRoster(profitableItems) {
+        const grid = document.getElementById('sleepSlotsGrid');
+        const budgetDisplay = document.getElementById('allocatedBudgetDisplay');
+        const profitDisplay = document.getElementById('totalSleepProfitDisplay');
 
-        // Top Profit Item
+        const bankroll = parseInt(document.getElementById('bankrollInput').value) || state.bankroll;
+        budgetDisplay.textContent = `${fmtGP(bankroll)} GP`;
+
+        // Filter valid candidates with positive profit and reasonable volume
+        const candidates = profitableItems.filter(i => i.netProfit > 0 && i.volume >= 50 && i.capitalNeeded > 0);
+        
+        // Sort by ROI / capital efficiency
+        candidates.sort((a,b) => b.roi - a.roi);
+
+        let remainingCash = bankroll;
+        const slots = [];
+        let totalEstProfit = 0;
+
+        for (let i = 0; i < candidates.length && slots.length < 8; i++) {
+            const item = candidates[i];
+            if (remainingCash <= 0) break;
+
+            // Target capital for this slot: max of (bankroll / 8) or available cash
+            const maxSlotBudget = Math.min(remainingCash, Math.max(item.overnightBuy * 10, bankroll / 8));
+            const maxUnitsByBudget = Math.floor(maxSlotBudget / item.overnightBuy);
+            const unitsToBuy = Math.min(item.limit, maxUnitsByBudget);
+
+            if (unitsToBuy >= 1) {
+                const cost = unitsToBuy * item.overnightBuy;
+                const profit = unitsToBuy * item.netProfit;
+                remainingCash -= cost;
+                totalEstProfit += profit;
+
+                slots.push({
+                    slotNum: slots.length + 1,
+                    item: item,
+                    units: unitsToBuy,
+                    cost: cost,
+                    profit: profit
+                });
+            }
+        }
+
+        profitDisplay.textContent = `Est. Morning Profit: +${fmtExact(totalEstProfit)}`;
+
+        let slotHtml = '';
+        for (let s = 0; s < 8; s++) {
+            const slot = slots[s];
+            if (slot) {
+                slotHtml += `
+                    <div class="sleep-slot-card">
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <span style="font-size:0.7rem;color:#c084fc;font-weight:700;">SLOT ${slot.slotNum}</span>
+                            <span style="font-size:0.75rem;color:#10b981;font-weight:700;">+${fmtGP(slot.profit)} GP</span>
+                        </div>
+                        <div style="font-weight:700;color:var(--text-main);font-size:0.9rem;display:flex;align-items:center;gap:0.3rem;">
+                            <span>${slot.item.icon}</span> <span>${slot.item.name}</span>
+                        </div>
+                        <div style="font-size:0.75rem;color:var(--text-muted);display:flex;justify-content:space-between;margin-top:2px;">
+                            <span>Qty: <strong style="color:var(--text-main);">${fmtExact(slot.units).replace(' GP','')}</strong></span>
+                            <span>Cost: ${fmtGP(slot.cost)} GP</span>
+                        </div>
+                        <div style="border-top:1px solid rgba(255,255,255,0.06);padding-top:4px;margin-top:4px;font-size:0.75rem;display:flex;justify-content:space-between;">
+                            <span style="color:#c084fc;">Buy: <strong>${fmtExact(slot.item.overnightBuy)}</strong></span>
+                            <span style="color:#d4a843;">Sell: <strong>${fmtExact(slot.item.morningSell)}</strong></span>
+                        </div>
+                    </div>
+                `;
+            } else {
+                slotHtml += `
+                    <div class="sleep-slot-card" style="opacity:0.4;border-style:dashed;">
+                        <span style="font-size:0.7rem;color:var(--text-muted);">SLOT ${s + 1}</span>
+                        <div style="font-size:0.8rem;color:var(--text-muted);margin:auto 0;">Available Grand Exchange Slot</div>
+                    </div>
+                `;
+            }
+        }
+
+        grid.innerHTML = slotHtml;
+    }
+
+    // ── SUMMARY CARDS ────────────────────────────────────────────
+    function updateBankSkillingSummaryStats(filteredList) {
+        document.getElementById('summaryCard1Label').textContent = 'Top Profit / Item';
+        document.getElementById('summaryCard2Label').textContent = 'Top Hourly GP';
+        document.getElementById('summaryCard3Label').textContent = 'Best Free / Profitable XP';
+
         const topItem = [...filteredList].sort((a,b) => b.netProfit - a.netProfit)[0];
         if (topItem && topItem.netProfit > 0) {
-            document.getElementById('topProfitItem').textContent = `+${fmtGP(topItem.netProfit)} GP`;
+            document.getElementById('topProfitItem').textContent = `+${fmtExact(topItem.netProfit)}`;
             document.getElementById('topProfitItemName').textContent = topItem.name;
         } else {
             document.getElementById('topProfitItem').textContent = '—';
             document.getElementById('topProfitItemName').textContent = 'No profitable item';
         }
 
-        // Top Hourly GP
         const topHourly = [...filteredList].sort((a,b) => b.hourlyGP - a.hourlyGP)[0];
         if (topHourly && topHourly.hourlyGP > 0) {
             document.getElementById('topHourlyGP').textContent = `+${fmtGP(topHourly.hourlyGP)}/hr`;
@@ -1536,7 +1998,6 @@
             document.getElementById('topHourlyName').textContent = 'No positive method';
         }
 
-        // Best Profitable XP
         const profitableXp = filteredList.filter(r => r.xp > 0 && r.netProfit > 0).sort((a,b) => b.gpXp - a.gpXp)[0];
         if (profitableXp) {
             document.getElementById('bestXpRatio').textContent = `+${profitableXp.gpXp.toFixed(2)} gp/xp`;
@@ -1545,6 +2006,45 @@
             document.getElementById('bestXpRatio').textContent = '—';
             document.getElementById('bestXpName').textContent = 'No profitable training';
         }
+    }
+
+    function updateOvernightSummaryStats(list) {
+        document.getElementById('summaryCard1Label').textContent = 'Top Overnight Slot Profit';
+        document.getElementById('summaryCard2Label').textContent = 'Highest Overnight ROI';
+        document.getElementById('summaryCard3Label').textContent = 'Top Liquid Item';
+
+        const topSlot = [...list].sort((a,b) => b.slotProfit - a.slotProfit)[0];
+        if (topSlot && topSlot.slotProfit > 0) {
+            document.getElementById('topProfitItem').textContent = `+${fmtExact(topSlot.slotProfit)}`;
+            document.getElementById('topProfitItemName').textContent = `${topSlot.name} (Limit: ${fmtExact(topSlot.limit).replace(' GP','')})`;
+        }
+
+        const topRoi = [...list].filter(i => i.volume >= 50 && i.netProfit > 0).sort((a,b) => b.roi - a.roi)[0];
+        if (topRoi) {
+            document.getElementById('topHourlyGP').textContent = `${topRoi.roi.toFixed(2)}%`;
+            document.getElementById('topHourlyName').textContent = `${topRoi.name} (+${fmtExact(topRoi.netProfit)}/ea)`;
+        }
+
+        const topVol = [...list].sort((a,b) => b.volume - a.volume)[0];
+        if (topVol) {
+            document.getElementById('bestXpRatio').textContent = `${fmtGP(topVol.volume)}/hr`;
+            document.getElementById('bestXpName').textContent = topVol.name;
+        }
+    }
+
+    function updateSkillBadges(allList) {
+        const counts = { all: allList.length, fletching: 0, herblore: 0, crafting: 0, magic: 0, smithing: 0, cooking: 0 };
+        allList.forEach(r => {
+            if (counts[r.skill] !== undefined) counts[r.skill]++;
+        });
+        Object.keys(counts).forEach(k => {
+            const el = document.getElementById(`count-${k}`);
+            if (el) el.textContent = counts[k];
+        });
+
+        // Overnight badge
+        const overnightCount = calculateOvernightFlips().filter(i => i.netProfit > 0).length;
+        document.getElementById('count-overnight').textContent = overnightCount;
     }
 
     // ── CONTROLS & INTERACTION ───────────────────────────────────
@@ -1573,15 +2073,20 @@
 
         if (state.selectedSkill === 'all') return;
 
-        let recipes = RECIPES.filter(r => r.skill === state.selectedSkill);
-        if (state.selectedSkill === 'magic') {
-            recipes = [{ subCat: 'High Alchemy' }];
+        let subCats = [];
+        if (state.selectedSkill === 'overnight') {
+            subCats = ['all', 'Consumables', 'Equipment'];
+        } else if (state.selectedSkill === 'magic') {
+            subCats = ['all', 'High Alchemy'];
+        } else {
+            const recipes = RECIPES.filter(r => r.skill === state.selectedSkill);
+            subCats = ['all', ...new Set(recipes.map(r => r.subCat))];
         }
 
-        const subCats = ['all', ...new Set(recipes.map(r => r.subCat))];
         subCats.forEach(sc => {
             const btn = document.createElement('button');
-            btn.className = `sub-cat-pill ${state.selectedSubCat === sc ? 'active' : ''}`;
+            const isPurple = state.selectedSkill === 'overnight';
+            btn.className = `sub-cat-pill ${isPurple ? 'purple-pill' : ''} ${state.selectedSubCat === sc ? 'active' : ''}`;
             btn.textContent = sc === 'all' ? `All ${capitalize(state.selectedSkill)}` : sc;
             btn.onclick = () => {
                 state.selectedSubCat = sc;
@@ -1597,10 +2102,9 @@
             state.sortAsc = !state.sortAsc;
         } else {
             state.sortBy = col;
-            state.sortAsc = (col === 'name' || col === 'skill');
+            state.sortAsc = (col === 'name' || col === 'skill' || col === 'subCat');
         }
 
-        // Update header indicator
         document.querySelectorAll('.sort-icon').forEach(el => el.textContent = '↕');
         const activeIcon = document.getElementById(`sort-${col}`);
         if (activeIcon) {
@@ -1615,12 +2119,31 @@
         renderAll();
     };
 
-    // ── BATCH MODAL ──────────────────────────────────────────────
+    window.setBankroll = function(amt) {
+        document.getElementById('bankrollInput').value = amt;
+        state.bankroll = amt;
+        renderAll();
+    };
+
+    window.copyPrice = function(val, btn) {
+        if (!navigator.clipboard) return;
+        navigator.clipboard.writeText(val.toString()).then(() => {
+            const orig = btn.textContent;
+            btn.textContent = 'Copied!';
+            btn.style.background = '#10b981';
+            btn.style.color = '#000';
+            setTimeout(() => {
+                btn.textContent = orig;
+                btn.style.background = '';
+                btn.style.color = '';
+            }, 1200);
+        });
+    };
+
+    // ── MODALS ───────────────────────────────────────────────────
     window.openBatchModal = function(recipeId) {
         let r = RECIPES.map(calculateRecipe).find(x => x.id === recipeId);
-        if (!r) {
-            r = generateHighAlchList().find(x => x.id === recipeId);
-        }
+        if (!r) r = generateHighAlchList().find(x => x.id === recipeId);
         if (!r) return;
 
         document.getElementById('modalIcon').textContent = r.icon;
@@ -1632,22 +2155,26 @@
         body.innerHTML = `
             <div style="margin-bottom: 1rem;">
                 <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.4rem;">Target Batch Quantity:</label>
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
                     <input type="number" id="batchQty" value="${defaultQty}" min="1" step="100" oninput="updateBatchCalc('${r.id}')" style="background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem 0.85rem; border-radius: 6px; font-size: 1rem; width: 140px;">
                     <button onclick="setBatchQty(100, '${r.id}')" class="sub-cat-pill">100</button>
                     <button onclick="setBatchQty(500, '${r.id}')" class="sub-cat-pill">500</button>
                     <button onclick="setBatchQty(1000, '${r.id}')" class="sub-cat-pill">1,000</button>
-                    ${r.buyLimit > 0 ? `<button onclick="setBatchQty(${r.buyLimit}, '${r.id}')" class="sub-cat-pill">4h Limit (${fmtGP(r.buyLimit)})</button>` : ''}
+                    ${r.buyLimit > 0 ? `<button onclick="setBatchQty(${r.buyLimit}, '${r.id}')" class="sub-cat-pill">4h Limit (${fmtExact(r.buyLimit).replace(' GP','')})</button>` : ''}
                 </div>
             </div>
 
             <div style="background: var(--bg-dark); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
+                    <span style="color: var(--text-muted);">Exact GE Unit Listing Price:</span>
+                    <strong style="color: #d4a843;">${fmtExact(r.unitSellPrice)}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
                     <span style="color: var(--text-muted);">Total Material Investment:</span>
                     <strong id="batchCost">—</strong>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
-                    <span style="color: var(--text-muted);">Total Net Revenue:</span>
+                    <span style="color: var(--text-muted);">Total Net Revenue (after tax):</span>
                     <strong id="batchRevenue">—</strong>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
@@ -1673,9 +2200,65 @@
         updateBatchCalc(r.id);
     };
 
+    window.openOvernightModal = function(flipId) {
+        const item = calculateOvernightFlips().find(x => x.id === flipId);
+        if (!item) return;
+
+        document.getElementById('modalIcon').textContent = item.icon;
+        document.getElementById('modalTitle').textContent = `${item.name} — Overnight Calculator`;
+
+        const body = document.getElementById('modalBody');
+        body.innerHTML = `
+            <div style="margin-bottom: 1rem;">
+                <label style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.4rem;">Target Buy Units for Overnight Order:</label>
+                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                    <input type="number" id="overnightQty" value="${item.limit}" min="1" step="100" oninput="updateOvernightModalCalc('${item.id}')" style="background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem 0.85rem; border-radius: 6px; font-size: 1rem; width: 140px;">
+                    <button onclick="setOvernightQty(${Math.floor(item.limit / 2)}, '${item.id}')" class="sub-cat-pill">Half Limit</button>
+                    <button onclick="setOvernightQty(${item.limit}, '${item.id}')" class="sub-cat-pill">Full Limit (${fmtExact(item.limit).replace(' GP','')})</button>
+                    <button onclick="setOvernightQty(${item.limit * 2}, '${item.id}')" class="sub-cat-pill">2x Limit (8h Sleep)</button>
+                </div>
+            </div>
+
+            <div style="background: var(--bg-dark); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
+                    <span style="color: var(--text-muted);">Recommended Overnight BUY Offer:</span>
+                    <strong style="color: #c084fc;">${fmtExact(item.overnightBuy)}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
+                    <span style="color: var(--text-muted);">Recommended Morning SELL Target:</span>
+                    <strong style="color: #d4a843;">${fmtExact(item.morningSell)}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
+                    <span style="color: var(--text-muted);">Total Capital Tied Up Overnight:</span>
+                    <strong id="overnightModalCost">—</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.88rem;">
+                    <span style="color: var(--text-muted);">Total Expected Morning Cash:</span>
+                    <strong id="overnightModalRevenue">—</strong>
+                </div>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 0.75rem; margin-top: 0.5rem; display: flex; justify-content: space-between; font-size: 1.1rem;">
+                    <span>Net Overnight Profit:</span>
+                    <strong id="overnightModalProfit" class="val-pos">—</strong>
+                </div>
+            </div>
+
+            <div style="text-align: right;">
+                <button onclick="closeModal()" style="background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem 1.25rem; border-radius: 6px; cursor: pointer; font-weight: 600;">Close</button>
+            </div>
+        `;
+
+        document.getElementById('calcModal').style.display = 'flex';
+        updateOvernightModalCalc(item.id);
+    };
+
     window.setBatchQty = function(qty, rId) {
         document.getElementById('batchQty').value = qty;
         updateBatchCalc(rId);
+    };
+
+    window.setOvernightQty = function(qty, fId) {
+        document.getElementById('overnightQty').value = qty;
+        updateOvernightModalCalc(fId);
     };
 
     window.updateBatchCalc = function(recipeId) {
@@ -1690,14 +2273,31 @@
         const totalXp = r.xp * qty;
         const hours = (qty / r.rate);
 
-        document.getElementById('batchCost').textContent = `${fmtGP(totalCost)} GP`;
-        document.getElementById('batchRevenue').textContent = `${fmtGP(totalRev)} GP`;
-        document.getElementById('batchXP').textContent = totalXp > 0 ? `${fmtGP(Math.round(totalXp))} XP` : '0 XP';
+        document.getElementById('batchCost').textContent = `${fmtExact(totalCost)} (${fmtGP(totalCost)})`;
+        document.getElementById('batchRevenue').textContent = `${fmtExact(totalRev)} (${fmtGP(totalRev)})`;
+        document.getElementById('batchXP').textContent = totalXp > 0 ? `${fmtExact(Math.round(totalXp)).replace(' GP','')} XP` : '0 XP';
         document.getElementById('batchTime').textContent = hours < 1 ? `${Math.round(hours * 60)} mins` : `${hours.toFixed(1)} hours`;
 
         const profitEl = document.getElementById('batchProfit');
         profitEl.className = totalProfit >= 0 ? 'val-pos' : 'val-neg';
-        profitEl.textContent = `${totalProfit >= 0 ? '+' : ''}${fmtGP(totalProfit)} GP`;
+        profitEl.textContent = `${totalProfit >= 0 ? '+' : ''}${fmtExact(totalProfit)}`;
+    };
+
+    window.updateOvernightModalCalc = function(flipId) {
+        const item = calculateOvernightFlips().find(x => x.id === flipId);
+        if (!item) return;
+
+        const qty = parseInt(document.getElementById('overnightQty').value) || 1;
+        const totalCost = item.overnightBuy * qty;
+        const totalRev = item.netSell * qty;
+        const totalProfit = item.netProfit * qty;
+
+        document.getElementById('overnightModalCost').textContent = `${fmtExact(totalCost)} (${fmtGP(totalCost)})`;
+        document.getElementById('overnightModalRevenue').textContent = `${fmtExact(totalRev)} (${fmtGP(totalRev)})`;
+
+        const profitEl = document.getElementById('overnightModalProfit');
+        profitEl.className = totalProfit >= 0 ? 'val-pos' : 'val-neg';
+        profitEl.textContent = `${totalProfit >= 0 ? '+' : ''}${fmtExact(totalProfit)}`;
     };
 
     window.closeModal = function() {
@@ -1705,6 +2305,13 @@
     };
 
     // ── HELPERS ──────────────────────────────────────────────────
+    function fmtExact(n) {
+        if (n === null || n === undefined || isNaN(n)) return '0 GP';
+        const sign = n < 0 ? '-' : '';
+        const abs = Math.abs(Math.round(n));
+        return sign + abs.toLocaleString() + ' GP';
+    }
+
     function fmtGP(n) {
         if (n === null || n === undefined || isNaN(n)) return '0';
         const sign = n < 0 ? '-' : '';
