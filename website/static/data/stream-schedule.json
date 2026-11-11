@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-31T08:50:00Z",
+  "updatedAt": "2026-11-11T02:18:24.935Z",
   "streams": [
     {
       "id": "stream-morning-review",
@@ -10,8 +10,12 @@
       "durationMin": 120,
       "platformUrl": "https://twitch.tv/thomsfoolery",
       "description": "Weekday morning review: digital garden architecture, web development experiments, tech news, and community coffee.",
-      "cancelledDates": [],
-      "cancelledReasons": {}
+      "cancelledDates": [
+        "2026-11-11"
+      ],
+      "cancelledReasons": {
+        "2026-11-11": "Holiday / No Stream"
+      }
     },
     {
       "id": "stream-oot-release-20261104",
