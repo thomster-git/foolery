@@ -2079,9 +2079,9 @@ html {
         // Draw Scene Layers Back-to-Front
         drawStadium();
         drawMound(time);
-        drawBatter();
+        drawBatter(time);
         drawHomePlate();
-        drawCatcherMitt();
+        drawCatcherMitt(time);
 
         // Strike Zone display
         const shouldDrawZone = state.showZoneInFlight || state.phase === 'VERDICT' || state.isReplay;
@@ -2377,7 +2377,6 @@ html {
     ];
 
     function drawMound(time) {
-        // Ground shadow of the mound under the pitcher
         const moundProj = camera.project(0, 0.83, MOUND_Z);
         if (!moundProj) return;
 
@@ -2389,33 +2388,49 @@ html {
         if (state.phase === 'WINDUP') t = clamp01((time - state.startTime) / state.windupDuration);
         else if (state.phase === 'IN_FLIGHT') t = 1 + 0.6 * clamp01((state.flightProgress * state.flightDuration) / 260);
         else if (state.phase === 'CALL_WINDOW' || state.phase === 'VERDICT') t = 1.6;
-        else if (time !== undefined) t = 0.02 * Math.sin(time / 600) + 0.02; // idle sway
+        else if (time !== undefined) t = 0.02 * Math.sin(time / 600) + 0.02; // idle breathing sway
 
         const ts = isRHP ? -1 : 1; // screen side of throwing arm
-        const bodyX = x0 - ts * 1.08;
+        const bodyX = x0 - ts * 1.02 + ts * 0.22 * smoothstep(0.65, 1.05, t);
 
-        const hipZ = lerp(60.4, 57.3, smoothstep(0.45, 0.95, t)) - 0.5 * smoothstep(1.0, 1.6, t);
-        const hipY = moundY(hipZ) + 2.95 - 0.3 * smoothstep(0.6, 0.95, t) + 0.1 * smoothstep(0.1, 0.3, t);
-        const lean = 0.1 + 1.1 * smoothstep(0.7, 1.05, t) + 0.5 * smoothstep(1.0, 1.6, t);
+        // Biomechanical hip drive down the mound slope
+        const stridePhase = smoothstep(0.42, 0.90, t);
+        const followPhase = smoothstep(1.0, 1.55, t);
+        const hipZ = lerp(60.42, 56.9, stridePhase) - 0.45 * followPhase;
+        const dip = 0.38 * smoothstep(0.45, 0.88, t) + 0.12 * followPhase;
+        const hipY = moundY(hipZ) + 2.98 - dip + 0.12 * smoothstep(0.12, 0.35, t) * (1 - smoothstep(0.35, 0.55, t));
+        const lean = 0.08 + 1.25 * smoothstep(0.68, 1.04, t) + 0.55 * followPhase;
         const shZ = hipZ - lean;
-        const shY = hipY + 1.95 - 0.3 * lean;
+        const shY = hipY + 1.92 - 0.34 * lean;
+
+        // Torso twist (closed at leg lift -> open at release -> rotational follow-through)
+        const twist = -0.35 * smoothstep(0.18, 0.52, t) + 0.72 * smoothstep(0.55, 0.98, t) + 0.25 * followPhase;
+        const shHalfW = 0.80 * (0.78 + 0.22 * Math.cos(twist));
+        const shDepth = 0.42 * Math.sin(twist);
 
         const W = (x, y, z) => [x, y, z];
-        const shT = W(bodyX + ts * 0.78, shY, shZ);
-        const shG = W(bodyX - ts * 0.78, shY, shZ);
-        const hipT = W(bodyX + ts * 0.28, hipY, hipZ);
-        const hipG = W(bodyX - ts * 0.28, hipY, hipZ);
+        const shT = W(bodyX + ts * shHalfW, shY + 0.12 * smoothstep(0.75, 1.0, t) - 0.18 * followPhase, shZ - shDepth);
+        const shG = W(bodyX - ts * shHalfW, shY - 0.08 * smoothstep(0.75, 1.0, t) + 0.10 * followPhase, shZ + shDepth);
+        const waistC = W(bodyX, hipY + 0.22, hipZ - 0.08 * lean);
+        const hipT = W(bodyX + ts * 0.34, hipY, hipZ);
+        const hipG = W(bodyX - ts * 0.34, hipY, hipZ);
 
-        // Rear (drive) leg stays on the rubber then drags through
-        const rz = lerp(60.45, 59.0, smoothstep(0.7, 1.0, t)) - 1.5 * smoothstep(1.0, 1.6, t);
-        const rearFoot = W(bodyX + ts * 0.32, moundY(rz) + 0.18 + 0.5 * smoothstep(1.2, 1.6, t), rz);
-        // Lead leg: lift, stride, plant
-        const lz = t < 0.45 ? 60.0 - 0.4 * smoothstep(0.25, 0.45, t) : lerp(59.6, 55.2, smoothstep(0.5, 0.92, t));
-        const liftAmt = 1.7 * smoothstep(0.15, 0.4, t) * (1 - smoothstep(0.6, 0.92, t));
-        const leadFoot = W(bodyX - ts * 0.45, moundY(lz) + 0.18 + liftAmt, lz);
+        // Rear (pivot) foot stays anchored on the rubber until release, then kicks up in follow-through
+        const rz = lerp(60.45, 59.35, smoothstep(0.78, 1.05, t)) - 1.35 * followPhase;
+        const rearKick = 0.75 * smoothstep(1.02, 1.48, t) * (1 - 0.35 * smoothstep(1.48, 1.6, t));
+        const rearFoot = W(bodyX + ts * 0.36, moundY(rz) + 0.14 + rearKick, rz);
 
-        const legR = ik3(hipT, rearFoot, 1.55, 1.55, [ts * 0.4, 0.1, -1]);
-        const legL = ik3(hipG, leadFoot, 1.55, 1.55, [-ts * 0.3, 0.1, -1]);
+        // Lead (stride) leg: high knee lift (0.12..0.48) -> drive forward -> firm plant at foot strike (t >= 0.84)
+        const lz = t < 0.42
+            ? 60.15 - 0.35 * smoothstep(0.15, 0.42, t)
+            : lerp(59.8, 54.85, smoothstep(0.42, 0.86, t));
+        const legLiftBell = smoothstep(0.10, 0.36, t) * (1 - smoothstep(0.52, 0.84, t));
+        const liftAmt = 1.95 * legLiftBell;
+        const leadX = bodyX - ts * lerp(0.32, 0.44, smoothstep(0.45, 0.86, t)) + ts * 0.30 * legLiftBell;
+        const leadFoot = W(leadX, moundY(lz) + 0.14 + liftAmt, lz);
+
+        const legR = ik3(hipT, rearFoot, 1.56, 1.56, [ts * 0.45, 0.15, -1.0]);
+        const legL = ik3(hipG, leadFoot, 1.56, 1.56, [-ts * 0.25 + ts * 0.55 * legLiftBell, 0.35 + 0.65 * legLiftBell, -1.0]);
 
         // Arms
         const handT = sampleKeys(PITCH_HAND_KEYS, t);
@@ -2427,87 +2442,135 @@ html {
         }
         const handG = sampleKeys(GLOVE_HAND_KEYS, t);
         const gloveTarget = [shG[0] - ts * handG[0], shG[1] + handG[1], shG[2] - handG[2]];
-        const armT = ik3(shT, handTarget, 1.15, 1.15, [ts * 0.8, -0.5, 0.3]);
-        const armG = ik3(shG, gloveTarget, 1.15, 1.15, [-ts * 0.8, -0.6, 0.2]);
+        const armT = ik3(shT, handTarget, 1.16, 1.16, [ts * 0.85, -0.35, 0.35]);
+        const armG = ik3(shG, gloveTarget, 1.16, 1.16, [-ts * 0.85, -0.55, 0.25]);
 
         const pr = (a) => camera.project(a[0], a[1], a[2]);
-        const pHipT = pr(hipT), pHipG = pr(hipG), pShT = pr(shT), pShG = pr(shG);
+        const pHipT = pr(hipT), pHipG = pr(hipG), pWaist = pr(waistC), pShT = pr(shT), pShG = pr(shG);
         const pRearKnee = pr(legR.joint), pRearAnk = pr(legR.end);
         const pLeadKnee = pr(legL.joint), pLeadAnk = pr(legL.end);
-        if (!pHipT || !pShT || !pRearAnk || !pLeadAnk) return;
+        if (!pHipT || !pHipG || !pShT || !pShG || !pRearAnk || !pLeadAnk) return;
 
-        const jersey = '#97a3b6', sleeve = '#b91c1c', pants = '#e5e7eb', skin = '#c68a5b';
+        const jersey = '#cbd5e1', sleeve = '#b91c1c', pants = '#f1f5f9', stirrup = '#991b1b', skin = '#c68a5b';
 
         ctx.save();
-        // Cast shadow on the mound
-        const sh = camera.project(bodyX, moundY(hipZ), hipZ);
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        // Ground contact shadow on the mound
+        const sh = camera.project(bodyX, moundY(hipZ), hipZ - 0.4);
         if (sh) {
             ctx.beginPath();
-            ctx.ellipse(sh.px + sh.scale * 0.3, sh.py + 1, sh.scale * 1.5, sh.scale * 0.32, 0, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(30, 12, 4, 0.45)';
+            ctx.ellipse(sh.px + sh.scale * 0.15, sh.py + 1, sh.scale * 1.65, sh.scale * 0.34, 0, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(20, 8, 2, 0.48)';
             ctx.fill();
         }
 
-        // Legs (rear first, then lead)
-        const drawLeg = (hip, knee, ank, footTo) => {
-            limb(hip, knee, 0.6, 0.42, pants);
-            limb(knee, ank, 0.42, 0.28, pants);
-            limb(ank, footTo, 0.3, 0.26, '#1f2937');
+        // Helper for pitcher leg with high stirrup socks & cleats
+        const drawPitcherLeg = (hip, knee, ank, rawAnk) => {
+            limb(hip, knee, 0.64, 0.45, pants);
+            // Lower pant cuff to mid-shin, then red stirrup sock to ankle
+            const midShin = {
+                px: lerp(knee.px, ank.px, 0.52),
+                py: lerp(knee.py, ank.py, 0.52),
+                scale: lerp(knee.scale, ank.scale, 0.52)
+            };
+            limb(knee, midShin, 0.45, 0.36, pants);
+            limb(midShin, ank, 0.33, 0.26, stirrup);
+            const toe = pr([rawAnk[0], Math.max(moundY(rawAnk[2]), rawAnk[1] - 0.12), rawAnk[2] - 0.55]);
+            if (toe) {
+                limb(ank, toe, 0.30, 0.25, '#0f172a');
+                // White cleat accent stripe
+                ctx.strokeStyle = 'rgba(255,255,255,0.75)';
+                ctx.lineWidth = Math.max(0.8, 0.04 * ank.scale);
+                ctx.beginPath();
+                ctx.moveTo(ank.px, ank.py);
+                ctx.lineTo(lerp(ank.px, toe.px, 0.65), lerp(ank.py, toe.py, 0.65));
+                ctx.stroke();
+            }
         };
-        const toeOf = (a) => camera.project(a[0], Math.max(0, a[1] - 0.14), a[2] - 0.5);
-        drawLeg(pHipT, pRearKnee, pRearAnk, toeOf(legR.end));
-        drawLeg(pHipG, pLeadKnee, pLeadAnk, toeOf(legL.end));
 
-        // Torso & jersey (thick stroked polygon gives a rounded, filled body)
-        if (pShT && pShG && pHipG) {
-            const torso = ctx.createLinearGradient(pShG.px, 0, pShT.px, 0);
-            torso.addColorStop(0, shade(jersey, 0.2));
-            torso.addColorStop(1, shade(jersey, -0.3));
-            polyPath(ctx, [pShG, pShT, pHipT, pHipG]);
-            ctx.fillStyle = torso;
-            ctx.strokeStyle = torso;
-            ctx.lineJoin = 'round';
-            ctx.lineWidth = Math.max(2, 0.3 * pShT.scale);
+        // Pelvis / hip block bridging both legs so there is never a gap at the crotch
+        limb(pHipG, pHipT, 0.58, 0.58, pants);
+        drawPitcherLeg(pHipT, pRearKnee, pRearAnk, legR.end);
+        drawPitcherLeg(pHipG, pLeadKnee, pLeadAnk, legL.end);
+
+        // Sculpted athletic torso & jersey
+        const wL = pr([bodyX - ts * 0.42, hipY + 0.14, hipZ]);
+        const wR = pr([bodyX + ts * 0.42, hipY + 0.14, hipZ]);
+        if (wL && wR) {
+            const torsoGrad = ctx.createLinearGradient(pShG.px, pShG.py, pShT.px, pHipT.py);
+            torsoGrad.addColorStop(0, shade(jersey, 0.22));
+            torsoGrad.addColorStop(0.55, jersey);
+            torsoGrad.addColorStop(1, shade(jersey, -0.28));
+            polyPath(ctx, [pShG, pShT, wR, wL]);
+            ctx.fillStyle = torsoGrad;
+            ctx.strokeStyle = torsoGrad;
+            ctx.lineWidth = Math.max(2, 0.34 * pShT.scale);
             ctx.fill();
             ctx.stroke();
-            // Belt
-            limb(pHipG, pHipT, 0.14, 0.14, '#111827');
+
+            // Red undershirt collar & button placket down chest
+            const neckBase = { px: (pShG.px + pShT.px) / 2, py: (pShG.py + pShT.py) / 2, scale: pShT.scale };
+            const beltMid = { px: (wL.px + wR.px) / 2, py: (wL.py + wR.py) / 2 };
+            ctx.strokeStyle = '#991b1b';
+            ctx.lineWidth = Math.max(1, 0.06 * pShT.scale);
+            ctx.beginPath();
+            ctx.moveTo(neckBase.px, neckBase.py + 0.08 * pShT.scale);
+            ctx.lineTo(beltMid.px, beltMid.py);
+            ctx.stroke();
+
+            // Leather belt with brass buckle
+            limb(wL, wR, 0.16, 0.16, '#0f172a');
+            ctx.fillStyle = '#fbbf24';
+            ctx.fillRect(beltMid.px - 0.9, beltMid.py - 0.7, 1.8, 1.4);
         }
 
-        // Head with red cap
-        const headW = [bodyX, shY + 0.62, shZ - 0.12 * lean];
+        // Head, ears, & fitted MLB cap with visor
+        const headW = [bodyX, shY + 0.60, shZ - 0.15 * lean];
         const pHead = pr(headW);
-        const pNeck = pr([bodyX, shY + 0.1, shZ]);
+        const pNeck = pr([bodyX, shY + 0.10, shZ]);
         if (pHead && pNeck) {
-            limb(pNeck, pHead, 0.28, 0.26, skin);
-            blob(pHead, 0.33, skin);
-            const r = 0.36 * pHead.scale;
+            limb(pNeck, pHead, 0.28, 0.25, skin);
+            blob(pHead, 0.34, skin);
+            const r = 0.37 * pHead.scale;
+            // High-crown cap dome
             ctx.beginPath();
-            ctx.arc(pHead.px, pHead.py - r * 0.1, r, Math.PI * 1.02, Math.PI * 1.98);
+            ctx.arc(pHead.px, pHead.py - r * 0.14, r * 1.02, Math.PI * 0.98, Math.PI * 2.02);
             ctx.closePath();
             ctx.fillStyle = '#b91c1c';
             ctx.fill();
+            // Curved dark-red cap bill projecting forward toward home plate
             ctx.beginPath();
-            ctx.ellipse(pHead.px, pHead.py - r * 0.05, r * 1.05, r * 0.18, 0, 0, Math.PI);
+            ctx.ellipse(pHead.px, pHead.py - r * 0.04, r * 1.08, r * 0.24, 0, -0.05, Math.PI + 0.05);
             ctx.fillStyle = '#7f1d1d';
+            ctx.fill();
+            // White front cap emblem dot
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(pHead.px, pHead.py - r * 0.45, Math.max(0.8, r * 0.14), 0, Math.PI * 2);
             ctx.fill();
         }
 
-        // Glove arm then throwing arm
+        // Arms (raglan red upper sleeves + forearms)
         const drawArm = (sh0, a) => {
             const pe = pr(a.joint), ph = pr(a.end);
-            limb(sh0, pe, 0.38, 0.3, sleeve);
-            limb(pe, ph, 0.3, 0.22, skin);
+            limb(sh0, pe, 0.42, 0.32, sleeve);
+            limb(pe, ph, 0.30, 0.22, skin);
         };
         drawArm(pShG, armG);
         const pGloveHand = pr(armG.end);
-        if (pGloveHand) blob(pGloveHand, 0.3, '#6b3410');
+        if (pGloveHand) {
+            // Sculpted leather fielder's glove (pocket + thumb/webbing)
+            blob(pGloveHand, 0.34, '#6b3410');
+            blob({ px: pGloveHand.px - ts * 0.12 * pGloveHand.scale, py: pGloveHand.py - 0.10 * pGloveHand.scale, scale: pGloveHand.scale }, 0.22, '#854d0e');
+        }
         drawArm(pShT, armT);
         const pThrowHand = pr(armT.end);
         if (pThrowHand) {
-            blob(pThrowHand, 0.14, skin);
+            blob(pThrowHand, 0.15, skin);
             if (t < 1.0) {
-                const br = Math.max(1.4, BALL_RADIUS * pThrowHand.scale);
+                const br = Math.max(1.6, BALL_RADIUS * pThrowHand.scale);
                 ctx.beginPath();
                 ctx.arc(pThrowHand.px, pThrowHand.py, br, 0, Math.PI * 2);
                 ctx.fillStyle = '#ffffff';
@@ -2560,25 +2623,43 @@ html {
     }
 
     function getMittPosition(progress) {
-        // While pitch is in flight (< 0.88), keep glove at neutral ready position in middle of strike zone
+        // While pitch is in flight (< 0.85), track subtly toward the target then snap-frame in the final 15%
         const neutralX = 0.0;
-        const neutralY = 2.2;
-        if (!state.pitchTrajectory || state.phase === 'READY' || state.phase === 'WINDUP' || progress < 0.88) {
+        const neutralY = 2.15;
+        if (!state.pitchTrajectory || state.phase === 'READY' || state.phase === 'WINDUP') {
             return { x: neutralX, y: neutralY };
         }
-        // Smoothly snap to catch position in the last split-second (0.88 to 1.0)
-        const t = Math.min(1.0, (progress - 0.88) / 0.12);
+        if (progress < 0.85) {
+            const pre = smoothstep(0.35, 0.85, progress) * 0.22;
+            return {
+                x: neutralX + (state.mittTarget.x - neutralX) * pre,
+                y: neutralY + (state.mittTarget.y - neutralY) * pre
+            };
+        }
+        // Smoothly snap to catch position in the last split-second (0.85 to 1.0)
+        const t = Math.min(1.0, (progress - 0.85) / 0.15);
         const smooth = t * t * (3 - 2 * t);
         return {
-            x: neutralX + (state.mittTarget.x - neutralX) * smooth,
-            y: neutralY + (state.mittTarget.y - neutralY) * smooth
+            x: neutralX + (state.mittTarget.x - neutralX) * (0.22 + 0.78 * smooth),
+            y: neutralY + (state.mittTarget.y - neutralY) * (0.22 + 0.78 * smooth)
         };
     }
 
-    function drawBatter() {
+    // Team uniform color palettes for authentic MLB batter looks
+    const TEAM_STYLES = {
+        NYY: { jersey: '#132440', trim: '#cbd5e1', helmet: '#0f2342', helmetHi: '#25477a', pipe: '#1e3a5f', sock: '#132440', guard: '#1e293b' },
+        HOU: { jersey: '#132448', trim: '#eb6e1f', helmet: '#0f2246', helmetHi: '#eb6e1f', pipe: '#eb6e1f', sock: '#eb6e1f', guard: '#ea580c' },
+        LAD: { jersey: '#1e3a8a', trim: '#f8fafc', helmet: '#005a9c', helmetHi: '#38bdf8', pipe: '#005a9c', sock: '#005a9c', guard: '#0284c7' },
+        CLE: { jersey: '#0f223d', trim: '#e31937', helmet: '#0c1e35', helmetHi: '#e31937', pipe: '#e31937', sock: '#991b1b', guard: '#dc2626' },
+        LAA: { jersey: '#861922', trim: '#f8fafc', helmet: '#991b1b', helmetHi: '#ef4444', pipe: '#b91c1c', sock: '#991b1b', guard: '#b91c1c' },
+        PIT: { jersey: '#18181b', trim: '#facc15', helmet: '#18181b', helmetHi: '#eab308', pipe: '#eab308', sock: '#18181b', guard: '#eab308' },
+        KC:  { jersey: '#17468a', trim: '#eab308', helmet: '#004687', helmetHi: '#38bdf8', pipe: '#004687', sock: '#004687', guard: '#0284c7' }
+    };
+
+    function drawBatter(time = 0) {
         const batter = (state.pitchTrajectory && state.pitchTrajectory.batter) || state.currentBatter || BATTER_PROFILES[0];
         const isRHH = (batter.stand === 'RHH');
-        // RHH stands on Left (X = -2.8); LHH stands on Right (X = +2.8) - inside the 4 ft box
+        // RHH stands on Left (X = -2.8); LHH stands on Right (X = +2.8) - inside the 4 ft batter's box
         const bx = isRHH ? -2.8 : 2.8;
         const bz = -0.75; // centered on the plate depth
         const dir = isRHH ? 1 : -1; // 1 facing right (toward plate), -1 facing left
@@ -2591,21 +2672,23 @@ html {
         const scaleFactor = totalHeightInches / 73;
         const legScale = sz_bot / 1.50; // knees align dynamically with sz_bot
         const torsoScale = (sz_top - sz_bot) / 1.92; // strike zone height relative to nominal 1.92 ft
-        const radScale = Math.max(0.85, Math.min(1.18, scaleFactor));
-        const batScale = Math.max(0.90, Math.min(1.10, scaleFactor));
-        const stanceW = Math.max(0.85, Math.min(1.15, scaleFactor));
+        const radScale = Math.max(0.86, Math.min(1.18, scaleFactor));
+        const batScale = Math.max(0.92, Math.min(1.10, scaleFactor));
+        const stanceW = Math.max(0.86, Math.min(1.15, scaleFactor));
+
+        // Pre-pitch rhythm & pitch-synchronized load/stride (keeps knee & chest height locked to sz_bot/sz_top)
+        let windupT = 0;
+        let flightT = 0;
+        if (state.phase === 'WINDUP') windupT = clamp01((time - state.startTime) / state.windupDuration);
+        else if (state.phase === 'IN_FLIGHT') { windupT = 1.0; flightT = clamp01(state.flightProgress); }
+        else if (state.phase === 'CALL_WINDOW' || state.phase === 'VERDICT') { windupT = 1.0; flightT = 1.0; }
+
+        const idleWave = (state.phase === 'READY' || windupT < 0.45) ? Math.sin((time || 0) / 310) : 0;
+        const coil = smoothstep(0.45, 0.92, windupT) * (1 - 0.45 * smoothstep(0.35, 0.9, flightT));
+        const strideLift = smoothstep(0.55, 0.82, windupT) * (1 - smoothstep(0.82, 1.0, windupT));
+        const stridePlant = smoothstep(0.68, 1.0, windupT);
 
         // Piecewise vertical mapping from reference 6'1" crouch coordinates to dynamic batter:
-        // refY:
-        // 0.00: ground (cleats)
-        // 0.30: ankles
-        // 1.50: knee level (matches sz_bot)
-        // 2.75 - 2.90: hips & waist
-        // 3.75: mid-chest / hollow beneath midpoint of chest (matches sz_top)
-        // 4.58 - 4.70: shoulders
-        // 4.95: hands
-        // 5.35 - 5.55: neck & head center
-        // 6.00: helmet top
         const mapY = (refY) => {
             if (refY <= 0) return 0;
             if (refY <= 1.50) return refY * legScale;
@@ -2622,208 +2705,436 @@ html {
         const headTop = loc(0.1, 6.0, 0);
         if (!ground || !headTop) return;
 
-        const pants = '#e8edf4', jersey = '#1b2a4a', skin = '#c68a5b';
+        const style = TEAM_STYLES[batter.team] || TEAM_STYLES.NYY;
+        const pants = '#e8edf4', jersey = style.jersey, skin = '#c68a5b';
 
-        // Stance joints (athletic crouch dynamically mapped to strike zone bounds)
-        const hipB = L(-0.28, 2.75, -0.30), hipF = L(0.28, 2.75, 0.30);
-        const ankB = L(-0.55, 0.30, -0.90), ankF = L(0.50, 0.30, 0.90);
-        // Bone lengths scaled with leg scale
-        const legBone = 1.45 * legScale;
-        const legB = ik3(hipB, ankB, legBone, legBone, [dir * 0.9, 0.0, -0.2]);
-        const legF = ik3(hipF, ankF, legBone, legBone, [dir * 0.9, 0.0, 0.2]);
+        // Stance joints (athletic crouch dynamically mapped to strike zone bounds, with subtle coil & stride)
+        const hipB = L(-0.26 - 0.04 * coil, 2.76, -0.32 - 0.05 * coil);
+        const hipF = L(0.26 - 0.03 * coil, 2.76, 0.32 + 0.08 * stridePlant);
+        const ankB = L(-0.54, 0.30, -0.88);
+        const ankF = L(0.48 + 0.04 * stridePlant, 0.30 + 0.22 * strideLift, 0.90 + 0.26 * stridePlant);
+        const legBone = 1.46 * legScale;
+        const legB = ik3(hipB, ankB, legBone, legBone, [dir * 0.92, 0.05, -0.22]);
+        const legF = ik3(hipF, ankF, legBone, legBone, [dir * 0.92, 0.08, 0.22]);
 
-        const shB = L(-0.45, 4.7, -0.50), shF = L(0.55, 4.58, 0.50);
-        const waistB = L(-0.34, 2.9, -0.38), waistF = L(0.34, 2.9, 0.38);
-        const handsL = [-0.6 * stanceW, mapY(4.95), -0.2 * stanceW];
+        const shB = L(-0.46 - 0.06 * coil, 4.68, -0.48 - 0.05 * coil);
+        const shF = L(0.54 - 0.04 * coil, 4.56, 0.48 + 0.04 * stridePlant);
+        const waistB = L(-0.36 - 0.04 * coil, 2.88, -0.36);
+        const waistF = L(0.36 - 0.03 * coil, 2.88, 0.36);
+        const handsL = [
+            (-0.62 - 0.10 * coil + 0.02 * idleWave) * stanceW,
+            mapY(4.96 + 0.10 * coil + 0.04 * idleWave),
+            (-0.22 - 0.12 * coil) * stanceW
+        ];
         const hands = [bx + handsL[0] * dir, handsL[1], bz + handsL[2]];
-        const armBone = 1.0 * Math.max(0.85, Math.min(1.15, torsoScale));
-        const armB = ik3(shB, hands, armBone, armBone, [dir * -0.35, -0.9, -0.45]);
-        const armF = ik3(shF, hands, armBone, armBone, [0, -1, 0.1]);
+        const armBone = 1.02 * Math.max(0.85, Math.min(1.15, torsoScale));
+        const armB = ik3(shB, hands, armBone, armBone, [dir * -0.42, -0.85, -0.48]);
+        const armF = ik3(shF, hands, armBone, armBone, [dir * 0.15, -0.95, 0.15]);
 
         ctx.save();
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
 
-        // Ground shadow under batter (soft, stretched away from the lights)
+        // Ground shadow under batter
         const gs = ground.scale;
-        const shadow = ctx.createRadialGradient(ground.px + gs * 0.3, ground.py - gs * 0.1, 0, ground.px + gs * 0.3, ground.py - gs * 0.1, gs * 1.7 * stanceW);
-        shadow.addColorStop(0, 'rgba(0,0,0,0.55)');
+        const shadow = ctx.createRadialGradient(ground.px + gs * 0.25, ground.py - gs * 0.08, 0, ground.px + gs * 0.25, ground.py - gs * 0.08, gs * 1.8 * stanceW);
+        shadow.addColorStop(0, 'rgba(0,0,0,0.58)');
         shadow.addColorStop(1, 'rgba(0,0,0,0)');
         ctx.save();
         ctx.translate(ground.px, ground.py);
         ctx.scale(1, 0.32);
         ctx.translate(-ground.px, -ground.py);
         ctx.beginPath();
-        ctx.arc(ground.px + gs * 0.3, ground.py - gs * 0.1, gs * 1.7 * stanceW, 0, Math.PI * 2);
+        ctx.arc(ground.px + gs * 0.25, ground.py - gs * 0.08, gs * 1.8 * stanceW, 0, Math.PI * 2);
         ctx.fillStyle = shadow;
         ctx.fill();
         ctx.restore();
 
-        const drawLeg = (hip, leg, ank, sideSign) => {
+        const drawLeg = (hip, leg, ank, sideSign, isLeadLeg) => {
             const pHip = pt(hip), pKnee = pt(leg.joint), pAnk = pt(leg.end);
-            limb(pHip, pKnee, 0.66 * radScale, 0.46 * radScale, pants);
-            limb(pKnee, pAnk, 0.46 * radScale, 0.32 * radScale, pants);
-            // Blue piping down the outside of the pant leg
+            limb(pHip, pKnee, 0.68 * radScale, 0.48 * radScale, pants);
+            limb(pKnee, pAnk, 0.48 * radScale, 0.33 * radScale, pants);
+            // Team piping down the outside of the pant leg
             if (pHip && pKnee && pAnk) {
-                ctx.strokeStyle = '#0ea5e9';
-                ctx.lineWidth = Math.max(1, 0.05 * pKnee.scale);
-                const off = sideSign * dir * 0.2 * pKnee.scale;
+                ctx.strokeStyle = style.pipe;
+                ctx.lineWidth = Math.max(1.2, 0.055 * pKnee.scale);
+                const off = sideSign * dir * 0.19 * pKnee.scale;
                 ctx.beginPath();
                 ctx.moveTo(pHip.px + off, pHip.py + 2);
-                ctx.lineTo(pKnee.px + off * 0.8, pKnee.py);
-                ctx.lineTo(pAnk.px + off * 0.6, pAnk.py);
+                ctx.lineTo(pKnee.px + off * 0.82, pKnee.py);
+                ctx.lineTo(pAnk.px + off * 0.62, pAnk.py);
                 ctx.stroke();
             }
-            // Sock, then cleat pointing toward the plate
-            const sockLow = pt([leg.end[0], leg.end[1] - 0.18 * legScale, leg.end[2]]);
-            limb(pAnk, sockLow, 0.32 * radScale, 0.3 * radScale, '#16233f');
-            const toe = pt([leg.end[0] + dir * 0.62 * stanceW, 0.06, leg.end[2]]);
-            const heel = pt([leg.end[0] - dir * 0.12 * stanceW, 0.12, leg.end[2]]);
-            limb(heel, toe, 0.34 * radScale, 0.3 * radScale, '#0b1220');
+            // Protective molded shin/ankle guard on the lead leg
+            if (isLeadLeg && pKnee && pAnk) {
+                const sgTop = { px: lerp(pKnee.px, pAnk.px, 0.38), py: lerp(pKnee.py, pAnk.py, 0.38), scale: pAnk.scale };
+                limb(sgTop, pAnk, 0.39 * radScale, 0.35 * radScale, style.guard);
+            }
+            // Sock & sculpted cleat with white sole trim
+            const footY = Math.max(0, leg.end[1] - 0.30 * legScale);
+            const sockLow = pt([leg.end[0], footY + 0.12 * legScale, leg.end[2]]);
+            limb(pAnk, sockLow, 0.33 * radScale, 0.30 * radScale, style.sock);
+            const toe = pt([leg.end[0] + dir * 0.64 * stanceW, footY + 0.06, leg.end[2]]);
+            const heel = pt([leg.end[0] - dir * 0.14 * stanceW, footY + 0.12, leg.end[2]]);
+            limb(heel, toe, 0.35 * radScale, 0.29 * radScale, '#0b1220');
+            if (heel && toe) {
+                ctx.strokeStyle = 'rgba(241, 245, 249, 0.7)';
+                ctx.lineWidth = Math.max(1, 0.04 * heel.scale);
+                ctx.beginPath();
+                ctx.moveTo(heel.px, heel.py + 0.08 * heel.scale);
+                ctx.lineTo(toe.px, toe.py + 0.07 * toe.scale);
+                ctx.stroke();
+            }
         };
-        // Far (front) leg first, near (back) leg after
-        drawLeg(hipF, legF, ankF, 1);
-        drawLeg(hipB, legB, ankB, -1);
 
-        // Front arm (far side, partly hidden behind torso)
-        const pShF = pt(shF), pShB = pt(shB), pHands = pt(hands);
-        limb(pShF, pt(armF.joint), 0.4 * radScale, 0.3 * radScale, jersey);
-        limb(pt(armF.joint), pHands, 0.3 * radScale, 0.22 * radScale, skin);
+        // Far (front/lead) leg first, then anatomical pelvis/glute bridge, then near (back) leg
+        drawLeg(hipF, legF, ankF, 1, true);
+        const pHipB = pt(hipB), pHipF = pt(hipF);
+        if (pHipB && pHipF) {
+            limb(pHipB, pHipF, 0.72 * radScale, 0.68 * radScale, pants);
+            blob(pHipB, 0.37 * radScale, pants);
+        }
+        drawLeg(hipB, legB, ankB, -1, false);
 
-        // Torso & jersey: filled shoulder-to-waist shape with rounded, thick edges
+        // Front (lead) arm with protective elbow guard
+        const pShF = pt(shF), pShB = pt(shB), pHands = pt(hands), pArmFJoint = pt(armF.joint);
+        limb(pShF, pArmFJoint, 0.42 * radScale, 0.32 * radScale, jersey);
+        limb(pArmFJoint, pHands, 0.31 * radScale, 0.22 * radScale, skin);
+        if (pArmFJoint) {
+            blob(pArmFJoint, 0.20 * radScale, style.guard);
+        }
+
+        // Athletic neck (drawn before torso so the jersey collar overlaps the base of the neck cleanly)
+        const headTurn = 0.08 * smoothstep(0.0, 0.85, flightT); // tracks ball toward home plate
+        const pNeckBase = loc(0.02, 4.48, -0.02), pNeckTop = loc(0.10, 5.34, 0.02);
+        limb(pNeckBase, pNeckTop, 0.44 * radScale, 0.35 * radScale, skin);
+
+        // Sculpted athletic torso & jersey (broad shoulders tapering into waist, with lat/shoulder rounding)
         const pwB = pt(waistB), pwF = pt(waistF);
-        if (pShB && pShF && pwB && pwF) {
-            polyPath(ctx, [pShB, pShF, pwF, pwB]);
-            const tg = ctx.createLinearGradient(pShB.px, 0, pShF.px, 0);
-            tg.addColorStop(0, shade(jersey, 0.22));
+        const pMidBackB = loc(-0.44 - 0.05 * coil, 3.85, -0.44);
+        const pMidBackF = loc(0.48 - 0.03 * coil, 3.80, 0.44);
+        if (pShB && pShF && pwB && pwF && pMidBackB && pMidBackF) {
+            blob(pShB, 0.28 * radScale, jersey);
+            blob(pShF, 0.26 * radScale, jersey);
+            polyPath(ctx, [pShB, pShF, pMidBackF, pwF, pwB, pMidBackB]);
+            const tg = ctx.createLinearGradient(pShB.px, pShB.py, pShF.px, pwF.py);
+            tg.addColorStop(0, shade(jersey, 0.24));
             tg.addColorStop(0.5, jersey);
-            tg.addColorStop(1, shade(jersey, -0.4));
+            tg.addColorStop(1, shade(jersey, -0.38));
             ctx.fillStyle = tg;
             ctx.strokeStyle = tg;
-            ctx.lineWidth = Math.max(3, 0.34 * pShB.scale * radScale);
+            ctx.lineWidth = Math.max(3, 0.32 * pShB.scale * radScale);
             ctx.fill();
             ctx.stroke();
 
-            // Jersey hem & belt
-            limb(pwB, pwF, 0.16 * radScale, 0.16 * radScale, '#0b1220');
-            ctx.fillStyle = '#d9a441';
-            const bc = { px: (pwB.px + pwF.px) / 2, py: (pwB.py + pwF.py) / 2 };
-            ctx.fillRect(bc.px - 2, bc.py - 2, 4, 4);
+            // Subtle vertical fabric drape / spine crease on jersey back
+            const shMidX = (pShB.px + pShF.px) / 2, shMidY = (pShB.py + pShF.py) / 2;
+            const wMidX = (pwB.px + pwF.px) / 2, wMidY = (pwB.py + pwF.py) / 2;
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0.22)';
+            ctx.lineWidth = Math.max(1.2, 0.05 * pShB.scale);
+            ctx.beginPath();
+            ctx.moveTo(shMidX, shMidY + 0.15 * pShB.scale);
+            ctx.quadraticCurveTo(lerp(shMidX, wMidX, 0.5) - dir * 0.06 * pShB.scale, lerp(shMidY, wMidY, 0.5), wMidX, wMidY - 0.1 * pShB.scale);
+            ctx.stroke();
 
-            // Jersey back number (dynamically matches active batter)
+            // Ribbed jersey collar & MLB batter silhouette patch at nape of neck
+            ctx.strokeStyle = style.trim;
+            ctx.lineWidth = Math.max(1.5, 0.06 * pShB.scale);
+            ctx.beginPath();
+            ctx.moveTo(shMidX - 0.26 * pShB.scale * radScale, shMidY - 0.04 * pShB.scale);
+            ctx.quadraticCurveTo(shMidX, shMidY + 0.08 * pShB.scale, shMidX + 0.26 * pShB.scale * radScale, shMidY - 0.04 * pShB.scale);
+            ctx.stroke();
+
+            // Leather belt with belt loops and metallic buckle
+            limb(pwB, pwF, 0.18 * radScale, 0.18 * radScale, '#0b1220');
+            ctx.fillStyle = '#eab308';
+            ctx.fillRect(wMidX - 2.5, wMidY - 2, 5, 4);
+
+            // Batter last name & jersey back number
             const batterNumber = (batter && batter.number) ? String(batter.number) : '24';
-            const nc = { px: (pShB.px + pShF.px) / 2 + 0, py: (pShB.py + pwB.py) / 2 + 0.2 * pShB.scale };
-            ctx.fillStyle = '#e0f2fe';
-            ctx.font = `bold ${Math.max(8, Math.round(0.72 * pShB.scale * radScale))}px sans-serif`;
+            const lastName = (batter && batter.name) ? batter.name.split(' ').slice(-1)[0].toUpperCase() : 'BATTER';
+            const nc = { px: (shMidX + wMidX) / 2, py: lerp(shMidY, wMidY, 0.56) };
+            ctx.fillStyle = style.trim;
+            ctx.font = `800 ${Math.max(7, Math.round(0.24 * pShB.scale * radScale))}px Inter, sans-serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(batterNumber, nc.px, nc.py);
-            // Name-plate stripe above the number
-            ctx.fillStyle = 'rgba(224,242,254,0.55)';
-            ctx.fillRect(nc.px - 0.45 * pShB.scale * radScale, nc.py - 0.58 * pShB.scale, 0.9 * pShB.scale * radScale, Math.max(1, 0.06 * pShB.scale));
+            ctx.fillText(lastName, nc.px, nc.py - 0.56 * pShB.scale * radScale);
+
+            ctx.font = `900 ${Math.max(9, Math.round(0.74 * pShB.scale * radScale))}px Inter, sans-serif`;
+            ctx.strokeStyle = 'rgba(0,0,0,0.45)';
+            ctx.lineWidth = Math.max(1.5, 0.05 * pShB.scale);
+            ctx.strokeText(batterNumber, nc.px, nc.py + 0.04 * pShB.scale);
+            ctx.fillText(batterNumber, nc.px, nc.py + 0.04 * pShB.scale);
         }
 
-        // Neck, head & batting helmet
-        const pNeckBase = loc(0.05, 4.95, -0.05), pNeckTop = loc(0.1, 5.35, 0);
-        limb(pNeckBase, pNeckTop, 0.36 * radScale, 0.32 * radScale, skin);
-        const pHeadC = loc(0.12, 5.55, 0.0);
+        // Head & detailed MLB batting helmet with C-flap jaw guard
+        const pHeadC = loc(0.14 + headTurn, 5.54, 0.02);
         if (pHeadC) {
-            blob(pHeadC, 0.36 * radScale, skin);
-            // Helmet dome (covers the top/back of the head), rim ends near the ears
-            const hc = loc(0.12, 5.72, 0.0);
-            const r = 0.43 * hc.scale * radScale;
-            const hg = ctx.createRadialGradient(hc.px - r * 0.4, hc.py - r * 0.45, r * 0.1, hc.px, hc.py, r * 1.05);
-            hg.addColorStop(0, '#38a5e0');
-            hg.addColorStop(0.5, '#0369a1');
-            hg.addColorStop(1, '#0c2c4a');
+            blob(pHeadC, 0.37 * radScale, skin);
+            // Ear peeking under helmet edge on near side
+            const pEar = loc(0.02, 5.48, -0.18);
+            if (pEar) blob(pEar, 0.09 * radScale, shade(skin, -0.08));
+
+            const hc = loc(0.14 + headTurn, 5.68, 0.02);
+            const r = 0.45 * hc.scale * radScale;
+
+            // Helmet bill projecting toward the pitcher/plate
+            const billBase = loc(0.38 + headTurn, 5.62, 0.24);
+            const billTip = loc(0.72 + headTurn, 5.56, 0.42);
+            limb(billBase, billTip, 0.28 * radScale, 0.18 * radScale, shade(style.helmet, -0.25));
+
+            // Molded helmet dome covering crown and back of skull
+            const hg = ctx.createRadialGradient(hc.px - r * 0.35, hc.py - r * 0.45, r * 0.08, hc.px, hc.py, r * 1.08);
+            hg.addColorStop(0, style.helmetHi);
+            hg.addColorStop(0.52, style.helmet);
+            hg.addColorStop(1, shade(style.helmet, -0.45));
             ctx.beginPath();
-            ctx.arc(hc.px, hc.py, r, 0, Math.PI * 2);
+            ctx.arc(hc.px, hc.py, r, Math.PI * 0.82, Math.PI * 2.22);
+            ctx.quadraticCurveTo(hc.px + dir * r * 0.85, hc.py + r * 0.55, hc.px - dir * r * 0.78, hc.py + r * 0.48);
+            ctx.closePath();
             ctx.fillStyle = hg;
             ctx.fill();
-            // Helmet ear-flap on the pitcher-facing side & the bill peeking toward the plate
-            limb(loc(0.42, 5.55, 0.18), loc(0.7, 5.5, 0.16), 0.2 * radScale, 0.14 * radScale, '#0a3a5c');
-            // Glossy highlight
+
+            // Ear-flap & extended C-flap jaw guard on pitcher-facing side
+            const jawStart = loc(0.28 + headTurn, 5.44, 0.20);
+            const jawEnd = loc(0.56 + headTurn, 5.36, 0.26);
+            limb(jawStart, jawEnd, 0.22 * radScale, 0.15 * radScale, shade(style.helmet, -0.15));
+
+            // Rear black rubberized neck pad & number decal on back of helmet
+            ctx.fillStyle = '#090d16';
             ctx.beginPath();
-            ctx.ellipse(hc.px - r * 0.3, hc.py - r * 0.5, r * 0.28, r * 0.14, -0.5, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(255,255,255,0.35)';
+            ctx.ellipse(hc.px - dir * r * 0.18, hc.py + r * 0.44, r * 0.48, r * 0.13, dir * 0.12, 0, Math.PI * 2);
             ctx.fill();
+
+            // Specular clear-coat highlight & ventilation slot
+            ctx.beginPath();
+            ctx.ellipse(hc.px - r * 0.26, hc.py - r * 0.46, r * 0.30, r * 0.13, -0.45, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,255,255,0.34)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(0,0,0,0.45)';
+            ctx.lineWidth = Math.max(1, r * 0.07);
+            ctx.beginPath();
+            ctx.moveTo(hc.px - dir * r * 0.35, hc.py - r * 0.1);
+            ctx.lineTo(hc.px - dir * r * 0.05, hc.py - r * 0.22);
+            ctx.stroke();
         }
 
-        // Back arm (near side): shoulder -> elbow raised out -> hands
-        limb(pShB, pt(armB.joint), 0.44 * radScale, 0.32 * radScale, jersey);
-        limb(pt(armB.joint), pHands, 0.32 * radScale, 0.22 * radScale, skin);
+        // Back arm (near side): shoulder sleeve + cuff trim + forearm + wristband
+        const pArmBJoint = pt(armB.joint);
+        limb(pShB, pArmBJoint, 0.45 * radScale, 0.34 * radScale, jersey);
+        if (pArmBJoint && pHands) {
+            const wristB = { px: lerp(pArmBJoint.px, pHands.px, 0.78), py: lerp(pArmBJoint.py, pHands.py, 0.78), scale: pHands.scale };
+            limb(pArmBJoint, wristB, 0.32 * radScale, 0.24 * radScale, skin);
+            limb(wristB, pHands, 0.25 * radScale, 0.23 * radScale, style.trim);
+        }
 
-        // Bat: cocked over the back shoulder, barrel up and angled back
-        const bdl = [-0.62, 0.66, -0.2];
+        // Bat: cocked over the back shoulder with subtle pre-pitch waggle & coil tilt
+        const bdl = [-0.60 - 0.08 * coil + 0.04 * idleWave, 0.68 - 0.04 * idleWave, -0.20 - 0.06 * coil];
         const bl = Math.hypot(bdl[0], bdl[1], bdl[2]);
         const bd = [bdl[0] / bl, bdl[1] / bl, bdl[2] / bl];
         const knobL = [hands[0] - bd[0] * 0.45 * batScale, hands[1] - bd[1] * 0.45 * batScale, hands[2] - bd[2] * 0.45 * batScale];
         const bp = (s) => pt([knobL[0] + bd[0] * s * batScale, knobL[1] + bd[1] * s * batScale, knobL[2] + bd[2] * s * batScale]);
-        limb(bp(0.0), bp(0.15), 0.17 * radScale, 0.1 * radScale, '#111827');
-        limb(bp(0.15), bp(1.05), 0.09 * radScale, 0.09 * radScale, '#1f2937'); // black grip tape
-        limb(bp(1.05), bp(1.95), 0.09 * radScale, 0.23 * radScale, '#c88a4a'); // taper
-        limb(bp(1.9), bp(2.78), 0.23 * radScale, 0.23 * radScale, '#d49a58'); // barrel
-        limb(bp(2.76), bp(2.84), 0.2 * radScale, 0.15 * radScale, '#b9793a'); // end cap
-        // Dark finish band on the barrel
-        limb(bp(2.1), bp(2.3), 0.235 * radScale, 0.235 * radScale, '#7a4a20');
+        limb(bp(0.0), bp(0.15), 0.17 * radScale, 0.10 * radScale, '#111827');
+        limb(bp(0.15), bp(1.05), 0.095 * radScale, 0.095 * radScale, '#1f2937'); // Lizard Skins grip tape
+        limb(bp(1.05), bp(1.95), 0.095 * radScale, 0.235 * radScale, '#c88a4a'); // maple taper
+        limb(bp(1.90), bp(2.80), 0.235 * radScale, 0.235 * radScale, '#d49a58'); // barrel
+        limb(bp(2.76), bp(2.85), 0.20 * radScale, 0.15 * radScale, '#b9793a'); // cupped end
+        limb(bp(2.08), bp(2.28), 0.24 * radScale, 0.24 * radScale, '#7a4a20'); // brand label ring
 
-        // Batting gloves over the bat handle
-        const gloveP = pt(hands);
-        if (gloveP) {
-            blob(gloveP, 0.15 * radScale, '#f8fafc');
-            const g2 = [hands[0] - 0.05 * dir, hands[1] + 0.2 * torsoScale, hands[2] + 0.02];
-            blob(pt(g2), 0.14 * radScale, '#e2e8f0');
-            ctx.strokeStyle = '#0ea5e9';
-            ctx.lineWidth = Math.max(1, 0.03 * gloveP.scale);
+        // Articulated batting gloves wrapped around handle
+        if (pHands) {
+            blob(pHands, 0.155 * radScale, '#f8fafc');
+            const g2 = [hands[0] - 0.06 * dir * bd[0], hands[1] + 0.19 * torsoScale, hands[2] + 0.02];
+            const pg2 = pt(g2);
+            if (pg2) blob(pg2, 0.145 * radScale, '#e2e8f0');
+            ctx.strokeStyle = style.pipe;
+            ctx.lineWidth = Math.max(1.2, 0.035 * pHands.scale);
             ctx.beginPath();
-            ctx.arc(gloveP.px, gloveP.py, 0.15 * gloveP.scale * radScale, Math.PI * 0.1, Math.PI * 0.9);
+            ctx.arc(pHands.px, pHands.py, 0.15 * pHands.scale * radScale, Math.PI * 0.1, Math.PI * 0.9);
             ctx.stroke();
         }
 
         ctx.restore();
     }
 
-    function drawCatcherMitt() {
+    function drawCatcherMitt(time = 0) {
         const mittPos = getMittPosition(state.flightProgress);
-        const p = camera.project(mittPos.x, mittPos.y, -0.9);
+        // Subtle pitch-catch recoil when ball hits the pocket (state.flightProgress >= 1.0 in CALL_WINDOW)
+        let catchRecoilZ = 0;
+        let catchRecoilY = 0;
+        if (state.phase === 'CALL_WINDOW' && time) {
+            const sinceCatch = Math.max(0, time - state.startTime);
+            const pop = Math.exp(-sinceCatch / 120) * Math.sin(Math.min(Math.PI, sinceCatch / 35));
+            catchRecoilZ = -0.18 * pop;
+            catchRecoilY = -0.04 * pop;
+        }
+
+        const p = camera.project(mittPos.x, mittPos.y + catchRecoilY, -0.9 + catchRecoilZ);
         if (!p) return;
         const s = p.scale;
+
+        // Crouched Catcher Body in the foreground slot (tucked below Home Plate so the strike zone & plate remain 100% clear)
+        const swayX = clamp01(state.flightProgress) > 0 ? mittPos.x * 0.22 : 0;
+        const cZ = -4.15; // between home plate (z = -1.42) and umpire camera (z = -9.5)
+        const pr = (x, y, z) => camera.project(x, y, z);
 
         ctx.save();
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
 
-        // Catcher forearm connection: tapered sleeve running down out of frame, anchoring the glove on-screen
-        const wrist = { px: p.px + mittPos.x * 0 + s * 0.02, py: p.py + s * 0.55, scale: s };
-        const armBase = camera.project(mittPos.x * 0.7, 0.4, -0.9);
-        const baseX = armBase ? armBase.px : p.px;
-        const low = { px: baseX + s * 0.9, py: camera.height + s * 0.8, scale: s * 1.15 };
-        limb(wrist, low, 0.44, 0.8, '#243557');
-        // Sleeve seam highlight
-        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
-        ctx.lineWidth = Math.max(1, s * 0.03);
-        ctx.beginPath();
-        ctx.moveTo(wrist.px - s * 0.05, wrist.py);
-        ctx.lineTo(low.px - s * 0.08, low.py);
-        ctx.stroke();
+        // 1. Wide crouched thighs & segmented shin guards / knee savers at bottom-left & bottom-right
+        const hipL = pr(-0.55 + swayX * 0.5, 0.02, cZ - 0.35);
+        const hipR = pr(0.55 + swayX * 0.5, 0.02, cZ - 0.35);
+        const kneeL = pr(-1.42 + swayX * 0.35, 0.42, cZ + 0.55);
+        const kneeR = pr(1.42 + swayX * 0.35, 0.42, cZ + 0.55);
+        const shinL = pr(-1.55 + swayX * 0.25, -0.15, cZ + 0.95);
+        const shinR = pr(1.55 + swayX * 0.25, -0.15, cZ + 0.95);
 
-        // Mitt shadow on the sleeve
+        if (hipL && kneeL && shinL) {
+            limb(hipL, kneeL, 0.72, 0.56, '#cbd5e1'); // left thigh pant
+            limb(kneeL, shinL, 0.54, 0.42, '#0f172a'); // left shin guard
+            blob(kneeL, 0.30, '#1e3a8a');              // triple-knee cap shell
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+            ctx.lineWidth = Math.max(1.2, kneeL.scale * 0.03);
+            ctx.beginPath();
+            ctx.arc(kneeL.px, kneeL.py, kneeL.scale * 0.24, Math.PI * 0.9, Math.PI * 1.9);
+            ctx.stroke();
+        }
+        if (hipR && kneeR && shinR) {
+            limb(hipR, kneeR, 0.72, 0.56, '#cbd5e1'); // right thigh pant
+            limb(kneeR, shinR, 0.54, 0.42, '#0f172a'); // right shin guard
+            blob(kneeR, 0.30, '#1e3a8a');              // triple-knee cap shell
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+            ctx.lineWidth = Math.max(1.2, kneeR.scale * 0.03);
+            ctx.beginPath();
+            ctx.arc(kneeR.px, kneeR.py, kneeR.scale * 0.24, Math.PI * 1.1, Math.PI * 2.1);
+            ctx.stroke();
+        }
+
+        // 2. Crouched upper back, shoulders & ribbed chest protector (back harness view)
+        const shLWorld = [-0.82 + swayX * 0.65, 0.66, cZ + 0.15];
+        const shRWorld = [0.82 + swayX * 0.65, 0.60, cZ + 0.15];
+        const shL = pr(shLWorld[0], shLWorld[1], shLWorld[2]);
+        const shR = pr(shRWorld[0], shRWorld[1], shRWorld[2]);
+        const torsoBotL = pr(-0.68 + swayX * 0.4, -0.15, cZ - 0.45);
+        const torsoBotR = pr(0.68 + swayX * 0.4, -0.15, cZ - 0.45);
+
+        if (shL && shR && torsoBotL && torsoBotR) {
+            // Jersey torso base
+            polyPath(ctx, [shL, shR, torsoBotR, torsoBotL]);
+            const backG = ctx.createLinearGradient(shL.px, shL.py, shR.px, torsoBotR.py);
+            backG.addColorStop(0, '#1e293b');
+            backG.addColorStop(0.5, '#0f172a');
+            backG.addColorStop(1, '#020617');
+            ctx.fillStyle = backG;
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = Math.max(4, shL.scale * 0.42);
+            ctx.fill();
+            ctx.stroke();
+
+            // Molded shoulder caps of the chest protector
+            blob(shL, 0.34, '#1e3a8a');
+            blob(shR, 0.34, '#1e3a8a');
+
+            // Y-shaped elastic chest-protector back harness straps & center buckle
+            const midBack = {
+                px: (shL.px + shR.px) / 2,
+                py: lerp(shL.py, torsoBotL.py, 0.52),
+                scale: shL.scale
+            };
+            limb(shL, midBack, 0.16, 0.14, '#334155');
+            limb(shR, midBack, 0.16, 0.14, '#334155');
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillRect(midBack.px - 4, midBack.py - 3, 8, 6);
+        }
+
+        // 3. Catcher's bare throwing arm (right side) tucked safely beside the right knee/thigh
+        const rElbow = pr(1.12 + swayX * 0.5, 0.42, cZ + 0.35);
+        const rHand = pr(0.96 + swayX * 0.45, 0.52, cZ + 0.75);
+        if (shR && rElbow && rHand) {
+            limb(shR, rElbow, 0.42, 0.33, '#1e293b');
+            limb(rElbow, rHand, 0.31, 0.23, '#c68a5b');
+            blob(rHand, 0.18, '#b4784a'); // relaxed bare throwing hand tucked behind hip
+        }
+
+        // 4. Back of Catcher's Hockey-Style Helmet / Mask (tucked low in the slot below Home Plate)
+        const headPos = pr(swayX * 0.7, 0.90, cZ + 0.25);
+        if (headPos) {
+            const hr = headPos.scale * 0.42;
+            // Side steel cage bars peeking out left & right
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = Math.max(1.5, headPos.scale * 0.035);
+            for (let side of [-1, 1]) {
+                ctx.beginPath();
+                ctx.arc(headPos.px + side * hr * 0.72, headPos.py - hr * 0.05, hr * 0.42, side > 0 ? -0.7 : Math.PI - 0.7, side > 0 ? 0.7 : Math.PI + 0.7);
+                ctx.stroke();
+            }
+            // Glossy molded hockey-mask shell
+            const hGrad = ctx.createRadialGradient(headPos.px - hr * 0.3, headPos.py - hr * 0.35, hr * 0.1, headPos.px, headPos.py, hr * 1.05);
+            hGrad.addColorStop(0, '#2563eb');
+            hGrad.addColorStop(0.55, '#1e3a8a');
+            hGrad.addColorStop(1, '#090d16');
+            ctx.beginPath();
+            ctx.arc(headPos.px, headPos.py, hr, 0, Math.PI * 2);
+            ctx.fillStyle = hGrad;
+            ctx.fill();
+            ctx.strokeStyle = '#020617';
+            ctx.lineWidth = Math.max(1.5, headPos.scale * 0.04);
+            ctx.stroke();
+
+            // Rear elastic 5-point mask harness plate & straps
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = Math.max(2, headPos.scale * 0.07);
+            ctx.beginPath();
+            ctx.moveTo(headPos.px - hr * 0.78, headPos.py - hr * 0.15);
+            ctx.lineTo(headPos.px + hr * 0.78, headPos.py - hr * 0.15);
+            ctx.moveTo(headPos.px - hr * 0.68, headPos.py + hr * 0.35);
+            ctx.lineTo(headPos.px + hr * 0.68, headPos.py + hr * 0.35);
+            ctx.stroke();
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath();
+            ctx.ellipse(headPos.px, headPos.py + hr * 0.08, hr * 0.38, hr * 0.28, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.5)';
+            ctx.lineWidth = Math.max(1, headPos.scale * 0.025);
+            ctx.stroke();
+        }
+
+        // 5. Articulated Receiving Left Arm (Shoulder -> Bent Elbow -> Forearm -> Wristband -> Mitt)
+        const wristWorld = [mittPos.x - 0.06, mittPos.y - 0.32 + catchRecoilY, -1.05 + catchRecoilZ];
+        const recvArm = ik3(shLWorld, wristWorld, 1.72, 1.72, [-0.95, -0.65, 0.25]);
+        const pElbow = pr(recvArm.joint[0], recvArm.joint[1], recvArm.joint[2]);
+        const pWrist = { px: p.px - s * 0.04, py: p.py + s * 0.52, scale: s };
+
+        if (shL && pElbow) {
+            // Upper arm in navy jersey sleeve
+            limb(shL, pElbow, 0.48, 0.38, '#1e293b');
+            // Forearm (athletic skin + navy wristband at wrist)
+            const forearmMid = {
+                px: lerp(pElbow.px, pWrist.px, 0.72),
+                py: lerp(pElbow.py, pWrist.py, 0.72),
+                scale: lerp(pElbow.scale, pWrist.scale, 0.72)
+            };
+            limb(pElbow, forearmMid, 0.36, 0.28, '#c68a5b');
+            limb(forearmMid, pWrist, 0.30, 0.27, '#1e3a8a');
+        }
+
+        // 6. Detailed Leather Catcher's Mitt (back of mitt facing umpire, pocket facing pitcher)
         ctx.beginPath();
-        ctx.ellipse(p.px, p.py + s * 0.62, s * 0.34, s * 0.14, 0, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0,0,0,0.35)';
+        ctx.ellipse(p.px, p.py + s * 0.58, s * 0.32, s * 0.13, 0, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0,0,0,0.38)';
         ctx.fill();
 
-        // Back of the catcher's mitt (the umpire sees the back of the glove, pocket faces the pitcher)
         const mx = (dx) => p.px + dx * s;
         const my = (dy) => p.py + dy * s;
         ctx.beginPath();
-        ctx.moveTo(mx(-0.42), my(0.5));
-        ctx.bezierCurveTo(mx(-0.66), my(0.1), mx(-0.62), my(-0.42), mx(-0.26), my(-0.6));
-        ctx.bezierCurveTo(mx(-0.05), my(-0.74), mx(0.36), my(-0.7), mx(0.54), my(-0.32));
-        ctx.bezierCurveTo(mx(0.66), my(0.0), mx(0.6), my(0.32), mx(0.42), my(0.5));
+        ctx.moveTo(mx(-0.44), my(0.50));
+        ctx.bezierCurveTo(mx(-0.68), my(0.10), mx(-0.64), my(-0.44), mx(-0.26), my(-0.62));
+        ctx.bezierCurveTo(mx(-0.04), my(-0.76), mx(0.38), my(-0.72), mx(0.56), my(-0.32));
+        ctx.bezierCurveTo(mx(0.68), my(0.0), mx(0.62), my(0.34), mx(0.42), my(0.50));
         ctx.closePath();
-        const mg = ctx.createRadialGradient(mx(-0.2), my(-0.3), s * 0.05, p.px, p.py, s * 0.8);
-        mg.addColorStop(0, '#9a5524');
+        const mg = ctx.createRadialGradient(mx(-0.2), my(-0.3), s * 0.05, p.px, p.py, s * 0.82);
+        mg.addColorStop(0, '#a15c27');
         mg.addColorStop(0.55, '#6b3410');
         mg.addColorStop(1, '#2e1305');
         ctx.fillStyle = mg;
@@ -2832,60 +3143,71 @@ html {
         ctx.lineWidth = Math.max(2, s * 0.06);
         ctx.stroke();
 
-        // Welting / edge binding
+        // Welting, laced web at top-left, & finger stalls
         ctx.save();
         ctx.clip();
-        ctx.strokeStyle = 'rgba(210, 150, 80, 0.35)';
-        ctx.lineWidth = Math.max(1, s * 0.035);
+        ctx.strokeStyle = 'rgba(225, 168, 98, 0.42)';
+        ctx.lineWidth = Math.max(1.2, s * 0.036);
         ctx.beginPath();
         ctx.moveTo(mx(-0.38), my(0.44));
-        ctx.bezierCurveTo(mx(-0.58), my(0.1), mx(-0.55), my(-0.38), mx(-0.24), my(-0.54));
-        ctx.bezierCurveTo(mx(-0.04), my(-0.66), mx(0.34), my(-0.62), mx(0.48), my(-0.3));
+        ctx.bezierCurveTo(mx(-0.58), my(0.10), mx(-0.55), my(-0.38), mx(-0.24), my(-0.54));
+        ctx.bezierCurveTo(mx(-0.04), my(-0.66), mx(0.34), my(-0.62), mx(0.48), my(-0.30));
         ctx.stroke();
 
+        // Rawhide cross-lacing along the top web between thumb and index
+        ctx.strokeStyle = 'rgba(245, 215, 165, 0.65)';
+        ctx.lineWidth = Math.max(1, s * 0.026);
+        for (let k = 0; k < 4; k++) {
+            const lx = -0.34 + k * 0.08;
+            ctx.beginPath();
+            ctx.moveTo(mx(lx), my(-0.58));
+            ctx.lineTo(mx(lx + 0.05), my(-0.44));
+            ctx.stroke();
+        }
+
         // Finger stall ridges
-        ctx.strokeStyle = 'rgba(20, 8, 2, 0.55)';
+        ctx.strokeStyle = 'rgba(20, 8, 2, 0.58)';
         ctx.lineWidth = Math.max(1, s * 0.03);
         for (let i = -1; i <= 2; i++) {
             ctx.beginPath();
-            ctx.moveTo(mx(-0.1 + i * 0.2), my(-0.68 + Math.abs(i - 0.5) * 0.05));
-            ctx.quadraticCurveTo(mx(-0.1 + i * 0.2 + 0.03), my(-0.3), mx(-0.08 + i * 0.2), my(-0.06));
+            ctx.moveTo(mx(-0.08 + i * 0.19), my(-0.68 + Math.abs(i - 0.5) * 0.05));
+            ctx.quadraticCurveTo(mx(-0.08 + i * 0.19 + 0.03), my(-0.30), mx(-0.06 + i * 0.19), my(-0.05));
             ctx.stroke();
         }
-        // Padded palm/heel panel and stitched logo patch
-        ctx.fillStyle = 'rgba(0,0,0,0.18)';
+        // Padded heel panel and embroidered gold patch
+        ctx.fillStyle = 'rgba(0,0,0,0.20)';
         ctx.beginPath();
-        ctx.ellipse(p.px + s * 0.02, p.py + s * 0.14, s * 0.34, s * 0.3, 0, 0, Math.PI * 2);
+        ctx.ellipse(p.px + s * 0.02, p.py + s * 0.14, s * 0.34, s * 0.30, 0, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = 'rgba(245, 222, 179, 0.5)';
+        ctx.fillStyle = 'rgba(245, 198, 105, 0.65)';
         ctx.beginPath();
-        ctx.ellipse(p.px, p.py + s * 0.12, s * 0.17, s * 0.08, 0, 0, Math.PI * 2);
+        ctx.ellipse(p.px, p.py + s * 0.13, s * 0.17, s * 0.08, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
 
-        // Thumb tube on the near side
-        limb({ px: mx(-0.5), py: my(0.1), scale: s }, { px: mx(-0.58), py: my(-0.26), scale: s }, 0.2, 0.17, '#5a2a0c');
+        // Heavy padded thumb stall on the left side
+        limb({ px: mx(-0.50), py: my(0.10), scale: s }, { px: mx(-0.58), py: my(-0.28), scale: s }, 0.21, 0.18, '#5a2a0c');
 
-        // Wrist strap with stitching
+        // Wrist strap with stitched rawhide trim
         const strapG = ctx.createLinearGradient(0, my(0.42), 0, my(0.62));
         strapG.addColorStop(0, '#b8793c');
         strapG.addColorStop(1, '#6e3d17');
         ctx.fillStyle = strapG;
         ctx.beginPath();
-        ctx.moveTo(mx(-0.4), my(0.46));
-        ctx.lineTo(mx(0.4), my(0.46));
-        ctx.lineTo(mx(0.36), my(0.64));
-        ctx.lineTo(mx(-0.36), my(0.64));
+        ctx.moveTo(mx(-0.40), my(0.45));
+        ctx.lineTo(mx(0.40), my(0.45));
+        ctx.lineTo(mx(0.36), my(0.63));
+        ctx.lineTo(mx(-0.36), my(0.63));
         ctx.closePath();
         ctx.fill();
         ctx.strokeStyle = '#2b1204';
         ctx.lineWidth = Math.max(1, s * 0.03);
         ctx.stroke();
-        ctx.strokeStyle = 'rgba(255,235,200,0.7)';
+        ctx.strokeStyle = 'rgba(255,235,200,0.72)';
         ctx.setLineDash([Math.max(2, s * 0.05), Math.max(2, s * 0.04)]);
         ctx.beginPath();
-        ctx.moveTo(mx(-0.34), my(0.55));
-        ctx.lineTo(mx(0.34), my(0.55));
+        ctx.moveTo(mx(-0.34), my(0.54));
+        ctx.lineTo(mx(0.34), my(0.54));
         ctx.stroke();
         ctx.setLineDash([]);
 
