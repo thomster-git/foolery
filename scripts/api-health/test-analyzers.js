@@ -380,9 +380,25 @@ function createAnalyzerEnvironment({ htmlSource, pathname, search = '', fetchHan
     buildSelect('division-select');
     buildSelect('team-select', [{ value: 'none', text: 'None', selected: true }]);
     buildSelect('team-select-2', [{ value: 'none', text: 'None', selected: true }]);
+    buildSelect('matchup-team-1');
+    buildSelect('matchup-team-2');
+    buildSelect('matchup-venue', [
+        { value: 'home', text: 'Team 2 Home (+1.8 pts HFA)', selected: true },
+        { value: 'away', text: 'Team 1 Home (+1.8 pts HFA)' },
+        { value: 'neutral', text: 'Neutral Site (0.0 pts HFA)' }
+    ]);
+    buildSelect('matchup-weighting', [
+        { value: 'balanced', text: 'Balanced (55% Season / 45% Last 4)', selected: true },
+        { value: 'recent', text: 'Momentum Heavy (30% Season / 70% Last 4)' },
+        { value: 'season', text: 'Full-Season Baseline (80% Season / 20% Last 4)' }
+    ]);
 
-    for (const btnId of ['clear-filters', 'reset-zoom', 'copy-chart-btn', 'copy-image-btn', 'export-chart-btn', 'copy-awards-btn']) {
+    for (const btnId of ['clear-filters', 'reset-zoom', 'copy-chart-btn', 'copy-image-btn', 'export-chart-btn', 'copy-awards-btn', 'matchup-swap-btn', 'matchup-sync-chart-btn']) {
         card.appendChild(new MockElement('BUTTON', doc, btnId));
+    }
+
+    for (const divId of ['matchup-predictor-card', 'matchup-scoreboard', 'matchup-breakdown-grid', 'matchup-math-ledger']) {
+        card.appendChild(new MockElement('DIV', doc, divId));
     }
 
     const chartContainer = new MockElement('DIV', doc, 'chart-container');
@@ -1080,6 +1096,57 @@ await test('NFL normal season: loads 32 teams, enriches boxscores, supports roll
     metricSelect.value = 'fourthDownPct'; // Not in NFL_ROLLING_SUPPORTED_METRICS
     await metricSelect.dispatchEvent('change');
     assert.equal(winContainer.style.display, 'none');
+
+    // Verify Matchup Predictor scoreboard & breakdown rendered
+    const scoreboard = env.doc.getElementById('matchup-scoreboard');
+    const breakdownGrid = env.doc.getElementById('matchup-breakdown-grid');
+    assert.ok(scoreboard.innerHTML.includes('Win Prob:'), 'Expected Matchup Predictor scoreboard to render win probabilities');
+    assert.ok(breakdownGrid.innerHTML.includes('1. Overall vs. Recent Trend'), 'Expected Pillar 1 in breakdown grid');
+    assert.ok(breakdownGrid.innerHTML.includes('2. Season Matchup History (H2H)'), 'Expected Pillar 2 in breakdown grid');
+    assert.ok(breakdownGrid.innerHTML.includes('3. Same-Opponents Comparison'), 'Expected Pillar 3 in breakdown grid');
+    assert.ok(breakdownGrid.innerHTML.includes('4. Efficiency, Trenches'), 'Expected Pillar 4 in breakdown grid');
+
+    // Test computeNflMatchupPrediction directly (H2H, Common Opponents, Recent vs Season weighting, Venue HFA)
+    const predictFn = env.context.window.computeNflMatchupPrediction;
+    assert.equal(typeof predictFn, 'function', 'Expected window.computeNflMatchupPrediction to be exposed');
+
+    const mockTeamA = {
+        id: 2,
+        name: 'Buffalo Bills',
+        divisionId: 'AFCE',
+        color: '#00338D',
+        rawGames: [
+            { gameNum: 1, oppId: '17', pf: 24, pa: 20, totalYards: 360, plays: 60, yardsAllowed: 310, thirdMade: 6, thirdAtt: 12, rzMade: 3, rzAtt: 4, sacksMade: 3, sacksAllowed: 1, takeaways: 2, giveaways: 1, streak: 1 },
+            { gameNum: 2, oppId: '12', pf: 31, pa: 21, totalYards: 410, plays: 64, yardsAllowed: 320, thirdMade: 7, thirdAtt: 13, rzMade: 3, rzAtt: 4, sacksMade: 4, sacksAllowed: 1, takeaways: 2, giveaways: 0, streak: 2 },
+            { gameNum: 3, oppId: '15', pf: 34, pa: 17, totalYards: 425, plays: 62, yardsAllowed: 290, thirdMade: 8, thirdAtt: 14, rzMade: 4, rzAtt: 5, sacksMade: 3, sacksAllowed: 1, takeaways: 1, giveaways: 0, streak: 3 },
+            { gameNum: 4, oppId: '20', pf: 38, pa: 14, totalYards: 440, plays: 65, yardsAllowed: 270, thirdMade: 8, thirdAtt: 13, rzMade: 4, rzAtt: 4, sacksMade: 4, sacksAllowed: 1, takeaways: 2, giveaways: 1, streak: 4 },
+            { gameNum: 5, oppId: '33', pf: 35, pa: 20, totalYards: 415, plays: 63, yardsAllowed: 305, thirdMade: 7, thirdAtt: 12, rzMade: 3, rzAtt: 4, sacksMade: 3, sacksAllowed: 2, takeaways: 2, giveaways: 1, streak: 5 }
+        ]
+    };
+    const mockTeamB = {
+        id: 12,
+        name: 'Kansas City Chiefs',
+        divisionId: 'AFCW',
+        color: '#E31837',
+        rawGames: [
+            { gameNum: 1, oppId: '33', pf: 27, pa: 20, totalYards: 350, plays: 61, yardsAllowed: 330, thirdMade: 6, thirdAtt: 13, rzMade: 2, rzAtt: 4, sacksMade: 2, sacksAllowed: 2, takeaways: 1, giveaways: 1, streak: 1 },
+            { gameNum: 2, oppId: '2', pf: 21, pa: 31, totalYards: 320, plays: 60, yardsAllowed: 410, thirdMade: 5, thirdAtt: 12, rzMade: 2, rzAtt: 3, sacksMade: 1, sacksAllowed: 4, takeaways: 0, giveaways: 2, streak: -1 },
+            { gameNum: 3, oppId: '15', pf: 20, pa: 24, totalYards: 310, plays: 59, yardsAllowed: 345, thirdMade: 5, thirdAtt: 13, rzMade: 2, rzAtt: 4, sacksMade: 2, sacksAllowed: 3, takeaways: 1, giveaways: 2, streak: -2 },
+            { gameNum: 4, oppId: '20', pf: 23, pa: 20, totalYards: 330, plays: 62, yardsAllowed: 315, thirdMade: 6, thirdAtt: 14, rzMade: 2, rzAtt: 4, sacksMade: 2, sacksAllowed: 2, takeaways: 1, giveaways: 1, streak: 1 },
+            { gameNum: 5, oppId: '13', pf: 17, pa: 20, totalYards: 295, plays: 58, yardsAllowed: 340, thirdMade: 4, thirdAtt: 12, rzMade: 1, rzAtt: 3, sacksMade: 1, sacksAllowed: 3, takeaways: 1, giveaways: 2, streak: -1 }
+        ]
+    };
+
+    const predNeutral = predictFn(mockTeamA, mockTeamB, [mockTeamA, mockTeamB], { venue: 'neutral', weighting: 'balanced' });
+    assert.equal(predNeutral.h2h.gamesPlayed, 1, 'Expected 1 H2H meeting detected between Team A and Team B');
+    assert.equal(predNeutral.h2h.team1Wins, 1, 'Expected Team A to have 1 H2H win');
+    assert.equal(predNeutral.commonOpponents.count, 3, 'Expected 3 common opponents (ids 15, 20, 33)');
+    assert.ok(predNeutral.team1.commonAdj > 0 && predNeutral.team2.commonAdj < 0, 'Expected positive common-opponent adjustment for Team A');
+    assert.ok(predNeutral.team1.effAdj > 0, 'Expected positive efficiency/trench adjustment for Team A');
+    assert.ok(predNeutral.team1.predictedScore > predNeutral.team2.predictedScore, 'Expected Team A to be projected winner');
+
+    const predRecent = predictFn(mockTeamA, mockTeamB, [mockTeamA, mockTeamB], { venue: 'away', weighting: 'recent' });
+    assert.ok(predRecent.team1.rawScore > predNeutral.team1.rawScore, 'Expected Home Field Advantage + Recent Hot Form to boost Team A projected score');
 
     // Export canvas & clear filters
     await env.doc.getElementById('export-chart-btn').click();

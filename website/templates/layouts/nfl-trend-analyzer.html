@@ -151,6 +151,79 @@
             </div>
         </div>
 
+        <!-- Head-to-Head Matchup & Score Predictor Card -->
+        <div id="matchup-predictor-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; margin-bottom: 3rem; text-align: left;">
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+                <div>
+                    <h2 style="font-size: 1.55rem; margin: 0 0 0.35rem 0; color: var(--accent-cyan); display: flex; align-items: center; gap: 0.5rem;">
+                        <span>🏈 Head-to-Head Matchup &amp; Score Predictor</span>
+                    </h2>
+                    <p style="margin: 0; font-size: 0.92rem; color: var(--text-muted); max-width: 720px;">
+                        Match up any two NFL teams to project a final score using weighted full-season vs. recent rolling averages, direct head-to-head results this season, transitive performance against common opponents, and underlying trench/turnover efficiency.
+                    </p>
+                </div>
+                <button id="matchup-sync-chart-btn" type="button" style="background: rgba(6, 182, 212, 0.14); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); padding: 0.55rem 0.95rem; border-radius: var(--radius-md); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; white-space: nowrap;" title="Highlight these two matchup teams on the trend chart above">
+                    📈 Highlight Matchup on Chart
+                </button>
+            </div>
+
+            <!-- Predictor Controls -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end; margin-bottom: 1.5rem; background: rgba(255,255,255,0.02); padding: 1.1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                <div>
+                    <label for="matchup-team-1" style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.45rem;">Team 1 (Away / Visitor)</label>
+                    <select id="matchup-team-1" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: var(--radius-md); font-weight: 600;">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <button id="matchup-swap-btn" type="button" style="width: 100%; background: rgba(255,255,255,0.06); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.6rem 0.85rem; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; transition: all 0.2s;" title="Swap Team 1 and Team 2">
+                        ⇄ Swap Sides
+                    </button>
+                </div>
+
+                <div>
+                    <label for="matchup-team-2" style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.45rem;">Team 2 (Home / Host)</label>
+                    <select id="matchup-team-2" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: var(--radius-md); font-weight: 600;">
+                        <!-- Populated by JS -->
+                    </select>
+                </div>
+
+                <div>
+                    <label for="matchup-venue" style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.45rem;">Venue / Home Field</label>
+                    <select id="matchup-venue" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: var(--radius-md); font-size: 0.9rem;">
+                        <option value="home" selected>Team 2 Home (+1.8 pts HFA)</option>
+                        <option value="away">Team 1 Home (+1.8 pts HFA)</option>
+                        <option value="neutral">Neutral Site (0.0 pts HFA)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="matchup-weighting" style="display: block; font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.45rem;">Overall vs. Recent Weight</label>
+                    <select id="matchup-weighting" style="width: 100%; background: var(--bg-main); color: var(--text-main); border: 1px solid var(--border-color); padding: 0.6rem; border-radius: var(--radius-md); font-size: 0.9rem;">
+                        <option value="balanced" selected>Balanced (55% Season / 45% Last 4)</option>
+                        <option value="recent">Momentum Heavy (30% Season / 70% Last 4)</option>
+                        <option value="season">Full-Season Baseline (80% Season / 20% Last 4)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Predicted Scoreboard Banner -->
+            <div id="matchup-scoreboard" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85)); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem;">
+                <p style="text-align: center; color: var(--text-muted); margin: 0;">Select two NFL teams above to generate a matchup score prediction.</p>
+            </div>
+
+            <!-- 4-Pillar Factor Breakdown Grid -->
+            <div id="matchup-breakdown-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.15rem; margin-bottom: 1.25rem;">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Math Ledger Summary -->
+            <div id="matchup-math-ledger" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem 1.25rem; font-size: 0.86rem; color: var(--text-muted);">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
         <div style="text-align: left; max-width: 800px; margin: 0 auto 4rem auto; line-height: 1.7; color: var(--text-main);">
             <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--accent-cyan);">Methodology: Tracking NFL True Performance</h2>
             
@@ -176,6 +249,11 @@
             <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Turnover Margin, Clock Control &amp; Discipline</h3>
             <p style="margin-bottom: 1.5rem;">
                 Few statistics correlate more strongly with single-game NFL outcomes than <strong>Cumulative Turnover Differential</strong> (Takeaways minus Giveaways). Pairing ball security with <strong>Time of Possession</strong> and <strong>Penalties / Penalty Yards Per Game</strong> illustrates whether a team wins through complementary, disciplined football or constantly has to overcome self-inflicted mistakes.
+            </p>
+
+            <h3 style="font-size: 1.4rem; margin-bottom: 1rem;">Head-to-Head Matchup &amp; Score Prediction Model</h3>
+            <p style="margin-bottom: 1.5rem;">
+                The built-in <strong>Matchup &amp; Score Predictor</strong> synthesizes four layers of season data to project an expected score, point spread, total (Over/Under), and win probability: (1) <strong>Weighted Scoring Baseline</strong> blending full-season offensive/defensive averages with recent 4-game form adjusted against the NFL league-average scoring environment; (2) <strong>Season Head-to-Head History</strong> factoring in direct meetings already played between the two teams; (3) <strong>Common-Opponent Transitive Margin</strong> comparing how both teams performed against shared opponents on their schedules; and (4) <strong>Efficiency &amp; Trench Modifiers</strong> incorporating Yards Per Play, 3rd Down &amp; Red Zone conversion rates, sack differential, and regressed turnover margin.
             </p>
         </div>
 
