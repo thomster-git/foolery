@@ -26,7 +26,7 @@ async function initGraphViewer() {
   if (!containers || containers.length === 0) return;
 
   try {
-    const res = await fetch("/graph.json?v=1.5.3", { cache: "no-store" });
+    const res = await fetch("/graph.json?v=1.7.0", { cache: "no-store" });
     if (!res.ok) return;
     const graphData = await res.json();
 

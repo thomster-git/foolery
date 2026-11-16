@@ -53,7 +53,7 @@ export default class GraphBuilder {
                 type: "pillar",
                 pillarKey: "tools",
                 url: "/tools/",
-                summary: "11 interactive web applications, sports telemetry analyzers, 3D simulators, and game compendiums."
+                summary: "12 interactive web applications, sports telemetry analyzers, 3D simulators, market calculators, and game compendiums."
             },
             {
                 id: "pillar-interests",
@@ -101,6 +101,14 @@ export default class GraphBuilder {
                 summary: "First-person 3D perspective MLB pitch simulator with Statcast kinematics and 3D strike-zone evaluation."
             },
             {
+                id: "tool-osrs-bank-skilling",
+                label: "OSRS Bank Skilling & GE Flip Calc",
+                type: "site-tool",
+                parentPillar: "pillar-tools",
+                url: "/tools/osrs-bank-skilling/",
+                summary: "Real-time OSRS Grand Exchange bank skilling profit calculator and 8-slot overnight flip optimizer with live Wiki API prices and 2% GE tax math."
+            },
+            {
                 id: "tool-ocarina",
                 label: "12-Hole Ocarina Studio",
                 type: "site-tool",
@@ -130,7 +138,7 @@ export default class GraphBuilder {
                 type: "site-tool",
                 parentPillar: "pillar-tools",
                 url: "/tools/nfl-trend-analyzer/",
-                summary: "Compare all 32 NFL franchises across 26 metrics including Point Differential, Pythagorean Win %, First Downs, and Turnovers."
+                summary: "Compare all 32 NFL franchises across 26 metrics plus a 4-pillar Head-to-Head Matchup & Score Predictor."
             },
             {
                 id: "tool-mlb-analyzer",
@@ -369,17 +377,20 @@ export default class GraphBuilder {
             ["interest-sports", "tool-mlb-analyzer"],
             ["interest-sports", "tool-postseason-mlb"],
             ["interest-video-games", "tool-dragonwilds"],
+            ["interest-video-games", "tool-osrs-bank-skilling"],
             ["interest-video-games", "tool-ffx-tracker"],
             ["interest-video-games", "tool-ocarina"],
             ["interest-video-games", "tool-stream-schedule"],
             ["interest-music", "tool-ocarina"],
             ["interest-digital-tools", "tool-tier-list"],
+            ["interest-digital-tools", "tool-osrs-bank-skilling"],
             ["interest-entertainment", "tool-stream-schedule"],
             ["interest-entertainment", "tool-tier-list"],
 
             // Interests <-> Articles
             ["interest-electronics", "sensible-infrastructure-and-white-box-servers"],
             ["interest-electronics", "my-story-with-the-akira-ransomware-attack"],
+            ["interest-electronics", "diy-product-photography-sony-a6400-darktable"],
             ["interest-digital-tools", "building-a-comprehensive-discord-ecosystem"],
             ["interest-digital-tools", "discord-vs-corporate-comms"],
             ["interest-digital-tools", "manifesto"],
@@ -396,6 +407,7 @@ export default class GraphBuilder {
             ["resume-mining-engineering", "my-story-with-the-akira-ransomware-attack"],
             ["resume-mining-engineering", "sensible-infrastructure-and-white-box-servers"],
             ["resume-etchcentric", "interest-electronics"],
+            ["resume-etchcentric", "diy-product-photography-sony-a6400-darktable"],
             ["resume-beng", "manifesto"],
             ["resume-beng", "my-story-with-the-grade-9-french-test"],
             ["resume-aviation", "interest-music"]
