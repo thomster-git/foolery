@@ -409,6 +409,7 @@ export default class GraphBuilder {
             ["resume-etchcentric", "interest-electronics"],
             ["resume-etchcentric", "diy-product-photography-sony-a6400-darktable"],
             ["resume-beng", "manifesto"],
+            ["resume-beng", "the-case-for-permanent-standard-time"],
             ["resume-beng", "my-story-with-the-grade-9-french-test"],
             ["resume-aviation", "interest-music"]
         ];

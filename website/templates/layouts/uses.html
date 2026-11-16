@@ -8,12 +8,12 @@
 
         <div style="margin-bottom: 3rem;">
             <h1 style="font-size: 3rem; color: var(--accent-cyan); margin-bottom: 1rem;">What I Use</h1>
-            <p style="font-size: 1.2rem; color: var(--text-muted); line-height: 1.7;">A curated list of the software stack, web infrastructure, hardware, and everyday tools that power Thoms Foolery. I only recommend tools and gear I actively use, build with, and trust. <em>Note: Physical product links below are <strong>not</strong> currently affiliate links. I'm waiting to build up my newsletter subscriber count before doing so! For now, these are just direct links for your convenience.</em></p>
+            <p style="font-size: 1.2rem; color: var(--text-muted); line-height: 1.7;">A curated list of the software stack, web infrastructure, network tools, and everyday hardware that power Thoms Foolery. I only recommend tools and gear I actively use, build with, and trust. <em>Note: Select software recommendations (such as NordVPN) use partner or refer-a-friend links that help support this digital garden at no extra cost to you, while physical Amazon gear links below remain direct, non-affiliate links for your convenience.</em></p>
         </div>
 
         <!-- Web Stack, Hosting & Data Collection -->
         <div class="uses-category">
-            <h2 class="uses-category-title">🌐 Web Stack, Hosting &amp; Data Collection</h2>
+            <h2 class="uses-category-title">🌐 Web Stack, Hosting &amp; Network Security</h2>
             <ul class="uses-list">
                 <li>
                     <strong><a href="https://github.com/thomsfoolery" target="_blank" rel="noopener noreferrer">Project Atlas SSG (Custom Node.js Engine)</a></strong> - Zero-framework, lightweight static site generator built from scratch in vanilla Node.js. Compiles Markdown essays, YAML frontmatter, and JSON Knowledge Graph schemas directly into pure static HTML/CSS/JS. No React hydration overhead, no client-side framework bloat, and sub-50ms page renders.
@@ -27,15 +27,18 @@
                 <li>
                     <strong><a href="https://www.cloudflare.com/web-analytics/" target="_blank" rel="noopener noreferrer">Cloudflare Web Analytics (Cookieless Telemetry)</a></strong> - Privacy-first metrics injected strictly at the edge. We collect zero tracking cookies, do not track you across the web, and run no heavy third-party scripts (no Google Analytics, no Facebook Pixels, no fingerprinting). Just clean, privacy-respecting metrics on page performance and traffic without nagging cookie consent banners.
                 </li>
+                <li>
+                    <strong><a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer">NordVPN (NordLynx / WireGuard Encrypted Routing)</a></strong> - My daily-driver VPN for untrusted networks, multi-region web testing, and encrypted traffic routing across 7,400+ RAM-only servers in 118+ countries. Built on NordLynx (WireGuard with Double NAT) and NIST-standard post-quantum encryption. <a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer" style="font-weight: 600;">Claim up to 3 free bonus months via my referral link &rarr;</a>
+                </li>
             </ul>
         </div>
 
-        <!-- Email & Commerce Philosophy -->
+        <!-- Email, Commerce & Network Routing Philosophy -->
         <div class="uses-category">
-            <h2 class="uses-category-title">📬 Email &amp; Commerce: Why We Don't Self-Host (Yet)</h2>
+            <h2 class="uses-category-title">📬 Email, Commerce &amp; Network Routing: Why We Don't Self-Host (Yet)</h2>
             <div class="uses-philosophy-card">
                 <p>
-                    A core tenet of systems thinking is <em>stage-appropriate engineering</em>. While I love open source, Linux sysadmin work, and self-hosting tools in my homelab, running mission-critical commercial infrastructure for email deliverability and global payment compliance is an entirely different operational beast. Here is why we deliberately chose managed partners over self-hosting at this specific time:
+                    A core tenet of systems thinking is <em>stage-appropriate engineering</em>. While I love open source, Linux sysadmin work, and self-hosting Proxmox nodes in my homelab, running mission-critical infrastructure for email deliverability, global payment tax compliance, and multi-country exit nodes is an entirely different operational beast. Here is why we deliberately chose managed partners over self-hosting in these three areas:
                 </p>
 
                 <div class="service-decision-grid">
@@ -74,10 +77,33 @@
                             <li><strong>Built-In License Keys &amp; Customer Portal:</strong> Provides turnkey recurring subscriptions, automated license key generation (such as our 2-machine activation limits for the All-Access Garden Pass), and self-service customer billing management without requiring a 24/7 PostgreSQL database or webhook listener on our static site.</li>
                         </ul>
                     </div>
+
+                    <div class="service-decision-card" style="grid-column: 1 / -1; border-color: rgba(56, 189, 248, 0.4); background: linear-gradient(145deg, rgba(15, 23, 42, 0.75), rgba(30, 41, 59, 0.55));">
+                        <div class="service-card-header" style="justify-content: space-between; flex-wrap: wrap;">
+                            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                <span class="service-icon">🛡️</span>
+                                <div>
+                                    <h3 class="service-title"><a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer" style="color: var(--text-main); text-decoration: none;">NordVPN</a></h3>
+                                    <span class="service-role">Global Encrypted Tunneling, Geo-Testing &amp; Privacy</span>
+                                </div>
+                            </div>
+                            <a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.45rem 0.95rem; border-radius: 6px; font-size: 0.82rem; font-weight: 700; text-decoration: none; transition: all 0.2s;">
+                                🔗 Try NordVPN (Refer-a-Friend Bonus) &rarr;
+                            </a>
+                        </div>
+                        <p class="service-desc">
+                            <strong>Why not just rent a $5–$10/month VPS in another country and self-host WireGuard?</strong>
+                        </p>
+                        <ul class="service-points">
+                            <li><strong>118+ Countries &amp; 7,400+ RAM-Only Servers vs. One Static Datacenter IP:</strong> Renting a single foreign VPS locks you to one city, one static IPv4 address tied directly to your personal billing identity, and one datacenter ASN (like Hetzner, DigitalOcean, or AWS) that is aggressively fingerprinted and CAPTCHA-blocked across the modern web. For less than the monthly cost of a single decent VPS, NordVPN gives you instant one-click switching across <strong>7,400+ diskless (RAM-only) 10 Gbps servers in 118+ countries</strong>—making cross-border latency testing, regional API verification, and travel security effortless.</li>
+                            <li><strong>NordLynx (WireGuard + Double NAT) &amp; Post-Quantum Cryptography:</strong> Stock self-hosted WireGuard assigns a static internal tunnel IP to every peer config on disk. NordVPN engineered <strong>NordLynx</strong>—combining WireGuard’s lean ~4,000-line `ChaCha20-Poly1305` kernel speed with a custom <strong>Double NAT</strong> system that allocates ephemeral, non-persistent session IPs without ever writing connection metadata to disk. In 2026, it also ships natively with NIST-standard <strong>ML-KEM (FIPS 203) Post-Quantum Encryption</strong> across desktop and mobile clients to defend against <em>"harvest now, decrypt later"</em> traffic capture, backed by recurrent independent <strong>Deloitte ISAE 3000 no-logs audits</strong>.</li>
+                            <li><strong>Zero Sysadmin Maintenance, Egress Caps, or Abuse Headaches:</strong> When you roll your own VPS exit node, <em>you</em> are the unpaid sysadmin responsible for unattended kernel upgrades, `nftables` firewall hardening, IPv6/DNS leak prevention, MTU packet fragmentation tuning, and bandwidth overage bills across every laptop, phone, and tablet in your household. NordVPN handles 10 simultaneous devices out of the box with a hardware-level kill switch, split tunneling, Double VPN, and Threat Protection Pro.</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <p class="uses-philosophy-footnote">
-                    💡 <em>The bottom line: Using Buttondown and Lemon Squeezy frees up 100% of my cognitive bandwidth to write essays, design interactive tools, and engineer open systems—instead of spending evenings troubleshooting mail servers and deciphering cross-border VAT law. If and when our operational scale justifies dedicated compliance and DevOps overhead, we'll re-evaluate.</em>
+                    💡 <em>The bottom line: Using Buttondown, Lemon Squeezy, and <a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer" style="color: var(--accent-cyan);">NordVPN</a> frees up 100% of my cognitive bandwidth to write essays, design interactive tools, and engineer open systems—instead of spending evenings troubleshooting mail servers, deciphering cross-border VAT law, or babysitting foreign VPS firewall rules.</em>
                 </p>
             </div>
         </div>

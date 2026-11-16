@@ -171,7 +171,7 @@ export default class PageBuilder {
                 const dateB = b.metadata.updated || b.metadata.created || "2000-01-01";
                 return String(dateB).localeCompare(String(dateA));
             })
-            .slice(0, 8)
+            .slice(0, 9)
             .map(article => this.components.articleCard(article))
             .join("\n");
 
