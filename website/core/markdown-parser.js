@@ -49,11 +49,8 @@ export default function parseMarkdown(markdownText = "") {
     return `<img src="${src}" alt="${alt}" class="article-image"${sizeAttrs} loading="lazy" decoding="async" />`;
   });
 
-  // Inline formatting: bold, italic, inline code, links
-  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  // Inline code (protect before bold/italic/list parsing)
   text = text.replace(/`([^`]+)`/g, (match, code) => `<code>${escapeHtml(code)}</code>`);
-  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 
   // Markdown tables: | col1 | col2 |\n|---|---|\n| val1 | val2 |
   text = text.replace(/(\|.+?\|\n\|[-:\s|]+\|\n(?:\|.+?\|(?:\n|$))+)/g, (match) => {
@@ -68,7 +65,7 @@ export default function parseMarkdown(markdownText = "") {
     return `<table class="article-table">\n<thead>\n  <tr>${headers}</tr>\n</thead>\n<tbody>\n${bodyRows}\n</tbody>\n</table>`;
   });
 
-  // Bullet lists (- or *) and ordered lists (1., 2., etc.)
+  // Bullet lists (- or *) and ordered lists (1., 2., etc.) — parsed BEFORE *italic* so leading "* " bullets never collide with "*italic*"
   const lines = text.split('\n');
   let listType = null; // 'ul' | 'ol' | null
   const resultLines = [];
@@ -103,6 +100,11 @@ export default function parseMarkdown(markdownText = "") {
   }
 
   text = resultLines.join('\n');
+
+  // Inline formatting: bold, italic, links
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/\*([^\s*](?:[^*]*?[^\s*])?)\*/g, '<em>$1</em>');
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 
   // Split into paragraphs for text blocks not already wrapped in HTML tags
   const blocks = text.split(/\n\s*\n/);

@@ -51,14 +51,51 @@ Whenever politicians defend choosing Permanent Daylight Saving Time (DST) over P
 
 In systems engineering and data analysis, whenever a survey returns 93% unanimity on a complex public policy trade-off, your first instinct shouldn't be celebration. Your first instinct should be to audit the questionnaire for **framing bias**.
 
-```mermaid
-flowchart TD
-    A["What Voters Actually Hate:<br/>The Biannual Clock Switch (Especially 'Spring Forward')"] --> B{"How Government Surveys<br/>Framed the Question"}
-    B -->|"Flawed Binary Poll"| C["Option 1: Keep Flipping Clocks Twice a Year<br/>Option 2: Adopt Permanent Daylight Saving Time"]
-    B -->|"What Was Omitted or Buried"| D["Option 3: Adopt Permanent Standard Time<br/>(Align Clock 12:00 PM with Solar Noon)"]
-    C --> E["93% Vote 'Yes' to Escape Clock Changes"]
-    E --> F["Politicians Misread Vote as a Mandate<br/>for 9:30 AM Winter Sunrises"]
-```
+<section style="margin: 2rem 0; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+    <div style="font-weight: 700; color: var(--accent-cyan); font-size: 1.02rem; display: flex; align-items: center; gap: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
+      <span>📊</span> The Consultation Framing Trap
+    </div>
+    <div style="font-size: 0.8rem; font-family: monospace; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 0.25rem 0.65rem; border-radius: 4px;">
+      How "Stop Changing Clocks" Got Conflated With "Permanent DST"
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.88rem;">
+    <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 8px; padding: 0.85rem 1rem; text-align: center;">
+      <div style="font-size: 0.72rem; font-family: monospace; color: var(--accent-cyan); text-transform: uppercase; font-weight: 700; margin-bottom: 0.2rem;">Root Problem</div>
+      <strong style="color: var(--text-main); font-size: 0.96rem;">What Voters Actually Hate: The Biannual Clock Switch</strong>
+      <div style="color: var(--text-muted); font-size: 0.83rem; margin-top: 0.15rem;">Especially losing an hour of sleep every March ("Spring Forward")</div>
+    </div>
+
+    <div style="text-align: center; color: var(--accent-cyan); font-size: 0.85rem; line-height: 1;">▼</div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+      <div style="background: rgba(245, 158, 11, 0.06); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 8px; padding: 1rem;">
+        <div style="font-size: 0.72rem; font-family: monospace; color: #f59e0b; text-transform: uppercase; font-weight: 700; margin-bottom: 0.35rem;">⚠️ What Government Surveys Asked</div>
+        <div style="color: var(--text-main); font-weight: 600; margin-bottom: 0.35rem;">Flawed Binary / Double-Barreled Poll:</div>
+        <div style="color: var(--text-muted); font-size: 0.83rem; line-height: 1.45;">
+          • <strong>Option 1:</strong> Keep flipping clocks twice a year<br>
+          • <strong>Option 2:</strong> Adopt Permanent Daylight Saving Time
+        </div>
+      </div>
+
+      <div style="background: rgba(16, 185, 129, 0.06); border: 1px dashed rgba(16, 185, 129, 0.4); border-radius: 8px; padding: 1rem;">
+        <div style="font-size: 0.72rem; font-family: monospace; color: #10b981; text-transform: uppercase; font-weight: 700; margin-bottom: 0.35rem;">🚫 What Was Omitted on the Ballot</div>
+        <div style="color: var(--text-main); font-weight: 600; margin-bottom: 0.35rem;">Option 3: Permanent Standard Time</div>
+        <div style="color: var(--text-muted); font-size: 0.83rem; line-height: 1.45;">
+          End clock changes forever by keeping 12:00 PM aligned with Solar Noon and preserving winter morning light.
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center; color: #ef4444; font-size: 0.85rem; line-height: 1;">▼</div>
+
+    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.35); border-left: 4px solid #ef4444; border-radius: 6px; padding: 0.85rem 1rem;">
+      <strong style="color: #f87171;">The False Mandate:</strong> <span style="color: var(--text-main);">93% check "Yes" simply to escape twice-yearly clock switches—and politicians misread the vote as a mandate for 9:30 AM winter sunrises.</span>
+    </div>
+  </div>
+</section>
 
 When you dissect how these provincial consultations and referendums were designed—and *when* they were conducted—three massive methodological flaws jump off the page:
 
@@ -157,20 +194,70 @@ Standard Time is not a political invention. It is geographical physics: **Standa
 
 Daylight Saving Time artificially overrides that geography, shifting your social clock one timezone to the east (`Solar Noon ≈ 1:00 PM` or `1:30+ PM`).
 
-```mermaid
-flowchart LR
-    subgraph "Permanent Standard Time (Biologically Aligned)"
-        S1["Morning Sunlight<br/>(7:30 AM – 8:30 AM)"] --> S2["Retinal ipRGCs Signal<br/>Suprachiasmatic Nucleus (SCN)"]
-        S2 --> S3["Suppresses Melatonin &<br/>Triggers Cortisol Awakening"]
-        S3 --> S4["Natural Melatonin Onset<br/>14–16 Hours Later (~10:00 PM)"]
-    end
+<section style="margin: 2rem 0; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
+  <div style="margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
+    <h4 style="margin: 0; font-size: 1.15rem; color: var(--text-main);">Circadian Entrainment vs. Chronic Social Jetlag</h4>
+    <p style="margin: 0.3rem 0 0 0; font-size: 0.85rem; color: var(--text-muted);">How morning solar alignment resets the human biological clock—and how permanent DST breaks it.</p>
+  </div>
 
-    subgraph "Permanent Daylight Saving Time (Chronic Social Jetlag)"
-        D1["Pitch-Black Awakening<br/>(6:30 AM – 9:30 AM in Winter)"] --> D2["No Morning Light Signal;<br/>Brain Remains in Biological Night"]
-        D2 --> D3["Late Summer Evening Sun<br/>(9:30 PM – 10:15 PM)"]
-        D3 --> D4["Delayed Sleep Onset &<br/>Chronic Sleep Debt Year-Round"]
-    end
-```
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+    <div style="background: rgba(16, 185, 129, 0.04); border: 1px solid rgba(16, 185, 129, 0.28); border-radius: 10px; padding: 1.15rem; display: flex; flex-direction: column;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.9rem; border-bottom: 1px solid rgba(16, 185, 129, 0.2); padding-bottom: 0.55rem;">
+        <span style="font-size: 1.2rem;">🟢</span>
+        <div>
+          <div style="font-weight: 700; color: #10b981; font-size: 0.95rem;">Permanent Standard Time</div>
+          <div style="font-size: 0.75rem; color: var(--text-dim);">Biologically Aligned (12:00 PM ≈ Solar Noon)</div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.84rem;">
+        <div style="background: rgba(0,0,0,0.2); padding: 0.6rem 0.8rem; border-radius: 6px; border-left: 3px solid #10b981;">
+          <strong style="color: var(--text-main);">1. Morning Sunlight (7:30 AM – 8:30 AM):</strong> Natural dawn light reaches the eyes during the morning commute and school walk.
+        </div>
+        <div style="text-align: center; color: #10b981; font-size: 0.75rem;">▼</div>
+        <div style="background: rgba(0,0,0,0.2); padding: 0.6rem 0.8rem; border-radius: 6px; border-left: 3px solid #10b981;">
+          <strong style="color: var(--text-main);">2. Retinal ipRGCs Signal SCN:</strong> Short-wavelength blue light resets the suprachiasmatic nucleus to the 24-hour day.
+        </div>
+        <div style="text-align: center; color: #10b981; font-size: 0.75rem;">▼</div>
+        <div style="background: rgba(0,0,0,0.2); padding: 0.6rem 0.8rem; border-radius: 6px; border-left: 3px solid #10b981;">
+          <strong style="color: var(--text-main);">3. Cortisol Awakening &amp; Alertness:</strong> Suppresses residual nighttime melatonin and elevates daytime focus.
+        </div>
+        <div style="text-align: center; color: #10b981; font-size: 0.75rem;">▼</div>
+        <div style="background: rgba(16, 185, 129, 0.12); padding: 0.7rem 0.85rem; border-radius: 6px; border: 1px dashed rgba(16, 185, 129, 0.4);">
+          <strong style="color: #34d399;">Outcome: Restorative Sleep Architecture:</strong> Natural melatonin onset 14–16 hours later (~10:00 PM) for deep sleep.
+        </div>
+      </div>
+    </div>
+
+    <div style="background: rgba(239, 68, 68, 0.04); border: 1px solid rgba(239, 68, 68, 0.28); border-radius: 10px; padding: 1.15rem; display: flex; flex-direction: column;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.9rem; border-bottom: 1px solid rgba(239, 68, 68, 0.2); padding-bottom: 0.55rem;">
+        <span style="font-size: 1.2rem;">🔴</span>
+        <div>
+          <div style="font-weight: 700; color: #ef4444; font-size: 0.95rem;">Permanent Daylight Saving Time</div>
+          <div style="font-size: 0.75rem; color: var(--text-dim);">Chronic Social Jetlag (Solar Noon ≈ 1:00–1:30+ PM)</div>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.84rem;">
+        <div style="background: rgba(0,0,0,0.2); padding: 0.6rem 0.8rem; border-radius: 6px; border-left: 3px solid #ef4444;">
+          <strong style="color: var(--text-main);">1. Pitch-Black Awakening (Until 9:05–9:48 AM):</strong> Waking and commuting 2–3 hours before winter sunrise.
+        </div>
+        <div style="text-align: center; color: #ef4444; font-size: 0.75rem;">▼</div>
+        <div style="background: rgba(0,0,0,0.2); padding: 0.6rem 0.8rem; border-radius: 6px; border-left: 3px solid #ef4444;">
+          <strong style="color: var(--text-main);">2. Missing Morning Reset Signal:</strong> Brain remains chemically locked in biological night during morning classes and work.
+        </div>
+        <div style="text-align: center; color: #ef4444; font-size: 0.75rem;">▼</div>
+        <div style="background: rgba(0,0,0,0.2); padding: 0.6rem 0.8rem; border-radius: 6px; border-left: 3px solid #ef4444;">
+          <strong style="color: var(--text-main);">3. Late Summer Evening Sun (9:30–10:15 PM):</strong> Bright late-night light suppresses evening melatonin release.
+        </div>
+        <div style="text-align: center; color: #ef4444; font-size: 0.75rem;">▼</div>
+        <div style="background: rgba(239, 68, 68, 0.12); padding: 0.7rem 0.85rem; border-radius: 6px; border: 1px dashed rgba(239, 68, 68, 0.4);">
+          <strong style="color: #f87171;">Outcome: Chronic Sleep Debt &amp; SAD:</strong> Delayed sleep onset against fixed 6:00 AM alarms; elevated health and crash risks.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 ### The Suprachiasmatic Nucleus (SCN) Needs Morning Light
 Deep inside the human hypothalamus sits the **suprachiasmatic nucleus (SCN)**—our master biological pacemaker. Left in a dark cave without sunlight, the human circadian clock does not run on a neat 24.0-hour loop; it free-runs slightly longer, averaging **`24.15 to 24.2 hours`**.
@@ -197,7 +284,7 @@ In IT infrastructure and systems engineering, before you deploy a sweeping confi
 
 The most baffling part of watching provinces adopt Permanent Daylight Saving Time in Fall 2026 is that **North America already ran this exact experiment at scale—and it was such a disaster that it didn't even survive one full year.**
 
-<div style="margin: 2rem 0; background: var(--bg-card); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
+<section style="margin: 2rem 0; background: var(--bg-card); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.25);">
   <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
     <div style="font-weight: 700; color: #f59e0b; font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
       <span>📜</span> Historical Production Incident: The 1974 Year-Round DST Trial
@@ -207,7 +294,7 @@ The most baffling part of watching provinces adopt Permanent Daylight Saving Tim
     </div>
   </div>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.85rem; margin-bottom: 1.25rem;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.85rem;">
     <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.9rem;">
       <div style="font-size: 0.75rem; font-family: monospace; color: var(--accent-cyan); font-weight: 700; margin-bottom: 0.25rem;">DEC 1973 (Pre-Launch)</div>
       <div style="font-weight: 700; color: var(--text-main); font-size: 1rem; margin-bottom: 0.25rem;">79% Public Approval</div>
@@ -229,7 +316,7 @@ The most baffling part of watching provinces adopt Permanent Daylight Saving Tim
       <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">The House votes 383–16 in August to abort the trial early, restoring Standard Time in October.</div>
     </div>
   </div>
-</div>
+</section>
 
 And the United States wasn't an isolated case:
 * **The United Kingdom (1968–1971):** Britain ran a three-year trial of permanent year-round summer time (*British Standard Time*, `UTC+1`). In northern Scotland—which shares similar latitudes with Edmonton and northern B.C.—winter sunrise didn't occur until `10:00 AM`. After three winters of dark morning commutes and construction injuries, the British Parliament voted overwhelmingly (`366 to 81`) to terminate the experiment.
