@@ -53,7 +53,7 @@ export default class GraphBuilder {
                 type: "pillar",
                 pillarKey: "tools",
                 url: "/tools/",
-                summary: "12 interactive web applications, sports telemetry analyzers, 3D simulators, market calculators, and game compendiums."
+                summary: "13 interactive web applications, sports telemetry analyzers, 3D simulators, market calculators, and game compendiums."
             },
             {
                 id: "pillar-interests",
@@ -107,6 +107,14 @@ export default class GraphBuilder {
                 parentPillar: "pillar-tools",
                 url: "/tools/osrs-bank-skilling/",
                 summary: "Real-time OSRS Grand Exchange bank skilling profit calculator and 8-slot overnight flip optimizer with live Wiki API prices and 2% GE tax math."
+            },
+            {
+                id: "tool-gta-v-tracker",
+                label: "GTA V 100% & Achievements Tracker",
+                type: "site-tool",
+                parentPillar: "pillar-tools",
+                url: "/tools/gta-v-tracker/",
+                summary: "279-step chronological Grand Theft Auto V 100% completion and single-player achievement checklist with heist crews and $2.14B stock market timings."
             },
             {
                 id: "tool-ocarina",
@@ -379,6 +387,7 @@ export default class GraphBuilder {
             ["interest-video-games", "tool-dragonwilds"],
             ["interest-video-games", "tool-osrs-bank-skilling"],
             ["interest-video-games", "tool-ffx-tracker"],
+            ["interest-video-games", "tool-gta-v-tracker"],
             ["interest-video-games", "tool-ocarina"],
             ["interest-video-games", "tool-stream-schedule"],
             ["interest-music", "tool-ocarina"],

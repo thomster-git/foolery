@@ -78,6 +78,7 @@ export default class PageBuilder {
         await this.buildF1ChampionshipCalculator();
         await this.buildStreamSchedule();
         await this.buildOsrsBankSkilling();
+        await this.buildGtaVTracker();
         await this.buildSponsorsPage();
         await this.buildArticleRedirects();
         
@@ -447,6 +448,31 @@ export default class PageBuilder {
         await fs.writeFile(
             path.join(this.output, "tools", "ffx-tracker.html"),
             buildRedirectStub("/tools/ffx-tracker/", title, config.site.url)
+        );
+    }
+
+    // GTA V 100% & Achievements Tracker
+    async buildGtaVTracker() {
+        const folder = path.join(this.output, "tools", "gta-v-tracker");
+        await fs.mkdir(folder, { recursive: true });
+
+        const template = await this.loadLayout("gta-v-tracker.html");
+
+        const title = "GTA V 100% Achievements & Completion Checklist Tracker";
+        let html = await this.wrapPage(
+            this.renderer.render(template, {}),
+            title,
+            {
+                description: "Interactive Grand Theft Auto V (GTA 5) 100% completion and single-player achievement walkthrough checklist. Chronological mission order, heist crew choices, $2.14B LCN/BAWSAQ stock market timings, collectibles, and video guides.",
+                path: "/tools/gta-v-tracker/",
+                ogType: "website"
+            }
+        );
+
+        await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "tools", "gta-v-tracker.html"),
+            buildRedirectStub("/tools/gta-v-tracker/", title, config.site.url)
         );
     }
 

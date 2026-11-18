@@ -1451,70 +1451,46 @@ html {
     }
 
     // ----------------------------------------------------
-    // True Verdict: Swept Sphere Collision with Pentagonal Prism
+    // True Verdict: Exact ABS Circle-Rectangle Collision on the Strike Zone Plane (Z = 0)
     // ----------------------------------------------------
     function evaluateVerdict(trajectory) {
-        const steps = 120;
-        let isStrike = false;
-        let minMargin = Infinity;
-        let crossingPoint = null;
         const sz_bot = trajectory.sz_bot || getCurrentSzBot();
         const sz_top = trajectory.sz_top || getCurrentSzTop();
 
-        for (let i = 0; i <= steps; i++) {
-            const t = (trajectory.tf * 0.88) + (trajectory.tf * 0.22) * (i / steps);
-            const pos = getPitchPosition(trajectory, t);
+        // Exact crossing point on the Z = 0 strike zone plane (t = trajectory.tf)
+        const crossingPoint = { ...getPitchPosition(trajectory, trajectory.tf), t: trajectory.tf };
 
-            if (pos.z <= (0.0 + BALL_RADIUS) && pos.z >= (APEX_Z - BALL_RADIUS)) {
-                if (!crossingPoint && pos.z <= 0.0) {
-                    crossingPoint = { ...pos, t };
-                }
+        // Signed distance from the baseball's 2.9" circumference (BALL_RADIUS = 1.45") to the rulebook zone box:
+        // Negative = inside / overlapping the zone (STRIKE), Positive = gap outside the zone (BALL)
+        const dxOut = Math.max(0, Math.abs(crossingPoint.x) - HALF_PLATE_WIDTH);
+        const dyOut = Math.max(0, sz_bot - crossingPoint.y, crossingPoint.y - sz_top);
 
-                // Vertical check against dynamic strike zone
-                const inY = (pos.y >= (sz_bot - BALL_RADIUS)) && (pos.y <= (sz_top + BALL_RADIUS));
-                let inHoriz = false;
-
-                if (inY) {
-                    // Front rectangular section
-                    if (pos.z >= CORNER_Z && pos.z <= 0.0) {
-                        inHoriz = Math.abs(pos.x) <= (HALF_PLATE_WIDTH + BALL_RADIUS);
-                    }
-                    // Front edge cap
-                    else if (pos.z > 0.0 && pos.z <= BALL_RADIUS) {
-                        const dx = Math.max(0, Math.abs(pos.x) - HALF_PLATE_WIDTH);
-                        inHoriz = Math.hypot(dx, pos.z) <= BALL_RADIUS;
-                    }
-                    // Rear angled bevel
-                    else if (pos.z < CORNER_Z && pos.z >= (APEX_Z - BALL_RADIUS)) {
-                        const distToBevel = (Math.abs(pos.x) - (pos.z - APEX_Z)) / Math.SQRT2;
-                        inHoriz = distToBevel <= BALL_RADIUS;
-                    }
-                }
-
-                if (inY && inHoriz) {
-                    isStrike = true;
-                }
-
-                // Margin to 2D front rectangle
-                const dx = Math.max(0, Math.abs(pos.x) - HALF_PLATE_WIDTH);
-                const dy = Math.max(0, sz_bot - pos.y, pos.y - sz_top);
-                const margin = Math.hypot(dx, dy) - BALL_RADIUS;
-                if (margin < minMargin) {
-                    minMargin = margin;
-                }
-            }
+        let signedCenterDist;
+        if (dxOut > 0 || dyOut > 0) {
+            // Ball center is outside the rectangle; Euclidean distance to nearest edge/corner
+            signedCenterDist = Math.hypot(dxOut, dyOut);
+        } else {
+            // Ball center is inside the rectangle; negative distance to closest edge
+            signedCenterDist = -Math.min(
+                HALF_PLATE_WIDTH - Math.abs(crossingPoint.x),
+                crossingPoint.y - sz_bot,
+                sz_top - crossingPoint.y
+            );
         }
+
+        const minMargin = signedCenterDist - BALL_RADIUS;
+        const isStrike = minMargin <= 0.0;
 
         const marginInches = minMargin * 12.0;
         let subZone = 'HEART';
         if (marginInches < -1.45) subZone = 'HEART';
-        else if (marginInches <= 1.45) subZone = 'SHADOW'; // Borderline edge pitch
+        else if (marginInches <= 1.45) subZone = 'SHADOW'; // Borderline edge pitch (±1 baseball radius of line)
         else if (marginInches <= 4.35) subZone = 'CHASE';
         else subZone = 'WASTE';
 
         return {
             isTrueStrike: isStrike,
-            crossingPoint: crossingPoint || getPitchPosition(trajectory, trajectory.tf),
+            crossingPoint: crossingPoint,
             marginInches: marginInches,
             subZone: subZone
         };
@@ -1813,7 +1789,7 @@ html {
             if (isCorrect) scorecard.correctShadow++;
         }
 
-        const crossPos = getPitchPosition(traj, traj.tf * 0.98);
+        const crossPos = (trueVerdict && trueVerdict.crossingPoint) || getPitchPosition(traj, traj.tf);
         const pitchEntry = {
             call: userCall,
             trueStrike: trueVerdict.isTrueStrike,
@@ -3259,13 +3235,17 @@ html {
         ctx.fillStyle = fg;
         ctx.fill();
 
-        // Outline with glow
-        ctx.shadowColor = isLitStrike ? 'rgba(34, 197, 94, 0.9)' : 'rgba(186, 230, 253, 0.6)';
-        ctx.shadowBlur = isLitStrike ? 16 : 8;
-        ctx.strokeStyle = isLitStrike ? main : 'rgba(255, 255, 255, 0.85)';
-        ctx.lineWidth = isLitStrike ? 3 : 2;
+        // Outline inset by half stroke width so the outer edge of the border is at the exact rulebook boundary
+        const borderW = isLitStrike ? 2.5 : 2.0;
+        const bInset = borderW * 0.5;
+        const itl = { px: tl.px + bInset, py: tl.py + bInset };
+        const itr = { px: tr.px - bInset, py: tr.py + bInset };
+        const ibr = { px: br.px - bInset, py: br.py - bInset };
+        const ibl = { px: bl.px + bInset, py: bl.py - bInset };
+        polyPath(ctx, [itl, itr, ibr, ibl]);
+        ctx.strokeStyle = isLitStrike ? main : 'rgba(255, 255, 255, 0.88)';
+        ctx.lineWidth = borderW;
         ctx.stroke();
-        ctx.shadowBlur = 0;
 
         // 3x3 Grid
         const w = tr.px - tl.px;
@@ -3286,16 +3266,20 @@ html {
         }
         ctx.setLineDash([]);
 
-        // Bold corner brackets
+        // Bold corner brackets (inset so outer edge aligns with exact boundary)
         const tick = Math.min(Math.abs(w), Math.abs(h)) * 0.16;
+        const cornerW = isLitStrike ? 3.0 : 2.2;
+        const cInset = cornerW * 0.5;
         ctx.strokeStyle = main;
-        ctx.lineWidth = isLitStrike ? 3.5 : 2.5;
-        ctx.lineCap = 'round';
+        ctx.lineWidth = cornerW;
+        ctx.lineCap = 'butt';
         [[tl, 1, 1], [tr, -1, 1], [br, -1, -1], [bl, 1, -1]].forEach(([c, sx, sy]) => {
+            const cx = c.px + sx * cInset;
+            const cy = c.py + sy * cInset;
             ctx.beginPath();
-            ctx.moveTo(c.px + sx * tick, c.py);
-            ctx.lineTo(c.px, c.py);
-            ctx.lineTo(c.px, c.py + sy * tick);
+            ctx.moveTo(cx + sx * tick, cy);
+            ctx.lineTo(cx, cy);
+            ctx.lineTo(cx, cy + sy * tick);
             ctx.stroke();
         });
         ctx.restore();
@@ -3451,27 +3435,30 @@ html {
         ctx.stroke();
 
         // If in verdict review, draw the pitch location marker right on the strike zone plane (Z = 0)
+        // using the exact crossingPoint and physical 1.45" BALL_RADIUS scale so visual touch === true strike
         if (state.phase === 'VERDICT') {
-            const crossPos = getPitchPosition(traj, traj.tf * 0.98);
+            const crossPos = (state.trueVerdict && state.trueVerdict.crossingPoint) || getPitchPosition(traj, traj.tf);
             const crossProj = camera.project(crossPos.x, crossPos.y, 0);
             if (crossProj) {
                 const col = state.trueVerdict.isTrueStrike ? '#22c55e' : '#ef4444';
-                ctx.shadowColor = col;
-                ctx.shadowBlur = 12;
+                const rBallPx = Math.max(3.5, BALL_RADIUS * crossProj.scale);
+                const strokeW = 1.6;
                 ctx.beginPath();
-                ctx.arc(crossProj.px, crossProj.py, 7, 0, Math.PI * 2);
+                // Draw fill to full physical ball radius
+                ctx.arc(crossProj.px, crossProj.py, rBallPx, 0, Math.PI * 2);
                 ctx.fillStyle = col;
                 ctx.fill();
-                ctx.shadowBlur = 0;
-                ctx.strokeStyle = '#ffffff';
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                // Ball-sized ring for scale
+                // Draw crisp white ring inset by strokeW/2 so outer edge is at exact physical BALL_RADIUS
                 ctx.beginPath();
-                ctx.arc(crossProj.px, crossProj.py, Math.max(8, BALL_RADIUS * crossProj.scale), 0, Math.PI * 2);
-                ctx.strokeStyle = 'rgba(255,255,255,0.55)';
-                ctx.lineWidth = 1;
+                ctx.arc(crossProj.px, crossProj.py, Math.max(1.5, rBallPx - strokeW * 0.5), 0, Math.PI * 2);
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = strokeW;
                 ctx.stroke();
+                // Center pinpoint dot for exact ball center reference
+                ctx.beginPath();
+                ctx.arc(crossProj.px, crossProj.py, 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
             }
         }
         ctx.restore();

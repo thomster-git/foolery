@@ -64,6 +64,7 @@ export default class SitemapBuilder {
             "/tools/ocarina/",
             "/tools/dragonwilds-tracker/",
             "/tools/ffx-tracker/",
+            "/tools/gta-v-tracker/",
             "/tools/tier-list/",
             "/tools/postseason-baseball-analyzer/",
             "/tools/baseball-trend-analyzer/",
