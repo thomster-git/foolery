@@ -1,205 +1,104 @@
 <div class="page-container">
-    <div class="content-wrapper" style="max-width: 960px; margin: 2rem auto;">
+    <div class="content-wrapper" style="max-width: 960px; margin: 2rem auto; padding: 0 1rem;">
 
-        <div class="breadcrumbs" style="margin-bottom: 2rem;">
+        <div class="breadcrumbs" style="margin-bottom: 1.75rem;">
             <a href="/">Home</a> &gt;
             <span>Tools</span>
         </div>
 
-        <div style="text-align: center; margin-bottom: 4rem;">
-            <h1 style="font-size: 3rem; color: var(--accent-cyan); margin-bottom: 1rem;">Interactive Tools</h1>
-            <p style="font-size: 1.2rem; color: var(--text-muted); max-width: 800px; margin: 0 auto;">A collection of interactive tools, trackers, and analyzers hosted by Thoms Foolery. From practicing the Ocarina to tracking NHL momentum, these are small experiments in pattern recognition and data visualization.</p>
-            
-            <div style="background: rgba(168, 85, 247, 0.05); border-left: 4px solid var(--accent-purple); padding: 1.5rem; margin-top: 2rem; max-width: 800px; margin-left: auto; margin-right: auto; text-align: left; font-size: 0.95rem; line-height: 1.6; border-radius: 0 var(--radius-md) var(--radius-md) 0;">
-                <strong style="color: var(--accent-purple); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; display: block; margin-bottom: 0.5rem;">Privacy & Data Processing</strong>
-                <strong>Local Storage Only:</strong> Trackers and checklists save your progress using your browser's local storage. No data is sent to or stored on our servers.<br><br>
-                <strong>Microphone Access:</strong> The Ocarina tuner requests microphone access to detect pitch. All audio processing happens securely and locally on your device via the Web Audio API. No audio is ever recorded, transmitted, or saved.
+        <header class="hero">
+            <h1>Interactive Tools &amp; Trackers</h1>
+            <p>
+                Browser-native utilities I built for my own hobbies—from practicing a 12-hole Alto C ocarina with a live microphone pitch tuner to routing 100% game completions and tracking MLB, NHL, NFL, and F1 seasons.
+            </p>
+        </header>
+
+        <!-- Featured Tools (3 Primary Tools in Active Use) -->
+        <section style="margin-bottom: 3.25rem;">
+            <h2 style="font-size: 1.25rem; color: var(--text-bright); margin: 0 0 1rem 0;">Featured Suites</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+                <a href="/tools/ocarina/" class="tool-big-card" style="padding: 1.5rem 1.65rem;">
+                    <div style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--accent-cyan); margin-bottom: 0.35rem;">Web Audio DSP · 12-Hole Alto C</div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Ocarina Practice Suite</h3>
+                    <p style="font-size: 0.92rem; line-height: 1.6;">
+                        Full 12-hole fingering chart, real-time microphone autocorrelation tuner for breath-curve intonation feedback, and an interactive Zelda &amp; Ghibli songbook.
+                    </p>
+                </a>
+
+                <a href="/tools/gta-v-tracker/" class="tool-big-card" style="padding: 1.5rem 1.65rem;">
+                    <div style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--accent-cyan); margin-bottom: 0.35rem;">279 Steps · 6 Chapters</div>
+                    <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">GTA V 100% &amp; Achievements Checklist</h3>
+                    <p style="font-size: 0.92rem; line-height: 1.6;">
+                        Chronological walkthrough for Career Criminal (100%), single-player achievements, optimal heist crew picks, and the $2.14B Lester stock market sequence.
+                    </p>
+                </a>
+
+                <a href="/tools/dragonwilds-tracker/" class="tool-big-card" style="padding: 1.5rem 1.65rem;">
+                    <div style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--accent-cyan); margin-bottom: 0.35rem;">Chapters 1–11 · Dedicated Server</div>
+                    <div style="display: flex; align-items: center; gap: 0.55rem; margin-bottom: 0.5rem;">
+                        <img src="/images/website-assets/dragonwilds-logo.png" alt="Dragonwilds Logo" width="24" height="24" style="width: 1.5rem; height: 1.5rem; object-fit: contain;">
+                        <h3 style="font-size: 1.25rem; margin: 0;">RuneScape: Dragonwilds Guide</h3>
+                    </div>
+                    <p style="font-size: 0.92rem; line-height: 1.6;">
+                        Progression checklist, live vault cooldown timers, and exportable player profile share cards for <em>RuneScape: Dragonwilds</em>.
+                    </p>
+                </a>
             </div>
-        </div>
+        </section>
 
-        <div class="tools-grid">
+        <!-- Compact Directory Rows by Category -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 3rem; margin-bottom: 3.5rem; align-items: start;">
 
-            <a href="/tools/ocarina/" class="tool-card">
-                <div class="tool-card-inner" style="position: relative; overflow: hidden;">
-                    <div class="tool-icon">🎵</div>
-                    <h2 class="tool-title">Ocarina Practice</h2>
-                    <p class="tool-desc">A 12-hole ocarina practice tool with a full fingering chart, a live microphone pitch tuner for intonation feedback, and a Zelda songbook with tab notation.</p>
-                </div>
-            </a>
+            <section>
+                <h2 style="font-size: 1.25rem; color: var(--text-bright); margin: 0 0 0.75rem 0;">Sports Analytics &amp; Simulation</h2>
+                <ul class="notes-list">
+                    <li>
+                        <a href="/tools/umpire-simulator/"><strong>3D MLB Umpire Pitch Simulator</strong></a> — First-person catcher perspective against 9 Statcast batters. Call balls and strikes on 98 mph fastballs and sweeping sliders with ABS challenge verification and downloadable paper scorecards.
+                    </li>
+                    <li>
+                        <a href="/tools/f1-championship-calculator/"><strong>F1 2026 Championship Clinch Calculator</strong></a> — Mathematical elimination and title clinch scenarios for Drivers and Constructors across remaining Grands Prix and Sprint weekends.
+                    </li>
+                    <li>
+                        <a href="/tools/baseball-trend-analyzer/"><strong>MLB 162-Game Regular Season Analyzer</strong></a> — Run differential trajectories, Pythagorean win expectation deltas, and rolling window momentum across all 30 MLB clubs.
+                    </li>
+                    <li>
+                        <a href="/tools/postseason-baseball-analyzer/"><strong>MLB Postseason Momentum Analyzer</strong></a> — October series velocity, Postseason Momentum Index (PMI), and historical bracket archives.
+                    </li>
+                    <li>
+                        <a href="/tools/nhl-trend-analyzer/"><strong>NHL Standings &amp; Goal Differential Analyzer</strong></a> — Five-on-five goal differential, special teams efficiency (PP% / PK%), and PDO rolling trends.
+                    </li>
+                    <li>
+                        <a href="/tools/nfl-trend-analyzer/"><strong>NFL Trend &amp; 4-Pillar Matchup Predictor</strong></a> — Point differentials, offensive/defensive efficiency splits, and head-to-head score projections.
+                    </li>
+                </ul>
+            </section>
 
-            <a href="/tools/dragonwilds-tracker/" class="tool-card">
-                <div class="tool-card-inner" style="position: relative; overflow: hidden;">
-                    <div class="tool-icon" style="display: flex; align-items: center; justify-content: center;"><img src="/images/website-assets/dragonwilds-logo.png" alt="Dragonwilds Logo" style="width: 2rem; height: 2rem; object-fit: contain;"></div>
-                    <h2 class="tool-title">Dragonwilds Guide</h2>
-                    <p class="tool-desc">Interactive progression guide and questing checklist for Runescape: Dragonwilds.</p>
-                </div>
-            </a>
-
-            <a href="/tools/osrs-bank-skilling/" class="tool-card">
-                <div class="tool-card-inner" style="position: relative; overflow: hidden; border-color: rgba(212, 168, 67, 0.4);">
-                    <span style="position: absolute; top: 1rem; right: 1rem; font-size: 0.7rem; font-family: monospace; background: rgba(212, 168, 67, 0.15); color: #d4a843; border: 1px solid rgba(212, 168, 67, 0.35); padding: 2px 7px; border-radius: 10px; font-weight: 600;">Live OSRS GE</span>
-                    <div class="tool-icon">⚖️💰</div>
-                    <h2 class="tool-title" style="color: #d4a843;">OSRS Bank Skilling Calc</h2>
-                    <p class="tool-desc">Real-time profit calculator for Fletching, Herblore, Crafting, Magic/High Alch, Smithing, and Cooking. Multi-ingredient recipes, 2% GE tax, GP/XP, and GP/hr.</p>
-                </div>
-            </a>
-
-            <a href="/tools/nfl-trend-analyzer/" class="tool-card">
-                <div class="tool-card-inner" style="position: relative; overflow: hidden;">
-                    <div class="tool-icon">🏈</div>
-                    <h2 class="tool-title">NFL Trend Analyzer</h2>
-                    <p class="tool-desc">Track early-season NFL team momentum, point differentials, and yardage allowed.</p>
-                </div>
-            </a>
-
-            <a href="/tools/nhl-trend-analyzer/" class="tool-card">
-                <div class="tool-card-inner" style="position: relative; overflow: hidden;">
-                    <div class="tool-icon">🏒</div>
-                    <h2 class="tool-title">NHL Trend Analyzer</h2>
-                    <p class="tool-desc">Analyze NHL team momentum and special teams efficiency (Power Play / Penalty Kill) over the 2026-27 season.</p>
-                </div>
-            </a>
-
-            <a href="/tools/tier-list/" class="tool-card">
-                <div class="tool-card-inner" style="position: relative; overflow: hidden;">
-                    <div class="tool-icon">🏆</div>
-                    <h2 class="tool-title">Tier List Creator</h2>
-                    <p class="tool-desc">Zero-friction tier list maker with Ctrl+V screenshot pasting, drag &amp; drop ranking, presets, and instant high-res PNG export.</p>
-                </div>
-            </a>
-
-            <a href="/tools/postseason-baseball-analyzer/" class="tool-card">
-                <div class="tool-card-inner" style="position: relative; overflow: hidden;">
-                    <span style="position: absolute; top: 1rem; right: 1rem; font-size: 0.7rem; font-family: monospace; background: rgba(234, 88, 12, 0.15); color: #ea580c; border: 1px solid rgba(234, 88, 12, 0.35); padding: 2px 7px; border-radius: 10px; font-weight: 600;">Postseason Archive</span>
-                    <div class="tool-icon">⚾🔥</div>
-                    <h2 class="tool-title">MLB Postseason Analyzer</h2>
-                    <p class="tool-desc">Track October momentum trajectories, acute velocity swings, and team form across tournament rounds.</p>
-                </div>
-            </a>
-
-            <a href="/tools/baseball-trend-analyzer/" class="tool-card">
-                <div class="tool-card-inner" style="position: relative; overflow: hidden;">
-                    <div class="tool-icon">⚾📉</div>
-                    <h2 class="tool-title">MLB Regular Season Analyzer</h2>
-                    <p class="tool-desc">Full 2026 MLB season momentum tracking, including end of season awards.</p>
-                </div>
-            </a>
-
-            <a href="/tools/ffx-tracker/" class="tool-card">
-                <div class="tool-card-inner" style="position: relative; overflow: hidden;">
-                    <div class="tool-icon">🗡️</div>
-                    <h2 class="tool-title">FFX 100% Tracker</h2>
-                    <p class="tool-desc">A comprehensive step-by-step checklist to achieving true 100% completion in Final Fantasy X.</p>
-                </div>
-            </a>
-
-            <a href="/tools/gta-v-tracker/" class="tool-card">
-                <div class="tool-card-inner" style="position: relative; overflow: hidden; border-color: rgba(34, 197, 94, 0.35);">
-                    <span style="position: absolute; top: 1rem; right: 1rem; font-size: 0.7rem; font-family: monospace; background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.35); padding: 2px 7px; border-radius: 10px; font-weight: 600;">279 Steps</span>
-                    <div class="tool-icon">🌴💵</div>
-                    <h2 class="tool-title" style="color: #4ade80;">GTA V 100% &amp; Achievements</h2>
-                    <p class="tool-desc">Streamlined chronological walkthrough for Career Criminal (100%), all single-player achievements, optimal heist crews, $2.14B stock market timings, and video guides.</p>
-                </div>
-            </a>
-
-            <a href="/tools/umpire-simulator/" class="tool-card">
-                <div class="tool-card-inner" style="position: relative; overflow: hidden;">
-                    <div class="tool-icon">⚾🎯</div>
-                    <h2 class="tool-title">MLB Umpire Simulator</h2>
-                    <p class="tool-desc">Step into the umpire's crouch behind home plate in 3D perspective. Call balls and strikes against realistic 95mph fastballs, sharp sliders, and looping curves with Statcast physics breakdown.</p>
-                </div>
-            </a>
-
-            <a href="/tools/f1-championship-calculator/" class="tool-card">
-                <div class="tool-card-inner" style="position: relative; overflow: hidden;">
-                    <div class="tool-icon">🏎️🏁</div>
-                    <h2 class="tool-title">F1 Championship Calculator</h2>
-                    <p class="tool-desc">Mathematical elimination and championship clinch scenarios engine for Drivers and Constructors across 24 Grands Prix and sprint weekends under 2025/2026 FIA regulations.</p>
-                </div>
-            </a>
-
-            <a href="/tools/stream-schedule/" class="tool-card">
-                <div class="tool-card-inner" style="position: relative; overflow: hidden;">
-                    <div class="tool-icon">📡📅</div>
-                    <h2 class="tool-title">Stream Schedule Calendar</h2>
-                    <p class="tool-desc">Jonathan's broadcast schedule. Automatic Newfoundland Time (NST/NDT) conversion, weekday morning reviews, special launch events, planner mode, and iCal (.ics) export.</p>
-                </div>
-            </a>
+            <section>
+                <h2 style="font-size: 1.25rem; color: var(--text-bright); margin: 0 0 0.75rem 0;">Gaming &amp; Utility Trackers</h2>
+                <ul class="notes-list">
+                    <li>
+                        <a href="/tools/osrs-bank-skilling/"><strong>OSRS Bank Skilling &amp; Overnight GE Flip Engine</strong></a> — Live Old School RuneScape Grand Exchange pricing, 2% GE tax math, multi-ingredient GP/XP tables, and 8-slot overnight flip recommendations.
+                    </li>
+                    <li>
+                        <a href="/tools/ffx-tracker/"><strong>Final Fantasy X 100% Completion Tracker</strong></a> — Step-by-step checklist covering Al Bhed Primers, Destruction Spheres, Celestial Weapons, Monster Arena captures, and Dark Aeons.
+                    </li>
+                    <li>
+                        <a href="/tools/tier-list/"><strong>Interactive Tier List Creator</strong></a> — Client-side drag-and-drop ranking board with direct clipboard screenshot pasting (<code>Ctrl+V</code>) and high-res PNG export.
+                    </li>
+                    <li>
+                        <a href="/tools/stream-schedule/"><strong>Stream &amp; Event Schedule</strong></a> — Broadcast calendar with automatic Newfoundland Time (NST/NDT) conversion and iCal (<code>.ics</code>) export.
+                    </li>
+                </ul>
+            </section>
 
         </div>
+
+        <!-- Quiet Privacy Footnote -->
+        <footer style="padding-top: 1.5rem; border-top: 1px solid var(--border-color); color: var(--text-dim); font-size: 0.86rem; line-height: 1.65;">
+            <p style="margin: 0;">
+                <strong style="color: var(--text-muted);">Local-first privacy note:</strong> Every checklist and tracker on this page stores your progress locally in your browser's <code style="font-family: var(--font-mono);">localStorage</code>. Nothing is uploaded to a server. The Ocarina tuner processes microphone audio strictly on-device via the Web Audio API and never records or transmits sound.
+            </p>
+        </footer>
 
     </div>
 </div>
-
-<style>
-    .tools-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.5rem;
-        align-items: start;
-    }
-
-    .tool-card {
-        text-decoration: none;
-        color: inherit;
-        display: block;
-    }
-
-    .tool-card-inner {
-        background: var(--bg-card);
-        border: 1px solid var(--border-color);
-        border-radius: var(--radius-lg);
-        padding: 2rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .tool-card:hover .tool-card-inner {
-        transform: translateY(-4px);
-        border-color: var(--accent-cyan);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-    }
-
-    .tool-badge {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background: linear-gradient(135deg, #7c3aed, #06b6d4);
-        font-size: 0.65rem;
-        font-weight: 700;
-        padding: 0.3rem 0.75rem;
-        border-radius: 0 var(--radius-lg) 0 8px;
-        color: white;
-        letter-spacing: 0.05em;
-    }
-
-    .tool-icon {
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .tool-title {
-        font-size: 1.4rem;
-        color: var(--text-main);
-        margin: 0;
-    }
-
-    .tool-desc {
-        color: var(--text-muted);
-        line-height: 1.6;
-        margin: 0;
-        flex: 1;
-    }
-
-    .tool-link {
-        display: inline-block;
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid var(--border-color);
-        font-size: 0.9rem;
-        color: var(--accent-cyan);
-        font-weight: 600;
-    }
-</style>

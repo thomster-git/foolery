@@ -1,14 +1,14 @@
 ---
 stage: "teaser"
 id: my-story-with-the-grade-9-french-test
-title: "The Grade 9 French Test: Zero Marks, a College Certificate, & The Illusion of Authority"
+title: "The Grade 9 French Test: Zero Marks and My Dad's College Certificate"
 type: article
 status: published
 access: paid
 author: "Jonathan Thoms"
 created: 2026-10-20
-updated: 2026-10-20
-summary: Accused of cheating during recess for reviewing vocabulary with a friend, interrogated in isolation by school administrators, and given a zero on the highest-scoring test of my year. The day I realized adults aren't as smart as they claim to be, and why my dad offered to hand back his college certificate.
+updated: 2026-11-20
+summary: Accused of cheating during recess for looking over a textbook vocab page with a friend, brought into the office one by one, and given a zero on my highest-scoring test of the year. The afternoon I realized adults aren't always as fair as they claim to be—and why my dad offered to hand back his college certificate.
 topics:
   - personal-growth
 themes:
@@ -25,202 +25,116 @@ related:
   - my-story-with-medical-stigma-and-advocacy
 ---
 
-I received the highest grade of my entire school year on a French test in Grade 9. 
+I got the highest mark of my entire school year on a Grade 9 French test. The school's records say zero.
 
-In the official school ledger, however, my mark is recorded as an absolute, uncompromising **zero**.
+Every kid eventually hits the afternoon where the assumption that adults are automatically fair and reasonable falls apart. For me, it happened at fifteen in the vice principal's office, sitting under humming fluorescent lights while two grown educators treated a recess textbook review like a major crime.
 
-Every kid eventually experiences the watershed moment where the illusion of adult infallibility shatters into pieces. For some, it’s watching a parent make an emotional mistake; for others, it’s seeing a politician lie on television. For me, it happened in the vice principal’s office on a Tuesday afternoon, sitting under humming fluorescent tubes while two grown adults interrogated a fifteen-year-old kid over a vocabulary list as if they were dismantling an international espionage ring.
-
-That was the day I stopped believing that authority figures were automatically smarter, fairer, or more professional than the rest of us. 
-
-It was also the day my father offered to hand back his college certificate in protest.
+It was also the afternoon my father offered to march down to the school and hand back his college certificate.
 
 ---
 
-## Act I: Recess, Period 2, and the Vocab List
+## Recess and the Vocab Page
 
-The logistics of junior high school schedules are simple: teachers recycle tests across periods. 
+Junior high schedules are simple: when there are multiple classes in the same grade, teachers often use the same test across consecutive periods.
 
-It was the middle of the school year. I had French scheduled for third period, right after the morning recess break. My friend—let's call him **Victor**—was in a different cohort and had just written the exact same French test in the second period, immediately before the bell rang for break. 
+I had French in third period, right after morning recess. My friend—I'll call him **Victor** (names changed)—was in another section and had just written the test in second period right before the bell rang.
 
-During the fifteen-minute recess, students were milling between classrooms, slamming locker doors, and socializing. Victor came into our homeroom to hang out. He walked over to my desk, where I was frantically doing what every high school student in the history of compulsory education does ten minutes before an exam: **last-minute cramming.**
+During the fifteen-minute break, Victor walked into our homeroom while I was sitting at my desk doing what every student in history does ten minutes before a test: flipping through my binder and muttering verb endings under my breath. Another friend, **Donald**, was standing beside my desk eating an apple and talking with Victor about the weekend.
 
-I was flipping through the textbook pages, scanning vocabulary words, and muttering verb conjugations under my breath. Another good friend—let's call him **Donald**—was standing beside my desk, leaning against the neighboring chair, casually chatting with Victor about plans for the weekend.
+Victor glanced down at my open textbook and pointed at the vocabulary page we had all been assigned to study for the past two weeks:
 
-As Victor stood there talking to Donald, he glanced down at my open binder. He saw me agonizing over grammatical rules and gave me the kind of casual peer advice that happens in every hallway in the world:
+*"Make sure you know the vocab on that page,"* he said, *"and make sure you know how the regular verb endings fit together."*
 
-*"Make sure you know the vocabulary on that page,"* Victor pointed out. *"And don't stress the irregulars as much—make sure you know how the standard verb endings fit together."*
+He wasn't handing me a stolen copy of the test or reading off multiple-choice answers. He was pointing at a page in our own textbook. Donald was just standing there holding his apple.
 
-He wasn't handing me a contraband copy of the exam. He wasn't whispering answers to specific multiple-choice questions. He was pointing at a page in the curriculum that we had all been assigned to read for three weeks, saying: *Pay attention to this.*
-
-Donald was just standing there, holding an apple, nodding along to the conversation.
-
-And that was the exact split second the doorway darkened.
+That was the exact moment the French teacher stepped into the doorway.
 
 ---
 
-## Act II: "I've Expected This for a While Now"
+## Out in the Hallway
 
-Our French teacher popped her head into the doorway like a tripwire had been triggered. 
+She saw Victor pointing at my open binder, saw Donald standing next to the desk, and ordered all three of us out into the corridor.
 
-She took one look at Victor pointing at my open textbook, looked at Donald standing nearby, and her face contorted with theatrical outrage. Before anyone could utter a syllable, she barked at the three of us to get out into the hallway.
-
-When the classroom door clicked shut behind us, she laid into us with a line that has stuck in my memory for nearly two decades:
+As soon as the classroom door clicked shut, she looked at me and said a line that stuck with me for the next twenty years:
 
 > *"I have expected this from you for a while now."*
 
-I stood there in the corridor, completely bewildered. 
+I just stood there staring at her.
 
-*Expected this?* I wasn't a troublemaker. I wasn't an academic outlier or a rebel trying to hack the grading system. In French, I was a painfully consistent high-70s student. I did my homework, handed in my assignments, and took my tests. 
-
-Years later, looking back with an adult's understanding of workplace dynamics and human insecurity, the puzzle pieces fell into place: **her own son was in our grade.**
-
-In a small Newfoundland school, academic recognition and "best grade" awards carry an absurd amount of parental pride. Her son was a strong student, and I was directly competing with him for class standing and honour roll rankings. Any mark I earned wasn't just a number on my report card; to a defensive parent with gradebook privileges, it was an obstacle standing in front of her son's academic accolades. 
-
-Her accusation wasn't based on what she saw on that textbook page—she hadn't even looked close enough to see whether Victor was pointing at vocabulary or a cartoon doodle of the Eiffel Tower. Her reaction was pure confirmation bias. She had assigned a narrative of dishonesty to me long before she walked through that door.
+*Expected this?* I wasn't a kid who skipped class or caused trouble. In French I was a steady high-70s student who did his homework and took his tests. Looking back years later, I've often wondered whether part of that reaction came from how small-town school rankings work—we had classmates in the same grade competing closely for honour roll and subject awards, including family of staff, and every mark moved the standings. Whatever the reason, she hadn't even looked closely enough at my desk to see what page was open before deciding we were cheating.
 
 <!-- more -->
 
----
+At first it looked like she was just going to lecture us about talking during recess and send us back inside. Then the heavy fire doors at the end of the hall swung open and the guidance counselor walked by.
 
-## Act III: The Hallway Escalation
+The moment another adult was watching, the tone changed. Letting us go with a warning would have looked soft; escalating it made it an official matter of academic integrity.
 
-At first, it seemed like the situation was going to blow over. 
-
-The teacher lectured us about how talking about the test was "unacceptable," scolded us for comparing notes during recess, and appeared ready to send us on our way with a warning. But right as she was winding down her lecture, the heavy fire doors at the end of the hall swung open.
-
-The school **guidance counselor** walked into view.
-
-The moment an external audience appeared, the dynamic shifted from classroom management to administrative performance. You could see the gears turn in real-time. Dropping the issue would make it look like she was tolerating misconduct under her watch; escalating it proved that she was a vigilant guardian of academic integrity.
-
-The guidance counselor stepped in, listened to the teacher's breathless summary, and immediately treated the situation like a felony:
-
-*"This is a serious breach of academic protocol,"* we were told. *"Go write your third-period test. We will be dealing with this in the office this afternoon."*
-
-I walked into third period with my pulse pounding in my ears.
+*"Go write your third-period test,"* we were told. *"We will deal with this in the office this afternoon."*
 
 ---
 
-## Act IV: The Third-Period Test
+## Third Period
 
-When someone falsely accuses you of cheating ten minutes before an exam, the adrenaline hits like a lightning bolt.
+Being accused of cheating ten minutes before an exam gives you a very specific kind of focus.
 
-When the French teacher slammed the test face-down onto my desk, I didn't feel defeated. I felt a fierce, burning defiance. 
+When the test paper was set face-down on my desk, I flipped it over and went to work. I didn't need anyone's hints. The vocabulary was straight out of the unit, the verb tables clicked, and I checked every accent mark twice before walking up to the front desk, handing the paper in, and walking out.
 
-I flipped the paper over. I didn't need Victor's pointers. The vocabulary was straightforward, the grammar rules were obvious, and my brain locked into gear. I raced through the translations, filled in the blanks, conjugated the verbs, and double-checked every accent mark. I wrote that test with absolute, surgical precision.
+Before the final bell rang that afternoon, the PA speaker above the chalkboard crackled:
 
-I handed the paper in, looked the teacher directly in the eye, and walked out of the room.
-
-Before the final afternoon bell rang, the announcement crackled over the PA system:
-
-> *"Jonathan Thoms, Victor, and Donald: report to the main office immediately."*
+> *"Jonathan Thoms, Victor, and Donald: report to the main office."*
 
 ---
 
-## Act V: The Interrogation Room & The Power of "Whatever"
+## The Main Office
 
-They didn't bring us in together. That would have allowed us to support one another or keep our stories aligned. 
+They didn't bring the three of us in together. They called us into the office one at a time to sit across from the vice principal and the guidance counselor.
 
-Instead, the vice principal and the guidance counselor deployed classic police interrogation tactics: **isolation.** They brought us down to the administrative office one by one, seating us alone across from two adults behind a monolithic mahogany desk. 
+They weren't asking what had happened; they had already decided on the verdict and wanted a confession. Everything I tried to explain—that my textbook was open to the assigned unit list during recess—was brushed aside.
 
-I sat down in the chair. The vice principal leaned forward with an expression of solemn disappointment, while the guidance counselor played the role of the stern moral authority. 
+What finally broke my patience was realizing they intended to give all three of us zeroes, including Donald. I leaned forward and said:
 
-The tone was suffocatingly condescending. They weren't asking investigative questions; they were stating accusations as established fact and waiting for me to grovel. They spoke to me like I was a delinquent running a counterfeit ring, lecturing me on the "severe ethical failure" of my behavior.
+> *"Do whatever you want to my test. Punish me, punish Victor if you have to. But Donald was literally just standing by the desk eating an apple and talking about the weekend. He wasn't even in the conversation about French. Don't touch his mark."*
 
-Every attempt I made to explain what had actually happened was brushed aside:
+They didn't budge. Donald had been standing next to the desk, so Donald got the same punishment.
 
-- *I was cramming before a test.* ("You were soliciting unauthorized intelligence.")
-- *He pointed to a vocabulary list in our regular textbook.* ("You were taking shortcuts to undermine your peers.")
+Watching two adults knowingly zero out a kid who had nothing to do with it just so their disciplinary paperwork stayed tidy drained the last bit of respect I had for the room. I crossed my arms, leaned back in the chair, and quit talking.
 
-And then came the moment that snapped my patience completely.
-
-I realized they were planning to punish all three of us equally. I leaned across the desk and said:
-
-> *"Look. Do whatever you want to my test. Punish me. Punish Victor if you have to. But Donald was literally just standing there holding an apple, having a conversation about the weekend. He had nothing to do with this. Don't touch his grade."*
-
-They didn't even pause. They dismissed it instantly. To them, guilt was contagious by physical proximity. Donald was standing near a desk where a textbook was open; therefore, Donald was part of the conspiracy.
-
-That was the breaking point. 
-
-Watching authority figures deliberately punish an innocent friend just to make their own paperwork easier was like gasoline on a fire. The last shred of respect I held for the school administration evaporated in that chair.
-
-I stopped explaining. I stopped advocating. I pulled my arms across my chest, leaned back in the chair, and completely severed my cooperation.
-
-The vice principal launched into another patronizing lecture about *"the consequences of dishonest character in the real world."*
-
-I looked him dead in the face and muttered:
+The vice principal kept going with a lecture about character and consequences in the real world. I looked at him and said:
 
 > *"Yeah. Whatever."*
 
-You would have thought I had slapped him across the mouth.
-
-His face turned crimson. He stood up, slammed his hand onto the desk, and barked:
+His face went red. He slapped his hand on the desk and shouted:
 
 > *"No, Jonathan! This is NOT 'whatever'! This is your academic future!"*
 
-To a fifteen-year-old kid who had just watched two educators frame an innocent classmate, it *was* whatever. It was arbitrary, petty theater performed by small people drunk on tiny amounts of institutional power. 
-
-They gave Victor a zero. They gave Donald a zero. And they gave me a zero.
+At fifteen, after watching them punish an innocent friend over a textbook page, it *was* whatever. They gave Victor a zero, they gave Donald a zero, and they gave me a zero.
 
 ---
 
-## Act VI: The Highest Score & The College Certificate
+## Dad's College Certificate
 
-A couple of days later, the tests were graded. 
+I never got to see my marked test paper. The school kept it filed away.
 
-I never got to hold my physical test paper in my hand. They kept it locked away, like evidence in an active homicide trial. But in a small Newfoundland town, social circles overlap in unpredictable ways: **my mother happened to be friends with the French teacher.**
+In a small Newfoundland town, though, social circles overlap. My mother happened to know the French teacher outside of school, and over coffee a few days later, my mom told me what the teacher had admitted to her privately: when she graded the third-period stack before recording the zeroes, my paper had been the highest score in the entire class—up in the high 90s.
 
-Over coffee, the teacher privately admitted the truth to my mom. 
+When I first walked into the kitchen to tell my parents about the zero, I had braced myself to be grounded. Instead, my mom and dad listened to the whole story—including Donald getting a zero for standing nearby with an apple—and saw right through it.
 
-She told my mother that when she sat down with the red pen and marked my test without looking at the name, **my score was the highest grade on a French test in the entire cohort.** It was in the high 90s—a personal best.
-
-When my mom came home and told me what I had actually scored, I didn't feel vindicated. I felt sick. 
-
-All that preparation, all that focused defiance in third period, had produced the best work of my school year—only for the system to stamp a big, black **0.0%** across my permanent record to teach me a lesson about "character."
-
-I walked into our kitchen expecting my parents to be furious with me. I braced for the grounding, the loss of computer privileges, the standard parental lecture.
-
-Instead, my parents looked at the situation, looked at how the school had conducted itself, and immediately called it what it was: **administrative garbage.**
-
-My mother was disgusted that her friend and the school had escalated a recess study session into a full-blown tribunal. And my father—a career tradesman who built his living with his hands and understands how the real world actually functions—gave me the greatest piece of reassurance I have ever received:
+My dad, a tradesman who spent his career solving real problems with his hands, looked at me across the kitchen table and said:
 
 > *"Jonathan, if looking over notes with a buddy and asking what to study before a test is considered cheating, then I need to march right down there and hand my college certificate back—because that’s how every single one of us got through school."*
 
-In that single sentence, my dad dismantled three days of institutional gaslighting. 
-
-He reminded me that in the real world, collaboration is called **teamwork**. Comparing notes before an evaluation is called **preparation**. And the only people who treat peer study as a moral crime are educators trapped inside artificial grading rubrics designed to rank children against their own egos.
-
----
-
-## Act VII: The Audacity of Grade 10
-
-The punchline to this entire saga arrived the following year.
-
-When course selection forms were handed out for Grade 10, French was no longer mandatory; it became an elective. I had already checked the box for sciences and industrial arts, ready to put that language as far in my rearview mirror as humanly possible.
-
-One afternoon, that exact same French teacher stopped me in the hallway. 
-
-With a warm, encouraging smile—as if the zero, the guidance counselor, and the office interrogation had never happened—she asked me if I was planning to take French 1200 next year:
-
-*"You know, Jonathan, you really have a natural aptitude for the language. You should really consider signing up for my class next year."*
-
-I stood there in the corridor, looking at her in stunned disbelief. 
-
-The cognitive dissonance was staggering. You accuse a kid of being a chronic cheater. You drag him into the office. You zero out his best grade of the year. You punish his innocent friend. And then, twelve months later, you try to recruit him into your elective roster because you need enrollment numbers to justify your department's budget.
-
-I politely declined. Even if I had harbored a secret passion for French literature, wild horses could not have dragged me back into that classroom.
+<div class="photo-slot">
+[Photo slot: /images/articles/dads-college-certificate.jpg — Framed college certificate on the wall (personal identifiers blurred)]
+</div>
 
 ---
 
-## The Lessons We Keep
+## Grade 10 Course Selection
 
-When I look back on the Grade 9 French test, I don't feel bitterness toward the subject of French. I feel gratitude for the clarity it gave me.
+The epilogue arrived the next spring when we filled out course selection sheets for Grade 10. French was no longer mandatory, and I had already signed up for sciences and shop classes.
 
-It was the day I graduated from the childish belief that adults are inherently wise just because they wear a name badge. It taught me:
+One afternoon that same French teacher stopped me in the hall with a warm smile, as if the office tribunal had never happened:
 
-1. **Authority is Not Infallible:** Just because someone has the power to assign you a grade or sign your reprimand doesn't mean they possess moral clarity or objective truth.
-2. **Never Throw the Innocent Under the Bus:** The moment they refused to spare Donald, the interrogation was over. Standing up for people who have zero power in a room is always worth the personal cost.
-3. **You Have the Right to Disengage:** When an authority figure has already written the verdict before hearing the testimony, you owe them zero emotional vulnerability. *"Yeah, whatever"* isn't disrespect; sometimes, it is the only dignity you have left.
-4. **Real-World Success is Collaborative:** In the real world—whether engineering a complex CAD model, troubleshooting a fiber optic network, or surviving a corporate ransomware attack—sharing knowledge with your peers is the only way organizations survive. The school system punishes collaboration because it fears what happens when students support each other.
+*"You know, Jonathan, you really have a natural aptitude for the language. You should consider signing up for my French class next year."*
 
-They took my score, but they gave me my skepticism. And two decades later, that skepticism has served me far better than any French verb conjugation ever could.
+I just looked at her, said *"No, thank you,"* and kept walking down the hall. They took my score, but they gave me my skepticism—and twenty years later, that skepticism has served me far better than any French verb table ever could.

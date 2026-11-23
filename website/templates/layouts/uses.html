@@ -1,342 +1,133 @@
 <div class="page-container">
-    <div class="content-wrapper" style="max-width: 800px; margin: 2rem auto;">
+    <div class="content-wrapper" style="max-width: 820px; margin: 2rem auto; padding: 0 1rem;">
 
-        <div class="breadcrumbs" style="margin-bottom: 2rem;">
+        <div class="breadcrumbs" style="margin-bottom: 1.75rem;">
             <a href="/">Home</a> &gt;
             <span>Uses</span>
         </div>
 
-        <div style="margin-bottom: 3rem;">
-            <h1 style="font-size: 3rem; color: var(--accent-cyan); margin-bottom: 1rem;">What I Use</h1>
-            <p style="font-size: 1.2rem; color: var(--text-muted); line-height: 1.7;">A curated list of the software stack, web infrastructure, network tools, and everyday hardware that power Thoms Foolery. I only recommend tools and gear I actively use, build with, and trust. <em>Note: Select software recommendations (such as NordVPN) use partner or refer-a-friend links that help support this digital garden at no extra cost to you, while physical Amazon gear links below remain direct, non-affiliate links for your convenience.</em></p>
-        </div>
+        <header class="hero">
+            <h1>What I Use</h1>
+            <p>
+                The software stack, web infrastructure, workshop gear, and everyday hardware behind Project Atlas. Everything listed here is gear I actively run at my desk, in the homelab, or out in the shop.
+            </p>
+        </header>
 
-        <!-- Web Stack, Hosting & Data Collection -->
-        <div class="uses-category">
-            <h2 class="uses-category-title">🌐 Web Stack, Hosting &amp; Network Security</h2>
-            <ul class="uses-list">
+        <!-- Web Stack, Hosting & Network Security -->
+        <section class="uses-category">
+            <h2 class="uses-category-title">Web Stack, Hosting &amp; Network Security</h2>
+            <ul class="notes-list">
                 <li>
-                    <strong><a href="https://github.com/thomsfoolery" target="_blank" rel="noopener noreferrer">Project Atlas SSG (Custom Node.js Engine)</a></strong> - Zero-framework, lightweight static site generator built from scratch in vanilla Node.js. Compiles Markdown essays, YAML frontmatter, and JSON Knowledge Graph schemas directly into pure static HTML/CSS/JS. No React hydration overhead, no client-side framework bloat, and sub-50ms page renders.
+                    <strong><a href="https://github.com/thomsfoolery" target="_blank" rel="noopener noreferrer">Project Atlas Static Site Generator</a></strong> — Custom Node.js compiler built without React or client-side framework dependencies. It reads Markdown essays, YAML frontmatter, and knowledge-graph relationships and outputs plain static HTML, CSS, and vanilla JS.
                 </li>
                 <li>
-                    <strong><a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages &amp; GitHub Actions</a></strong> - Our continuous deployment pipeline automatically compiles the static distribution (`website/dist`) upon git push and deploys the generated output directly to GitHub Pages. Version-controlled, reproducible, and completely immune to server-side CMS exploits or database crashes.
+                    <strong><a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages &amp; GitHub Actions</a></strong> — Builds and deploys the static output on push. No database process to patch and no server-side CMS surface area.
                 </li>
                 <li>
-                    <strong><a href="https://www.cloudflare.com/" target="_blank" rel="noopener noreferrer">Cloudflare (DNS, Edge SSL &amp; DDoS Protection)</a></strong> - Routes DNS for `thomsfoolery.com`, provides modern TLS encryption, and caches global edge assets with instant cache invalidation.
+                    <strong><a href="https://www.cloudflare.com/" target="_blank" rel="noopener noreferrer">Cloudflare DNS &amp; Cookieless Web Analytics</a></strong> — Handles DNS, TLS, and edge caching alongside privacy-first edge metrics with zero tracking cookies or fingerprinting scripts.
                 </li>
                 <li>
-                    <strong><a href="https://www.cloudflare.com/web-analytics/" target="_blank" rel="noopener noreferrer">Cloudflare Web Analytics (Cookieless Telemetry)</a></strong> - Privacy-first metrics injected strictly at the edge. We collect zero tracking cookies, do not track you across the web, and run no heavy third-party scripts (no Google Analytics, no Facebook Pixels, no fingerprinting). Just clean, privacy-respecting metrics on page performance and traffic without nagging cookie consent banners.
-                </li>
-                <li>
-                    <strong><a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer">NordVPN (NordLynx / WireGuard Encrypted Routing)</a></strong> - My daily-driver VPN for untrusted networks, multi-region web testing, and encrypted traffic routing across 7,400+ RAM-only servers in 118+ countries. Built on NordLynx (WireGuard with Double NAT) and NIST-standard post-quantum encryption. <a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer" style="font-weight: 600;">Claim up to 3 free bonus months via my referral link &rarr;</a>
+                    <strong><a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer">NordVPN (NordLynx / WireGuard)</a></strong> — My daily VPN for untrusted networks, multi-region web testing, and encrypted traffic routing across 118+ countries without babysitting a single static datacenter VPS (<a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer">refer-a-friend bonus link &rarr;</a>).
                 </li>
             </ul>
-        </div>
+        </section>
 
-        <!-- Email, Commerce & Network Routing Philosophy -->
-        <div class="uses-category">
-            <h2 class="uses-category-title">📬 Email, Commerce &amp; Network Routing: Why We Don't Self-Host (Yet)</h2>
-            <div class="uses-philosophy-card">
+        <!-- Why Some Services Aren't Self-Hosted -->
+        <section class="uses-category">
+            <h2 class="uses-category-title">What I Deliberately Don't Self-Host</h2>
+            <div class="feature-editorial">
                 <p>
-                    A core tenet of systems thinking is <em>stage-appropriate engineering</em>. While I love open source, Linux sysadmin work, and self-hosting Proxmox nodes in my homelab, running mission-critical infrastructure for email deliverability, global payment tax compliance, and multi-country exit nodes is an entirely different operational beast. Here is why we deliberately chose managed partners over self-hosting in these three areas:
+                    I run Proxmox VE nodes and ZFS pools in my own homelab, so the natural question is why I don't self-host my email list, payment checkout, or VPN exit nodes on a $5 VPS. The short answer is that stage-appropriate engineering means knowing which maintenance headaches don't add value:
                 </p>
-
-                <div class="service-decision-grid">
-                    <div class="service-decision-card">
-                        <div class="service-card-header">
-                            <span class="service-icon">✉️</span>
-                            <div>
-                                <h3 class="service-title">Buttondown</h3>
-                                <span class="service-role">Newsletter &amp; The Monday Dispatch</span>
-                            </div>
-                        </div>
-                        <p class="service-desc">
-                            <strong>Why not self-host Listmonk, Ghost, or Mailcoach?</strong>
-                        </p>
-                        <ul class="service-points">
-                            <li><strong>Deliverability &amp; IP Reputation:</strong> Running your own mail transfer agent (MTA) means constant warfare with Gmail and Outlook spam algorithms, managing IP warmup schedules, monitoring reverse DNS/SPF/DKIM/DMARC records, and reacting to blocklists. One rogue spam report can torpedo domain deliverability.</li>
-                            <li><strong>Privacy-First Architecture:</strong> Buttondown was built by indie developer Justin Duke with privacy by design: tracking pixels and link tracking are off by default, and subscriber data is never monetized or packaged for advertising networks.</li>
-                            <li><strong>Developer Ergonomics:</strong> Pure Markdown-native drafting, zero bloated WYSIWYG editors, and a lightweight HTML embed form that drops directly into our static site templates without a single byte of client-side JavaScript.</li>
-                        </ul>
-                    </div>
-
-                    <div class="service-decision-card">
-                        <div class="service-card-header">
-                            <span class="service-icon">🍋</span>
-                            <div>
-                                <h3 class="service-title">Lemon Squeezy</h3>
-                                <span class="service-role">Digital Guides, Memberships &amp; Paywall</span>
-                            </div>
-                        </div>
-                        <p class="service-desc">
-                            <strong>Why not self-host Medusa, WooCommerce, or raw Stripe?</strong>
-                        </p>
-                        <ul class="service-points">
-                            <li><strong>Merchant of Record (MoR) &amp; Global Tax Compliance:</strong> The decisive factor. Selling digital downloads and recurring subscriptions globally triggers digital services taxes (EU VAT, Canadian GST/HST, UK digital sales tax, US state economic nexus). With raw Stripe or self-hosted carts, <em>you</em> must register with tax authorities in dozens of jurisdictions and file complex international tax returns. As our Merchant of Record, Lemon Squeezy legally assumes liability, calculating, collecting, and remitting global sales taxes automatically.</li>
-                            <li><strong>Zero Security &amp; PCI-DSS Surface Area:</strong> We never touch, process, or store sensitive credit card or banking details on our servers. Lemon Squeezy handles fraud detection, 3D Secure, chargeback disputes, and secure localized checkout modals (Apple Pay, Google Pay).</li>
-                            <li><strong>Built-In License Keys &amp; Customer Portal:</strong> Provides turnkey recurring subscriptions, automated license key generation (such as our 2-machine activation limits for the All-Access Garden Pass), and self-service customer billing management without requiring a 24/7 PostgreSQL database or webhook listener on our static site.</li>
-                        </ul>
-                    </div>
-
-                    <div class="service-decision-card" style="grid-column: 1 / -1; border-color: rgba(56, 189, 248, 0.4); background: linear-gradient(145deg, rgba(15, 23, 42, 0.75), rgba(30, 41, 59, 0.55));">
-                        <div class="service-card-header" style="justify-content: space-between; flex-wrap: wrap;">
-                            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <span class="service-icon">🛡️</span>
-                                <div>
-                                    <h3 class="service-title"><a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer" style="color: var(--text-main); text-decoration: none;">NordVPN</a></h3>
-                                    <span class="service-role">Global Encrypted Tunneling, Geo-Testing &amp; Privacy</span>
-                                </div>
-                            </div>
-                            <a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(56, 189, 248, 0.15); border: 1px solid var(--accent-cyan); color: var(--accent-cyan); padding: 0.45rem 0.95rem; border-radius: 6px; font-size: 0.82rem; font-weight: 700; text-decoration: none; transition: all 0.2s;">
-                                🔗 Try NordVPN (Refer-a-Friend Bonus) &rarr;
-                            </a>
-                        </div>
-                        <p class="service-desc">
-                            <strong>Why not just rent a $5–$10/month VPS in another country and self-host WireGuard?</strong>
-                        </p>
-                        <ul class="service-points">
-                            <li><strong>118+ Countries &amp; 7,400+ RAM-Only Servers vs. One Static Datacenter IP:</strong> Renting a single foreign VPS locks you to one city, one static IPv4 address tied directly to your personal billing identity, and one datacenter ASN (like Hetzner, DigitalOcean, or AWS) that is aggressively fingerprinted and CAPTCHA-blocked across the modern web. For less than the monthly cost of a single decent VPS, NordVPN gives you instant one-click switching across <strong>7,400+ diskless (RAM-only) 10 Gbps servers in 118+ countries</strong>—making cross-border latency testing, regional API verification, and travel security effortless.</li>
-                            <li><strong>NordLynx (WireGuard + Double NAT) &amp; Post-Quantum Cryptography:</strong> Stock self-hosted WireGuard assigns a static internal tunnel IP to every peer config on disk. NordVPN engineered <strong>NordLynx</strong>—combining WireGuard’s lean ~4,000-line `ChaCha20-Poly1305` kernel speed with a custom <strong>Double NAT</strong> system that allocates ephemeral, non-persistent session IPs without ever writing connection metadata to disk. In 2026, it also ships natively with NIST-standard <strong>ML-KEM (FIPS 203) Post-Quantum Encryption</strong> across desktop and mobile clients to defend against <em>"harvest now, decrypt later"</em> traffic capture, backed by recurrent independent <strong>Deloitte ISAE 3000 no-logs audits</strong>.</li>
-                            <li><strong>Zero Sysadmin Maintenance, Egress Caps, or Abuse Headaches:</strong> When you roll your own VPS exit node, <em>you</em> are the unpaid sysadmin responsible for unattended kernel upgrades, `nftables` firewall hardening, IPv6/DNS leak prevention, MTU packet fragmentation tuning, and bandwidth overage bills across every laptop, phone, and tablet in your household. NordVPN handles 10 simultaneous devices out of the box with a hardware-level kill switch, split tunneling, Double VPN, and Threat Protection Pro.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <p class="uses-philosophy-footnote">
-                    💡 <em>The bottom line: Using Buttondown, Lemon Squeezy, and <a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer" style="color: var(--accent-cyan);">NordVPN</a> frees up 100% of my cognitive bandwidth to write essays, design interactive tools, and engineer open systems—instead of spending evenings troubleshooting mail servers, deciphering cross-border VAT law, or babysitting foreign VPS firewall rules.</em>
+                <p>
+                    <strong>Buttondown for Email:</strong> Running your own mail transfer agent means fighting Gmail and Outlook spam filters, managing IP warmups, and watching reverse-DNS and blocklists. Buttondown lets me write in plain Markdown with tracking pixels turned off by default and drops into static HTML with zero client-side JavaScript.
+                </p>
+                <p>
+                    <strong>Lemon Squeezy for Digital Checkout:</strong> Selling digital downloads across borders triggers EU VAT, Canadian GST/HST, and US state nexus rules. Because Lemon Squeezy acts as the Merchant of Record, they assume the tax calculation, collection, and remittance burden while keeping credit card data completely off our infrastructure.
+                </p>
+                <p>
+                    <strong><a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer" class="inline-tool-link">NordVPN</a> over a Single Self-Hosted VPS:</strong> A self-hosted WireGuard VPS pins your traffic to one datacenter ASN and one static IPv4 tied to your billing name, and leaves you managing kernel patches and firewall rules. Using <a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer" class="inline-tool-link">NordVPN</a> gives me instant switching across 7,400+ RAM-only NordLynx servers in 118+ countries with post-quantum encryption across 10 devices.
                 </p>
             </div>
-        </div>
+        </section>
 
-        <div class="uses-category">
-            <h2 class="uses-category-title">Content Creation &amp; Streaming</h2>
-            <ul class="uses-list">
+        <!-- Content Creation & Audio/Video -->
+        <section class="uses-category">
+            <h2 class="uses-category-title">Camera, Audio &amp; Desk Setup</h2>
+            <div class="photo-slot" style="margin-bottom: 1rem;">
+                [Photo slot: /images/uses/desk-wide.jpg — Wide shot of desk setup, Shure SM57, Sony a6400, and monitors]
+            </div>
+            <ul class="notes-list">
                 <li>
-                    <strong><a href="https://www.amazon.ca/Shure-SM57-LC-Cardioid-Dynamic-Microphone/dp/B0000AQRST" target="_blank" rel="noopener noreferrer">Shure SM57 Dynamic Microphone</a></strong> - The legendary workhorse. I use this to record the Ocarina and for streaming.
+                    <strong>Sony Alpha a6400 + Darktable</strong> — APS-C mirrorless body used for workshop product photography on a simple black poster-board sweep, processed in open-source Darktable (<a href="/articles/diy-product-photography-sony-a6400-darktable.html">full workflow write-up</a>).
                 </li>
                 <li>
-                    <strong><a href="https://www.amazon.ca/dp/B0F3WVSKJQ" target="_blank" rel="noopener noreferrer">ByteWave 4K USB 3.0 HDMI Capture Card</a></strong> - Zero latency capture for my stream setup.
+                    <strong><a href="https://www.amazon.ca/Shure-SM57-LC-Cardioid-Dynamic-Microphone/dp/B0000AQRST" target="_blank" rel="noopener noreferrer">Shure SM57 Dynamic Microphone</a></strong> — Unkillable cardioid workhorse for recording the 12-hole ocarina and voice audio without picking up room reflections.
+                </li>
+                <li>
+                    <strong><a href="https://www.amazon.ca/dp/B0FDKQ2FG6" target="_blank" rel="noopener noreferrer">Bose QuietComfort Ultra Headphones (2nd Gen)</a></strong> — Worn daily for deep focus blocks, sensory regulation, and audio editing.
+                </li>
+                <li>
+                    <strong><a href="https://www.amazon.ca/dp/B0F3WVSKJQ" target="_blank" rel="noopener noreferrer">ByteWave 4K USB 3.0 HDMI Capture Card</a></strong>, <strong><a href="https://www.amazon.ca/dp/B0DLWTH6RS" target="_blank" rel="noopener noreferrer">HDMI Audio Extractor</a></strong>, &amp; <strong><a href="https://www.amazon.ca/dp/B0F6MQLZTV" target="_blank" rel="noopener noreferrer">RCA-to-HDMI Converter</a></strong> — Used for routing both modern and retro consoles cleanly into the desk setup.
+                </li>
+                <li>
+                    <strong><a href="https://www.amazon.ca/dp/B08L4HDSTZ" target="_blank" rel="noopener noreferrer">Yamaha YAS-209BL Sound Bar</a></strong> — Living room audio setup.
                 </li>
             </ul>
-        </div>
+        </section>
 
-        <div class="uses-category">
-            <h2 class="uses-category-title">Gaming & Music</h2>
-            <ul class="uses-list">
+        <!-- Gaming & Music -->
+        <section class="uses-category">
+            <h2 class="uses-category-title">Music &amp; Gaming</h2>
+            <ul class="notes-list">
                 <li>
-                    <strong><a href="https://www.amazon.ca/dp/B00T0HVIY6" target="_blank" rel="noopener noreferrer">OcarinaWind 12-Hole Alto C Ocarina</a></strong> - The exact blue ice-crack ocarina I use for practice and streaming.
+                    <strong><a href="https://www.amazon.ca/dp/B00T0HVIY6" target="_blank" rel="noopener noreferrer">OcarinaWind 12-Hole Alto C Ceramic Ocarina</a></strong> — The blue ice-crack ceramic ocarina I play and test against the <a href="/tools/ocarina/">Ocarina Practice Suite</a>.
                 </li>
                 <li>
-                    <strong><a href="https://www.amazon.ca/Nintendo-SwitchTM-2-Pro-Controller/dp/B0F3VTFD6J" target="_blank" rel="noopener noreferrer">Nintendo Switch 2 Pro Controller</a></strong> - Essential for the long Runescape: Dragonwilds grinds on the Switch 2.
+                    <strong><a href="https://www.amazon.ca/Nintendo-SwitchTM-2-Pro-Controller/dp/B0F3VTFD6J" target="_blank" rel="noopener noreferrer">Nintendo Switch 2 Pro Controller</a></strong> — Primary controller for long gaming sessions.
+                </li>
+                <li>
+                    <strong><a href="https://www.amazon.ca/dp/B09KZK1SFX" target="_blank" rel="noopener noreferrer">3"×4" Hard Toploaders</a></strong> &amp; <strong><a href="https://www.amazon.ca/dp/B0CZ9Q4DXK" target="_blank" rel="noopener noreferrer">BCW Penny Sleeves</a></strong> — For storing and protecting trading cards.
                 </li>
             </ul>
-        </div>
+        </section>
 
-        <div class="uses-category">
-            <h2 class="uses-category-title">Audio & Video Setup</h2>
-            <ul class="uses-list">
+        <!-- Everyday Utilities & Lifestyle -->
+        <section class="uses-category">
+            <h2 class="uses-category-title">Everyday Utilities &amp; Health</h2>
+            <ul class="notes-list">
                 <li>
-                    <strong><a href="https://www.amazon.ca/dp/B0FDKQ2FG6" target="_blank" rel="noopener noreferrer">Bose QuietComfort Ultra Headphones (2nd Gen)</a></strong> - My daily driver for focus blocks and audio editing.
+                    <strong><a href="https://www.amazon.ca/dp/B00652G4TS" target="_blank" rel="noopener noreferrer">BlueDriver Bluetooth Pro OBDII Scan Tool</a></strong> — For pulling live vehicle diagnostics and fault codes myself before ever visiting a shop.
                 </li>
                 <li>
-                    <strong><a href="https://www.amazon.ca/dp/B08L4HDSTZ" target="_blank" rel="noopener noreferrer">Yamaha Audio YAS-209BL Sound Bar</a></strong> - Crisp audio for the living room setup.
+                    <strong><a href="https://www.amazon.ca/dp/B0C7162144" target="_blank" rel="noopener noreferrer">BOMATA High-Precision Kitchen Scale</a></strong> — Daily staple for meal prep and tracking nutrition.
                 </li>
                 <li>
-                    <strong><a href="https://www.amazon.ca/dp/B0DLWTH6RS" target="_blank" rel="noopener noreferrer">HDMI Audio Extractor Adapter</a></strong> - Crucial for splitting audio streams in my homelab.
+                    <strong><a href="https://www.amazon.ca/Energy-Wild-Strawberry-Drink-Packets/dp/B0CZ7J3LR1" target="_blank" rel="noopener noreferrer">MiO Energy (Wild Strawberry)</a></strong> &amp; <strong><a href="https://www.amazon.ca/dp/B071KHV8JH" target="_blank" rel="noopener noreferrer">Champion Classic Long-Sleeve Tees</a></strong> — Coding session fuel and everyday uniform.
                 </li>
                 <li>
-                    <strong><a href="https://www.amazon.ca/dp/B0F6MQLZTV" target="_blank" rel="noopener noreferrer">RCA to HDMI Converter</a></strong> - For hooking up retro consoles to the modern stream setup.
+                    <strong><a href="https://www.amazon.ca/dp/B09B7NQT2K" target="_blank" rel="noopener noreferrer">Govee Smart Bulbs (A19 &amp; BR30)</a></strong> &amp; <strong><a href="https://www.amazon.ca/dp/B01HRPZPT6" target="_blank" rel="noopener noreferrer">Braided USB 2.0 Extenders</a></strong> — Warm ambient room lighting and cable routing.
                 </li>
             </ul>
-        </div>
+        </section>
 
-        <div class="uses-category">
-            <h2 class="uses-category-title">Health & Lifestyle</h2>
-            <ul class="uses-list">
-                <li>
-                    <strong><a href="https://www.amazon.ca/Energy-Wild-Strawberry-Drink-Packets/dp/B0CZ7J3LR1" target="_blank" rel="noopener noreferrer">MiO Energy (Wild Strawberry)</a></strong> - My preferred cheap energy drink for long coding sessions.
-                </li>
-                <li>
-                    <strong><a href="https://www.amazon.ca/dp/B0C7162144" target="_blank" rel="noopener noreferrer">BOMATA High Precision Kitchen Scale</a></strong> - Vital for the fitness journey and meal prep.
-                </li>
-                <li>
-                    <strong><a href="https://www.amazon.ca/dp/B071KHV8JH" target="_blank" rel="noopener noreferrer">Champion Men's Classic Long Sleeve Tee</a></strong> - Simple, comfortable, wear it constantly.
-                </li>
-            </ul>
-        </div>
-
-        <div class="uses-category">
-            <h2 class="uses-category-title">Smart Home & Utilities</h2>
-            <ul class="uses-list">
-                <li>
-                    <strong><a href="https://www.amazon.ca/dp/B09B7NQT2K" target="_blank" rel="noopener noreferrer">Govee Smart Bulbs (A19)</a></strong> & <strong><a href="https://www.amazon.ca/dp/B0C7QGM3D8" target="_blank" rel="noopener noreferrer">Govee Smart Light Bulbs (BR30)</a></strong> - For setting the mood and stream lighting.
-                </li>
-                <li>
-                    <strong><a href="https://www.amazon.ca/dp/B01HRPZPT6" target="_blank" rel="noopener noreferrer">OKRAY Nylon Braided USB 2.0 Extender</a></strong> - You can never have enough of these.
-                </li>
-                <li>
-                    <strong><a href="https://www.amazon.ca/dp/B00652G4TS" target="_blank" rel="noopener noreferrer">BlueDriver Bluetooth Pro OBDII Scan Tool</a></strong> - A must-have for diagnosing car issues without a mechanic.
-                </li>
-            </ul>
-        </div>
-
-        <div class="uses-category">
-            <h2 class="uses-category-title">Collecting</h2>
-            <ul class="uses-list">
-                <li>
-                    <strong><a href="https://www.amazon.ca/dp/B09KZK1SFX" target="_blank" rel="noopener noreferrer">3"x4" Hard Plastic Card Sleeves</a></strong> and <strong><a href="https://www.amazon.ca/dp/B0CZ9Q4DXK" target="_blank" rel="noopener noreferrer">BCW Standard Penny Sleeves</a></strong> - For protecting the collection.
-                </li>
-            </ul>
-        </div>
+        <!-- Affiliate & Link Disclosure Footnote -->
+        <footer style="margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); color: var(--text-dim); font-size: 0.86rem; line-height: 1.65;">
+            <p style="margin: 0;">
+                <strong style="color: var(--text-muted);">Disclosure:</strong> Select software recommendations (such as <a href="https://refer-nordvpn.com/YBErCviqfRb" target="_blank" rel="noopener noreferrer" class="inline-tool-link">NordVPN</a>) use partner or refer-a-friend links that help support this site at no extra cost to you. All physical Amazon hardware links above are direct, non-affiliate links listed purely for reference.
+            </p>
+        </footer>
 
     </div>
 </div>
 
 <style>
     .uses-category {
-        margin-bottom: 2.5rem;
+        margin-bottom: 2.75rem;
     }
     .uses-category-title {
-        font-size: 1.5rem;
-        color: var(--text-main);
-        border-bottom: 1px solid var(--border-color);
-        padding-bottom: 0.5rem;
-        margin-bottom: 1rem;
-    }
-    .uses-list {
-        list-style-type: none;
-        padding-left: 0;
-    }
-    .uses-list li {
-        margin-bottom: 1rem;
-        color: var(--text-dim);
-        line-height: 1.6;
-        position: relative;
-        padding-left: 1.5rem;
-    }
-    .uses-list li::before {
-        content: '→';
-        position: absolute;
-        left: 0;
-        color: var(--accent-cyan);
-    }
-    .uses-list a {
-        color: var(--accent-cyan);
-        text-decoration: none;
-        transition: color 0.2s;
-    }
-    .uses-list a:hover {
-        text-decoration: underline;
-        color: var(--accent-purple);
-    }
-
-    /* Philosophy & Third-Party Service Cards */
-    .uses-philosophy-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-color);
-        border-radius: var(--radius-md, 10px);
-        padding: 1.75rem 2rem;
-        margin-top: 1rem;
-    }
-    .uses-philosophy-card p {
-        color: var(--text-muted);
-        font-size: 0.95rem;
-        line-height: 1.65;
-        margin-top: 0;
-    }
-    .service-decision-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 1.5rem;
-        margin: 1.5rem 0;
-    }
-    .service-decision-card {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(56, 189, 248, 0.2);
-        border-radius: 8px;
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        transition: border-color 0.2s, transform 0.2s;
-    }
-    .service-decision-card:hover {
-        border-color: var(--accent-cyan);
-        transform: translateY(-2px);
-    }
-    .service-card-header {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-    .service-icon {
-        font-size: 1.75rem;
-        line-height: 1;
-    }
-    .service-title {
-        font-size: 1.25rem;
-        color: var(--text-main);
-        margin: 0;
-        font-weight: 700;
-    }
-    .service-role {
-        font-size: 0.78rem;
-        color: var(--accent-cyan);
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-    .service-desc {
-        color: var(--text-main) !important;
-        font-size: 0.92rem !important;
-        margin-bottom: 0.75rem !important;
-    }
-    .service-points {
-        list-style: none;
-        padding-left: 0;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-    .service-points li {
-        font-size: 0.88rem;
-        color: var(--text-muted);
-        line-height: 1.55;
-        position: relative;
-        padding-left: 1.25rem;
-        margin-bottom: 0;
-    }
-    .service-points li::before {
-        content: '•';
-        position: absolute;
-        left: 0;
-        color: var(--accent-cyan);
-        font-size: 1.1rem;
-        line-height: 1;
-        top: 0.05rem;
-    }
-    .service-points strong {
-        color: var(--text-main);
-    }
-    .uses-philosophy-footnote {
-        font-size: 0.88rem !important;
-        color: var(--text-dim) !important;
-        margin-top: 1.25rem !important;
-        margin-bottom: 0 !important;
-        border-top: 1px solid var(--border-color);
-        padding-top: 1rem;
-        line-height: 1.6;
-    }
-
-    @media (max-width: 640px) {
-        .uses-philosophy-card {
-            padding: 1.25rem;
-        }
-        .service-decision-grid {
-            grid-template-columns: 1fr;
-        }
+        font-size: 1.35rem;
+        color: var(--text-bright);
+        margin: 0 0 0.85rem 0;
     }
 </style>

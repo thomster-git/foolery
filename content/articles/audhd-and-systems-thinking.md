@@ -4,15 +4,16 @@ id: audhd-and-systems-thinking
 type: article
 status: draft
 created: 2026-09-14
-title: "AuDHD and Systems Thinking: Why I See Infrastructure Differently"
-date: "2026-08-24"
+updated: 2026-11-20
+title: "AuDHD and Systems Thinking: Why Friction in a System Is Impossible to Ignore"
+date: "2026-09-14"
 author: "Jonathan Thoms"
 tags:
   - neurodiversity
   - audhd
   - infrastructure
   - systems-thinking
-summary: "How my neurodivergent brain turns the chaos of IT infrastructure into logical, optimized, and honest systems."
+summary: "Why I can't walk past a 100 Mbps switch choking a gigabit line or an undocumented server closet—and the real trade-offs of wiring and debugging infrastructure with an AuDHD brain."
 topics:
   - audhd
   - technology
@@ -26,38 +27,27 @@ related:
   - my-story-with-neurodiversity-and-adult-diagnosis
   - my-story-with-mechanical-engineering-and-systems-thinking
 ---
-If you spend enough time looking at how companies build their networks, structure their communication, or buy their hardware, you start to realize a frustrating truth: a lot of it is built on autopilot. 
 
-Neurotypical problem-solving in the corporate world often relies heavily on "the script." You buy the expensive brand-name server because that’s what the brochure said to do. You pay for the bloated communication software because it's the industry standard. You accept the glaring inefficiencies—the unlocked network racks, the gigabit internet choked by 100 Mbps switches—because "that's just the way it's always been done."
+If you spend enough time crawling into small-business network closets, you notice how much infrastructure runs on habit. Someone buys the expensive brand-name server because that was on last year's quote. Nobody touches the tangled patch panel because it hasn't caught fire yet. People live with a sluggish network for three years because *"that's just how the building is."*
 
-I don't operate on that script. 
+Living with AuDHD (Autism and ADHD) means my brain doesn't filter out that background friction. I wouldn't call it a "superpower"—because the exact same wiring that lets me trace a network fault for fourteen hours straight also makes performative meetings exhausting and leaves me unable to ignore an unlabelled cable run until it is fixed. It is a specific set of trade-offs.
 
-Living with AuDHD (Autism and ADHD) means my brain fundamentally processes the world differently. While it presents its own unique set of daily challenges, when it comes to technology and infrastructure, it is an absolute superpower. 
+<div class="photo-slot">
+[Photo slot: /images/articles/labelled-patch-panel-before-after.jpg — Close-up of a re-terminated, labelled patch panel next to an old 10/100 Mbps bottleneck switch pulled from a client closet]
+</div>
 
-## Seeing the Matrix
+## The 100 Mbps Switch on a Gigabit Line
 
-To me, a business isn't just a collection of employees and computers; it is a massive, interconnected system. When I walk into an office or look at a network topology, I don't see individual isolated problems. I see the entire flow of data, energy, and human interaction. 
+A good example of how that attention works happened when I was auditing a site that was paying for a full gigabit internet circuit, yet staff complained every afternoon that large file transfers crawled.
 
-Where neurotypical brains might filter out the "background noise" of a poorly wired server rack or a sluggish piece of software, my brain hyper-focuses on the friction. It is physically uncomfortable for me to look at a system that is inefficient, insecure, or dishonest in its functionality. 
+For years, people had worked around it. When I physically traced the uplink cable from the ISP handoff into the rack before touching a single software setting, I found the culprit in three minutes: an old, unlabelled 10/100 Mbps Fast Ethernet desktop switch tucked behind a patch shelf that someone had used as a pass-through years earlier. The entire office was being throttled to 94 Mbps by a twenty-dollar plastic box that nobody had bothered to trace from end to end.
 
-This is why I am so passionate about the work I do with Keel Systems. I don't just want to fix a broken router; I have a deep, driving need to optimize the entire environment so that it makes *logical sense*. 
+Most people can tune out a messy closet if the internet light is blinking green. To me, an undocumented dependency feels like a pebble inside a boot—I have to trace every wire, label both ends, and draw the topology map before my head can let it rest.
 
-## The Rejection of "Because I Said So"
+## Asking "Why Are We Paying for That?"
 
-One of the core traits of my neurodivergence is a profound aversion to arbitrary rules. If a software vendor tells a small business they *must* pay thousands of dollars in annual licensing fees for a server OS they barely use, the standard corporate response is to simply write the check. 
+The same instinct applies to vendor quotes and workplace rules that only exist because *"that's how we've always done it."*
 
-My response is to ask: *Why?* 
+When an MSP tells a small company with eight virtual machines that they need an $80,000 dual-socket server stack and full bare-metal commercial hypervisor subscriptions, my first question is always: *what is the actual workload?* If a single-socket white-box server running Proxmox VE and a shelf of local warm spares does the job faster and saves $46,000, the brand sticker on the front bezel doesn't matter.
 
-Why are we paying for this when an open-source solution like Proxmox exists? Why are we using bloated chat apps when Discord's API is free, faster, and more fluid? Why are we accepting a system that bleeds money when we could build a custom, resilient "black box" that solves the exact same problem for a fraction of the cost?
-
-This inability to accept the status quo isn't just rebelliousness—it's a relentless pursuit of **organizational honesty**. I want the technology to do exactly what it claims to do, without the marketing fluff, the unnecessary bloat, or the hidden costs.
-
-## Problem Solving Without the Filter
-
-Because my brain doesn't naturally adhere to social or corporate scripts, I approach problem-solving without the standard filters. I don't care what the "industry standard" is if the industry standard is broken. 
-
-This allows me to build solutions that actually work for the humans using them. I see the bottlenecks that everyone else has grown blind to. I build redundancies because I understand how quickly a single point of failure can unravel a whole system. 
-
-My AuDHD means I process information, stress, and sensory input differently than the majority of the population. But it also means that when you hand me a chaotic, failing IT infrastructure, I don't just see a mess. I see a puzzle waiting to be solved, optimized, and built correctly. 
-
-I'm a problem solver. I just solve them differently.
+Working this way comes with real costs—you have to manage sensory load, guard against burnout after long crisis sprints, and translate direct technical observations carefully in rooms that prefer polite corporate ambiguity. But when a system is broken and nobody can explain how the pieces actually connect, having a brain that refuses to take the brochure's word for it is the best tool I have.

@@ -1,80 +1,60 @@
 <div class="page-container">
-    <div class="content-wrapper" style="max-width: 900px; margin: 2rem auto;">
+    <div class="content-wrapper" style="max-width: 900px; margin: 2rem auto; padding: 0 1rem;">
         
-        <div class="breadcrumbs" style="margin-bottom: 2rem;">
+        <div class="breadcrumbs" style="margin-bottom: 1.75rem;">
             <a href="/">Home</a> &gt;
-            <span>Resume & Experience</span>
+            <span>Resume &amp; Experience</span>
         </div>
 
         <!-- Header Profile -->
-        <div style="display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 3rem; border-bottom: 1px solid var(--border-color); padding-bottom: 2rem;">
-            <h1 style="font-size: 3rem; line-height: 1.1; margin-bottom: 0.5rem; color: var(--accent-color);">Jonathan Thoms</h1>
-            <p style="font-size: 1.25rem; color: var(--text-muted); margin-bottom: 1rem; font-weight: 500;">
-                Mechanical Engineering graduate turned hands-on systems builder. Fast learner, adaptable, pragmatic, candid, and unpretentious.
+        <header class="hero">
+            <h1>Jonathan Thoms</h1>
+            <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                Mechanical Engineering graduate (B.Eng.) turned hands-on systems and infrastructure builder. Fast learner, pragmatic, candid, and unpretentious.
             </p>
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                <span class="tag-pill">Project Management</span>
-                <span class="tag-pill">Technical Writing</span>
-                <span class="tag-pill">Engineering Design</span>
-                <span class="tag-pill">Quality Assurance/Quality Control</span>
-                <span class="tag-pill">Communication and Collaboration</span>
+            <div style="font-family: var(--font-mono); font-size: 0.84rem; color: var(--accent-cyan);">
+                Project Management · Technical Writing · Systems &amp; Mechanical Design · QA/QC · Infrastructure Operations
             </div>
-        </div>
+        </header>
 
-        <!-- About Section -->
-        <div style="margin-bottom: 4rem;">
-            <h2 style="font-size: 1.75rem; color: var(--text-main); margin-bottom: 1rem;">About</h2>
-            <div style="background: var(--bg-card); padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); color: var(--text-muted); line-height: 1.7; font-size: 1.05rem;">
+        <!-- About Section (Plain Editorial Prose) -->
+        <section style="margin-bottom: 3.5rem; max-width: 68ch;">
+            <h2 style="font-size: 1.5rem; color: var(--text-bright); margin-bottom: 0.85rem;">About</h2>
+            <div style="color: var(--text-muted); line-height: 1.75; font-size: 1.02rem;">
                 <p style="margin-bottom: 1rem;">I’m an IT consultant and workflow designer who likes to start where things “kind of work” but nobody can explain how.</p>
-                <p style="margin-bottom: 1rem;">My background is a mix of engineering, mining operations, and IT. I’ve built and run infrastructure at a remote mine site, selected and swapped critical vendors (MSPs, LMS, ERP hosting, firewalls), and designed white-box servers and networks where big-vendor support models simply didn’t make sense.</p>
-                <p style="margin-bottom: 1rem;">These days, I help small teams turn that kind of chaos into clear, documented systems:</p>
-                <ul style="margin-bottom: 1rem; padding-left: 1.5rem;">
-                    <li>Mapping how work actually flows, not how the procedure says it should.</li>
-                    <li>Turning that into decision trees, flowcharts, and “who does what when” diagrams.</li>
-                    <li>Building the IT around it: SharePoint structures, Power Automate flows, scripts, and dashboards.</li>
-                </ul>
-                <p style="margin-bottom: 1rem;">I care a lot about metrics that work for you instead of against you. If your KPIs are so brittle that people feel pressured to fudge numbers instead of explaining them, the system is broken. I’d rather help you design measures that reflect reality and give you a clear story to tell.</p>
-                <p>Outside client work, I keep my hands dirty with a homelab, custom PC and server builds, and a laser engraving studio (EtchCentric) that lets me play with design, production workflows, and small-business process in the real world.</p>
+                <p style="margin-bottom: 1rem;">My background is a mix of mechanical engineering, mining operations, and hands-on IT. I’ve built and run infrastructure at a remote fluorspar mine site, selected and swapped critical vendors (MSPs, LMS, ERP hosting, Palo Alto firewalls), led recovery through an Akira ransomware incident, and designed white-box servers with on-shelf warm spares where big-vendor SLA contracts didn’t match reality.</p>
+                <blockquote class="pull-quote">
+                    If your KPIs are so brittle that people feel pressured to fudge numbers instead of explaining them, the measurement system is broken.
+                </blockquote>
+                <p style="margin-bottom: 1rem;">These days, I help small teams turn undocumented chaos into clear, maintainable systems: mapping how work actually flows, turning that into decision trees and runbooks, and building the lightweight tooling (Microsoft 365, SharePoint, Power Automate, Proxmox VE, Python/PowerShell) around it.</p>
+                <p style="margin-bottom: 0;">Outside client work, I keep my hands dirty with a Proxmox homelab, custom PC and server builds, and a laser engraving workshop (EtchCentric Creations).</p>
             </div>
-        </div>
+        </section>
 
         <!-- Education Section -->
-        <div style="margin-bottom: 4rem;">
-            <h2 style="font-size: 1.75rem; color: var(--text-main); margin-bottom: 1rem;">Education</h2>
-            <div style="background: var(--bg-card); padding: 1.5rem 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); display: flex; align-items: flex-start; gap: 1.5rem;">
-                <div style="font-size: 2rem; flex-shrink: 0; margin-top: 0.25rem;">🎓</div>
-                <div>
-                    <h3 style="font-size: 1.25rem; margin: 0 0 0.5rem 0; color: var(--accent-color);">Memorial University, Newfoundland and Labrador</h3>
-                    <div style="font-weight: 500; color: var(--text-main); margin-bottom: 0.25rem;">Bachelor of Engineering (B.Eng.), Mechanical Engineering</div>
-                    <div style="color: var(--text-muted); font-size: 0.95rem;">2011 – 2016</div>
-                </div>
+        <section style="margin-bottom: 3.5rem;">
+            <h2 style="font-size: 1.5rem; color: var(--text-bright); margin-bottom: 0.75rem;">Education</h2>
+            <div style="border-left: 3px solid var(--accent-cyan); padding-left: 1.25rem;">
+                <h3 style="font-size: 1.15rem; margin: 0 0 0.25rem 0; color: var(--text-bright);">Memorial University of Newfoundland</h3>
+                <div style="font-weight: 500; color: var(--text-main);">Bachelor of Engineering (B.Eng.), Mechanical Engineering · <span style="font-family: var(--font-mono); font-size: 0.88rem; color: var(--text-dim);">2011 – 2016</span></div>
             </div>
-        </div>
+        </section>
 
         <!-- Experience Timeline + Resume Builder -->
-        <div style="margin-bottom: 2.5rem;">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
-                <h2 style="font-size: 1.75rem; color: var(--text-main); margin: 0;">Experience Timeline</h2>
+        <div style="margin-bottom: 2rem;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                <h2 style="font-size: 1.5rem; color: var(--text-bright); margin: 0;">Experience Timeline</h2>
             </div>
-            <!-- Resume Builder Callout Card -->
-            <div style="background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(6,182,212,0.08)); border: 1px solid rgba(124,58,237,0.35); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <div style="font-size: 1.75rem; flex-shrink: 0;">📄</div>
-                    <div>
-                        <div style="font-weight: 700; font-size: 1rem; color: var(--text-main); margin-bottom: 0.2rem;">Tailored Resume Builder</div>
-                        <div style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.4;">Pick as many skills as you want from this page and instantly generate a focused resume summary matching those qualifications.</div>
-                    </div>
+            <!-- Resume Builder Utility Bar -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-left: 3px solid var(--accent-cyan); border-radius: 6px; padding: 1rem 1.35rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+                <div>
+                    <div style="font-weight: 700; font-size: 0.98rem; color: var(--text-bright); margin-bottom: 0.15rem;">Tailored Resume Builder</div>
+                    <div style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.45;">Filter this timeline by specific engineering, IT, or management skills to generate a printable one-page summary.</div>
                 </div>
-                <button id="resume-builder-btn" onclick="openResumeBuilder()" style="background: linear-gradient(135deg, #7c3aed, #06b6d4); color: white; border: none; padding: 0.65rem 1.4rem; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: opacity 0.2s; letter-spacing: 0.01em;">Open Builder →</button>
+                <button id="resume-builder-btn" onclick="openResumeBuilder()" style="background: var(--accent-cyan); color: #fff; border: none; padding: 0.55rem 1.2rem; border-radius: 6px; font-weight: 600; font-size: 0.88rem; cursor: pointer; white-space: nowrap; flex-shrink: 0;">Open Builder &rarr;</button>
             </div>
         </div>
 
-        
-        
-        
-        
-        
-        
         <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 1rem; gap: 0.75rem;">
             <span style="color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">Professional Only</span>
             <label class="resume-switch">
@@ -91,12 +71,16 @@
             .resume-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--bg-main); border: 2px solid var(--border-color); border-radius: 24px; transition: .4s; }
             .resume-slider-knob { position: absolute; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: var(--accent-color); border-radius: 50%; transition: .4s; }
             #personal-toggle:checked + .resume-slider { border-color: var(--accent-color); }
-            #personal-toggle:checked + .resume-slider .resume-slider-knob { transform: translateX(20px); background-color: var(--cyan, #06b6d4); }
+            #personal-toggle:checked + .resume-slider .resume-slider-knob { transform: translateX(20px); background-color: var(--accent-color); }
             
             .timeline-tick[data-type="personal"],
             .role-entry[data-type="personal"],
             .timeline-content-panel[data-type="personal"] {
                 display: none !important;
+            }
+            /* Show interactive skill badges only on the 2-3 primary recent roles & Lifetime index; keep older roles compact */
+            .timeline-content-panel:not(#panel-21):not(#panel-22):not(#panel-23) .skills-container {
+                display: none;
             }
             body.show-personal .timeline-tick[data-type="personal"] { display: flex !important; }
             body.show-personal .role-entry[data-type="personal"] { display: block !important; }
@@ -866,7 +850,7 @@
         <!-- Header -->
         <div style="padding:1.5rem 1.75rem 1rem; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
             <div>
-                <h2 style="margin:0; font-size:1.4rem; color:var(--accent-color);">📄 Tailored Resume Builder</h2>
+                <h2 style="margin:0; font-size:1.4rem; color:var(--accent-color);">Tailored Resume Builder</h2>
                 <p style="margin:0.25rem 0 0; font-size:0.85rem; color:var(--text-muted);">Select your skills to generate a targeted professional resume.</p>
             </div>
             <button onclick="closeResumeBuilder()" aria-label="Close resume builder" style="background:none; border:none; color:var(--text-muted); font-size:1.5rem; cursor:pointer; line-height:1;">×</button>
@@ -1322,76 +1306,35 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-        <!-- Interests & Curiosities Section -->
-        <section id="resume-interests-teaser" style="margin-top: 4rem; padding-top: 3rem; border-top: 1px solid var(--border-color);">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
-                <div>
-                    <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: var(--accent-cyan); padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.75rem;">
-                        <span>🧭</span> Beyond the Job Titles
-                    </div>
-                    <h2 style="font-size: 2.2rem; font-weight: 800; color: var(--text-bright); margin: 0 0 0.5rem 0;">
-                        Curiosity Taxonomy &amp; Personal Interests
-                    </h2>
-                    <p style="color: var(--text-muted); font-size: 1.05rem; margin: 0; max-width: 680px; line-height: 1.5;">
-                        Technical curiosities, creative rabbit holes, and personal passions outside formal titles. Click any category to jump into its expanded interactive breakdown.
-                    </p>
-                </div>
-                <a href="/interests/" class="btn" style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: var(--accent-cyan); text-decoration: none; font-weight: 700; padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); font-size: 0.9rem;">
-                    Explore Full Taxonomy &rarr;
-                </a>
+        <!-- Interests & Curiosities Section (Compact Editorial List) -->
+        <section id="resume-interests-teaser" style="margin-top: 4rem; padding-top: 2.5rem; border-top: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+                <h2 style="font-size: 1.5rem; color: var(--text-bright); margin: 0;">Beyond the Job Titles</h2>
+                <a href="/interests/" class="inline-tool-link" style="font-size: 0.9rem;">Full Interests &amp; Obsessions Page &rarr;</a>
             </div>
-
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
-                
-                <a href="/interests/#sports" style="text-decoration: none; display: block; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; transition: all 0.2s; position: relative;">
-                    <div style="font-size: 2rem; margin-bottom: 0.75rem;">⚾</div>
-                    <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-bright); margin: 0 0 0.5rem 0;">Sports &amp; Team Backings</h3>
-                    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 1rem 0;">Paper scoresheet purism, 162-game Blue Jays tracking, Montreal Canadiens rebuild, Bills Mafia, and F1 pit strategy.</p>
-                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-cyan);">Explore Sports &amp; Tools &rarr;</span>
-                </a>
-
-                <a href="/interests/#video-games" style="text-decoration: none; display: block; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; transition: all 0.2s; position: relative;">
-                    <div style="font-size: 2rem; margin-bottom: 0.75rem;">🎮</div>
-                    <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-bright); margin: 0 0 0.5rem 0;">Video Games &amp; Mechanical Systems</h3>
-                    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 1rem 0;">Zelda: OoT acoustic game design, FFX Sphere Grid routing, Dragonwilds 72-minute vault timers, and tactical team play.</p>
-                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-cyan);">Explore Gaming &amp; Trackers &rarr;</span>
-                </a>
-
-                <a href="/interests/#music" style="text-decoration: none; display: block; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; transition: all 0.2s; position: relative;">
-                    <div style="font-size: 2rem; margin-bottom: 0.75rem;">🎵</div>
-                    <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-bright); margin: 0 0 0.5rem 0;">Music &amp; Acoustic Engineering</h3>
-                    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 1rem 0;">12-hole Alto C vessel flute acoustics, melodic ear training, and browser-native Web Audio pitch autocorrelation.</p>
-                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-cyan);">Explore Music &amp; Audio &rarr;</span>
-                </a>
-
-                <a href="/interests/#electronics" style="text-decoration: none; display: block; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; transition: all 0.2s; position: relative;">
-                    <div style="font-size: 2rem; margin-bottom: 0.75rem;">⚡</div>
-                    <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-bright); margin: 0 0 0.5rem 0;">Electronics &amp; Physical Infrastructure</h3>
-                    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 1rem 0;">Diode/fiber laser CNCs at EtchCentric, Proxmox VE homelab clusters, ZFS storage pools, and custom white-box server rigs.</p>
-                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-cyan);">Explore Hardware &amp; Homelabs &rarr;</span>
-                </a>
-
-                <a href="/interests/#digital-tools" style="text-decoration: none; display: block; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; transition: all 0.2s; position: relative;">
-                    <div style="font-size: 2rem; margin-bottom: 0.75rem;">🛠️</div>
-                    <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-bright); margin: 0 0 0.5rem 0;">Digital Tools &amp; Knowledge Architecture</h3>
-                    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 1rem 0;">Project Atlas static compiler, 3D interactive knowledge graph, Markdown AST wikilinks, and autonomous AI orchestration.</p>
-                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-cyan);">Explore Tools &amp; Architecture &rarr;</span>
-                </a>
-
-                <a href="/interests/#entertainment" style="text-decoration: none; display: block; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem; transition: all 0.2s; position: relative;">
-                    <div style="font-size: 2rem; margin-bottom: 0.75rem;">🎲</div>
-                    <h3 style="font-size: 1.2rem; font-weight: 700; color: var(--text-bright); margin: 0 0 0.5rem 0;">Entertainment &amp; Community Gamification</h3>
-                    <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; margin: 0 0 1rem 0;">Deflationary virtual economies, daily chess puzzle parsers, parimutuel prediction markets, and interactive tier lists.</p>
-                    <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-cyan);">Explore Community &amp; Games &rarr;</span>
-                </a>
-
-            </div>
-
-            <div style="text-align: center; margin-top: 1.5rem; margin-bottom: 1rem;">
-                <a href="/interests/" class="btn btn-primary" style="background: linear-gradient(135deg, #0284c7, #06b6d4); color: white; padding: 0.8rem 1.6rem; font-weight: 700; text-decoration: none; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);">
-                    <span>⚡ Click here to explore interests &amp; connected tools</span> &rarr;
-                </a>
-            </div>
+            <p style="color: var(--text-muted); font-size: 0.98rem; margin: 0 0 1.25rem 0; max-width: 68ch; line-height: 1.65;">
+                What I build and study outside client engagements—each linked to the live tools and essays it produced:
+            </p>
+            <ul class="notes-list">
+                <li>
+                    <strong><a href="/interests/#sports">Sports &amp; Paper Scoresheets</a></strong> — Scoring Toronto Blue Jays games in pencil across the 162-game grind, plus Montreal Canadiens, Buffalo Bills, and Formula 1 analytics.
+                </li>
+                <li>
+                    <strong><a href="/interests/#video-games">Video Games &amp; 100% Routing</a></strong> — Twenty-five years of mechanical systems from N64 <em>Ocarina of Time</em> and PS2 <em>Final Fantasy X</em> to chronological <em>GTA V</em> and <em>RuneScape: Dragonwilds</em> companions.
+                </li>
+                <li>
+                    <strong><a href="/interests/#music">Music &amp; Vessel Flute Acoustics</a></strong> — Playing the 12-hole Alto C ceramic ocarina and piano, melodic ear transcription, and browser-native Web Audio pitch detection.
+                </li>
+                <li>
+                    <strong><a href="/interests/#electronics">Workshop &amp; Physical Infrastructure</a></strong> — EtchCentric laser engraving on riven slate, Proxmox VE homelab clusters, and white-box servers with on-shelf warm spares.
+                </li>
+                <li>
+                    <strong><a href="/interests/#digital-tools">Digital Tools &amp; Static Architecture</a></strong> — Zero-framework Node.js static site compilation, bidirectional knowledge graphs, and Discord automation.
+                </li>
+                <li>
+                    <strong><a href="/interests/#entertainment">Community &amp; Tactical Games</a></strong> — Daily chess tactics, deflationary community economies, and interactive tier list tools.
+                </li>
+            </ul>
         </section>
 
     </div>

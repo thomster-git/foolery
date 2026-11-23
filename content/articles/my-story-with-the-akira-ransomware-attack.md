@@ -1,14 +1,14 @@
 ---
 stage: "teaser"
 id: my-story-with-the-akira-ransomware-attack
-title: "Surviving the Akira Ransomware Attack: 14 Days of Bare-Metal Triage, Toxic Leadership, and Rebuilding a Mine from Scratch"
+title: "Surviving the Akira Ransomware Attack: 14 Days of Bare-Metal Triage and Rebuilding a Mine from Scratch"
 type: article
 status: published
 author: "Jonathan Thoms"
 created: 2026-10-19
-updated: 2026-10-19
+updated: 2026-11-20
 access: paid
-summary: The true story of how a single IT Coordinator stood between the Akira ransomware gang and the total operational collapse of an isolated fluorspar mine in Newfoundland. From waking up to 200 Defender alert emails at 4:43 AM and discovering our Datto backups untouched, to enduring toxic executive pressure, assembly-line endpoint reimaging, and forensic analysis of a rushed, sloppy adversary.
+summary: The story of how a single IT Coordinator stood between an Akira ransomware detonation and the shutdown of an isolated fluorspar mine in Newfoundland. From waking up to 200 Defender alert emails at 4:43 AM and pulling the fiber uplinks by hand, to finding our Datto backups untouched and reimaging 60 machines on an office bench.
 topics:
   - technology
 themes:
@@ -26,318 +26,133 @@ related:
   - project-atlas
 ---
 
-I had a clear plan for what I was going to do that day.
+I had a clear plan for what I was going to do that morning.
 
-At the time, I was working as the sole IT Coordinator for Canada Fluorspar Inc. (CFI), an industrial fluorspar mining operation located in St. Lawrence on the rugged, isolated Burin Peninsula of Newfoundland. We were in the middle of a high-stakes transition: preparing to exit an underperforming, legacy Managed Service Provider (MSP) that had left our infrastructure riddled with technical debt, and onboarding a much stronger local MSP to take over coverage.
+At the time, I was the sole IT Coordinator for Canada Fluorspar Inc. (CFI), an industrial fluorspar mine in St. Lawrence on the southern tip of Newfoundland's Burin Peninsula. We were in the middle of exiting an underperforming Managed Service Provider (MSP) and onboarding a stronger local partner.
 
-Before the new MSP would officially take us under their contract, they required a comprehensive network and infrastructure audit. They handed me a thick, alarming report detailing critical vulnerabilities left behind by the old provider: flat subnets, unmonitored endpoints, obsolete firewall rules, and dozens of dormant domain administrator accounts quietly sitting active in Active Directory.
+Before the new MSP would take over the environment, they had run an intake audit. Their report sat on my desk: flat `/24` subnets with no internal segmentation, unmonitored endpoints, stale firewall rules, and dormant domain administrator accounts left active in Active Directory by previous contractors. We had ordered new Palo Alto perimeter firewalls and were getting ready to push SentinelOne across the fleet. My plan for that day was to sit down with coffee and start closing those audit findings one by one.
 
-We had already taken the first proactive steps. We had ordered brand-new enterprise firewalls, were preparing to roll out SentinelOne endpoint detection and response (EDR), and I had prioritized the audit's critical punch list. My plan for that morning was to sit down at my workbench and begin systematically eliminating those glaring vulnerabilities one by one.
+I never made the coffee.
 
-That plan never happened. It was completely derailed before I could even make my morning coffee.
-
-At **4:43 AM Newfoundland Standard Time**, long before my alarm was set to go off, my phone on the nightstand erupted with a violent, non-stop vibration.
-
-| Incident Telemetry | Tactical Reading | Operational Impact |
-|---|---|---|
-| **First Payload Trigger** | `04:43:18 NST` | Pre-dawn detonation window before site staff arrived |
-| **Defender Alert Storm** | `200+ Critical Alerts` | Synchronized mass file renames & shadow copy deletions |
-| **Physical Containment** | `< 45 Minutes` | 100% of core copper/fiber uplinks manually severed |
-| **Backup Appliance Integrity** | `100% Intact / Zero Breach` | Datto BCDR ZFS immutable snapshot chain untouched |
-| **Ransom Extortion** | `$0 Paid` | Zero crypto transacted; 100% enterprise recovery |
-| **Total Fleet Rebuild** | `14 Days Bare-Metal Sprint` | 5 production servers + 60+ endpoints imaged and sanitized |
+At **4:43 AM Newfoundland Standard Time**, my phone started vibrating across the nightstand and didn't stop.
 
 ---
 
-## Act I: The 4:43 AM Alert Storm
+## 4:43 AM
 
-The volume of notifications hitting my phone wasn't a standard false positive or an errant disk threshold alert. It was a torrential, synchronized flood: **over 200 critical Microsoft Defender security alerts in the span of minutes.**
+It wasn't a single disk-space warning or a flaky UPS ping. Within a few minutes, my inbox had filled with **more than 200 critical Microsoft Defender alerts**.
 
-Earlier that same week, I had made an administrative decision that ultimately saved the entire company: I had upgraded my Microsoft 365 licensing from Business Standard to **Business Premium (Professional)**. 
+A few days earlier, I had upgraded our Microsoft 365 tenant from Business Standard to Business Premium. Under Business Standard, we wouldn't have had Defender for Endpoint behavioral heuristics or real-time email alerts for suspicious process trees. If I had waited another week to flip that license switch, the payload would have finished encrypting the site in silence before the day shift clocked in.
 
-Under Business Standard, Microsoft provides basic anti-spam and basic antivirus definitions. But Business Premium silently enables **Microsoft Defender for Endpoint**—introducing behavioral heuristics, automated attack disruption, and real-time email telemetry for suspicious process execution. 
+Instead, my screen was scrolling with mass `.akira` file renames, encoded PowerShell invocations under `NT AUTHORITY\SYSTEM`, and `vssadmin.exe` commands trying to wipe Volume Shadow Copies across our servers.
 
-Had I not pushed that license upgrade days prior, the attack would have executed in absolute silence until morning shift arrived.
-
-```text
-[04:43:12 NST] CRITICAL - Ransom:Win32/Akira.A detected on SRV-FILE01 (192.168.1.12)
-[04:43:15 NST] SUSPICIOUS - powershell.exe -enc <Base64Payload> executed by NT AUTHORITY\SYSTEM
-[04:43:17 NST] CRITICAL - Shadow copy deletion: vssadmin.exe delete shadows /all /quiet
-[04:43:21 NST] ALERT    - High-frequency file modification: 4,812 files appended with '.akira'
-[04:43:28 NST] BLOCKED  - Outbound connection to C2 IP 185.220.101.42:443 interrupted by Defender Heuristics
-```
-
-Instead, my phone screen was lit up with notifications of mass file renames, suspicious PowerShell invocations, and unauthorized shadow copy deletion attempts across our server fleet. The ransomware payload had detonated overnight. 
-
-I threw on my work boots and drove to the mine site in the pre-dawn dark.
+I pulled on my work boots and drove to the mine in the dark.
 
 ---
 
-## Act II: Physical Containment vs. The Human Factor
+## Pulling the Cables
 
-When I arrived at the mine site, the silence was eerie. The administrative offices were dark, but the fans in the server room were screaming at maximum RPM. 
+When I unlocked the administrative building, the offices were quiet, but down the hall the server room cooling fans were running flat out.
 
-I didn't wait to inspect operating systems or attempt remote management. When a network is actively encrypting, software-defined isolation is a luxury you cannot afford. I walked straight into the network core and **physically unplugged every network uplink, fiber transceiver, and patch cable** from the switches. I severed the site’s connection to the internet and broke the physical pathways between subnets. The entire facility was air-gapped.
+When a network is actively encrypting, you don't sit down at a console and try to write firewall rules while packets are moving. I walked straight up to the core racks and unplugged every physical uplink, fiber patch, and switch trunk by hand. Within forty-five minutes of that first 4:43 AM alert, the facility was physically air-gapped from the internet and broken into isolated islands.
 
-```text
-[ THREAT ACTOR INGRESS ] (Compromised Dormant AD Admin / Rogue Perimeter)
-             │
-             ▼
-[ FLAT CORPORATE SUBNET (192.168.1.0/24) ]
-├── 💻 Security Guard Laptop (Night-shift torrenting vector)
-├── 🖥️ Finance & Admin Desktops (Encrypted with .akira payload)
-└── 🖧 Production Server Cluster (Active Directory, File Share, ERP)
-             │
-             ├───❌ [ 04:43 AM Alert Storm ] ───> [ Phone Vibrates ]
-             │                                         │
-             ▼                                         ▼
-[ PHYSICAL CORE CABLE PULL ] ─────────────────> [ Total Facility Airgap ]
-             │
-             ├───🛡️ [ Datto BCDR Appliance ] ───> [ 100% UNTOUCHED ]
-             │     (Isolated Linux Kernel, ZFS Immutable Snapshots)
-             │
-             ▼
-[ 14-Day Bare-Metal Recovery: 0 Satoshis Paid, Zero Operational Data Lost ]
-```
+<div class="photo-slot">
+[Photo slot: /images/articles/severed-switch-uplinks.jpg — Bundle of unplugged patch cables and SFP+ fiber leads hanging loose from the switch rack during physical containment]
+</div>
 
-Next came the operational mandate. I issued an immediate, unambiguous emergency directive to all department leads and staff:
+Next, I sent an emergency message to every department head and supervisor:
 
-> *"Turn off your computers immediately. Do not attempt to log in. Do not plug into ethernet. Do not turn them back on under any circumstances, and bring every physical laptop to the IT office for forensic imaging."*
+> *"Turn off your computers immediately. Do not log in, do not plug into ethernet, do not turn them back on, and bring every physical laptop to the IT office."*
 
-This is where I learned the most brutal, unforgiving lesson in all of cybersecurity:
+That morning taught me a lesson no policy binder prepares you for: you cannot build an incident response plan that relies on everyone following instructions when they walk into work. Several people came into their offices, saw strange text files or locked screens, and power-cycled their laptops three or four times trying to check their email. Every reboot on an affected machine risks wiping volatile memory artifacts and rotating event logs before you can image the disk.
 
-> [!WARNING]
-> **The Human Behavior Fallacy:** Your cybersecurity posture is only ever as good as your end-users' willingness to cooperate. Policies and incident response plans look pristine in PDF binders, but when a real crisis hits, human friction can destroy your forensics.
-
-Despite clear, repeated instructions, **multiple employees ignored the directive**. 
-
-People walked into their offices, saw their screens locked or behaving strangely, and repeatedly power-cycled their machines. Some bypassed instructions entirely and kept working on local documents. 
-
-In an active cyber incident, booting an infected endpoint doesn't just risk re-propagating malware across unsegmented broadcast domains—it **violently erases volatile RAM artifacts, corrupts memory dumps, and overwrites Windows Event Viewer logs** that incident responders need to determine weaponization and dwell time.
-
-To make matters worse, the mine had zero cold-spare laptops sitting on a shelf. There was no reserve fleet of pre-imaged, offline machines for essential personnel. The moment we pulled the network plugs, the administrative backbone of the company ceased to exist.
+And because the site had zero spare laptops sitting in reserve, the moment we pulled the network cables and collected the fleet, the administrative side of the mine went dark.
 
 <!-- more -->
 
 ---
 
-## Act III: The Lifeline: The Datto Appliance & The "Sloppy" Hackers
+## The Datto Box They Missed
 
-I began surveying the blast radius across our server room. 
+Back in the server room, I checked the blast radius. The domain controllers, file shares, and ERP hosts had `.akira` extensions across their data volumes and `akira_readme.txt` notes dropped in every folder pointing to a Tor negotiation portal.
 
-The domain controllers, file servers, and our enterprise resource planning (ERP) workloads were compromised. File extensions had been appended with `.akira`, and ransom notes titled `akira_readme.txt` were deposited in directories across the network. Akira is a notorious ransomware family that leverages compromised credentials to establish persistence, dump LSASS credentials, and execute multi-threaded encryption routines.
+Then I logged into our local **Datto BCDR backup appliance**.
 
-```text
-======================= [ AKIRA RANSOMWARE ] =======================
-Dealing with Akira is your only way to recover your encrypted data.
-All your documents, databases, hypervisors, and backups are encrypted.
-Do not modify, rename, or run third-party decryptors on any files.
-It will lead to permanent cryptographic data loss.
+I actually let out a breath I didn't realize I was holding. The Datto box was completely untouched.
 
-To regain access, contact our negotiation portal via Tor:
-hxxp://akira[redacted].onion
-====================================================================
-```
+Akira had torn through the Windows volumes on the flat LAN, but they never touched the isolated Linux-based backup appliance or its immutable ZFS snapshot chain. Every server snapshot from the night before the detonation was healthy and verifiable.
 
-Then I checked our last line of defense: our **Datto BCDR (Business Continuity and Disaster Recovery) appliance**.
+<div class="photo-slot">
+[Photo slot: /images/articles/datto-bcdr-appliance.jpg — Front bezel and status LEDs of the local backup appliance in the server room]
+</div>
 
-My breath caught in my throat. **The Datto device was completely untouched.**
-
-Akira had torn through our primary Windows Server infrastructure, but they never discovered, accessed, or compromised the dedicated backup appliance. The local immutable snapshot chain remained 100% intact, healthy, and isolated. 
-
-That single piece of hardware was the razor-thin boundary between recovering our entire enterprise for free and facing a multi-million-dollar extortion demand that would have shuttered the mine.
-
-As I dug deeper into the compromised endpoints, a surprising technical reality emerged: **the threat actor’s execution was remarkably rushed and sloppy.**
-
-| Adversary Dimension | Sophisticated APT Target | Akira's Actual Execution at CFI |
-|---|---|---|
-| **Active Directory Schema** | Immediate Domain Admin lockout & Kerberos wipe | **FAILED:** My admin credentials remained fully operational |
-| **BCDR & Hypervisor Target** | Targeted NAS wiping & ESXi snapshot destruction | **FAILED:** Missed Datto appliance completely |
-| **Local File Encryption** | Deep multi-pass overwrite & partition corruption | **INCOMPLETE:** We authenticated locally and salvaged unencrypted files |
-| **Event Log Evaporation** | Automated wevtutil cl log purging | **PARTIAL:** Over 200 telemetry alerts captured in M365 cloud |
-| **Lateral Movement Pace** | Patient weeks-long reconnaissance & dwell time | **RUSHED:** Script-kiddie automated spray within hours of ingress |
-
-* **No Domain Lockout:** Sophisticated ransomware gangs typically compromise the Active Directory schema, wipe or reset Domain Admin passwords, and lock legitimate administrators out of their own directory. Akira had not locked me out. My administrator credentials remained functional.
-* **Surface-Level Encryption:** While thousands of files had been hit, the encryption routine appeared rushed. In many instances, we were still able to authenticate locally to infected machines, mount unencrypted partitions, and extract critical operational databases and loose files that the ransomware binary had missed or skipped.
-* **No Backup Annihilation:** Competent extortionists spend days hunting backup servers, deleting Volume Shadow Copies across the hypervisor level, and destroying NAS repositories. Akira missed our Datto entirely.
-
-Later on, during joint briefings with our cyber-insurance legal counsel and third-party forensic investigators, they confirmed my exact assessment: **this was a hasty, automated smash-and-grab.** The adversary had found an open vector, hastily sprayed an automated script across reachable subnets, and triggered encryption before establishing true deep persistence.
+As I inspected the affected servers, it also became clear that the attackers had been in a hurry. They hadn't locked out my Domain Admin credentials or destroyed the Active Directory schema. On several machines, the encryption script had skipped open or unmounted partitions, allowing us to pull recent operational files locally before wiping. When we later briefed cyber-insurance counsel and external forensic investigators, they confirmed what the logs showed: it wasn't a months-long nation-state operation. Someone had found an open door, sprayed an automated encryption script across the flat subnet at 4:40 AM, and bolted.
 
 ---
 
-## Act IV: The 14-Day Recovery Sprint
+## Fourteen Days on the Bench
 
-With the Datto appliance verified, we had a recovery path. The new incoming MSP mobilized with incredible speed, flying a senior network engineer directly to Newfoundland to assist me on-site for three days.
+With clean snapshots on the Datto appliance, we had a way back. The incoming MSP flew a senior network engineer into Newfoundland for three days to work alongside me in the server room.
 
-Together, we executed a rapid, emergency architectural pivot:
+We didn't restore the old flat network; we built the new one on the spot:
+1. **Racking the New Firewalls:** We unboxed the new perimeter firewalls, built strict VLAN boundaries, and blocked unauthorized outbound traffic before bringing a single server back up.
+2. **Sandboxed Server Restores:** We spun up bare-metal restores from the Datto snapshots inside an isolated staging VLAN and verified Active Directory hygiene before opening internal routes.
+3. **One Laptop Per Department:** Reimaging sixty endpoints takes days, and the mine still had to keep water pumps running, meet safety compliance, and process payroll. I wiped and hardened one clean laptop for each critical department—Mine Operations, Safety, Environmental Pumping, and Payroll—so essential work could continue while the rest of the fleet waited in line.
+4. **The Office Assembly Line:** After the fly-in engineer headed home, I turned my office workbench into a one-man imaging line.
 
-1. **Bare-Metal Firewall Deployment:** We unboxed and racked our newly arrived enterprise firewalls, configuring strict VLAN segmentation, blocking outbound unauthorized DNS/NTP, and creating isolated recovery zones.
-2. **Server Restoration from Immutable Snapshots:** We initiated bare-metal restores from the Datto device, spinning up our clean server images in a sandbox before connecting them to the hardened network.
-3. **The "One Laptop Per Department" Strategy:** Because we had zero spare machines and re-imaging 60+ endpoints takes dozens of hours, I implemented a surgical triage protocol. I built a clean workstation image, sanitized, wiped, and deployed **one dedicated, verified laptop to each critical department** (Mine Operations, Site Safety, Payroll, and Environmental Water Pumping). This kept essential industrial operations functioning while the site was technically in blackout.
-4. **The Endpoint Assembly Line:** Once the critical servers and departmental nodes were stable, the fly-in engineer returned, and I was left to handle the remaining fleet alone. I turned my office into an imaging triage bay.
+<div class="photo-slot">
+[Photo slot: /images/articles/laptop-reimaging-bench.jpg — Row of laptops on the IT workbench running disk sanitation and clean OS deployment from offline USB media]
+</div>
 
-```text
-[ CONTAMINATED ENDPOINT ]
-           │
-           ▼
-[ STATION 1: FORENSIC ACQUISITION ]
-Raw Bit-Stream Disk Image (dd / FTK Imager via physical SATA/USB3 bridge)
-           │
-           ▼
-[ STATION 2: CRYPTOGRAPHIC DISK SANITATION ]
-Full Zero-Fill / ATA Secure Erase (Guarantees zero dormant rootkits survive)
-           │
-           ▼
-[ STATION 3: BARE-METAL OS ROLLOUT ]
-Fresh Windows 10/11 Enterprise base image injected via offline USB media
-           │
-           ▼
-[ STATION 4: HARDENED AGENT STACK ]
-Deploy SentinelOne EDR + Defender for Endpoint + Local Admin LAPS
-           │
-           ▼
-[ STATION 5: ISOLATED DOMAIN ENROLLMENT ]
-Rejoin hardened Active Directory over restricted staging VLAN (VLAN 99)
-```
+For the next two weeks I worked sixteen-to-eighteen-hour days straight through the weekend. Pull the drive or bridge it for a raw forensic bit-stream capture, run a full zero-fill erase, lay down a clean Windows image from offline USB media, install SentinelOne and Defender for Endpoint, enable LAPS for local admin passwords, and join the hardened domain.
 
-I worked 16-to-18-hour days, straight through the weekend, with zero overtime compensation. I pulled hard drives, ran forensic image captures, wiped partitions to bare metal, laid down fresh Windows images, joined machines to the hardened domain, and deployed modern EDR agents.
-
-Within **14 days**, our entire enterprise—over 60 endpoints and 5 core production servers—was fully restored, operational, and running cleaner than it had in the prior five years. Not a single penny of ransom was paid.
-
-### The 14-Day Tactical Incident Timeline
-
-| Incident Day | Operational Phase | Threat Actor Activity | Defensive Engineering Response |
-|---|---|---|---|
-| **Day 0 (04:43 AM)** | Detonation & Containment | Automated Akira encryption spray | 200+ Defender alerts; physical cable pull; total site airgap |
-| **Day 1** | BCDR Verification | C2 beacon attempts blocked | Datto appliance inspected: 100% snapshots verified intact |
-| **Day 2–3** | Firewall Deployment | Perimeter blocked | Fly-in MSP engineer arrives; enterprise firewalls racked & VLANs built |
-| **Day 4–5** | Departmental Triage | Lateral spread dead | "One Laptop Per Department" deployed to keep mine pumping water & payroll running |
-| **Day 6–7** | Core Server Restoration | Zero foothold remaining | Datto bare-metal restores spun up in isolated sandbox; AD verified clean |
-| **Day 8–10** | Assembly-Line Reimaging | None | Solo bench shifts: Bit-stream forensic imaging, DBAN wipes, fresh OS rollout |
-| **Day 11–13** | EDR & LAPS Rollout | None | SentinelOne + Defender for Endpoint pushed to every endpoint; LAPS enabled |
-| **Day 14** | Enterprise Go-Live | Extortion defeated | All 60+ endpoints operational; production switches un-isolated; $0 ransom paid |
+| Days | What Happened on the Ground |
+|---|---|
+| **Day 0 (04:43 AM)** | 200+ Defender alerts fire; drive to site; physically pull core switch uplinks and air-gap the mine. |
+| **Day 1** | Inspect the Datto BCDR appliance—confirm 100% of immutable ZFS snapshots are intact. |
+| **Days 2–3** | Fly-in MSP engineer arrives; rack new perimeter firewalls and segment the network into isolated VLANs. |
+| **Days 4–5** | Wipe and deploy one verified laptop per critical department (Operations, Safety, Water Pumping, Payroll). |
+| **Days 6–7** | Restore core servers from Datto snapshots into a clean staging sandbox and scrub dormant AD accounts. |
+| **Days 8–10** | Solo night-and-weekend bench shifts: forensic disk captures, cryptographic wipes, and bare-metal OS installs. |
+| **Days 11–13** | Roll out SentinelOne EDR, Defender for Endpoint, and LAPS across the remaining workstation fleet. |
+| **Day 14** | All 60+ endpoints and 5 production servers back online; $0 ransom paid. |
 
 ---
 
-## Act V: Toxic Leadership, Stolen Credit & The "Food Tray" Slit
+## The Boardroom & The Food-Tray Comment
 
-The technical recovery was a textbook success. The organizational environment, however, was an absolute nightmare.
+Technically, the recovery worked. Environmentally, those two weeks were brutal.
 
-As an AuDHD (Autistic/ADHD) systems engineer, high-intensity crisis scenarios unlock an incredible, hyper-focused state of flow. My brain ignores panic and laser-focuses on system state machines, dependencies, and logical order. But that hyperfocus requires massive energy reserves, and the environment around me was toxic.
+In a real infrastructure emergency, my brain locks into the dependency tree: power, switching, firewall rules, storage pools, domain trust, endpoints. The panic fades out and the work becomes purely sequential. That focus got the servers back up, but the atmosphere upstairs made every day heavier than it needed to be.
 
-The pressure from upper management was suffocating. Mine executives saw the incident not as a sophisticated criminal extortion event that I was actively saving them from, but as an infuriating operational inconvenience caused by "IT."
+Some of the leadership team treated the outage not as a criminal attack we were pulling them out of without paying a cent of ransom, but as an annoyance that "IT" was taking too long to clear up. During one department-head meeting while I was running on four hours of sleep and working unpaid 18-hour shifts, a senior figure at the table joked to the room:
 
-During one particularly tense head-of-department meeting, the owner of the mine made a comment that I will never forget. Looking around the boardroom, he sneered that management should:
+> *"We ought to lock Jonathan in his office, cut a slit in the bottom of the door to slide food trays through, and not let him out until everything is working."*
 
-> *"Lock Jonathan in his office, cut a slit in the bottom of the door to shove food trays in, and don't let him out until everything is fixed."*
+People around the table laughed. I just sat there looking at my notebook.
 
-People in the room chuckled. I sat there in silence. I had been working 18-hour shifts without extra pay, sacrificing my sleep, health, and sanity to resurrect their multi-million-dollar mine from bare metal, and the owner was joking about treating me like an animal in a cage.
+Not long after I wrote out the phased recovery roadmap—the departmental loaner sequence, the VLAN staging, and the server restore order—a manager above me stripped my name off the document, presented it upstairs as his own plan, and then walked back down to instruct me to follow it.
 
-The humiliation didn't stop with the owner. Shortly after I drafted the comprehensive architectural recovery roadmap—the phased restore plan, the departmental loaner strategy, and the segmentation layout—my direct manager at the time took my documentation, removed my name, **presented it to executive leadership as his own original strategy**, and then walked back into my office to "command" me to execute the very plan I had authored.
-
-Then came the investigation farce. I had been designated as the technical representative to interface with cyber-insurance lawyers and external forensic specialists. I was tasked with capturing forensic bit-stream disk images of primary patient-zero endpoints for legal evidence. 
-
-Forensic imaging over USB/SATA bridges on failing mechanical drives takes hours per machine. Management quickly grew impatient. They refused to attend the investigative legal calls and became openly hostile when they realized the forensic imaging process was delaying the return of computers to administrative staff.
-
-The final straw occurred when the external legal team sent their initial invoice. The moment upper management realized the legal retainer limit had been reached, **they pulled the plug on the investigation entirely.**
-
-They told me to stop taking forensic images, hurry up, and just wipe the machines so employees could get back to work. To this day, management never followed up, never concluded the post-mortem, and never shared the results of the investigation with me.
+Even the forensic handoff was cut short. Cyber-insurance counsel had asked me to capture raw bit-stream disk images of the earliest affected machines. Cloning failing drives over USB bridges takes hours per machine, and executives quickly tired of waiting for hardware to clear forensics. The day the outside legal and forensic team notified management that the initial retainer cap had been reached, leadership shut the investigation down and told me to stop imaging disks and just wipe them so staff could have their desks back.
 
 ---
 
-## Act VI: The Post-Mortem: How Did They Get In?
+## How They Likely Got In
 
-Even with the investigation prematurely killed by corporate leadership, the forensic telemetry I preserved allowed me to piece together the likely attack vectors.
-
-```text
-[ PRIMARY INGRESS SUSPECTS ]
-┌──────────────────────────────────────┐     ┌──────────────────────────────────────┐
-│  Vector A: Rogue WiFi Pineapple      │     │  Vector B: Gatehouse Shadow IT       │
-│  - Investors & tours on site         │     │  - Security officer night shifts     │
-│  - High RF beacon anomalies          │     │  - Torrenting client on personal PC  │
-│  - MITM credential harvesting        │     │  - Unsegmented gatehouse ethernet    │
-└──────────────────┬───────────────────┘     └──────────────────┬───────────────────┘
-                   │                                            │
-                   └──────────────────┬─────────────────────────┘
-                                      ▼
-                   [ THE WEAPON: DORMANT AD ADMINS ]
-                   - Legacy NTLM authentication enabled
-                   - Abandoned by old MSP without offboarding
-                   - Direct domain dominance without brute-force
-                                      ▼
-                   [ LATERAL EXECUTION ACROSS FLAT LAN ]
-```
-
-### 1. The Dormant Admin Accounts (The Weapon)
-
-The previous MSP had been dangerously negligent with Active Directory hygiene. They had left multiple dormant administrator accounts active on the domain with legacy authorization methods enabled. 
-
-Akira frequently exploits known authorization flaws (such as legacy NTLM relay or unpatched license/auth service bypasses) to hijack inactive administrative credentials without ever needing to brute-force a password. Once inside, they inherit the keys to the kingdom.
-
-### 2. The Rogue IP Anomaly (Ingress Suspect #1: Physical Proximity)
-
-On the days leading up to the attack, the mine hosted a high volume of outside foot traffic: investors and potential buyers touring the surface facilities and administrative buildings. 
-
-While reviewing the Microsoft Defender connection telemetry from that window, I spotted an anomalous private IP address behaving erratically on our wireless perimeter. Its network signature and packet broadcast behavior bore a striking resemblance to a **WiFi Pineapple**—a rogue penetration-testing access point used to perform man-in-the-middle credential harvesting against nearby corporate devices.
-
-### 3. The Security Guard's Workstation (Ingress Suspect #2: Internal Shadow IT)
-
-There was a competing, equally plausible theory. A security officer at the front gate had been connecting his personal laptop to the corporate network to **download torrents** during night shifts. 
-
-The Defender alert timelines indicated that the lateral scan and initial credential staging appeared to emanate directly from the security station’s subnet early that morning before spreading to the core servers. The mine’s unsegmented flat network meant that an infected personal laptop on the perimeter had direct, unfiltered line-of-sight to production domain controllers.
-
-Both vulnerabilities existed because of years of deferred maintenance and absent security boundaries: legacy dormant credentials provided the privilege, and an unsegmented network provided the runway.
+Even though the formal external post-mortem was halted once the retainer ran out, the Defender logs and AD audit trails pointed to two pieces that came together:
+* **Orphaned Admin Credentials:** The previous MSP had left dormant administrator accounts active in Active Directory with legacy authentication enabled—giving an intruder who landed anywhere on the network an easy privilege escalation path.
+* **An Unsegmented Perimeter:** In the days before the attack, the site had hosted outside tours where Defender logged an erratic rogue wireless device on the perimeter, while initial lateral scanning early that morning traced back toward an unsegmented peripheral subnet where an unauthorized personal machine had been plugged in overnight. Because the legacy network was completely flat, a single foothold on the edge had a straight line to the domain controllers.
 
 ---
 
-## Act VII: The Monday After & The Autistic Meltdown
+## The Monday After
 
-You cannot run on pure adrenaline, 18-hour workdays, sensory overload, and emotional abuse indefinitely without paying a catastrophic neurological price.
+By the end of day fourteen, the mine was running, payroll had cleared, the new firewalls were humming, and all five servers and sixty endpoints were clean.
 
-By the second week, the critical systems were back online. The mine was producing, payroll cleared, and the servers were stable. 
+Then came Monday morning.
 
-Then came the following Monday. 
+My fiancée woke up violently ill and severely dehydrated. I couldn't leave her alone to drive down the peninsula. For the first morning in two weeks, I wasn't standing at the workbench with a stack of laptops and a USB drive.
 
-My fiancée woke up violently ill with an incapacitating gastrointestinal bug. She was bedridden, severely dehydrated, and unable to care for herself. I could not leave her alone. For the first time in two weeks, I couldn't go into the office. I couldn't sit at my workbench. 
+Two weeks of running on adrenaline, sensory overload, eighteen-hour shifts, and boardroom hostility caught up with my nervous system all at once. Half of my head was still spinning on firewall rules and whether management would blame me if a printer misfired, while everything that actually mattered in my life needed me at home. My body simply tripped the main breaker—a full, non-verbal autistic shutdown on the living room floor.
 
-My nervous system, which had been trapped in a state of high-alert, life-or-death crisis mode for fourteen straight days, slammed into a concrete wall.
-
-My brain was screaming that the mine was still vulnerable, that I had to finish hardening the infrastructure, that management was waiting to blame me for anything that went wrong—while my heart and duty were at home caring for the person I love. 
-
-The collision of those two unstoppable forces, compounded by profound physical exhaustion and weeks of absorbing toxic hostility, triggered **one of the most severe Autistic Meltdowns of my adult life.**
-
-An autistic meltdown is not a temper tantrum. It is not an emotional outburst. It is a **full neurological shutdown**—an involuntary crisis response where the nervous system loses the ability to regulate incoming sensory and cognitive input. You cannot "willpower" your way out of it. Your brain simply trips the main breaker to protect itself from burning out completely.
-
-I lay on the floor, completely non-verbal, overwhelmed by the realization that I had spent two weeks saving a multi-million-dollar corporation that viewed me as a disposable cog, while neglecting the only things in life that actually mattered.
-
----
-
-## Lessons from the Rubble: What Matters When the Ransom Note Drops
-
-Surviving Akira taught me more about enterprise architecture, human nature, and systems engineering than any certification ever could. If you are responsible for keeping infrastructure alive, here are the truths that matter:
-
-### 1. One Immutable Backup Device Beats a $50,000 Security Stack
-
-Every single software defense we had failed or was in transition. The only reason Canada Fluorspar survived without paying ransom was our isolated, immutable Datto BCDR appliance. Follow the **3-2-1 backup rule** religiously: three copies of your data, on two different media types, with at least **one copy completely immutable, offsite, and air-gapped**. Test your bare-metal restores before you need them.
-
-### 2. Upgrading Licensing Is an Operational Decision
-
-Upgrading from Microsoft 365 Business Standard to Business Premium days prior gave us the Defender for Endpoint telemetry that caught Akira at 4:43 AM. If you are running an organization on baseline licensing without EDR or centralized email alerting, you are operating blind.
-
-### 3. Clean Your Active Directory Regularly
-
-Dormant admin accounts are open doors with welcome mats. Implement strict privileged access workstations (PAWs), enforce multi-factor authentication (MFA) everywhere, and run monthly audits to disable or delete orphaned accounts left behind by contractors and former MSPs.
-
-### 4. Technical Controls Must Enforce What User Trust Cannot
-
-You cannot rely on end-user compliance during an incident. If you tell users not to boot their computers, someone will boot their computer. Design your network so that compromise containment is enforced at the managed switch and VLAN level, not by trusting humans to follow written warnings.
-
-### 5. Recognize When Adversaries Are Rushed
-
-Ransomware operators are human beings under operational pressure. When you discover an intrusion, look closely: did they lock out your domain admins? Did they touch your backups? Did they clean up their logs? Akira’s sloppy, rushed execution gave us the leverage and unencrypted files we needed to rebuild without panicking.
-
-### 6. Protect Your Engineers Before They Break
-
-Servers can be wiped, re-imaged, and brought back from bare metal in fourteen days. A human nervous system, shattered by around-the-clock burnout, lack of accommodations, and toxic leadership, takes months or years to heal. 
-
-Cybersecurity is not just about defending data. It’s about building resilient, humane systems that honor both the hardware and the people who keep it running.
+You can wipe and rebuild sixty computers and five servers from bare metal in fourteen days. A human nervous system takes a lot longer. Keep an immutable backup appliance off your Windows domain, segment your flat networks before you have to do it at 5:00 AM, and never forget that the hardware isn't the most fragile thing in the server room.

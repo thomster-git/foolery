@@ -1,504 +1,234 @@
 <div class="page-container">
-    <div class="content-wrapper" style="max-width: 960px; margin: 2rem auto; padding: 0 1rem;">
-        
+    <div class="content-wrapper" style="max-width: 980px; margin: 2rem auto; padding: 0 1rem;">
+
         <!-- Breadcrumbs -->
-        <div class="breadcrumbs" style="margin-bottom: 2rem;">
+        <div class="breadcrumbs" style="margin-bottom: 1.75rem;">
             <a href="/">Home</a> &gt;
             <a href="/resume/">Resume</a> &gt;
             <span>Interests &amp; Obsessions</span>
         </div>
 
-        <!-- Page Header (Static, Non-Sticky) -->
-        <div class="interests-page-header" style="position: static !important; margin-bottom: 3rem; border-bottom: 1px solid var(--border-color); padding-bottom: 2rem; display: block;">
-            <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: var(--accent-cyan); padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1.25rem;">
-                <span>🧭</span> The Curiosity Taxonomy
+        <!-- Page Header -->
+        <header class="hero">
+            <h1>Interests &amp; Obsessions</h1>
+            <p>
+                What I spend my time building, scoring, practicing, and taking apart outside formal job titles. Most of the tools and essays on this site started in one of these six rabbit holes.
+            </p>
+            <nav class="interests-jump-nav" aria-label="Interest sections">
+                <a href="#sports">01 Sports</a>
+                <a href="#video-games">02 Video Games</a>
+                <a href="#music">03 Music</a>
+                <a href="#electronics">04 Electronics</a>
+                <a href="#digital-tools">05 Digital Tools</a>
+                <a href="#entertainment">06 Entertainment</a>
+            </nav>
+        </header>
+
+        <!-- 01. SPORTS (2-column asymmetric: Feature Left, Notes Right) -->
+        <section id="sports" class="interest-section">
+            <div class="interest-head">
+                <span class="interest-num">01</span>
+                <h2>Sports &amp; the Teams I Back</h2>
             </div>
-            <h1 style="font-size: 3rem; line-height: 1.1; margin-bottom: 1rem; color: var(--text-bright); font-weight: 800;">
-                Interests &amp; Obsessions
-            </h1>
-            <p style="font-size: 1.2rem; color: var(--text-muted); max-width: 780px; line-height: 1.6; margin-bottom: 1.75rem;">
-                A progressive drill-down of curiosities, technical disciplines, and creative rabbit holes outside formal titles. Click any broad category to unpack its specific tools, models, and personal projects.
+
+            <div class="interest-split">
+                <div class="feature-editorial">
+                    <h3>Toronto Blue Jays — Scored by Hand in Pencil</h3>
+                    <blockquote class="pull-quote">
+                        Scoring a baseball game on paper forces you to watch the spaces between the pitches—when a starter loses his release point in the sixth, and how a bullpen gets taxed across a four-game series.
+                    </blockquote>
+                    <p>
+                        I am a baseball purist first and a Blue Jays fan right behind it. Sitting down with a physical paper scorebook and a sharp pencil turns a three-hour broadcast into a slow, deliberate ledger of leverage and decision-making. You see the whole 162-game arc differently when you have written down every walk, defensive shift, and blown save yourself.
+                    </p>
+                    <div class="photo-slot">
+                        [Photo slot: /images/baseball/scoresheet-bluejays.jpg — Overhead shot of a hand-scored Blue Jays paper scorebook page with pencil in frame]
+                    </div>
+                    <p>
+                        That habit directly led to building the <a href="/tools/postseason-baseball-analyzer/" class="inline-tool-link">MLB Postseason Momentum Analyzer</a>, the <a href="/tools/baseball-trend-analyzer/" class="inline-tool-link">162-Game Run Differential Analyzer</a>, and the <a href="/tools/umpire-simulator/" class="inline-tool-link">3D ABS Umpire Pitch Simulator</a>.
+                    </p>
+                </div>
+
+                <ul class="notes-list">
+                    <li>
+                        <strong>Montreal Canadiens (NHL).</strong> Bleeding Bleu-Blanc-Rouge through the modern rebuild, tracking young core development and five-on-five possession across the 82-game winter grind. &rarr; <a href="/tools/nhl-trend-analyzer/">NHL Standings &amp; Goal Differential Analyzer</a>
+                    </li>
+                    <li>
+                        <strong>Buffalo Bills (NFL).</strong> Bills Mafia through every red-zone sweat, AFC East race, and January lake-effect snow game. &rarr; <a href="/tools/nfl-trend-analyzer/">NFL Point Differential &amp; Rolling Trend Analyzer</a>
+                    </li>
+                    <li>
+                        <strong>Formula 1.</strong> Drawn to aerodynamic telemetry deltas, tire degradation cliffs, and split-second pit wall calls—backing Oscar Piastri and following Lewis Hamilton in Ferrari scarlet. &rarr; <a href="/tools/f1-championship-calculator/">F1 2026 Championship Clinch Calculator</a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 02. VIDEO GAMES (Indented Vertical Timeline with 2 Expanded Narrative Milestones) -->
+        <section id="video-games" class="interest-section interest-section--indented">
+            <div class="interest-head">
+                <span class="interest-num">02</span>
+                <h2>Video Games &amp; Mechanical Systems</h2>
+            </div>
+
+            <div class="timeline-rail">
+                <div class="timeline-item">
+                    <span class="timeline-year">1998–2002 · Nintendo 64</span>
+                    <div class="feature-editorial">
+                        <h3>Ocarina of Time &amp; Melodic Spatial Design</h3>
+                        <p>
+                            The era where 3D spatial puzzle design and musical memory clicked for me. Memorizing every C-button melody in <em>The Legend of Zelda: Ocarina of Time</em> by ear—and later picking up a physical 12-hole vessel flute—led directly to building the browser-based <a href="/tools/ocarina/" class="inline-tool-link">N64 Ocarina &amp; Microphone Pitch Practice Suite</a>.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-year">2000–2011 · Game Boy</span>
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">
+                        <strong>Handheld Tactics.</strong> Link-cable trading across early <em>Pokémon</em> generations, grid-based turn strategy in <em>Advance Wars</em>, and Djinn class permutations in <em>Golden Sun</em>.
+                    </p>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-year">2002–2008 · PlayStation 2</span>
+                    <div class="feature-editorial">
+                        <h3>Final Fantasy X &amp; 100% End-Game Routing</h3>
+                        <p>
+                            Countless hours mapping Conditional Turn-Based (CTB) battle timelines, Sphere Grid stat-maxing routes, Monster Arena captures, and Celestial Weapon sigils. I built the <a href="/tools/ffx-tracker/" class="inline-tool-link">FFX 100% Completion Tracker</a> so players can route the entire post-game without losing track of a single Al Bhed Primer or Dark Aeon requirement.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-year">2008–2012 · Xbox 360</span>
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">
+                        <strong>Console Multiplayer &amp; Achievement Hunting.</strong> Custom <em>Halo 3</em> Forge lobbies, late-night Search &amp; Destroy rounds in <em>Modern Warfare</em>, and methodical completionist checklists.
+                    </p>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-year">2011–2026 · PC &amp; Open-World Routing</span>
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">
+                        <strong>Custom Builds &amp; Grand Theft Auto.</strong> High-refresh PC hardware, ability economies in <em>Overwatch</em>, and chronological open-world completion routing. &rarr; <a href="/tools/gta-v-tracker/" class="inline-tool-link">GTA V 100% &amp; Achievements Checklist</a>
+                    </p>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-year">2004–Present · RuneScape</span>
+                    <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">
+                        <strong>Twenty Years of Tick Manipulation &amp; Player Economies.</strong> From Old School RuneScape bank-standing efficiency to hosting dedicated servers in <em>RuneScape: Dragonwilds</em>. &rarr; <a href="/tools/dragonwilds-tracker/" class="inline-tool-link">Dragonwilds Progression Companion</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03. MUSIC (Wide Single-Column Editorial + 2 Compact Notes) -->
+        <section id="music" class="interest-section">
+            <div class="interest-head">
+                <span class="interest-num">03</span>
+                <h2>Music &amp; Acoustic Engineering</h2>
+            </div>
+
+            <div class="feature-editorial" style="margin-bottom: 1.5rem;">
+                <h3>12-Hole Alto C Ocarina &amp; Piano</h3>
+                <blockquote class="pull-quote">
+                    A ceramic vessel flute has no fixed reed or keys—staying in tune across a two-octave range depends entirely on your breath curve rising smoothly from A4 to F6.
+                </blockquote>
+                <p>
+                    Playing the 12-hole Alto C ocarina alongside piano gives you two opposite ways of thinking about pitch: the piano lays out harmony as a fixed mechanical grid, while the ocarina demands micro-adjustments in breath pressure on every single note. I spend evenings transcribing Zelda, Studio Ghibli, and classic game themes by ear and testing them against the real-time autocorrelation tuner in the <a href="/tools/ocarina/" class="inline-tool-link">Ocarina Practice Suite</a>.
+                </p>
+                <div class="photo-slot">
+                    [Photo slot: /images/ocarina/ocarina-closeup.jpg — 12-hole ceramic Alto C ocarina resting on the desk beside the practice suite]
+                </div>
+            </div>
+
+            <ul class="notes-list">
+                <li>
+                    <strong>Melodic Ear Training.</strong> Transcribing game and film phrasing by ear, preserving natural breathing rests, accidentals, and octave shifts so melodies fit within a 21-semitone vessel chamber.
+                </li>
+                <li>
+                    <strong>Web Audio API &amp; Autocorrelation DSP.</strong> Writing browser-native sound synthesizers and time-domain pitch detectors that measure microphone input down to the cent without external libraries.
+                </li>
+            </ul>
+        </section>
+
+        <!-- 04. ELECTRONICS (Indented Reversed Asymmetric Split: Notes Left, Feature Right) -->
+        <section id="electronics" class="interest-section interest-section--indented">
+            <div class="interest-head">
+                <span class="interest-num">04</span>
+                <h2>Electronics &amp; Physical Infrastructure</h2>
+            </div>
+
+            <div class="interest-split interest-split--reverse">
+                <ul class="notes-list">
+                    <li>
+                        <strong>White-Box Servers &amp; On-Shelf Warm Spares.</strong> Building standardized, maintainable server hardware with local warm spares for remote Newfoundland industrial sites where a 4-hour vendor SLA is a fantasy on paper. &rarr; <a href="/articles/sensible-infrastructure-and-white-box-servers.html">Read: Sensible Infrastructure &amp; White-Box Servers</a>
+                    </li>
+                    <li>
+                        <strong>Proxmox VE Homelab &amp; Self-Hosting.</strong> Clustered nodes, ZFS mirrored NVMe pools, lightweight LXC containers, and Tailscale mesh networking running quietly at home.
+                    </li>
+                </ul>
+
+                <div class="feature-editorial">
+                    <h3>EtchCentric Creations — Laser Engraving &amp; Fabrication</h3>
+                    <p>
+                        In the workshop I run diode and fiber laser setups for custom slate coasters, hardwood signage, and small-batch anodized metal runs. Getting a clean engraving on natural riven slate means dialing in speed/power burn matrices, kerf compensation, and pre-treatment coats so the contrast holds up for years.
+                    </p>
+                    <div class="photo-slot">
+                        [Photo slot: /images/workshop/laser-engraving-in-progress.jpg — Laser mid-engrave on a slate coaster and the tabletop photography sweep]
+                    </div>
+                    <p>
+                        Photographing dark textured slate without glare turned into its own engineering project—documented in <a href="/articles/diy-product-photography-sony-a6400-darktable.html" class="inline-tool-link">DIY Product Photography with a Sony a6400 &amp; Darktable</a>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05. DIGITAL TOOLS (Prose Column + Notes) -->
+        <section id="digital-tools" class="interest-section">
+            <div class="interest-head">
+                <span class="interest-num">05</span>
+                <h2>Digital Tools &amp; Knowledge Architecture</h2>
+            </div>
+
+            <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.75; max-width: 72ch; margin: 0 0 1.25rem 0;">
+                I dislike bloated web stacks that need 400 megabytes of JavaScript dependencies to render a paragraph of text. Project Atlas compiles Markdown and YAML frontmatter through a zero-dependency Node.js pipeline into fast, static HTML while still supporting interactive canvas simulators, <code style="font-family: var(--font-mono);">localStorage</code> trackers, and a live <a href="/graph/" class="inline-tool-link">3D Force-Directed Knowledge Graph</a>.
             </p>
 
-            <!-- Jump Navigation & Controls -->
-            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="category-pills">
-                    <a href="#sports" class="tag-pill" style="text-decoration: none;">⚾ Sports</a>
-                    <a href="#video-games" class="tag-pill" style="text-decoration: none;">🎮 Video Games</a>
-                    <a href="#music" class="tag-pill" style="text-decoration: none;">🎵 Music</a>
-                    <a href="#electronics" class="tag-pill" style="text-decoration: none;">⚡ Electronics</a>
-                    <a href="#digital-tools" class="tag-pill" style="text-decoration: none;">🛠️ Digital Tools</a>
-                    <a href="#entertainment" class="tag-pill" style="text-decoration: none;">🎲 Entertainment</a>
-                </div>
-                <div style="display: flex; gap: 0.5rem;">
-                    <button id="btn-expand-all" type="button" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.4rem 0.85rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">Expand All</button>
-                    <button id="btn-collapse-all" type="button" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.4rem 0.85rem; border-radius: 6px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;">Collapse All</button>
-                </div>
+            <ul class="notes-list" style="max-width: 72ch;">
+                <li>
+                    <strong>Discord as an Operating System.</strong> Replacing fragmented chat apps with modular Python cogs, voice channel automation, and live sportsbook feeds. &rarr; <a href="/articles/building-a-comprehensive-discord-ecosystem.html">Read: Building a Discord Ecosystem</a>
+                </li>
+                <li>
+                    <strong>Interactive Tier Lists.</strong> Fast client-side drag-and-drop ranking boards with instant image export. &rarr; <a href="/tools/tier-list/">Tier List Creator</a>
+                </li>
+            </ul>
+        </section>
+
+        <!-- 06. ENTERTAINMENT (Indented Pure Compact Notes List — No Feature Box) -->
+        <section id="entertainment" class="interest-section interest-section--indented">
+            <div class="interest-head">
+                <span class="interest-num">06</span>
+                <h2>Entertainment &amp; Community Gamification</h2>
             </div>
-        </div>
 
-        <!-- Categories List -->
-        <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 4rem;">
+            <ul class="notes-list" style="max-width: 72ch;">
+                <li>
+                    <strong>Daily Chess Tactics.</strong> Middle-game sacrifice puzzles, FEN string parsing, and pattern recognition over coffee.
+                </li>
+                <li>
+                    <strong>Deflationary Virtual Economies.</strong> Designing closed-loop community currencies with parimutuel betting pools, house-vig burns, and vanity sinks that prevent runaway inflation.
+                </li>
+                <li>
+                    <strong>Live Stream &amp; Event Schedule.</strong> Local-timezone schedule conversions and community game nights.
+                </li>
+            </ul>
+        </section>
 
-            <!-- 1. SPORTS -->
-            <section id="sports" class="interest-category-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; transition: border-color 0.2s;">
-                <details class="category-details" open>
-                    <summary style="cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between;">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <span style="font-size: 2.25rem;">⚾</span>
-                            <div>
-                                <h2 style="font-size: 1.6rem; font-weight: 700; color: var(--text-bright); margin: 0;">Sports &amp; Team Backings</h2>
-                                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0.25rem 0 0 0;">Personal histories, team loyalties, physical scoresheets, and why I back the teams I do.</p>
-                            </div>
-                        </div>
-                        <span class="chevron-indicator" style="font-size: 1.25rem; color: var(--text-dim); transition: transform 0.2s;">▼</span>
-                    </summary>
-
-                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 1.25rem;">
-                        
-                        <!-- Subtopic 1.1 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Baseball (MLB) — Toronto Blue Jays</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                A purist fan of the game first—scoring live games pitch-by-pitch on physical paper scoresheets with pencil in hand. Dedicated backer of the Toronto Blue Jays, tracking the full 162-game campaign, bullpen usage patterns, and division race momentum.
-                            </p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <a href="/tools/postseason-baseball-analyzer/" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">⚡ Live Tool: MLB Postseason Momentum Analyzer &rarr;</a>
-                                <a href="/tools/baseball-trend-analyzer/" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">📊 Live Tool: MLB 162-Game Trend Analyzer &rarr;</a>
-                                <a href="/tools/umpire-simulator/" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">⚾ Live Tool: 3D MLB Umpire Pitch Simulator &rarr;</a>
-                            </div>
-                        </div>
-
-                        <!-- Subtopic 1.2 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Hockey (NHL) — Montreal Canadiens (Habs)</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                Bleeding Bleu-Blanc-Rouge for the Montreal Canadiens. Deeply invested in the modern rebuild, young core developments, five-on-five possession metrics, and following the relentless 82-game regular season night after night.
-                            </p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <a href="/tools/nhl-trend-analyzer/" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">🏒 Live Tool: NHL Standings &amp; Goal Differential Analyzer &rarr;</a>
-                            </div>
-                        </div>
-
-                        <!-- Subtopic 1.3 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">American Football (NFL) — Buffalo Bills</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                Proud backer of the Buffalo Bills and member of Bills Mafia. Following weekly game-planning, red-zone execution, AFC East playoff positioning, and cold-weather winter football right across the border.
-                            </p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <a href="/tools/nfl-trend-analyzer/" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">🏈 Live Tool: NFL Trend &amp; Point Differential Analyzer &rarr;</a>
-                            </div>
-                        </div>
-
-                        <!-- Subtopic 1.4 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Formula 1 — Motorsport Passion</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                Fascinated by aerodynamic engineering, telemetry deltas, and split-second pit wall strategy. Actively following practice, qualifying, and Grand Prix race weekends, rooting for Oscar Piastri and tracking Lewis Hamilton's legacy campaign in Ferrari scarlet.
-                            </p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <a href="/tools/f1-championship-calculator/" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">🏎️ Live Tool: F1 2026 Championship Clinch Calculator &amp; Simulator &rarr;</a>
-                            </div>
-                        </div>
-
-                        <!-- Explore Footer -->
-                        <div style="margin-top: 0.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-                            <span style="font-size: 0.85rem; color: var(--text-dim);">Detailed personal sports essays and deeper game analyses in progress.</span>
-                            <a href="/tools/" class="btn" style="font-size: 0.82rem; padding: 0.4rem 0.9rem; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--accent-cyan); text-decoration: none; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.4rem;">
-                                Click here to explore sports tools &rarr;
-                            </a>
-                        </div>
-                    </div>
-                </details>
-            </section>
-
-            <!-- 2. VIDEO GAMES -->
-            <section id="video-games" class="interest-category-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; transition: border-color 0.2s;">
-                <details class="category-details">
-                    <summary style="cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between;">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <span style="font-size: 2.25rem;">🎮</span>
-                            <div>
-                                <h2 style="font-size: 1.6rem; font-weight: 700; color: var(--text-bright); margin: 0;">Video Games &amp; Mechanical Systems</h2>
-                                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0.25rem 0 0 0;">Significant eras, defining memories, mechanical deconstructions, and personal history across 25+ years of gaming.</p>
-                            </div>
-                        </div>
-                        <span class="chevron-indicator" style="font-size: 1.25rem; color: var(--text-dim); transition: transform 0.2s;">▼</span>
-                    </summary>
-
-                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 1.25rem;">
-                        
-                        <!-- Era 1: Nintendo 64 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Nintendo 64 Era (1998–2002)</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                The foundational era of 3D spatial design, dungeon mechanics, and melodic memory. Heavily shaped by <em>The Legend of Zelda: Ocarina of Time</em>—memorizing song fingerings note-for-note and studying acoustic game design—alongside classic couch multiplayer.
-                            </p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <a href="/tools/ocarina/" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">🎶 Live Tool: Interactive N64 Ocarina &amp; Practice Suite &rarr;</a>
-                            </div>
-                        </div>
-
-                        <!-- Era 2: Game Boy -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Game Boy Era (2000–2011)</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin: 0;">
-                                Handheld systems, link-cable trading culture, and turn-based tactical mastery. Hundreds of hours across classic <em>Pokémon</em> generations, alongside grid-based strategy in <em>Advance Wars</em> and puzzle-solving in <em>Golden Sun</em>.
-                            </p>
-                        </div>
-
-                        <!-- Era 3: PlayStation 2 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">PlayStation 2 Era (2002–2008)</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                Deep mechanical systems, turn-based combat timelines, and non-linear progression. Profoundly influenced by <em>Final Fantasy X</em> (Sphere Grid routing, CTB turn orders, and 100% end-game completion) alongside sprawling narratives like <em>Metal Gear Solid</em> and <em>Kingdom Hearts</em>.
-                            </p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <a href="/tools/ffx-tracker/" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">⚔️ Live Tool: FFX 100% Completion Tracker &rarr;</a>
-                            </div>
-                        </div>
-
-                        <!-- Era 4: Xbox 360 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Xbox 360 Era (2008–2012)</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin: 0;">
-                                The competitive console multiplayer revolution. High-communication lobby dynamics, custom game modes in <em>Halo 3</em> Forge, tactical Search &amp; Destroy rounds in <em>Modern Warfare</em>, and competitive achievement hunting.
-                            </p>
-                        </div>
-
-                        <!-- Era 5: PC Gaming -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">PC Gaming Era (2011–2025)</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                Custom desktop builds, high-refresh displays, and tactical team communication. Focus on hero shooter ability economies, situational counter-picking in <em>Overwatch</em>, open-world 100% completion routing in <em>Grand Theft Auto V</em>, and sandbox survival crafting.
-                            </p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <a href="/tools/gta-v-tracker/" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">🌴 Live Tool: GTA V 100% &amp; Achievements Checklist &rarr;</a>
-                            </div>
-                        </div>
-
-                        <!-- Era 6: RuneScape -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">RuneScape Era (2004–Present)</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 0.75rem;">
-                                A 20+ year continuous thread: tick manipulation in Old School RuneScape (OSRS), player-driven economies, and dedicated server mechanics in <em>RuneScape: Dragonwilds</em>. Directly inspired our real-time vault timers and interactive guides.
-                            </p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <a href="/tools/dragonwilds-tracker/" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">🐉 Live Tool: Dragonwilds Progression Tracker &amp; Share Card &rarr;</a>
-                            </div>
-                        </div>
-
-                        <!-- Explore Footer -->
-                        <div style="margin-top: 0.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-                            <span style="font-size: 0.85rem; color: var(--text-dim);">Full retrospectives and game mechanics essays coming soon.</span>
-                            <a href="/tools/" class="btn" style="font-size: 0.82rem; padding: 0.4rem 0.9rem; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--accent-cyan); text-decoration: none; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.4rem;">
-                                Click here to explore gaming trackers &rarr;
-                            </a>
-                        </div>
-                    </div>
-                </details>
-            </section>
-
-            <!-- 3. MUSIC -->
-            <section id="music" class="interest-category-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; transition: border-color 0.2s;">
-                <details class="category-details">
-                    <summary style="cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between;">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <span style="font-size: 2.25rem;">🎵</span>
-                            <div>
-                                <h2 style="font-size: 1.6rem; font-weight: 700; color: var(--text-bright); margin: 0;">Music &amp; Acoustic Engineering</h2>
-                                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0.25rem 0 0 0;">Woodwinds, pitch autocorrelation algorithms, Web Audio synthesis, and melodic ear training.</p>
-                            </div>
-                        </div>
-                        <span class="chevron-indicator" style="font-size: 1.25rem; color: var(--text-dim); transition: transform 0.2s;">▼</span>
-                    </summary>
-
-                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 1.25rem;">
-                        
-                        <!-- Subtopic 3.1 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">12-Hole Alto C Ocarina</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin-bottom: 0.75rem;">
-                                The physics of vessel flutes: chamber resonance, rising breath pressure curves, sub-hole fingering mechanics, and pure sweet-potato timbre. Designing printable finger-chart companions and pitch calibration guides.
-                            </p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <a href="/tools/ocarina/" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">🎶 Live Tool: Interactive N64 Ocarina &amp; Practice Suite &rarr;</a>
-                            </div>
-                        </div>
-
-                        <!-- Subtopic 3.2 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Melodic Ear Training &amp; Video Game Phrasing</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin: 0;">
-                                Transcribing authentic melodies by ear (Zelda, Pokémon, Studio Ghibli, anime themes), preserving natural phrasing pauses, octave transpositions, and accidental modulations.
-                            </p>
-                        </div>
-
-                        <!-- Subtopic 3.3 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Web Audio API &amp; DSP Tuning</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin: 0;">
-                                Building browser-native sound synthesizers with warm sine envelopes and time-domain autocorrelation pitch detection yielding sub-cent precision directly from the user's microphone.
-                            </p>
-                        </div>
-
-                        <!-- Explore Footer -->
-                        <div style="margin-top: 0.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-                            <span style="font-size: 0.85rem; color: var(--text-dim);">Interactive pitch engine and songbook updates actively underway.</span>
-                            <a href="/tools/ocarina/" class="btn" style="font-size: 0.82rem; padding: 0.4rem 0.9rem; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--accent-cyan); text-decoration: none; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.4rem;">
-                                Click here to explore Ocarina practice tool &rarr;
-                            </a>
-                        </div>
-                    </div>
-                </details>
-            </section>
-
-            <!-- 4. ELECTRONICS -->
-            <section id="electronics" class="interest-category-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; transition: border-color 0.2s;">
-                <details class="category-details">
-                    <summary style="cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between;">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <span style="font-size: 2.25rem;">⚡</span>
-                            <div>
-                                <h2 style="font-size: 1.6rem; font-weight: 700; color: var(--text-bright); margin: 0;">Electronics &amp; Physical Infrastructure</h2>
-                                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0.25rem 0 0 0;">Laser engraving CNCs, homelab racks, hypervisors, and custom white-box hardware.</p>
-                            </div>
-                        </div>
-                        <span class="chevron-indicator" style="font-size: 1.25rem; color: var(--text-dim); transition: transform 0.2s;">▼</span>
-                    </summary>
-
-                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 1.25rem;">
-                        
-                        <!-- Subtopic 4.1 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Laser Engraving &amp; CNC Production (EtchCentric)</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin: 0;">
-                                Founder of EtchCentric Creations. Diode and fiber laser workflows, material speed/power burn matrices, vector kerf compensation, slate and wood pre-treatment, and small-batch production engineering.
-                            </p>
-                        </div>
-
-                        <!-- Subtopic 4.2 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Homelab, Proxmox VE &amp; Self-Hosting</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin: 0;">
-                                Dedicated home rack infrastructure: Proxmox VE clustered nodes, lightweight LXC containers, ZFS mirrored pools, Tailscale encrypted mesh networking, and Cloudflare zero-trust tunnels.
-                            </p>
-                        </div>
-
-                        <!-- Subtopic 4.3 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">White-Box Servers &amp; Acoustic Engineering</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin: 0;">
-                                Designing cost-effective, maintainable white-box server rigs for remote operations (replacing predatory OEM markup) paired with quiet workstation cooling and thermodynamic airflow design.
-                            </p>
-                        </div>
-
-                        <!-- Explore Footer -->
-                        <div style="margin-top: 0.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-                            <span style="font-size: 0.85rem; color: var(--text-dim);">Homelab architecture diagrams and hardware build logs in preparation.</span>
-                            <a href="/articles/building-a-comprehensive-discord-ecosystem.html" class="btn" style="font-size: 0.82rem; padding: 0.4rem 0.9rem; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--accent-cyan); text-decoration: none; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.4rem;">
-                                Click here to explore infrastructure systems &rarr;
-                            </a>
-                        </div>
-                    </div>
-                </details>
-            </section>
-
-            <!-- 5. DIGITAL TOOLS -->
-            <section id="digital-tools" class="interest-category-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; transition: border-color 0.2s;">
-                <details class="category-details">
-                    <summary style="cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between;">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <span style="font-size: 2.25rem;">🛠️</span>
-                            <div>
-                                <h2 style="font-size: 1.6rem; font-weight: 700; color: var(--text-bright); margin: 0;">Digital Tools &amp; Knowledge Architecture</h2>
-                                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0.25rem 0 0 0;">Static generators, bidirectional knowledge graphs, autonomous AI agents, and zero-bloat web apps.</p>
-                            </div>
-                        </div>
-                        <span class="chevron-indicator" style="font-size: 1.25rem; color: var(--text-dim); transition: transform 0.2s;">▼</span>
-                    </summary>
-
-                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 1.25rem;">
-                        
-                        <!-- Subtopic 5.1 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Digital Gardens &amp; 3D Knowledge Graphs</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin-bottom: 0.75rem;">
-                                Architecting non-linear knowledge structures with Markdown AST parsers, bi-directional <code>[[wikilinks]]</code>, and dynamic 3D Force-Directed Graph visualizers that reveal interconnected thought patterns.
-                            </p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <a href="/graph/" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">🌐 Explore: Interactive Knowledge Graph &rarr;</a>
-                            </div>
-                        </div>
-
-                        <!-- Subtopic 5.2 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Project Atlas Static Site Generator</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin: 0;">
-                                Built from scratch in pure Node.js without heavyweight framework dependencies (Gatsby/Next.js). Compiles Markdown with YAML frontmatter into zero-runtime-overhead HTML with client-side <code>localStorage</code> persistence.
-                            </p>
-                        </div>
-
-                        <!-- Subtopic 5.3 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Autonomous AI Agents (Google Antigravity SDK)</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin-bottom: 0.75rem;">
-                                Designing stateful multi-agent systems with context-aware persona switching, dynamic tool-calling routing, and automated background summarization pipelines.
-                            </p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <a href="/articles/building-a-comprehensive-discord-ecosystem.html" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">📖 Read: Autonomous Community Operating System &rarr;</a>
-                            </div>
-                        </div>
-
-                        <!-- Explore Footer -->
-                        <div style="margin-top: 0.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-                            <span style="font-size: 0.85rem; color: var(--text-dim);">Project Atlas codebase and agent documentation expanding regularly.</span>
-                            <a href="/graph/" class="btn" style="font-size: 0.82rem; padding: 0.4rem 0.9rem; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--accent-cyan); text-decoration: none; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.4rem;">
-                                Click here to explore the interactive knowledge graph &rarr;
-                            </a>
-                        </div>
-                    </div>
-                </details>
-            </section>
-
-            <!-- 6. ENTERTAINMENT -->
-            <section id="entertainment" class="interest-category-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 1.75rem; transition: border-color 0.2s;">
-                <details class="category-details">
-                    <summary style="cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between;">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <span style="font-size: 2.25rem;">🎲</span>
-                            <div>
-                                <h2 style="font-size: 1.6rem; font-weight: 700; color: var(--text-bright); margin: 0;">Entertainment &amp; Community Gamification</h2>
-                                <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0.25rem 0 0 0;">Virtual economies, chess tactics, parimutuel prediction markets, and social dynamics.</p>
-                            </div>
-                        </div>
-                        <span class="chevron-indicator" style="font-size: 1.25rem; color: var(--text-dim); transition: transform 0.2s;">▼</span>
-                    </summary>
-
-                    <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 1.25rem;">
-                        
-                        <!-- Subtopic 6.1 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Daily Chess Puzzles &amp; Pattern Recognition</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin: 0;">
-                                Tactical pattern recognition, middle-game sacrifices, and automated daily puzzle fetching with FEN string parsing and community solving leaderboards.
-                            </p>
-                        </div>
-
-                        <!-- Subtopic 6.2 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Closed-Loop Virtual Economies &amp; Parimutuel Betting</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin: 0;">
-                                Designing deflationary digital currency loops: anti-spam cooldown faucets, parimutuel pool redistribution with house-vig burns, and desirable vanity sinks (custom emotes, high-roller status badges).
-                            </p>
-                        </div>
-
-                        <!-- Subtopic 6.3 -->
-                        <div class="subtopic-box" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem;">
-                            <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--accent-cyan); margin: 0 0 0.5rem 0;">Interactive Ranking &amp; Tier Lists</h3>
-                            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.5; margin-bottom: 0.75rem;">
-                                Designing fluid drag-and-drop web interfaces for community debating, media categorization, and subjective ranking.
-                            </p>
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                                <a href="/tools/tier-list/" class="tool-link-pill" style="font-size: 0.8rem; color: var(--accent-cyan); text-decoration: none; background: rgba(56, 189, 248, 0.1); padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid rgba(56,189,248,0.3);">📋 Live Tool: Interactive Tier List Creator &rarr;</a>
-                            </div>
-                        </div>
-
-                        <!-- Explore Footer -->
-                        <div style="margin-top: 0.5rem; padding-top: 1.25rem; border-top: 1px dashed var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
-                            <span style="font-size: 0.85rem; color: var(--text-dim);">Economy whitepapers and interactive tools rolling out in future phases.</span>
-                            <a href="/tools/tier-list/" class="btn" style="font-size: 0.82rem; padding: 0.4rem 0.9rem; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--accent-cyan); text-decoration: none; border-radius: 6px; display: inline-flex; align-items: center; gap: 0.4rem;">
-                                Click here to explore tier list tool &rarr;
-                            </a>
-                        </div>
-                    </div>
-                </details>
-            </section>
-
-        </div>
-
-        <!-- Bottom Exploration Gateway -->
-        <div class="interests-explore-gateway" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.85)); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: var(--radius-lg); padding: 2.5rem 1.75rem; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); margin-top: 1rem; margin-bottom: 3rem;">
-            <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: var(--accent-cyan); padding: 0.35rem 0.9rem; border-radius: 9999px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1rem;">
-                🚀 Connected Ecosystem
-            </div>
-            <h2 style="font-size: 2rem; font-weight: 800; color: var(--text-bright); margin: 0 0 0.75rem 0;">
-                Curious to Explore Further?
-            </h2>
-            <p style="color: var(--text-muted); font-size: 1.05rem; max-width: 680px; margin: 0 auto 1.75rem; line-height: 1.6;">
-                Every interest listed above connects directly to real projects, interactive analyzers, and technical systems. Full biographical histories and essays are coming as standalone articles.
+        <!-- Quiet Editorial Footer -->
+        <footer style="margin: 4rem 0 3rem 0; padding-top: 1.75rem; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.95rem;">
+            <p style="margin: 0;">
+                Want to see how these pieces connect? Browse the <a href="/tools/" class="inline-tool-link">interactive tools directory</a>, spin the <a href="/graph/" class="inline-tool-link">knowledge graph</a>, read the <a href="/articles/" class="inline-tool-link">essays</a>, or check <a href="/now/" class="inline-tool-link">what I am working on right now (/now)</a>.
             </p>
-            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <a href="/tools/" class="btn btn-primary" style="background: linear-gradient(135deg, #0284c7, #06b6d4); color: white; padding: 0.8rem 1.5rem; font-weight: 700; text-decoration: none; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);">
-                    <span>⚡ Click here to explore interactive tools</span> &rarr;
-                </a>
-                <a href="/graph/" class="btn" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.8rem 1.4rem; font-weight: 600; text-decoration: none; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.5rem;">
-                    <span>🌐 Interactive Knowledge Graph</span>
-                </a>
-                <a href="/articles/" class="btn" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); color: var(--text-main); padding: 0.8rem 1.4rem; font-weight: 600; text-decoration: none; border-radius: 8px; display: inline-flex; align-items: center; gap: 0.5rem;">
-                    <span>📖 Full Articles &amp; Essays</span>
-                </a>
-            </div>
-        </div>
+        </footer>
 
     </div>
 </div>
-
-<script>
-// Hash Navigation and Auto-Expansion
-function handleHashNavigation() {
-    const hash = window.location.hash;
-    if (!hash) return;
-    
-    const targetSection = document.querySelector(hash);
-    if (targetSection) {
-        const details = targetSection.querySelector('details');
-        if (details) {
-            details.open = true;
-        }
-        
-        // Highlight active card
-        document.querySelectorAll('.interest-category-card').forEach(c => c.style.borderColor = 'var(--border-color)');
-        targetSection.style.borderColor = 'var(--accent-cyan)';
-        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Expand All / Collapse All buttons
-    const expandBtn = document.getElementById('btn-expand-all');
-    const collapseBtn = document.getElementById('btn-collapse-all');
-    const allDetails = document.querySelectorAll('.category-details');
-
-    if (expandBtn) {
-        expandBtn.addEventListener('click', () => {
-            allDetails.forEach(d => d.open = true);
-        });
-    }
-
-    if (collapseBtn) {
-        collapseBtn.addEventListener('click', () => {
-            allDetails.forEach(d => d.open = false);
-        });
-    }
-
-    // Category pills smooth hash navigation
-    document.querySelectorAll('#category-pills a').forEach(a => {
-        a.addEventListener('click', (e) => {
-            const targetId = a.getAttribute('href');
-            const target = document.querySelector(targetId);
-            if (target) {
-                const details = target.querySelector('details');
-                if (details) details.open = true;
-                document.querySelectorAll('.interest-category-card').forEach(c => c.style.borderColor = 'var(--border-color)');
-                target.style.borderColor = 'var(--accent-cyan)';
-            }
-        });
-    });
-
-    handleHashNavigation();
-});
-
-window.addEventListener('hashchange', handleHashNavigation);
-</script>

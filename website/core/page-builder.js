@@ -51,6 +51,7 @@ export default class PageBuilder {
         await this.buildHomepage(content);
         await this.buildStartPage();
         await this.buildUsesPage();
+        await this.buildNowPage();
         await this.buildToolsPage();
         await this.buildDevToolsPage();
         await this.buildResumePage();
@@ -165,16 +166,43 @@ export default class PageBuilder {
 
         const template = await this.loadLayout("homepage.html");
 
-        const recentArticles = content
+        const sortedArticles = content
             .filter(x => x.metadata.type === "article" && x.metadata.status !== "draft")
             .sort((a, b) => {
-                const dateA = a.metadata.updated || a.metadata.created || "2000-01-01";
-                const dateB = b.metadata.updated || b.metadata.created || "2000-01-01";
+                const dateA = a.metadata.created || a.metadata.updated || "2000-01-01";
+                const dateB = b.metadata.created || b.metadata.updated || "2000-01-01";
                 return String(dateB).localeCompare(String(dateA));
             })
-            .slice(0, 9)
-            .map(article => this.components.articleCard(article))
-            .join("\n");
+            .slice(0, 9);
+
+        let recentArticles = "";
+        if (sortedArticles.length > 0) {
+            const latest = sortedArticles[0];
+            const latestUrl = this.components.getUrl(latest);
+            const latestDate = String(latest.metadata.created || latest.metadata.updated || "").slice(0, 10);
+            const rest = sortedArticles.slice(1);
+            const listItems = rest.map(a => {
+                const url = this.components.getUrl(a);
+                const d = String(a.metadata.created || a.metadata.updated || "").slice(0, 10);
+                const sum = a.metadata.summary ? a.metadata.summary.replace(/<[^>]*>/g, "") : "";
+                const shortSum = sum.length > 135 ? sum.slice(0, 132) + "..." : sum;
+                return `<li class="essay-archive-item">
+                    <span class="essay-archive-date">${d}</span>
+                    <div>
+                        <a href="${url}" class="essay-archive-title">${a.metadata.title}</a>
+                        ${shortSum ? `<div style="color: var(--text-muted); font-size: 0.88rem; margin-top: 0.15rem;">${shortSum}</div>` : ""}
+                    </div>
+                </li>`;
+            }).join("\n");
+
+            recentArticles = `<article class="essay-feature">
+                <div class="essay-feature-meta">Latest Essay · ${latestDate}</div>
+                <h3><a href="${latestUrl}">${latest.metadata.title}</a></h3>
+                <p style="color: var(--text-muted); font-size: 0.98rem; line-height: 1.65; margin: 0 0 0.85rem 0;">${latest.metadata.summary || ""}</p>
+                <a href="${latestUrl}" class="inline-tool-link">Read the full essay &rarr;</a>
+            </article>
+            ${rest.length > 0 ? `<ul class="essay-archive-list">\n${listItems}\n</ul>` : ""}`;
+        }
 
         const projects = content
             .filter(x => x.metadata.type === "project")
@@ -225,6 +253,29 @@ export default class PageBuilder {
 
         );
 
+    }
+
+    async buildNowPage() {
+        const folder = path.join(this.output, "now");
+        await fs.mkdir(folder, { recursive: true });
+
+        const template = await this.loadLayout("now.html");
+        const title = "What I'm Doing Now — Jonathan Thoms";
+        const html = await this.wrapPage(
+            template,
+            title,
+            {
+                description: "What Jonathan Thoms is playing, practicing, building, and following right now in Carbonear, Newfoundland.",
+                path: "/now/",
+                ogType: "website"
+            }
+        );
+
+        await fs.writeFile(path.join(folder, "index.html"), html);
+        await fs.writeFile(
+            path.join(this.output, "now.html"),
+            buildRedirectStub("/now/", title, config.site.url)
+        );
     }
 
     //--------------------------------------------------

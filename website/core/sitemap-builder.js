@@ -51,6 +51,7 @@ export default class SitemapBuilder {
             "/hire/",
             "/interests/",
             "/uses/",
+            "/now/",
             "/sponsors/",
             "/live/",
             "/fitness/",

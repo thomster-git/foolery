@@ -5,11 +5,11 @@ type: "article"
 status: "published"
 access: "public"
 created: 2026-09-14
-updated: 2026-10-28
+updated: 2026-11-20
 date: "2026-09-01"
-title: "Everything Is Connected: The Project Atlas Manifesto"
+title: "Why Everything on This Site Connects: The Project Atlas Manifesto"
 author: "Jonathan Thoms"
-summary: "The central philosophy of Project Atlas — that present decisions are the mechanical product of every prior circumstance, why associative systems thinking replaces chronological blogs, and how a graph-based digital garden brings it all together."
+summary: "Why a custom PC build in a home workshop leads to a white-box server at a fluorspar mine, and why Project Atlas is organized as a connected graph rather than a chronological blog."
 topics:
   - technology
 themes:
@@ -34,95 +34,54 @@ related:
 
 ---
 
-## 1. The Central Idea
+## From a Home Workbench to a Mine Server Room
 
-Project Atlas is built on a single, uncompromising premise:
+For years, I spent my evenings building and tuning desktop and gaming PCs—worrying about case airflow, VRM heat sinks, memory timings, and PCIe lane layouts. On paper, building a gaming rig at home has nothing to do with industrial enterprise IT.
 
-**Everything is connected.**
+Then an $80,000 OEM server renewal quote landed on my desk at a remote fluorspar mine on the Burin Peninsula. Because I knew what an enterprise NVMe drive, an AMD EPYC board, and Registered ECC memory actually cost—and how they actually fail—I knew we didn't need a dual-socket branded box with a four-hour warranty that no courier could honor in a blizzard. We built a single-socket white-box Proxmox server with a shelf of local warm spares for a fraction of the price.
 
-Not in an abstract or spiritual sense, but in a precise, traceable, and mechanical reality. The things that appear completely unrelated from the outside are often tied together by deep structural load paths.
+The same pattern repeats everywhere across my work:
+* Studying fluid dynamics and tolerances in mechanical engineering shapes how I trace bottlenecks in a network rack.
+* Scoring Toronto Blue Jays games by hand in a paper scorebook led directly to writing the [162-Game Run Differential Analyzer](/tools/baseball-trend-analyzer/) and the [3D ABS Umpire Pitch Simulator](/tools/umpire-simulator/).
+* Practicing a 12-hole Alto C ceramic ocarina by ear turned into writing a browser-native Web Audio autocorrelation pitch detector for the [Ocarina Practice Suite](/tools/ocarina/).
 
-The lens through which you analyze a broken system, the tools you reach for under pressure, the patterns you recognize across disparate data, and the places where you refuse to accept conventional wisdom—none of them happen in a vacuum. Every current instinct has a lineage.
+None of those links show up on a traditional resume. That is why standard portfolio websites always felt wrong to me.
 
-Consider a practical example: years of building custom gaming PCs in my spare time—obsessing over component clearances, thermal dissipation, memory timings, and bus lane saturation—directly enabled me to spec out an enterprise-grade Bill of Materials for a custom white-box server at an industrial fluorspar mine. That single project replaced an aging, failing OEM server and avoided tens of thousands of dollars in proprietary per-core hypervisor licensing by deploying Proxmox VE. 
-
-To an outside observer, assembling a gaming desktop has nothing to do with industrial hypervisor architecture. In practice, the mental models are identical: understanding component-level constraints, reading specifications rather than brochures, and designing for thermal and operational resilience.
-
-The way I diagnose an erratic network loop connects to the way I evaluate fluid dynamics in mechanical engineering. The discipline required to track sabermetric momentum curves across 162 baseball games connects to the heuristic analysis that spotted an active ransomware infiltration at 4:43 AM. 
-
-None of these connections are obvious on a resume. That is precisely why standard portfolios fail.
-
----
-
-## 2. Why the Corporate Brochure Fails
-
-Standard portfolio websites, resumes, and chronological blogs are fundamentally inadequate for representing how a systems-first mind operates. They are linear, sterile, and artificial. They force human experience into rigid corporate compartments: *here is my professional bio, here is my GitHub link, here is my reverse-chronological list of articles.*
-
-```mermaid
-graph LR
-    subgraph "The Chronological Feed (Linear & Fragile)"
-        P1[Post: Today] --> P2[Post: Last Week]
-        P2 --> P3[Post: Last Month]
-        P3 --> P4[Forgotten in Archive]
-    end
-
-    subgraph "The Digital Garden (Interconnected Graph)"
-        N1((Interactive Tools)) <--> N2((Hardware & Servers))
-        N2 <--> N3((Industrial IT))
-        N3 <--> N4((Crisis Triage))
-        N4 <--> N1
-        N2 <--> N5((Systems Philosophy))
-    end
-```
-
-The problem with chronological feeds is that they discard context. The moment an article slips past the first page of an archive, it is treated as obsolete, regardless of its relevance to a project built three years later. Silos present thinking as a disconnected pile of disparate tasks, rather than a continuous, compounding body of work.
-
-I didn't want to build an "algorithm machine"—a site engineered to chase clicks, push intrusive popups, or demand that readers read only whatever was published yesterday. 
-
-Instead, I built **Project Atlas** as a digital garden designed around how I actually enjoy browsing:
-* You might not care about the latest essay, but you came to use an interactive **MLB Postseason Momentum Analyzer** or practice melodies on an **N64 Ocarina Tool**.
-* You might arrive seeking an IT infrastructure audit, follow an edge into self-hosted hypervisors, and end up reading about mechanical failure modes in remote mines.
-* It is a naturally flowing, self-directed exploration with zero algorithmic manipulation.
+<div class="photo-slot">
+[Photo slot: /images/articles/workbench-nodes-flatlay.jpg — Top-down workbench flat-lay showing an ECC server DIMM, a laser-engraved slate coaster, a 12-hole ceramic ocarina, and a pencil-scored baseball scorebook]
+</div>
 
 ---
 
-## 3. The Mechanics: Nodes and Edges
+## Why Chronological Blogs Lose the Thread
 
-To turn this philosophy into software, Project Atlas was engineered as a relational graph rather than a traditional static blog. 
+A traditional blog sorts everything by a single dimension: the date it was published. The moment an essay drops off page one, it gets buried in an archive, even if it explains the exact design behind a tool you shipped two years later. Standard portfolios force you to pretend that your day job, your workshop projects, and your hobbies belong in separate silos.
 
-Every essay, interactive tool, open-source project, and architectural blueprint is a **node**. Every shared concept, technical dependency, and structural influence is an **edge**. 
+I built **Project Atlas** as a connected graph instead of a chronological feed.
 
 ```mermaid
 graph TD
-    A[Gaming PC Hardware Literacy] -->|Directly Informed| B(Single-Socket White-Box Server)
-    B -->|Eliminated Windows Core Licensing| C[Proxmox VE Hypervisor]
-    C -->|Deployed At| D[Remote Industrial Mine Site]
-    D -->|Surviving Akira Incident| E[Disaster Recovery Runbook]
-    E -->|Informs Consulting Ethos| F[Keel Systems Honest KPIs]
+    A[Gaming PC Hardware Literacy] -->|Informed| B(Single-Socket White-Box Server)
+    B -->|Paired With| C[Proxmox VE & ZFS Mirrors]
+    C -->|Deployed At| D[Remote Fluorspar Mine]
+    D -->|Tested During| E[Akira Ransomware Recovery]
 ```
 
-When you inspect a project on this platform:
-- You don't just see a static description; you see the live projects that consume it, the foundational articles that explain its design decisions, and the interactive tools demonstrating its mathematics in the browser.
-- A technical analysis of Discord's WebRTC audio architecture links directly to the production code of an autonomous Python community bot and the consulting service offering that deploys it.
-- A hardware teardown of diode laser kerf math links directly to physical CAD storage designs and small-scale manufacturing economics.
+Every essay, interactive tool, hardware build, and interest on this site is a node, and every shared dependency or idea is an edge. You might arrive here looking for a [GTA V 100% completion checklist](/tools/gta-v-tracker/) or an [OSRS bank skilling calculator](/tools/osrs-bank-skilling/), follow a link into how the zero-dependency static compiler works, and end up reading about [how we rebuilt sixty endpoints from bare metal after a 4:43 AM ransomware alert storm](/articles/my-story-with-the-akira-ransomware-attack.html).
 
-The graph database mechanically reflects the reality of cognition: high-density pattern recognition operating across disciplines without artificial boundaries.
-
-<section class="graph-container" style="position: relative; margin: 2.25rem 0; padding: 0; border-radius: var(--radius-lg, 12px); overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 1px solid var(--border-color);">
-  <div style="background: var(--bg-element); padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+<section class="graph-container" style="position: relative; margin: 2.25rem 0; padding: 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+  <div style="background: var(--bg-card); padding: 0.95rem 1.25rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
     <div>
-      <div style="margin: 0; color: var(--accent-cyan); font-size: 1.2rem; font-weight: 700;">Interactive Knowledge Graph — Full Expanded Map</div>
-      <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">All four core pillars (Articles, Tools, Interests, and Professional Resume) expanded around Thoms Foolery. Hover any node to trace its cross-disciplinary load paths, or click to jump directly in.</div>
+      <div style="margin: 0; color: var(--text-bright); font-size: 1.15rem; font-weight: 700;">Interactive Knowledge Graph — Full Map</div>
+      <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.15rem;">Articles, Tools, Interests, and Resume roles connected across the site. Drag or click any node to explore.</div>
     </div>
-    <a href="/graph/" style="font-size: 0.85rem; color: var(--accent-cyan); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 0.35rem;">
-      Full Graph View &rarr;
-    </a>
+    <a href="/graph/" class="inline-tool-link" style="font-size: 0.85rem;">Full Graph View &rarr;</a>
   </div>
-  <div id="graph-canvas" class="graph-canvas" data-focus-type="global" data-auto-expand="true" style="height: 580px; width: 100%; background: var(--bg-card); position: relative;">
+  <div id="graph-canvas" class="graph-canvas" data-focus-type="global" data-auto-expand="true" style="height: 540px; width: 100%; background: var(--bg-card); position: relative;">
     <div style="position: absolute; top: 16px; right: 16px; z-index: 100; display: flex; align-items: center; gap: 8px;">
-      <input type="text" id="graph-search" class="graph-search-input" placeholder="Search the map..." style="padding: 0.65rem 1rem; border-radius: 8px; border: 1px solid var(--accent-cyan); background: rgba(11, 15, 25, 0.85); color: #fff; width: 200px; font-size: 0.9rem; backdrop-filter: blur(6px); box-shadow: 0 4px 12px rgba(0,0,0,0.4); outline: none;">
-      <button id="graph-reset-btn" class="graph-reset-btn" type="button" title="Reset Graph Layout" style="padding: 0.65rem 0.9rem; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(11, 15, 25, 0.85); color: var(--accent-cyan); font-size: 0.85rem; font-weight: 600; cursor: pointer; backdrop-filter: blur(6px); box-shadow: 0 4px 12px rgba(0,0,0,0.4); display: inline-flex; align-items: center; gap: 0.35rem; transition: all 0.2s;">
-        ↺ Reset
+      <input type="text" id="graph-search" class="graph-search-input" placeholder="Search the map..." style="padding: 0.6rem 0.95rem; border-radius: 6px; border: 1px solid var(--border-color); background: rgba(11, 15, 25, 0.88); color: #fff; width: 195px; font-size: 0.88rem; outline: none;">
+      <button id="graph-reset-btn" class="graph-reset-btn" type="button" title="Reset Graph Layout" style="padding: 0.6rem 0.85rem; border-radius: 6px; border: 1px solid var(--border-color); background: rgba(11, 15, 25, 0.88); color: var(--accent-cyan); font-size: 0.84rem; font-weight: 600; cursor: pointer;">
+        Reset
       </button>
     </div>
   </div>
@@ -130,26 +89,6 @@ The graph database mechanically reflects the reality of cognition: high-density 
 
 ---
 
-## 4. For Readers: How to Explore
+## How to Use This Site
 
-When you interact with the knowledge graph above or the interactive nodes across this site, there is no required reading order. 
-
-> [!TIP]
-> **Abandon Chronological Reading:**  
-> Pick a topic that interests you—whether that is sabermetrics, disaster recovery, hardware modding, or digital offices. Open the drawer, examine the concepts, and follow the **Connected Content** down whatever rabbit hole catches your curiosity.
-
-The value of a digital garden is not found in skimming isolated articles; it is found in discovering the connective tissue between them. 
-
----
-
-## 5. The Underlying Reality
-
-At the end of the day, there is a quiet realization that doesn't need to be shouted from a billboard:
-
-I am not just one of the branches extending outward from Thoms Foolery. I am the entire system, operating all at once. The physical craftsmanship, the technical infrastructure, the mathematical models, the music, and the lived experiences do not exist in separate containers. 
-
-None of it can exist without everything else.
-
-**Everything is connected.**
-
-Welcome to the Atlas.
+There is no intended reading order here. Pick a node on the map above, test one of the [interactive tools](/tools/), check [what I'm working on this month (/now)](/now/), or follow the connected links at the bottom of any essay wherever your curiosity takes you.

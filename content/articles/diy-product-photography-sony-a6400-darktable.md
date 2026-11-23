@@ -1,15 +1,15 @@
 ---
 stage: "teaser"
 id: "diy-product-photography-sony-a6400-darktable"
-title: "DIY Product Photography: From Tabletop Sweep to Storefront with a Sony a6400 and Darktable"
+title: "DIY Product Photography: Shooting Laser-Engraved Slate with a Sony a6400 and Darktable"
 type: "article"
 status: "published"
 access: "public"
 author: "Jonathan Thoms"
 created: 2026-11-02
-updated: 2026-11-08
+updated: 2026-11-20
 date: "2026-11-02"
-summary: "How we built a repeatable tabletop photography studio for Thom's Foolery using an open matte sweep, a single softbox, locked manual settings on a Sony a6400 kit lens, and a batch RAW pipeline in Darktable. From mastering histogram curves on dark slate to one-click storefront exports."
+summary: "How I built a repeatable tabletop photography setup for our laser-engraved slate and wood coasters using a matte poster-board sweep, one softbox, locked manual settings on a Sony a6400 kit lens, and an open-source batch RAW pipeline in Darktable."
 topics:
   - technology
 themes:
@@ -32,245 +32,94 @@ related:
   - project-atlas
 ---
 
-> *"A commercial-grade product photograph isn't born from a multi-thousand-dollar studio rig; it is born from systematically eliminating optical variables until physics does the heavy lifting for you."*
+When we put together the storefront at [thomsfoolery.com/store](/store/), we immediately hit a photography problem: the first batch of laser-engraved coasters and bottle openers spanned the widest possible contrast range. We were shooting dark charcoal riven slate right next to warm bamboo, walnut, and white Carrara marble.
+
+If you shoot dark slate and white marble with a phone on auto-exposure under living room lights, the camera fights you on every frame. Auto-exposure hunts, white stone blows out, and dark slate turns into a flat, noisy gray smudge where you cannot see the laser stippling at all.
+
+Before settling on our final setup, I tried four things we already had around the house—and threw out the first three.
 
 ---
 
-Setting up the digital storefront at [thomsfoolery.com/store](https://thomsfoolery.com/store) brought an immediate operational challenge: our inaugural catalog featured laser-engraved coasters and magnetic bottle openers crafted from drastically different raw materials. We were shooting dark charcoal slate with microscopic laser stippling right alongside warm natural bamboo, rich walnut, and veined white marble.
+## Three Setups That Failed (and the Poster-Board Sweep That Worked)
 
-If you attempt to capture high-contrast materials like slate and marble using a smartphone on auto-exposure under domestic living room ceiling lights, the results fall apart almost immediately. Auto-exposure hunts between shots, ambient Kelvin temperatures drift with the passing weather, white stone blows out into a washed-out flare, and dark slate turns into a muddy, noisy shadow blob.
+When you want clean product shots, the first instinct is usually to build or buy an enclosed box. In practice, enclosing a small item makes lighting it much harder:
 
-Before pressing the shutter on a single production shot, I evaluated four different physical staging concepts using equipment already lying around our workshop and house:
+* **The Daylight Window:** Natural window light looks fine for a single casual shot, but over a 45-minute session the Newfoundland sky shifts constantly. Passing clouds changed both brightness and Kelvin color temperature between frames, and the window screen cast a faint grid shadow across the stone.
+* **Fabric Sheets:** We tried draping white, black, and green fabric over chairs. Under angled light, every microscopic weave and fold showed up behind the coaster—and the green cloth bounced an ugly green cast onto the beveled edges of the wood and marble.
+* **An IKEA Kallax Cube & a Painted Wooden Box:** Clearing out a 13×13 Kallax cubby (and testing a small white-painted plywood box) blocked all side lighting. You could only blast light straight in from the front, which flattened the laser texture and reflected the paint roller stipple directly into the lens.
 
-1. Shooting next to a large natural daylight window.
-2. Hanging green, black, or white fabric backdrops.
-3. Clearing out an enclosed 13x13 IKEA Kallax cube shelf.
-4. Fabricating and painting a dedicated wooden lightbox.
+<div class="photo-slot">
+[Photo slot: /images/workshop/photography-setup-sweep-and-failures.jpg — Behind-the-scenes shot of the open matte poster-board sweep, Mount Dog 50x70cm softbox at 45 degrees, and Sony a6400 on the tripod]
+</div>
 
-Ultimately, the simplest open tabletop configuration won out by a landslide. By pairing a continuous matte white tabletop sweep with locked manual exposure on a Sony a6400 and an open-source batch pipeline in Darktable, we developed an airtight, highly repeatable studio system.
+What actually worked cost about three dollars: an **open tabletop infinity sweep** made from a single sheet of matte white poster board taped to an upright backing board and curved gently onto the table with no crease.
 
-Here is the exact step-by-step breakdown of how we engineered our setup from raw tabletop to clean web storefront graphics.
-
----
-
-## 1. Physical Architecture: Why a Simple Tabletop "Sweep" Beats a Box
-
-When photographing small manufactured goods, the natural maker impulse is often to over-complicate the enclosure. Many builders default to buying or fabricating an enclosed "photo tent" or lightbox under the assumption that surrounding the subject with white walls creates better diffusion. In practice, rigid enclosures severely restrict your lighting angles and introduce unwanted optical compromises.
-
-### The Alternatives We Tested (and Scrapped)
-
-- **The Natural Daylight Window:** Natural diffuse daylight looks pleasant for casual lifestyle captures, but it is an operational nightmare for catalog consistency. Window mullions and exterior insect screens cast faint geometric grid patterns across small surfaces. More critically, passing clouds cause both ambient lumen levels and Kelvin color temperatures to drift minute-by-minute. A catalog grid of 16 product tiles taken over an hour ends up looking like a patchwork quilt of mismatched grays and blues.
-- **Woven Fabric Backdrops:** Fabric sheets (whether hung on stands or draped over chairs) retain micro-creases and fiber texture that become glaringly visible under oblique directional lighting. Worse still is the temptation to shoot against a green chroma sheet: green woven fabric bounces violent "green color spill" onto the reflective bevels of wood, polished marble, and matte slate, destroying natural material color and requiring painful, lossy color correction.
-- **The Enclosed Cube Shelf & Painted Wood Box:** We tested clearing out a 13x13 cube shelf, as well as designing a small wooden box painted with white latex. Both suffered fatal flaws: rigid side walls completely block side and rim lighting, forcing you to blast light straight into the front of the enclosure. This washes out surface texture and forces the camera into uncomfortably wide focal lengths. Furthermore, painted wooden surfaces introduce roller stipple, micro-sheen hotspots, and dust nibs that reflect directly into the camera lens.
-
-### Physical Staging Comparison: Tabletop Sweep vs. Alternatives
-
-| Setup Method | Lighting Flexibility | Color Spill Risk | Surface Uniformity | Setup Friction | Repeatability |
-|:---|:---|:---|:---|:---|:---|
-| **Natural Window Light** | Very Low (Fixed angle) | Moderate (Sky / outdoor vegetation) | Low (Screen & mullion grid patterns) | Low | Terrible (Drifting lux & Kelvin) |
-| **Woven Fabric Sheet** | Moderate | High (Chroma green / texture) | Poor (Fibers, wrinkles, creases) | Moderate (Requires steaming) | Poor (Fabric shifts) |
-| **Enclosed Cube / Lightbox** | Restricted (Front-blast only) | Low | Moderate (Paint sheen & rigid seams) | High (Carpentry & painting) | Moderate |
-| **Open Tabletop Sweep** | **Maximum (360° light placement)** | **Zero (Neutral matte white)** | **Flawless (Seamless infinity curve)** | **Minimal (Single flexible board)** | **Near Perfect (Locked geometry)** |
-
-### The Winning Staging: The Open Tabletop Infinity Sweep
-
-Instead of boxing the product in, we constructed an open tabletop infinity curve ("sweep") using a single sheet of flexible, non-glare matte white poster board supported by an upright backing board:
-
-- **The Seamless Horizon:** By gently curving the matte white board from a vertical support down onto the horizontal table without creating a sharp crease or corner, the camera sees no rear horizon line. The floor transitions smoothly into the background, creating the classic "floating subject" infinity look.
-- **A Single 45-Degree Softbox:** We shut off all ambient overhead room lighting, pulled the blackout blinds to seal out daylight shifts, and positioned a single Mount Dog 50x70cm continuous softbox at a 45-degree angle to the left of the product, placed relatively close to the table.
-- **The Physics of Wrap and Grounding:** Because the surface area of the softbox face (20" x 28") is enormous relative to a 4-inch coaster, the softbox functions as a broad, wrap-around diffuse source. Light gently washes across the microscopic surface ridges of the laser engraving, while maintaining a subtle, natural contact shadow on the right side. That soft falloff shadow is essential—it provides "grounding" so the item looks tactile and physically present rather than like a flat graphic floating in void space.
+We turned off the overhead room lights, closed the blackout blinds, and placed a single 50×70 cm continuous softbox at a 45-degree angle close to the left side of the table. Because a 20×28-inch diffuser face is huge relative to a 4-inch coaster, the light wraps softly across the cleaved slate ridges while leaving a natural contact shadow on the right side so the coaster looks like a real object sitting on a surface rather than a floating cutout.
 
 ![Stacked 4-pack of square slate coasters resting on the seamless white tabletop sweep](/store/images/coasters/slate/square/slate-square-set.jpg)
-*Figure 1: The tabletop infinity sweep in practice (`DSC02050`). A 4-pack stack of square natural slate coasters demonstrates how the matte white curve eliminates the background horizon while preserving the soft, diffuse contact shadow falling to the right—grounding the physical weight of the stone without harsh edges.*
-
-> [!TIP]
-> **The Inverse Square Law & Broad Diffusion:** Positioning a large diffused softbox closer to a small product creates softer, more flattering light than placing a small light far away. Because the light source subtends a larger angular size relative to the coaster, the transition from highlight to shadow is silky-smooth, completely eliminating harsh specular glare on polished stone or resin.
+*Figure 1: A 4-pack stack of square natural slate coasters (`DSC02050`) on the poster-board sweep. The curve removes the rear horizon line while keeping the soft contact shadow on the right.*
 
 ---
 
-## 2. Camera Configuration: Dialing in the Sony a6400 & 16-50mm Kit Lens
+## Locking the Sony a6400 & 16–50mm Kit Lens
 
-You do not need a multi-thousand-dollar G-Master prime lens to achieve studio-grade catalog assets. The Sony a6400 body paired with the modest E PZ 16-50mm f/3.5-5.6 OSS kit lens is capable of extraordinary optical resolution—provided you take the camera entirely out of Auto mode and lock every parameter to the lens's optical sweet spot.
+You don't need an expensive prime lens for catalog shots if you lock the Sony a6400 and its 16–50mm `f/3.5–5.6` kit zoom into manual mode at its optical sweet spot:
 
-When shooting an e-commerce catalog, your top priority is **absolute shot-to-shot consistency**. If exposure, focus point, or white balance shifts between products, your catalog grid will look amateur.
+* **35mm Focal Length (`52.5mm` full-frame equivalent):** Shooting wide at 16mm introduces barrel distortion that warps square coasters into trapezoids, while 50mm softens slightly at the edges. Thirty-five millimeters gives flat, natural geometry.
+* **`f/8.0` Aperture, `ISO 100`, `1/15s` Shutter:** At `f/3.5` or `f/5.6`, the rear edge of an angled coaster falls out of focus. Stopping down to `f/8.0` keeps the front engraving and rear stone bevel sharp corner-to-corner before diffraction sets in around `f/11`. Because the camera sits on a tripod, we keep `ISO 100` for clean shadows and let a `1/15s` shutter expose the white sweep to `+0.3` to `+0.7 EV`.
+* **Custom White BalanceSampled Off the Sweep:** Auto White Balance sees a dark slate coaster and shifts the whole frame warm, then sees a bamboo coaster and shifts it cool. Sampling the lit poster board once under `Custom 1` locks every frame to the exact same color temperature.
+* **SteadyShot Off + 2-Second Timer:** On a locked tripod, Optical SteadyShot (`OSS`) gyros hunt for movement that isn't there and can introduce micro-blur during a `1/15s` exposure. Turn SteadyShot **Off**, enable `e-Front Curtain Shutter`, use a 2-second self-timer so finger vibration dies out before the shutter opens, and save the whole profile to **Memory Recall Slot 1 (`MR 1`)** on the top dial.
 
-### Optics Sweet Spot: Why 35mm and f/8.0?
-
-- **Focal Length (35mm):** The Sony a6400 features an APS-C sensor with a 1.5x crop factor. At 35mm, the effective focal length is **52.5mm full-frame equivalent**—the gold standard "normal" perspective that matches human visual perception. Shooting wide at 16mm causes noticeable barrel distortion, turning rectilinear square coasters into bulging trapezoids. Conversely, extending the power-zoom kit lens all the way out to 50mm introduces minor optical edge softening. 35mm represents the sharpest, flattest sweet spot of this specific glass.
-- **Aperture (f/8.0):** Shooting wide open at f/3.5 or f/5.6 yields a thin depth of field that renders the rear beveled edge of a coaster soft and indistinct. Stopping down to f/8.0 expands the depth of field enough to keep the entire product—front face, bevels, laser engraving, and rear edges—in tack-sharp focus from corner to corner, while staying safely below the diffraction threshold where optical softness begins (around f/11 on APS-C).
-- **ISO 100 Fixed & 1/15s Shutter:** With the camera securely mounted to a rigid tripod, shutter speed is no longer constrained by handheld camera shake. We lock ISO to its base native sensitivity of 100 to eliminate sensor noise and maximize dynamic range. A shutter speed of 1/15 second permits sufficient light gathering under continuous softbox lighting to push the white backdrop to between +0.3 EV and +0.7 EV on the camera's exposure meter.
-- **14-bit RAW (.ARW):** Never shoot catalog photography in lossy 8-bit JPEG alone. Shooting uncompressed `.ARW` RAW preserves the complete 14-bit tonal latitude of the Sony sensor. This dynamic range is critical in post-production when pushing the off-white background to pure `#FFFFFF` without blowing out subtle highlight details or clipping dark slate stippling.
-
-### Sensor Stabilization, Autofocus, and White Balance
-
-- **Custom White Balance (Custom 1):** Auto White Balance (AWB) evaluates the scene average. When swapping a pitch-black charcoal slate coaster for a warm honey-toned bamboo blank, AWB shifts its color calculation, causing the white backdrop to vacillate between warm orange and icy blue across your catalog. Using `Camera Settings 1 -> Page 11/14 -> White Balance -> Custom 1 -> SET`, we sampled the illuminated white sweep under the softbox once. Every subsequent frame is locked to identical Kelvin and tint values.
-- **Spot Autofocus (`AF-S` + `Flexible Spot: S`):** We disabled `Face/Eye Priority` and turned `Pre-AF` Off (Pages 5/14 and 6/14) to prevent the sensor from hallucinating human faces within intricate laser artwork (such as our Santa or Nativity illustrations). We set autofocus to `AF-S` with a single small Flexible Spot crosshair placed dead-center on the physical face of the product.
-### Vibration Mitigation & SteadyShot
-
-Under `Camera Settings 2 -> Page 4/9`, we enabled `e-Front Curtain Shutter` (eliminating mechanical shutter shock) and set a **2-Second Self-Timer** on the shutter release. When you press the shutter button, your hand vibrates the camera; the 2-second delay allows the tripod to settle into complete mechanical inertia before the sensor exposes.
-
-> [!WARNING]
-> **Disable SteadyShot on a Tripod:** Optical SteadyShot (OSS) uses internal gyro sensors to compensate for hand tremor. When locked rigidly onto a sturdy tripod, the stabilization system searches for motion that does not exist, introducing slow gyro drift or micro-blur into slow exposures. Always turn SteadyShot **Off** in `Camera Settings 2 -> Page 4/9`.
-
-### Preserving Presets with Memory Recall (MR)
-
-The Sony menu system is notorious for being dense and labyrinthine. You do not want to manually reconfigure nine separate sub-menus every time you need to photograph a new production run.
-
-> [!TIP]
-> **One-Click Studio Profile via Memory Recall (MR):** After configuring these parameters, navigate to `Camera Settings 1 -> Page 4/14 -> Memory` and save the complete profile to **MR Slot 1**. Whenever you switch the camera back from streaming, family photos, or casual video, rotating the top mode dial to **MR 1** restores your exact studio baseline in under one second.
-
-### Sony a6400 Studio Configuration Reference Table
-
-| Setting Category | Parameter | Exact Configuration | Engineering Rationale |
-|:---|:---|:---|:---|
-| **Lens Optics** | Focal Length | **35mm** (52.5mm full-frame eq.) | Eliminates wide-angle barrel distortion; operates at center-sharpness sweet spot of the 16-50mm kit lens. |
-| **Exposure** | Aperture | **f/8.0** | Maximum edge-to-edge sharpness and sufficient depth of field across the entire 4" item without diffraction softening. |
-| **Sensitivity** | ISO | **100 (Fixed Native)** | Maximum dynamic range, zero chroma noise in deep slate shadows. |
-| **Timing** | Shutter Speed | **1/15s** (Tripod mounted) | Exposes white backdrop cleanly (+0.3 to +0.7 EV) under diffuse continuous lighting. |
-| **Color Temperature**| White Balance | **Custom 1 (Sampled Sweep)** | Calibrated directly against the lit sweep; prevents auto-Kelvin drift between dark stone and warm wood. |
-| **Focusing** | AF Mode & Area | **AF-S / Flexible Spot: S** | Face/Eye Priority: Off; Pre-AF: Off. Locks focus strictly to laser engraving planes without hunting. |
-| **Stabilization** | SteadyShot (OSS) | **Off** | Prevents internal optical gyros from wandering on a static tripod mount. |
-| **Shutter Mechanics**| Shutter Mode | **e-Front Curtain + 2s Timer** | Eliminates mechanical shutter slap and physical finger-press vibration. |
-| **Capture Format** | Image Quality | **RAW (.ARW) + Extra Fine JPEG**| Preserves raw sensor latitude for non-destructive histogram adjustments in Darktable. |
+| Parameter | Setting | Why |
+|:---|:---|:---|
+| **Focal Length** | `35mm` (52.5mm eq.) | Avoids wide-angle barrel distortion; sharpest range of the kit zoom. |
+| **Aperture** | `f/8.0` | Keeps front engraving and rear bevels in focus without diffraction. |
+| **ISO & Shutter** | `ISO 100` · `1/15s` | Zero shadow noise on dark slate; exposes the sweep to +0.3 to +0.7 EV. |
+| **White Balance** | `Custom 1` (sampled sweep) | Prevents color drift when switching between dark stone and warm wood. |
+| **Autofocus** | `AF-S` · `Flexible Spot: S` | Face/Eye AF Off so the camera doesn't hunt inside engraved illustrations. |
+| **Stabilization** | `SteadyShot Off` + `2s Timer` | Prevents tripod gyro drift and finger-press shake. |
+| **Format** | `14-bit RAW (.ARW)` | Preserves full highlight and shadow latitude for Darktable. |
 
 ---
 
-## 3. Post-Processing Pipeline: Non-Destructive RAW Mastering in Darktable
+## Batch Processing in Darktable
 
-With 16 product frames captured under locked lighting and fixed camera positioning, post-processing becomes an exercise in batch efficiency rather than repetitive manual manipulation. 
+Once sixteen coasters are shot under identical light from a fixed tripod, you don't need to edit sixteen photos one by one in Photoshop. We develop the `.ARW` files in **Darktable**, dial in the history stack on the first coaster, and paste it across the batch.
 
-Instead of touching photos individually inside destructive pixel editors like Photoshop or GIMP, we utilize **Darktable**—the premier open-source, non-destructive RAW developer. In Darktable, raw data is never overwritten; edits exist solely as an ordered parametric processing pipeline (the "history stack"). Once you master the mathematical transformations for a single master slate coaster, you can replicate that exact grade across the remaining catalog in seconds.
+### 1. Square Crop with Optical Headroom (`crop`)
+We crop to **1:1 (Square)**, pulling the bottom edge up past the front of the table. Instead of centering the coaster dead-center vertically—which makes an upright object look like it is sinking—we leave roughly 15% more white space above the coaster than below it.
 
-### Step 1: Uniform 1:1 Aspect Ratio & Optical Weight
+### 2. The Two-Mountain Histogram (`rgb levels`)
+If you try to make the background pure `#FFFFFF` white by cranking global exposure or contrast, you either wash out the dark slate or crush its grain into an ink blot.
 
-In the Darkroom view, open the `crop` module:
-- Set the aspect ratio constraint to **1:1 (Square)** to match modern e-commerce grid standards.
-- Pull the bottom boundary upward to cleanly eliminate the front tabletop edge of the backing board.
-- **Optical Weight vs. Geometric Centering:** Using the module's 3x3 grid overlay, align the coaster horizontally centered. However, do *not* center the product vertically. Upright products placed dead-center in a square frame visually feel like they are sinking toward the bottom edge. By leaving roughly 15% more negative white space above the coaster than below it, you grant the item "optical weight"—it rests convincingly on the table plane.
-
-### Step 2: The Two-Mountain Histogram in `rgb levels`
-
-Making a commercial product pop on a web store requires turning a light-gray backdrop into pure, seamless `#FFFFFF` white without turning the product itself into a blown-out blob.
-
-If you lazily crank the global `exposure` or `contrast` sliders, you destroy the image: dark charcoal slate either washes out into muddy gray or clips completely into an ink blot with zero natural texture.
-
-The proper tool is **`rgb levels`**:
-
-1. **Analyze the Histogram (The Two Mountains):** Opening `rgb levels` reveals a distinct two-peak distribution. The wide hill on the far right represents the expansive white backdrop sweep, while the tight peak on the far left represents the dark charcoal slate and laser engraving.
-2. **Snap the Background to Pure White:** Click the White Point eyedropper tool and sample an area of the backdrop in the upper corner of the frame—or drag the right white triangle slider inward until it touches the right slope of the white mountain. This pushes the background into pure, unclipped `#FFFFFF` white while preserving the subtle, soft contact shadow directly underneath the coaster's footprint.
-3. **Preserve Deep Slate Texture:** Ensure the black triangle on the left remains anchored at the base of the left peak so that dark slate crevices never clip to pitch black.
-4. **Lift the Midtones:** Slide the Middle Gray slider slightly leftward (to roughly `0.35–0.40`). This opens up the midtones, revealing the tactile diagonal slate cleavage, split edges, and natural stone grain without elevating shadow noise.
-
-> [!IMPORTANT]
-> **Protecting the Contact Shadow:** Do not drag the white point slider so aggressively that you clip the right-side contact shadow. That subtle gradient of light gray grounding the coaster is the difference between a high-end physical object sitting on a clean surface and a cheap graphic amateurishly cut out with a magic wand tool.
+Opening `rgb levels` shows two distinct peaks on the histogram: a wide mountain on the right (the white poster board) and a narrow peak on the left (the dark slate). By pulling the white point slider just to the edge of the right mountain—without going far enough to erase the soft contact shadow under the coaster—the backdrop snaps to pure `#FFFFFF`. Shifting the middle-gray slider slightly left (`~0.35–0.40`) opens up the diagonal stone cleavage while keeping the black point anchored.
 
 ![Laser-engraved Nativity scene on natural chipped-edge slate](/store/images/coasters/slate/square/slate-square-nativity.jpg)
-*Figure 2: Nativity slate coaster. Midtone expansion in `rgb levels` (shifted to ~0.38) opens up the natural diagonal cleavage and chipped perimeter of the raw stone while the background snaps to clean `#FFFFFF`.*
+*Figure 2: Nativity slate coaster. Lifting middle gray in `rgb levels` to ~0.38 brings out the split stone edge while the background snaps to `#FFFFFF`.*
 
-### Step 3: Carving Out Laser Engraving Detail (`local contrast`)
-
-Laser engraving on natural stone functions by physically fracturing the crystalline mineral surface. The un-etched slate is dark charcoal gray; the laser-fractured stippling appears as an opaque, frosty chalk white.
-
-To ensure the intricate detail of our designs (such as the delicate strands of Santa's beard, fine typography, and crisp edge borders) renders with tactile punch on digital screens, we enable Darktable's **`local contrast`** module:
-- Set the contrast algorithm mode to **Local Laplacian**.
-- Adjust the module parameters:
-  - **Detail:** `150%`
-  - **Highlights:** `75%`
-  - **Shadows:** `50%`
-
-By amplifying detail locally at 150% and boosting highlight micro-contrast to 75%, the frosted laser fractals visually jump forward off the dark stone substrate. Unlike traditional sharpening tools (which create ugly glowing white halos around dark edges), the Local Laplacian filter enhances micro-tonal separation naturally.
+### 3. Bringing Out the Laser Stippling (`local contrast`)
+Laser engraving on slate works by micro-fracturing the dark mineral surface into frosty white stipples. In Darktable's `local contrast` module (set to **Local Laplacian** at `150% Detail`, `75% Highlights`, `50% Shadows`), those frosted stipples separate cleanly from the dark stone without the white edge halos you get from regular sharpening.
 
 ![Laser-engraved Santa slate coaster showing micro-stippling detail](/store/images/coasters/slate/square/slate-square-santa.jpg)
-*Figure 3: Santa slate coaster. Local Laplacian contrast (`Detail: 150%`, `Highlights: 75%`) isolates individual frosted laser stipples across Santa's beard and snowflakes directly off the dark charcoal mineral bed with zero edge haloing.*
+*Figure 3: Santa slate coaster with Local Laplacian contrast isolating the fine stippling in the beard and snowflakes.*
 
-### Step 4: Neutralizing Support Stands on Circular Products
+### 4. Removing the Plastic Stand on Round Coasters (`color equalizer` & `retouch`)
+Square coasters stand up on their own bottom edge, but round coasters roll unless you prop them on a small stand. In our shoot, two bright blue plastic stand corners peeked out underneath the round slate blanks.
 
-Square coasters sit flat and upright on their beveled bottom edge. However, circular coasters and rounded bottle openers will roll if unsupported, requiring a miniature acrylic or plastic display stand. In our shoot, this left two bright blue corners of a support stand visible beneath the circular stone blanks.
-
-Darktable offers two elegant, non-destructive solutions to erase the stand:
-
-### Option A: The 5-Second Color Equalizer Trick
-
-Because our catalog products consist solely of neutral black slate, white marble, and warm brown timber, **blue is completely absent from the actual subject**:
-- Open the `color equalizer` module.
-- Navigate to the Blue hue band.
-- Pull **Blue Saturation** down to `-100%` and **Blue Luminance** down to `-50%`.
-- The conspicuous blue plastic holder instantly transforms into a neutral, inconspicuous dark charcoal shadow that visually merges with the underside contact shadow of the coaster.
-
-### Option B: Clean Geometric Erasure via Retouch (Clone + Path)
-
-When the stand extends past the contact shadow onto the white sweep, we eliminate it with the `retouch` module:
-- Open `retouch`. Avoid the default *Heal* algorithm; healing calculates an average texture blend, which smears blue chromatic haze into the pure white background.
-- Switch the algorithm to **Clone** (indicated by the overlapping square icon).
-- Select the **Path** tool (<kbd>Ctrl</kbd> + click) to trace a curve hugging the bottom contour of the coaster.
-- Drag the sample source target onto an adjacent patch of clean, lit white sweep. The stand disappears completely, leaving a razor-sharp, natural stone boundary against pure white.
+Because the coasters themselves contain zero blue, pulling **Blue Saturation to `-100%`** and **Blue Luminance to `-50%`** in `color equalizer` turns the blue plastic into a neutral gray shadow in five seconds. Where a corner poked out onto the white sweep, tracing a quick path with the `retouch` module in **Clone** mode (sampling clean adjacent poster board rather than Heal, which smudges blue tint) erased it completely.
 
 ![Circular laser-engraved sleigh coaster with support stand erased](/store/images/coasters/slate/circle/slate-circle-sleigh.jpg)
-*Figure 4: Round sleigh coaster. Circular products require a support stand to stay upright during shooting. Using Darktable's `retouch` clone path tool, the blue holder corners beneath the lower curve were seamlessly replaced with adjacent clean sweep, preserving the natural bottom shadow.*
-
-### Darktable Module Quick-Guide Table
-
-| Module Name | Mode / Algorithm | Target Settings / Values | Operational Function |
-|:---|:---|:---|:---|
-| **`crop`** | Aspect ratio: 1:1 (Square) | Custom crop box; 15% extra headroom | Establishes square storefront tile; balances optical weight and eliminates board edges. |
-| **`rgb levels`** | Display / Linear | White point: Sampled to right mountain<br>Middle Gray: ~0.35–0.40<br>Black point: Base of left peak | Snaps sweep to pure `#FFFFFF` white; opens dark slate midtones while preventing shadow clipping. |
-| **`local contrast`**| Local Laplacian | Detail: 150%<br>Highlights: 75%<br>Shadows: 50% | Enhances microscopic laser stippling and frosted stone texture without creating edge halos. |
-| **`color equalizer`**| Parametric HSL | Blue Saturation: -100%<br>Blue Luminance: -50% | Instantly converts distracting blue stand corners into an inconspicuous neutral shadow. |
-| **`retouch`** | Clone (Path Tool) | Sample: Adjacent clean white sweep | Completely erases display stand remnants along circular contours without color smudging. |
+*Figure 4: Round sleigh coaster after cloning out the two lower plastic stand corners against the adjacent white sweep.*
 
 ---
 
-## 4. Batch Synchronization & Storefront Deployment
+## From Three Hours a Batch to Fifteen Minutes
 
-Once the first slate coaster and circular coaster were fully dialed in, Darktable’s Lighttable module turned the remaining post-production into a rapid batch operation.
-
-### The 30-Second Lighttable Sync
-
-1. Return to the **Lighttable** view (<kbd>Esc</kbd> or top-right tab).
-2. Click the finished master slate coaster image to select it.
-3. In the right-hand panel, expand the **`history stack`** module and click **Copy...**.
-4. In the module selection dialog, leave White Balance unchecked and select **`crop`**, **`rgb levels`**, and **`local contrast`**.
-5. Highlight all remaining slate coaster captures in the grid using <kbd>Ctrl</kbd> + click or drag-select.
-6. Click **Paste** in the `history stack` module.
-
-In less than five seconds, all sixteen images inherit the identical square crop, levels transformation, and micro-contrast settings. 
-
-### Per-Object Framing Adjustments
-
-Hop briefly into the multi-coaster stack shot (`DSC02050`) and our magnetic wood bottle openers:
-- Because stacked coasters and bottle openers have different vertical dimensions than a single upright coaster, open the `crop` module and nudge the 1:1 bounding box slightly so each product sits centered with balanced optical headroom.
-- For warm bamboo and walnut openers, verify `rgb levels` to confirm that rich wood grains retain their organic warmth without over-saturating the highlights.
-
-### High-Efficiency WebP Export
-
-Never upload uncompressed 24-megapixel (6000 x 4000) sensor files to an e-commerce platform. Heavy raw images destroy page load speeds, tank mobile performance, and degrade SEO metrics.
-
-1. In the **Lighttable** view, select all finished catalog items (<kbd>Ctrl</kbd> + <kbd>A</kbd>).
-2. Expand the **`export`** panel in the lower-right dock.
-3. Set the target parameters: Format to **`WebP (8-bit)`** (or high-quality JPEG), Quality to **`90`**, Size Constraints to maximum **`1200 x 1200` px**, and Color Profile to **`sRGB`**.
-4. Click **Export**.
-
-A 1200 x 1200 WebP asset at 90 quality averages roughly **65 KB to 95 KB** per image—nearly a 99% reduction in payload compared to the original RAW file—while retaining immaculate micro-detail on Retina and 4K displays.
-
-> [!NOTE]
-> **Why 1200 x 1200 WebP?** At 1200px square, modern high-density smartphone screens and desktop monitors have more than enough pixel density to support interactive 2x zoom lenses on catalog pages, yet an entire 16-item collection loads over 5G in under 200 milliseconds.
-
----
-
-## 5. The Systemic Takeaway: Repeatable Engineering Over Ad-Hoc Hustle
-
-When visitors browse the catalog at [thomsfoolery.com/store](https://thomsfoolery.com/store), they see a coherent, distraction-free grid where the fine craftsmanship of the laser engraving speaks for itself across our core substrate materials:
+Once the first square and round coasters were dialed in, we switched to Darktable's **Lighttable** view, copied `crop`, `rgb levels`, and `local contrast` from the history stack, pasted them onto the remaining fourteen RAW files in one click, and exported the batch as `1200×1200` sRGB WebP files at quality 90.
 
 | Natural Slate | Solid Timber | Carrara Marble & Acacia |
 |:---:|:---:|:---:|
 | ![Laser-engraved puppy on square natural slate](/store/images/coasters/slate/square/slate-square-puppy.jpg) | ![Laser-engraved puppy on solid wood](/store/images/coasters/wood/square/wood-square-puppy.jpg) | ![Polished Carrara marble and acacia wood coaster](/store/images/coasters/marble+acacia/square/marble-acacia-square-blank.jpg) |
-| **Natural Chipped Slate**<br>1200×1200 WebP (88 KB)<br>Pure `#FFFFFF` & contact shadow | **Solid Pine / Timber**<br>1200×1200 WebP (72 KB)<br>Natural wood warmth preserved | **Marble & Acacia Split**<br>1200×1200 WebP (68 KB)<br>High-key white-on-white separation |
+| **Natural Chipped Slate**<br>1200×1200 WebP (88 KB) | **Solid Pine / Timber**<br>1200×1200 WebP (72 KB) | **Marble & Acacia Split**<br>1200×1200 WebP (68 KB) |
 
-The real success of this workflow is not just that we produced crisp product photos on a shoestring budget. The true victory is **systemic repeatability**:
-- The physical staging takes three minutes to roll out on any flat table.
-- The camera settings are permanently stored on the top dial of the a6400 as Memory Recall Slot 1.
-- The Darktable history stack handles batch adjustments in seconds without commercial software licensing fees or subscription lock-in.
-
-When we engineer a new batch of coaster designs or custom wooden goods six months from today, we won't spend an afternoon troubleshooting lighting glare, fighting cloudy daylight, or manually brushing out backgrounds in Photoshop. We will set the sweep, turn the dial to `MR 1`, snap the shots, paste the Darktable stack, and push to production.
-
-Craftsmanship doesn't stop at the workbench—it extends all the way through the pipeline to the digital storefront.
+Each finished storefront image weighs between **68 KB and 88 KB** instead of 24 megabytes, and shooting a new batch of sixteen coasters now takes about fifteen minutes from unrolling the poster board to pushing the WebP files live.
