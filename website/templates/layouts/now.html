@@ -1,74 +1,148 @@
 <div class="page-container">
-    <div class="content-wrapper" style="max-width: 780px; margin: 2rem auto; padding: 0 1rem;">
+    <div class="content-wrapper now-page">
 
         <div class="breadcrumbs" style="margin-bottom: 1.75rem;">
             <a href="/">Home</a> &gt;
             <span>Now</span>
         </div>
 
-        <header class="hero">
+        <header class="hero now-hero">
             <h1>What I'm Doing Now</h1>
             <p>
                 A living snapshot of what has my attention right now—inspired by Derek Sivers' <a href="https://nownownow.com/about" target="_blank" rel="noopener noreferrer" class="inline-tool-link">/now page movement</a>.
             </p>
-            <div style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent-cyan); margin-top: 0.85rem;">
-                Last updated: November 20, 2026 · Carbonear, Newfoundland
+            <div class="now-status">
+                <span class="now-status-dot" aria-hidden="true"></span>
+                Last updated November 23, 2026 · Carbonear, Newfoundland
             </div>
         </header>
 
-        <div class="photo-slot" style="margin-bottom: 2.25rem;">
+        <div class="photo-slot now-desk-photo">
             [Photo slot: /images/now/2026-11-desk.jpg — Current desk view in Carbonear: monitors, 12-hole Alto C ocarina, scorebook, and coffee mug]
         </div>
 
-        <section style="margin-bottom: 2.5rem;">
-            <h2>Building &amp; Shipping</h2>
-            <ul class="notes-list">
+        <!-- Snapshot Grid -->
+        <div class="now-grid">
+
+            <section class="now-card now-card--wide">
+                <h2>Building &amp; Shipping</h2>
+                <ul class="now-list">
+                    <li>
+                        <span class="now-date">Nov 23</span>
+                        <div><strong>Release v1.8.0.</strong> Graph-first homepage, the <a href="/tools/gta-v-tracker/">GTA V 100% &amp; Achievements Checklist</a>, and a rewritten set of essays including <a href="/articles/the-case-for-permanent-standard-time.html">Permanent Standard Time</a>.</div>
+                    </li>
+                    <li>
+                        <span class="now-date">Nov 20</span>
+                        <div><strong>Umpire Simulator.</strong> Lining the 3D ABS strike zone up with the ball's real radius in the <a href="/tools/umpire-simulator/">MLB Umpire Pitch Simulator</a>.</div>
+                    </li>
+                    <li>
+                        <span class="now-date">Ongoing</span>
+                        <div><strong>EtchCentric.</strong> Batches of engraved riven slate coasters and hardwood pieces, photographed on the tabletop sweep with the <a href="/articles/diy-product-photography-sony-a6400-darktable.html">Sony a6400 and Darktable</a>. <a href="/store/">Visit the store</a>.</div>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="now-card">
+                <h2>Playing</h2>
+                <ul class="now-list">
+                    <li>
+                        <span class="now-date">Nov</span>
+                        <div><strong>GTA V, start to finish.</strong> A clean 100% run, play-testing every route as it goes onto the <a href="/tools/gta-v-tracker/">tracker</a>.</div>
+                    </li>
+                    <li>
+                        <span class="now-date">Nov</span>
+                        <div><strong>RuneScape: Dragonwilds.</strong> Hosting our dedicated server and testing vault timers for the <a href="/tools/dragonwilds-tracker/">companion</a>.</div>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="now-card">
+                <h2>Practicing</h2>
+                <ul class="now-list">
+                    <li>
+                        <span class="now-date">Nov</span>
+                        <div><strong>12-hole Alto C ocarina.</strong> Breath control in the upper register (D6–F6), with Zelda and Ghibli tunes in the <a href="/tools/ocarina/">practice suite</a>.</div>
+                    </li>
+                    <li>
+                        <span class="now-date">Nov</span>
+                        <div><strong>Piano.</strong> Sight-reading, chord voicings, and working out arrangements by ear.</div>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="now-card now-card--wide">
+                <h2>Following</h2>
+                <ul class="now-list">
+                    <li>
+                        <span class="now-date">Offseason</span>
+                        <div><strong>Toronto Blue Jays.</strong> Winter roster moves, bullpen construction, and arbitration deadlines ahead of spring training.</div>
+                    </li>
+                    <li>
+                        <span class="now-date">In season</span>
+                        <div><strong>Canadiens &amp; Bills.</strong> The nightly Atlantic Division grind (<a href="/tools/nhl-trend-analyzer/">NHL analyzer</a>) and every AFC East matchup (<a href="/tools/nfl-trend-analyzer/">NFL analyzer</a>).</div>
+                    </li>
+                </ul>
+            </section>
+
+        </div>
+
+        <!-- Whiteboard -->
+        <section class="now-whiteboard">
+            <div class="now-whiteboard-head">
+                <h2>The Whiteboard</h2>
+                <p>Ideas that live on the whiteboard behind my desk. Some will ship, some will quietly get erased. Nothing here is a promise.</p>
+            </div>
+
+            <div class="photo-slot" style="margin-bottom: 1.5rem;">
+                [Photo slot: /images/now/whiteboard.jpg — Straight-on photo of the project whiteboard, uncropped and unedited]
+            </div>
+
+            <div class="now-board">
+                <div class="now-board-col">
+                    <h3>Up next</h3>
+                    <ul>
+                        <li>Mine infrastructure case studies from the St. Lawrence fluorspar site</li>
+                        <li>Real CPAP oximetry and sunrise-time charts for the existing essays</li>
+                        <li>Workshop build logs for EtchCentric</li>
+                    </ul>
+                </div>
+                <div class="now-board-col">
+                    <h3>Someday</h3>
+                    <ul>
+                        <li>Homelab runbooks written up as open-source kits</li>
+                        <li>First-person memoirs from the drafts folder</li>
+                        <li>More trackers for games I am actually playing</li>
+                    </ul>
+                </div>
+                <div class="now-board-col">
+                    <h3>Parked</h3>
+                    <ul>
+                        <li>Anything that needs a framework to render a paragraph</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Already shipped -->
+        <section class="now-shipped">
+            <h2>Already Shipped</h2>
+            <ul class="now-list">
                 <li>
-                    <strong>Project Atlas &amp; Website Overhaul.</strong> Stripping out symmetrical boilerplate across the site, shipping the 279-step <a href="/tools/gta-v-tracker/">GTA V 100% &amp; Achievements Checklist</a>, refining the 3D ABS strike-zone physics in the <a href="/tools/umpire-simulator/">MLB Umpire Pitch Simulator</a>, and writing long-form essays on <a href="/articles/the-case-for-permanent-standard-time.html">Permanent Standard Time</a> and Newfoundland infrastructure.
+                    <span class="now-date">Nov 23</span>
+                    <div><strong>v1.8.0</strong> — GTA V tracker, Permanent Standard Time essay, <code>/now</code>, graph-first homepage.</div>
                 </li>
                 <li>
-                    <strong>EtchCentric Laser Shop.</strong> Running batches of engraved natural riven slate coasters and custom hardwood pieces in the workshop, and shooting product photos on the tabletop sweep with the <a href="/articles/diy-product-photography-sony-a6400-darktable.html">Sony a6400 and Darktable</a>.
+                    <span class="now-date">Nov 16</span>
+                    <div><strong>v1.7.0</strong> — <a href="/tools/osrs-bank-skilling/">OSRS Bank Skilling &amp; GE Flip Engine</a>, NFL matchup predictor, Statcast batters in the umpire simulator.</div>
+                </li>
+                <li>
+                    <span class="now-date">Nov 9</span>
+                    <div><strong>v1.6.0</strong> — Product photography write-up, the <a href="/store/">store</a>, and scorecard sharing in the umpire simulator.</div>
                 </li>
             </ul>
         </section>
 
-        <section style="margin-bottom: 2.5rem;">
-            <h2>Playing</h2>
-            <ul class="notes-list">
-                <li>
-                    <strong>Grand Theft Auto VI &amp; GTA V 100% Routing.</strong> Deep in <em>GTA VI</em> while fine-tuning the chronological early-chapter mission and Random Event routing on the <a href="/tools/gta-v-tracker/">GTA V 100% Tracker</a>.
-                </li>
-                <li>
-                    <strong>RuneScape: Dragonwilds.</strong> Hosting our dedicated server, testing vault timers, and keeping the <a href="/tools/dragonwilds-tracker/">Dragonwilds Progression Companion</a> up to date.
-                </li>
-            </ul>
-        </section>
-
-        <section style="margin-bottom: 2.5rem;">
-            <h2>Practicing</h2>
-            <ul class="notes-list">
-                <li>
-                    <strong>12-Hole Alto C Ocarina.</strong> Working on breath-pressure control across the upper register (D6–F6) and transcribing Zelda and Studio Ghibli melodies into the <a href="/tools/ocarina/">Ocarina Practice Suite</a>.
-                </li>
-                <li>
-                    <strong>Piano.</strong> Sight-reading, chord voicings, and working out arrangements by ear before adapting them to the ocarina's 21-semitone range.
-                </li>
-            </ul>
-        </section>
-
-        <section style="margin-bottom: 3rem;">
-            <h2>Following</h2>
-            <ul class="notes-list">
-                <li>
-                    <strong>Toronto Blue Jays Offseason.</strong> Tracking winter roster moves, bullpen construction, and arbitration deadlines ahead of spring training.
-                </li>
-                <li>
-                    <strong>Montreal Canadiens &amp; Buffalo Bills Regular Seasons.</strong> Following the Habs through the nightly Atlantic Division grind (<a href="/tools/nhl-trend-analyzer/">NHL Trend Analyzer</a>) and sweating out every Bills AFC East matchup (<a href="/tools/nfl-trend-analyzer/">NFL Trend Analyzer</a>).
-                </li>
-            </ul>
-        </section>
-
-        <footer style="padding-top: 1.5rem; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.92rem;">
+        <footer class="now-footer">
             <p style="margin: 0;">
                 For the permanent gear and software stack behind these projects, see <a href="/uses/" class="inline-tool-link">/uses</a>. For the broader background on how these interests connect, see <a href="/interests/" class="inline-tool-link">/interests</a>.
             </p>

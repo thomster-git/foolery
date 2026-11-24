@@ -59,7 +59,8 @@ export default class IndexBuilder {
         const categorizedIds = new Set();
 
         for (const topic of topics) {
-            const relatedArticles = articles.filter(a => a.metadata.topics && a.metadata.topics.includes(topic.metadata.id));
+            // Each article appears under only its first matching topic (no duplicate cards)
+            const relatedArticles = articles.filter(a => !categorizedIds.has(a.metadata.id) && a.metadata.topics && a.metadata.topics.includes(topic.metadata.id));
             if (relatedArticles.length > 0) {
                 cardsHtml += `<h3>${topic.metadata.title}</h3><div class="card-grid" style="margin-bottom: 2rem;">${relatedArticles.map(a => this.components.articleCard(a)).join("\n")}</div>`;
                 relatedArticles.forEach(a => categorizedIds.add(a.metadata.id));

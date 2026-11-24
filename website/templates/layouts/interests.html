@@ -25,11 +25,11 @@
         </header>
 
         <!-- 01. SPORTS (2-column asymmetric: Feature Left, Notes Right) -->
-        <section id="sports" class="interest-section">
-            <div class="interest-head">
+        <details id="sports" class="interest-section" open>
+            <summary class="interest-head">
                 <span class="interest-num">01</span>
                 <h2>Sports &amp; the Teams I Back</h2>
-            </div>
+            <span class="interest-chevron" aria-hidden="true"></span></summary>
 
             <div class="interest-split">
                 <div class="feature-editorial">
@@ -60,14 +60,14 @@
                     </li>
                 </ul>
             </div>
-        </section>
+        </details>
 
         <!-- 02. VIDEO GAMES (Indented Vertical Timeline with 2 Expanded Narrative Milestones) -->
-        <section id="video-games" class="interest-section interest-section--indented">
-            <div class="interest-head">
+        <details id="video-games" class="interest-section" open>
+            <summary class="interest-head">
                 <span class="interest-num">02</span>
                 <h2>Video Games &amp; Mechanical Systems</h2>
-            </div>
+            <span class="interest-chevron" aria-hidden="true"></span></summary>
 
             <div class="timeline-rail">
                 <div class="timeline-item">
@@ -118,14 +118,14 @@
                     </p>
                 </div>
             </div>
-        </section>
+        </details>
 
         <!-- 03. MUSIC (Wide Single-Column Editorial + 2 Compact Notes) -->
-        <section id="music" class="interest-section">
-            <div class="interest-head">
+        <details id="music" class="interest-section" open>
+            <summary class="interest-head">
                 <span class="interest-num">03</span>
                 <h2>Music &amp; Acoustic Engineering</h2>
-            </div>
+            <span class="interest-chevron" aria-hidden="true"></span></summary>
 
             <div class="feature-editorial" style="margin-bottom: 1.5rem;">
                 <h3>12-Hole Alto C Ocarina &amp; Piano</h3>
@@ -148,14 +148,14 @@
                     <strong>Web Audio API &amp; Autocorrelation DSP.</strong> Writing browser-native sound synthesizers and time-domain pitch detectors that measure microphone input down to the cent without external libraries.
                 </li>
             </ul>
-        </section>
+        </details>
 
         <!-- 04. ELECTRONICS (Indented Reversed Asymmetric Split: Notes Left, Feature Right) -->
-        <section id="electronics" class="interest-section interest-section--indented">
-            <div class="interest-head">
+        <details id="electronics" class="interest-section" open>
+            <summary class="interest-head">
                 <span class="interest-num">04</span>
                 <h2>Electronics &amp; Physical Infrastructure</h2>
-            </div>
+            <span class="interest-chevron" aria-hidden="true"></span></summary>
 
             <div class="interest-split interest-split--reverse">
                 <ul class="notes-list">
@@ -180,14 +180,14 @@
                     </p>
                 </div>
             </div>
-        </section>
+        </details>
 
         <!-- 05. DIGITAL TOOLS (Prose Column + Notes) -->
-        <section id="digital-tools" class="interest-section">
-            <div class="interest-head">
+        <details id="digital-tools" class="interest-section" open>
+            <summary class="interest-head">
                 <span class="interest-num">05</span>
                 <h2>Digital Tools &amp; Knowledge Architecture</h2>
-            </div>
+            <span class="interest-chevron" aria-hidden="true"></span></summary>
 
             <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.75; max-width: 72ch; margin: 0 0 1.25rem 0;">
                 I dislike bloated web stacks that need 400 megabytes of JavaScript dependencies to render a paragraph of text. Project Atlas compiles Markdown and YAML frontmatter through a zero-dependency Node.js pipeline into fast, static HTML while still supporting interactive canvas simulators, <code style="font-family: var(--font-mono);">localStorage</code> trackers, and a live <a href="/graph/" class="inline-tool-link">3D Force-Directed Knowledge Graph</a>.
@@ -201,14 +201,14 @@
                     <strong>Interactive Tier Lists.</strong> Fast client-side drag-and-drop ranking boards with instant image export. &rarr; <a href="/tools/tier-list/">Tier List Creator</a>
                 </li>
             </ul>
-        </section>
+        </details>
 
         <!-- 06. ENTERTAINMENT (Indented Pure Compact Notes List — No Feature Box) -->
-        <section id="entertainment" class="interest-section interest-section--indented">
-            <div class="interest-head">
+        <details id="entertainment" class="interest-section" open>
+            <summary class="interest-head">
                 <span class="interest-num">06</span>
                 <h2>Entertainment &amp; Community Gamification</h2>
-            </div>
+            <span class="interest-chevron" aria-hidden="true"></span></summary>
 
             <ul class="notes-list" style="max-width: 72ch;">
                 <li>
@@ -221,7 +221,7 @@
                     <strong>Live Stream &amp; Event Schedule.</strong> Local-timezone schedule conversions and community game nights.
                 </li>
             </ul>
-        </section>
+        </details>
 
         <!-- Quiet Editorial Footer -->
         <footer style="margin: 4rem 0 3rem 0; padding-top: 1.75rem; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.95rem;">
@@ -232,3 +232,13 @@
 
     </div>
 </div>
+<script>
+(function () {
+  function openFromHash() {
+    var el = location.hash && document.querySelector(location.hash);
+    if (el && el.tagName === 'DETAILS') { el.open = true; }
+  }
+  window.addEventListener('hashchange', openFromHash);
+  openFromHash();
+})();
+</script>

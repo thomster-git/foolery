@@ -6,55 +6,59 @@
 // Professional descriptions keyed by role title
 var roleDescriptions = {
   'IT Coordinator': {
-    org: 'Current Employer — St. John\'s, NL',
+    org: 'Canada Fluorspar Inc. · Nov 2024 – Nov 2025',
     bullets: [
-      'Managed IT operations for 60 users across 72 endpoints (laptops, servers, and utility machines) in a multi-site organization.',
-      'Designed and deployed white-box server infrastructure with Proxmox virtualization, saving nearly 50% on hardware ($42,000 parts vs $80,000 equivalent), and eliminated extortionate MSP hardware markups (saving ~$500/laptop) and setup fees (~$5,000) by bringing procurement and provisioning in-house.',
-      'Led ransomware recovery effort following an Akira incident, capturing forensic images and strategically restoring 1 laptop per department to maintain critical operations while \'offline\'. Achieved full operational recovery of 60 endpoints and 5 servers within 10 days.',
-      'Engineered M365 automation with PowerShell to standardize and centralize onboarding, licensing, and compliance reporting despite limited cross-departmental data availability.',
-      'Authored IT security policies, firewall rulesets, and cybersecurity procedures adopted organization-wide.'
+      'Owned IT for ~60 endpoints and 8 servers (hybrid AD/Entra ID, Sage 300 ERP RDSH, SQL) at a remote mining site.',
+      'Led on-site recovery from an Akira ransomware attack: captured forensic images, restored one clean laptop per department first, and reached full recovery across 60 endpoints and 5 servers within 10 days.',
+      'Exited an underperforming MSP, moved procurement to CDW, and brought provisioning in-house, eliminating ~$500/laptop markups and ~$5,000 setup quotes for 8 laptops.',
+      'Replaced WatchGuard Firebox appliances with Palo Alto firewalls, tightened segmentation and remote access, and fixed inherited rules that blocked Microsoft updates.',
+      'Authored the IT budget and a white-box server design with an on-site critical spares inventory.',
+      'Built SharePoint/Power Automate ticketing and approvals, plus Python (pandas) and PowerShell reporting pipelines; wrote a full IT policy suite.'
     ]
   },
   'Independent Consultant': {
-    org: 'Self-Employed — Remote',
+    org: 'Self-Employed · Oct 2025 – Present',
     bullets: [
-      'Provide lightweight IT infrastructure design and workflow consulting to a dedicated small business client.',
-      'Build Proxmox homelabs and network diagnostics environments requiring low-cost, high-reliability setups.',
-      'Deliver honest KPI frameworks and process documentation to help measure what actually matters.',
-      'Develop web solutions including custom static sites with automated build pipelines and SEO optimization.'
+      'Help small teams and remote operations fix unreliable tech and build infrastructure they can understand, support, and afford.',
+      'Audited the wireless network at Kilmory Resort: profiled throughput from the 30 Mbps ISP handoff, documented cabling hazards and an end-of-life firewall, restored the UniFi Controller VM, completed staged firmware upgrades, and delivered a photo-documented upgrade plan.',
+      'Architect and support maintainable stacks on Microsoft 365, SharePoint, Power Automate, Proxmox VE, Nextcloud, Tailscale, and Cloudflare Tunnels, plus custom PC and server builds.',
+      'Handle domains, DNS, brand graphics, and custom HTML/CSS builds, including this static-generated site and Lemon Squeezy storefront.',
+      'Map real workflows into decision-gate flowcharts, defined ownership, and KPIs that reflect reality.'
     ]
   },
-  'EtchCentric Creations': {
-    org: 'Founder & Operator — St. John\'s, NL',
+  'Founder & Owner-Operator': {
+    org: 'EtchCentric Creations · May 2024 – Dec 2024',
     bullets: [
-      'Founded a custom laser engraving business offering personalized coasters, bottle openers, and bespoke items.',
-      'Manage all aspects of operations: client intake, design, production scheduling, quality assurance, and delivery.',
-      'Design original artwork and adapt client-supplied graphics for laser engraving across multiple materials.',
-      'Operate and maintain xTool laser engraving equipment; continuously refine settings for quality and consistency.'
+      'Founded and registered a laser-engraving and cutting business, handling provincial registration, WorkplaceNL compliance, municipal filings, and pricing.',
+      'Selected an xTool S1 40W diode laser; handled material testing, custom design, and product photography.',
+      'Sold through social media and craft fairs (Square POS) before moving to a self-hosted Lemon Squeezy storefront.'
     ]
   },
   'IT Technician': {
-    org: 'IT Department — St. John\'s, NL',
+    org: 'Canada Fluorspar Inc. · Jul 2024 – Nov 2024',
     bullets: [
-      'Provided end-user support, network mapping, and hardware deployment across multiple office locations.',
-      'Coordinated with vendors for procurement, warranty resolution, and service escalations.',
-      'Maintained IT asset inventory and contributed to network documentation and topology diagrams.'
+      'Traced cabling, switches, and endpoints to produce the first accurate network topology diagram for the site.',
+      'Handled Tier 1/2 support and Sage 300 ERP accounts, taking over onboarding/offboarding and ticket queues from a slow MSP.',
+      'Built an isolated print-sharing setup on a subcontractor internet line so outside crews could print without touching the corporate network.',
+      'Audited the network room, inventoried legacy equipment, and ran an internal auction to clear unused monitors.'
     ]
   },
   'Junior Mining Engineer': {
-    org: 'Mining Operation — Newfoundland',
+    org: 'Canada Fluorspar Inc. · Jan 2021 – Oct 2021',
     bullets: [
-      'Assisted with mine design, drill-blast planning, and survey reconciliation for an underground mining operation.',
-      'Compiled and reported operational KPIs to senior engineering staff; identified production bottlenecks.',
-      'Provided equipment simulator instruction to newly onboarded equipment operators.'
+      'Used GEOVIA Surpac for block model attributes, pit optimization, haul roads, pit layouts, waste dumps, and blast patterns across short-, medium-, and long-term plans.',
+      'Reconciled weekly drone survey data against expected blast excavation and calculated ROM stockpile volumes by grade.',
+      'Prepared blast maps with 250 m equipment and 500 m personnel exclusion zones and coordinated notices with neighboring towns.',
+      'Earned Level 2 Simulator Instructor qualification for haul truck and excavator operators.'
     ]
   },
   'Mobile Maintenance Planner': {
-    org: 'Mining Operation — Newfoundland',
+    org: 'Canada Fluorspar Inc. · Oct 2021 – Feb 2022',
     bullets: [
-      'Planned and scheduled preventive and corrective maintenance for a fleet of 50+ heavy mobile mining machines (haul trucks, excavators, loaders, dozers).',
-      'Managed work orders through CMMS; coordinated with maintenance crews and parts procurement teams.',
-      'Organized and maintained SOPs for equipment servicing to improve technician efficiency and uptime.'
+      'Planned 500-hour preventive maintenance across an 84-unit Komatsu and CAT fleet running 24/7 using hour-accumulation forecasting.',
+      'Traced recurring haul truck breakdowns to dust contamination and moved fuel filter changes from 1,000 to 500 hours, overriding OEM defaults.',
+      'Created a tire-inspection tracking process that exposed premature tire failures before the 100-hour mark.',
+      'Staged parts, CMMS work orders, and SOPs, and produced weekly availability, utilization, and backlog KPI reports.'
     ]
   },
   'Junior Project Engineer': {
