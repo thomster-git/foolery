@@ -18,7 +18,7 @@
   },
   {
     "id": "item_2",
-    "name": "Oatmeal",
+    "name": "Rolled Oats (Dry)",
     "category": "Carbs",
     "packagePrice": null,
     "packageSize": null,
@@ -31,7 +31,21 @@
     "carbs": 27,
     "itemLossPercent": 0,
     "vitamins": {},
-    "subCategory": "Whole Grains"
+    "subCategory": "Breakfast Grains",
+    "explicitSubs": [
+      {
+        "id": "item_51",
+        "replacementAmount": 40,
+        "originalAmount": 40,
+        "note": "Protein Milk Cereal Bowl: Shake the 50g whey and 250g almond milk together first, pour cold over dry cereal, and top with berries (enjoy peanut butter drizzled or on the side)."
+      },
+      {
+        "id": "item_52",
+        "replacementAmount": 38,
+        "originalAmount": 40,
+        "note": "Protein Milk Cereal Bowl: Shake the 50g whey and 250g almond milk together first, pour cold over cereal, and top with berries."
+      }
+    ]
   },
   {
     "id": "item_3",
@@ -82,7 +96,7 @@
     "carbs": 6,
     "itemLossPercent": 3,
     "vitamins": {},
-    "subCategory": "Lean Meat"
+    "subCategory": "Dairy Protein"
   },
   {
     "id": "item_6",
@@ -123,10 +137,10 @@
     "name": "Sourdough Bagel",
     "category": "Carbs",
     "packagePrice": 4.79,
-    "packageSize": 5,
-    "packageUnit": "each",
-    "servingSize": 1,
-    "servingUnit": "each",
+    "packageSize": 450,
+    "packageUnit": "g",
+    "servingSize": 90,
+    "servingUnit": "g",
     "calories": 230,
     "protein": 9,
     "fat": 1.5,
@@ -307,22 +321,34 @@
         "note": ""
       },
       {
+        "id": "item_31",
+        "replacementAmount": 200,
+        "originalAmount": 200,
+        "note": "Halve or cube red potatoes and roast at 400°F (200°C) with skins on."
+      },
+      {
+        "id": "item_47",
+        "replacementAmount": 210,
+        "originalAmount": 200,
+        "note": "White/yellow potatoes crisp especially well in the oven or air fryer at 400°F (200°C)."
+      },
+      {
         "id": "item_40",
         "replacementAmount": 275,
         "originalAmount": 200,
-        "note": ""
+        "note": "Higher volume."
       },
       {
         "id": "item_42",
         "replacementAmount": 275,
         "originalAmount": 200,
-        "note": ""
+        "note": "Higher volume."
       },
       {
         "id": "item_48",
         "replacementAmount": 140,
         "originalAmount": 200,
-        "note": "Keeps evening complex carbs pinned at ~40–45g."
+        "note": "Pre-cooked brown basmati rice; scales evening complex carbs cleanly."
       }
     ]
   },
@@ -428,6 +454,18 @@
         "replacementAmount": 220,
         "originalAmount": 230,
         "note": ""
+      },
+      {
+        "id": "item_10",
+        "replacementAmount": 230,
+        "originalAmount": 230,
+        "note": "Brown extra-lean ground beef in a hot skillet; pairs great with cubed roasted sweet potatoes or white potatoes."
+      },
+      {
+        "id": "item_35",
+        "replacementAmount": 230,
+        "originalAmount": 230,
+        "note": "Flank steak cubes sear fast in a cast-iron skillet."
       }
     ]
   },
@@ -446,7 +484,7 @@
     "carbs": 6.6,
     "itemLossPercent": 0,
     "vitamins": {},
-    "subCategory": "Fish"
+    "subCategory": "Vegetables"
   },
   {
     "id": "item_22",
@@ -848,7 +886,7 @@
   {
     "id": "item_43",
     "name": "Yellow Summer Squash",
-    "category": "Carbs",
+    "category": "Carbs/Veg",
     "subCategory": "Vegetables",
     "packagePrice": null,
     "packageSize": null,
@@ -865,7 +903,7 @@
   {
     "id": "item_44",
     "name": "Cremini / Button Mushrooms",
-    "category": "Carbs",
+    "category": "Carbs/Veg",
     "subCategory": "Vegetables",
     "packagePrice": null,
     "packageSize": null,
@@ -882,7 +920,7 @@
   {
     "id": "item_45",
     "name": "Green Cabbage (shredded)",
-    "category": "Carbs",
+    "category": "Carbs/Veg",
     "subCategory": "Vegetables",
     "packagePrice": null,
     "packageSize": null,
@@ -899,7 +937,7 @@
   {
     "id": "item_46",
     "name": "Roasted Brussels Sprouts (halved)",
-    "category": "Carbs",
+    "category": "Carbs/Veg",
     "subCategory": "Vegetables",
     "packagePrice": null,
     "packageSize": null,
@@ -978,6 +1016,91 @@
     "protein": 1.4,
     "fat": 0.5,
     "carbs": 9.6,
+    "itemLossPercent": 0,
+    "vitamins": {}
+  },
+  {
+    "id": "item_51",
+    "name": "Whole-Grain Oat Cereal",
+    "category": "Carbs",
+    "subCategory": "Breakfast Grains",
+    "packagePrice": null,
+    "packageSize": null,
+    "packageUnit": "g",
+    "servingSize": 40,
+    "servingUnit": "g",
+    "calories": 150,
+    "protein": 5,
+    "fat": 2.5,
+    "carbs": 29,
+    "itemLossPercent": 0,
+    "vitamins": {}
+  },
+  {
+    "id": "item_52",
+    "name": "High-Protein Cereal / Granola",
+    "category": "Carbs",
+    "subCategory": "Breakfast Grains",
+    "packagePrice": null,
+    "packageSize": null,
+    "packageUnit": "g",
+    "servingSize": 55,
+    "servingUnit": "g",
+    "calories": 210,
+    "protein": 10,
+    "fat": 3.5,
+    "carbs": 38,
+    "itemLossPercent": 0,
+    "vitamins": {}
+  },
+  {
+    "id": "item_53",
+    "name": "Quinoa (Dry)",
+    "category": "Carbs",
+    "subCategory": "Whole Grains",
+    "packagePrice": null,
+    "packageSize": null,
+    "packageUnit": "g",
+    "servingSize": 45,
+    "servingUnit": "g",
+    "calories": 170,
+    "protein": 6,
+    "fat": 2.5,
+    "carbs": 29,
+    "itemLossPercent": 0,
+    "vitamins": {}
+  },
+  {
+    "id": "item_54",
+    "name": "Crispy Rice Cakes",
+    "category": "Carbs",
+    "subCategory": "Breads",
+    "packagePrice": null,
+    "packageSize": null,
+    "packageUnit": "g",
+    "servingSize": 18,
+    "servingUnit": "g",
+    "calories": 70,
+    "protein": 1.5,
+    "fat": 0.5,
+    "carbs": 15,
+    "itemLossPercent": 0,
+    "vitamins": {}
+  },
+  {
+    "id": "item_55",
+    "name": "Almond Butter (Natural)",
+    "category": "Fat",
+    "subCategory": "Nut Butter",
+    "packagePrice": null,
+    "packageSize": null,
+    "packageUnit": "g",
+    "servingSize": 16,
+    "servingUnit": "g",
+    "calories": 98,
+    "protein": 3.4,
+    "fat": 8.9,
+    "carbs": 3,
     "itemLossPercent": 0,
     "vitamins": {}
   }
