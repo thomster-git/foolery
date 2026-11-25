@@ -82,6 +82,26 @@ export default class Resolver {
 
         });
 
+        //--------------------------------------------------
+        // Propagate symmetric backlinks for related items
+        //--------------------------------------------------
+
+        content.forEach(source => {
+            if (source.metadata?.status === "draft") return;
+            const relatedTargets = source.links?.related || [];
+            relatedTargets.forEach(target => {
+                if (!target || target === source || target.metadata?.status === "draft") return;
+                if (!target.links) target.links = {};
+                if (!Array.isArray(target.links.related)) target.links.related = [];
+                const alreadyLinked = target.links.related.some(
+                    existing => existing.metadata?.id === source.metadata?.id
+                );
+                if (!alreadyLinked) {
+                    target.links.related.push(source);
+                }
+            });
+        });
+
         return content;
 
     }

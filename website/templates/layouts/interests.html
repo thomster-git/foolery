@@ -12,219 +12,258 @@
         <header class="hero">
             <h1>Interests &amp; Obsessions</h1>
             <p>
-                What I spend my time building, scoring, practicing, and taking apart outside formal job titles. Most of the tools and essays on this site started in one of these six rabbit holes.
+                What I spend my time building, scoring, practicing, and taking apart outside formal job titles. Most of the tools and essays on this site started in one of these six rabbit holes. Click any category below to expand it.
             </p>
-            <nav class="interests-jump-nav" aria-label="Interest sections">
-                <a href="#sports">01 Sports</a>
-                <a href="#video-games">02 Video Games</a>
-                <a href="#music">03 Music</a>
-                <a href="#electronics">04 Electronics</a>
-                <a href="#digital-tools">05 Digital Tools</a>
-                <a href="#entertainment">06 Entertainment</a>
-            </nav>
+            <div class="interests-controls">
+                <nav class="interests-jump-nav" aria-label="Interest sections">
+                    <a href="#sports">01 Sports</a>
+                    <a href="#video-games">02 Video Games</a>
+                    <a href="#music">03 Music</a>
+                    <a href="#electronics">04 Electronics</a>
+                    <a href="#digital-tools">05 Digital Tools</a>
+                    <a href="#entertainment">06 Entertainment</a>
+                </nav>
+                <button type="button" id="interests-toggle-all" class="interests-toggle-btn" aria-expanded="false">Expand all</button>
+            </div>
         </header>
 
         <!-- 01. SPORTS (2-column asymmetric: Feature Left, Notes Right) -->
-        <details id="sports" class="interest-section" open>
+        <details id="sports" class="interest-section">
             <summary class="interest-head">
                 <span class="interest-num">01</span>
-                <h2>Sports &amp; the Teams I Back</h2>
-            <span class="interest-chevron" aria-hidden="true"></span></summary>
-
-            <div class="interest-split">
-                <div class="feature-editorial">
-                    <h3>Toronto Blue Jays — Scored by Hand in Pencil</h3>
-                    <blockquote class="pull-quote">
-                        Scoring a baseball game on paper forces you to watch the spaces between the pitches—when a starter loses his release point in the sixth, and how a bullpen gets taxed across a four-game series.
-                    </blockquote>
-                    <p>
-                        I am a baseball purist first and a Blue Jays fan right behind it. Sitting down with a physical paper scorebook and a sharp pencil turns a three-hour broadcast into a slow, deliberate ledger of leverage and decision-making. You see the whole 162-game arc differently when you have written down every walk, defensive shift, and blown save yourself.
-                    </p>
-                    <div class="photo-slot">
-                        [Photo slot: /images/baseball/scoresheet-bluejays.jpg — Overhead shot of a hand-scored Blue Jays paper scorebook page with pencil in frame]
-                    </div>
-                    <p>
-                        That habit directly led to building the <a href="/tools/postseason-baseball-analyzer/" class="inline-tool-link">MLB Postseason Momentum Analyzer</a>, the <a href="/tools/baseball-trend-analyzer/" class="inline-tool-link">162-Game Run Differential Analyzer</a>, and the <a href="/tools/umpire-simulator/" class="inline-tool-link">3D ABS Umpire Pitch Simulator</a>.
-                    </p>
+                <div class="interest-head-text">
+                    <h2>Sports &amp; the Teams I Back</h2>
+                    <span class="interest-preview">Toronto Blue Jays · Montreal Canadiens · Buffalo Bills · Formula 1</span>
                 </div>
+                <span class="interest-chevron" aria-hidden="true"></span>
+            </summary>
 
-                <ul class="notes-list">
-                    <li>
-                        <strong>Montreal Canadiens (NHL).</strong> Bleeding Bleu-Blanc-Rouge through the modern rebuild, tracking young core development and five-on-five possession across the 82-game winter grind. &rarr; <a href="/tools/nhl-trend-analyzer/">NHL Standings &amp; Goal Differential Analyzer</a>
-                    </li>
-                    <li>
-                        <strong>Buffalo Bills (NFL).</strong> Bills Mafia through every red-zone sweat, AFC East race, and January lake-effect snow game. &rarr; <a href="/tools/nfl-trend-analyzer/">NFL Point Differential &amp; Rolling Trend Analyzer</a>
-                    </li>
-                    <li>
-                        <strong>Formula 1.</strong> Drawn to aerodynamic telemetry deltas, tire degradation cliffs, and split-second pit wall calls—backing Oscar Piastri and following Lewis Hamilton in Ferrari scarlet. &rarr; <a href="/tools/f1-championship-calculator/">F1 2026 Championship Clinch Calculator</a>
-                    </li>
-                </ul>
+            <div class="interest-body">
+                <div class="interest-split">
+                    <div class="feature-editorial">
+                        <h3>Toronto Blue Jays — Scored by Hand in Pencil</h3>
+                        <blockquote class="pull-quote">
+                            Scoring a baseball game on paper forces you to watch the spaces between the pitches—when a starter loses his release point in the sixth, and how a bullpen gets taxed across a four-game series.
+                        </blockquote>
+                        <p>
+                            I am a baseball purist first and a Blue Jays fan right behind it. Sitting down with a physical paper scorebook and a sharp pencil turns a three-hour broadcast into a slow, deliberate ledger of leverage and decision-making. You see the whole 162-game arc differently when you have written down every walk, defensive shift, and blown save yourself.
+                        </p>
+                        <div class="photo-slot">
+                            [Photo slot: /images/baseball/scoresheet-bluejays.jpg — Overhead shot of a hand-scored Blue Jays paper scorebook page with pencil in frame]
+                        </div>
+                        <p>
+                            That habit directly led to building the <a href="/tools/postseason-baseball-analyzer/" class="inline-tool-link">MLB Postseason Momentum Analyzer</a>, the <a href="/tools/baseball-trend-analyzer/" class="inline-tool-link">162-Game Run Differential Analyzer</a>, and the <a href="/tools/umpire-simulator/" class="inline-tool-link">3D ABS Umpire Pitch Simulator</a>.
+                        </p>
+                    </div>
+
+                    <ul class="notes-list">
+                        <li>
+                            <strong>Montreal Canadiens (NHL).</strong> Bleeding Bleu-Blanc-Rouge through the modern rebuild, tracking young core development and five-on-five possession across the 82-game winter grind. &rarr; <a href="/tools/nhl-trend-analyzer/">NHL Standings &amp; Goal Differential Analyzer</a>
+                        </li>
+                        <li>
+                            <strong>Buffalo Bills (NFL).</strong> Bills Mafia through every red-zone sweat, AFC East race, and January lake-effect snow game. &rarr; <a href="/tools/nfl-trend-analyzer/">NFL Point Differential &amp; Rolling Trend Analyzer</a>
+                        </li>
+                        <li>
+                            <strong>Formula 1.</strong> Drawn to aerodynamic telemetry deltas, tire degradation cliffs, and split-second pit wall calls—backing Oscar Piastri and following Lewis Hamilton in Ferrari scarlet. &rarr; <a href="/tools/f1-championship-calculator/">F1 2026 Championship Clinch Calculator</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </details>
 
-        <!-- 02. VIDEO GAMES (Indented Vertical Timeline with 2 Expanded Narrative Milestones) -->
-        <details id="video-games" class="interest-section" open>
+        <!-- 02. VIDEO GAMES (Vertical Timeline with 2 Expanded Narrative Milestones) -->
+        <details id="video-games" class="interest-section">
             <summary class="interest-head">
                 <span class="interest-num">02</span>
-                <h2>Video Games &amp; Mechanical Systems</h2>
-            <span class="interest-chevron" aria-hidden="true"></span></summary>
+                <div class="interest-head-text">
+                    <h2>Video Games &amp; Mechanical Systems</h2>
+                    <span class="interest-preview">N64 &amp; Ocarina of Time · Final Fantasy X · GTA V 100% Routing · RuneScape</span>
+                </div>
+                <span class="interest-chevron" aria-hidden="true"></span>
+            </summary>
 
-            <div class="timeline-rail">
-                <div class="timeline-item">
-                    <span class="timeline-year">1998–2002 · Nintendo 64</span>
-                    <div class="feature-editorial">
-                        <h3>Ocarina of Time &amp; Melodic Spatial Design</h3>
-                        <p>
-                            The era where 3D spatial puzzle design and musical memory clicked for me. Memorizing every C-button melody in <em>The Legend of Zelda: Ocarina of Time</em> by ear—and later picking up a physical 12-hole vessel flute—led directly to building the browser-based <a href="/tools/ocarina/" class="inline-tool-link">N64 Ocarina &amp; Microphone Pitch Practice Suite</a>.
+            <div class="interest-body">
+                <div class="timeline-rail">
+                    <div class="timeline-item">
+                        <span class="timeline-year">1998–2002 · Nintendo 64</span>
+                        <div class="feature-editorial">
+                            <h3>Ocarina of Time &amp; Melodic Spatial Design</h3>
+                            <p>
+                                The era where 3D spatial puzzle design and musical memory clicked for me. Memorizing every C-button melody in <em>The Legend of Zelda: Ocarina of Time</em> by ear—and later picking up a physical 12-hole vessel flute—led directly to building the browser-based <a href="/tools/ocarina/" class="inline-tool-link">N64 Ocarina &amp; Microphone Pitch Practice Suite</a>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <span class="timeline-year">2000–2011 · Game Boy</span>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">
+                            <strong>Handheld Tactics.</strong> Link-cable trading across early <em>Pokémon</em> generations, grid-based turn strategy in <em>Advance Wars</em>, and Djinn class permutations in <em>Golden Sun</em>.
                         </p>
                     </div>
-                </div>
 
-                <div class="timeline-item">
-                    <span class="timeline-year">2000–2011 · Game Boy</span>
-                    <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">
-                        <strong>Handheld Tactics.</strong> Link-cable trading across early <em>Pokémon</em> generations, grid-based turn strategy in <em>Advance Wars</em>, and Djinn class permutations in <em>Golden Sun</em>.
-                    </p>
-                </div>
+                    <div class="timeline-item">
+                        <span class="timeline-year">2002–2008 · PlayStation 2</span>
+                        <div class="feature-editorial">
+                            <h3>Final Fantasy X &amp; 100% End-Game Routing</h3>
+                            <p>
+                                Countless hours mapping Conditional Turn-Based (CTB) battle timelines, Sphere Grid stat-maxing routes, Monster Arena captures, and Celestial Weapon sigils. I built the <a href="/tools/ffx-tracker/" class="inline-tool-link">FFX 100% Completion Tracker</a> so players can route the entire post-game without losing track of a single Al Bhed Primer or Dark Aeon requirement.
+                            </p>
+                        </div>
+                    </div>
 
-                <div class="timeline-item">
-                    <span class="timeline-year">2002–2008 · PlayStation 2</span>
-                    <div class="feature-editorial">
-                        <h3>Final Fantasy X &amp; 100% End-Game Routing</h3>
-                        <p>
-                            Countless hours mapping Conditional Turn-Based (CTB) battle timelines, Sphere Grid stat-maxing routes, Monster Arena captures, and Celestial Weapon sigils. I built the <a href="/tools/ffx-tracker/" class="inline-tool-link">FFX 100% Completion Tracker</a> so players can route the entire post-game without losing track of a single Al Bhed Primer or Dark Aeon requirement.
+                    <div class="timeline-item">
+                        <span class="timeline-year">2008–2012 · Xbox 360</span>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">
+                            <strong>Console Multiplayer &amp; Achievement Hunting.</strong> Custom <em>Halo 3</em> Forge lobbies, late-night Search &amp; Destroy rounds in <em>Modern Warfare</em>, and methodical completionist checklists.
                         </p>
                     </div>
-                </div>
 
-                <div class="timeline-item">
-                    <span class="timeline-year">2008–2012 · Xbox 360</span>
-                    <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">
-                        <strong>Console Multiplayer &amp; Achievement Hunting.</strong> Custom <em>Halo 3</em> Forge lobbies, late-night Search &amp; Destroy rounds in <em>Modern Warfare</em>, and methodical completionist checklists.
-                    </p>
-                </div>
+                    <div class="timeline-item">
+                        <span class="timeline-year">2011–2026 · PC &amp; Open-World Routing</span>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">
+                            <strong>Custom Builds &amp; Grand Theft Auto.</strong> High-refresh PC hardware, ability economies in <em>Overwatch</em>, and chronological open-world completion routing. &rarr; <a href="/tools/gta-v-tracker/" class="inline-tool-link">GTA V 100% &amp; Achievements Checklist</a>
+                        </p>
+                    </div>
 
-                <div class="timeline-item">
-                    <span class="timeline-year">2011–2026 · PC &amp; Open-World Routing</span>
-                    <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">
-                        <strong>Custom Builds &amp; Grand Theft Auto.</strong> High-refresh PC hardware, ability economies in <em>Overwatch</em>, and chronological open-world completion routing. &rarr; <a href="/tools/gta-v-tracker/" class="inline-tool-link">GTA V 100% &amp; Achievements Checklist</a>
-                    </p>
-                </div>
-
-                <div class="timeline-item">
-                    <span class="timeline-year">2004–Present · RuneScape</span>
-                    <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">
-                        <strong>Twenty Years of Tick Manipulation &amp; Player Economies.</strong> From Old School RuneScape bank-standing efficiency to hosting dedicated servers in <em>RuneScape: Dragonwilds</em>. &rarr; <a href="/tools/dragonwilds-tracker/" class="inline-tool-link">Dragonwilds Progression Companion</a>
-                    </p>
+                    <div class="timeline-item">
+                        <span class="timeline-year">2004–Present · RuneScape</span>
+                        <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">
+                            <strong>Twenty Years of Tick Manipulation &amp; Player Economies.</strong> From Old School RuneScape bank-standing efficiency to hosting dedicated servers in <em>RuneScape: Dragonwilds</em>. &rarr; <a href="/tools/dragonwilds-tracker/" class="inline-tool-link">Dragonwilds Progression Companion</a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </details>
 
         <!-- 03. MUSIC (Wide Single-Column Editorial + 2 Compact Notes) -->
-        <details id="music" class="interest-section" open>
+        <details id="music" class="interest-section">
             <summary class="interest-head">
                 <span class="interest-num">03</span>
-                <h2>Music &amp; Acoustic Engineering</h2>
-            <span class="interest-chevron" aria-hidden="true"></span></summary>
-
-            <div class="feature-editorial" style="margin-bottom: 1.5rem;">
-                <h3>12-Hole Alto C Ocarina &amp; Piano</h3>
-                <blockquote class="pull-quote">
-                    A ceramic vessel flute has no fixed reed or keys—staying in tune across a two-octave range depends entirely on your breath curve rising smoothly from A4 to F6.
-                </blockquote>
-                <p>
-                    Playing the 12-hole Alto C ocarina alongside piano gives you two opposite ways of thinking about pitch: the piano lays out harmony as a fixed mechanical grid, while the ocarina demands micro-adjustments in breath pressure on every single note. I spend evenings transcribing Zelda, Studio Ghibli, and classic game themes by ear and testing them against the real-time autocorrelation tuner in the <a href="/tools/ocarina/" class="inline-tool-link">Ocarina Practice Suite</a>.
-                </p>
-                <div class="photo-slot">
-                    [Photo slot: /images/ocarina/ocarina-closeup.jpg — 12-hole ceramic Alto C ocarina resting on the desk beside the practice suite]
+                <div class="interest-head-text">
+                    <h2>Music &amp; Acoustic Engineering</h2>
+                    <span class="interest-preview">12-Hole Alto C Ocarina · Piano · Ear Training · Web Audio DSP</span>
                 </div>
-            </div>
+                <span class="interest-chevron" aria-hidden="true"></span>
+            </summary>
 
-            <ul class="notes-list">
-                <li>
-                    <strong>Melodic Ear Training.</strong> Transcribing game and film phrasing by ear, preserving natural breathing rests, accidentals, and octave shifts so melodies fit within a 21-semitone vessel chamber.
-                </li>
-                <li>
-                    <strong>Web Audio API &amp; Autocorrelation DSP.</strong> Writing browser-native sound synthesizers and time-domain pitch detectors that measure microphone input down to the cent without external libraries.
-                </li>
-            </ul>
-        </details>
-
-        <!-- 04. ELECTRONICS (Indented Reversed Asymmetric Split: Notes Left, Feature Right) -->
-        <details id="electronics" class="interest-section" open>
-            <summary class="interest-head">
-                <span class="interest-num">04</span>
-                <h2>Electronics &amp; Physical Infrastructure</h2>
-            <span class="interest-chevron" aria-hidden="true"></span></summary>
-
-            <div class="interest-split interest-split--reverse">
-                <ul class="notes-list">
-                    <li>
-                        <strong>White-Box Servers &amp; On-Shelf Warm Spares.</strong> Building standardized, maintainable server hardware with local warm spares for remote Newfoundland industrial sites where a 4-hour vendor SLA is a fantasy on paper. &rarr; <a href="/articles/sensible-infrastructure-and-white-box-servers.html">Read: Sensible Infrastructure &amp; White-Box Servers</a>
-                    </li>
-                    <li>
-                        <strong>Proxmox VE Homelab &amp; Self-Hosting.</strong> Clustered nodes, ZFS mirrored NVMe pools, lightweight LXC containers, and Tailscale mesh networking running quietly at home.
-                    </li>
-                </ul>
-
-                <div class="feature-editorial">
-                    <h3>EtchCentric Creations — Laser Engraving &amp; Fabrication</h3>
+            <div class="interest-body">
+                <div class="feature-editorial" style="margin-bottom: 1.5rem;">
+                    <h3>12-Hole Alto C Ocarina &amp; Piano</h3>
+                    <blockquote class="pull-quote">
+                        A ceramic vessel flute has no fixed reed or keys—staying in tune across a two-octave range depends entirely on your breath curve rising smoothly from A4 to F6.
+                    </blockquote>
                     <p>
-                        In the workshop I run diode and fiber laser setups for custom slate coasters, hardwood signage, and small-batch anodized metal runs. Getting a clean engraving on natural riven slate means dialing in speed/power burn matrices, kerf compensation, and pre-treatment coats so the contrast holds up for years.
+                        Playing the 12-hole Alto C ocarina alongside piano gives you two opposite ways of thinking about pitch: the piano lays out harmony as a fixed mechanical grid, while the ocarina demands micro-adjustments in breath pressure on every single note. I spend evenings transcribing Zelda, Studio Ghibli, and classic game themes by ear and testing them against the real-time autocorrelation tuner in the <a href="/tools/ocarina/" class="inline-tool-link">Ocarina Practice Suite</a>.
                     </p>
                     <div class="photo-slot">
-                        [Photo slot: /images/workshop/laser-engraving-in-progress.jpg — Laser mid-engrave on a slate coaster and the tabletop photography sweep]
+                        [Photo slot: /images/ocarina/ocarina-closeup.jpg — 12-hole ceramic Alto C ocarina resting on the desk beside the practice suite]
                     </div>
-                    <p>
-                        Photographing dark textured slate without glare turned into its own engineering project—documented in <a href="/articles/diy-product-photography-sony-a6400-darktable.html" class="inline-tool-link">DIY Product Photography with a Sony a6400 &amp; Darktable</a>.
-                    </p>
+                </div>
+
+                <ul class="notes-list">
+                    <li>
+                        <strong>Melodic Ear Training.</strong> Transcribing game and film phrasing by ear, preserving natural breathing rests, accidentals, and octave shifts so melodies fit within a 21-semitone vessel chamber.
+                    </li>
+                    <li>
+                        <strong>Web Audio API &amp; Autocorrelation DSP.</strong> Writing browser-native sound synthesizers and time-domain pitch detectors that measure microphone input down to the cent without external libraries.
+                    </li>
+                </ul>
+            </div>
+        </details>
+
+        <!-- 04. ELECTRONICS (Reversed Asymmetric Split: Notes Left, Feature Right) -->
+        <details id="electronics" class="interest-section">
+            <summary class="interest-head">
+                <span class="interest-num">04</span>
+                <div class="interest-head-text">
+                    <h2>Electronics &amp; Physical Infrastructure</h2>
+                    <span class="interest-preview">White-Box Servers · Proxmox Homelab · EtchCentric Laser Fabrication</span>
+                </div>
+                <span class="interest-chevron" aria-hidden="true"></span>
+            </summary>
+
+            <div class="interest-body">
+                <div class="interest-split interest-split--reverse">
+                    <ul class="notes-list">
+                        <li>
+                            <strong>White-Box Servers &amp; On-Shelf Warm Spares.</strong> Building standardized, maintainable server hardware with local warm spares for remote Newfoundland industrial sites where a 4-hour vendor SLA is a fantasy on paper. &rarr; <a href="/articles/sensible-infrastructure-and-white-box-servers.html">Read: Sensible Infrastructure &amp; White-Box Servers</a>
+                        </li>
+                        <li>
+                            <strong>Proxmox VE Homelab &amp; Self-Hosting.</strong> Clustered nodes, ZFS mirrored NVMe pools, lightweight LXC containers, and Tailscale mesh networking running quietly at home.
+                        </li>
+                    </ul>
+
+                    <div class="feature-editorial">
+                        <h3>EtchCentric Creations — Laser Engraving &amp; Fabrication</h3>
+                        <p>
+                            In the workshop I run diode and fiber laser setups for custom slate coasters, hardwood signage, and small-batch anodized metal runs. Getting a clean engraving on natural riven slate means dialing in speed/power burn matrices, kerf compensation, and pre-treatment coats so the contrast holds up for years.
+                        </p>
+                        <div class="photo-slot">
+                            [Photo slot: /images/workshop/laser-engraving-in-progress.jpg — Laser mid-engrave on a slate coaster and the tabletop photography sweep]
+                        </div>
+                        <p>
+                            Photographing dark textured slate without glare turned into its own engineering project—documented in <a href="/articles/diy-product-photography-sony-a6400-darktable.html" class="inline-tool-link">DIY Product Photography with a Sony a6400 &amp; Darktable</a>.
+                        </p>
+                    </div>
                 </div>
             </div>
         </details>
 
         <!-- 05. DIGITAL TOOLS (Prose Column + Notes) -->
-        <details id="digital-tools" class="interest-section" open>
+        <details id="digital-tools" class="interest-section">
             <summary class="interest-head">
                 <span class="interest-num">05</span>
-                <h2>Digital Tools &amp; Knowledge Architecture</h2>
-            <span class="interest-chevron" aria-hidden="true"></span></summary>
+                <div class="interest-head-text">
+                    <h2>Digital Tools &amp; Knowledge Architecture</h2>
+                    <span class="interest-preview">Project Atlas Pipeline · Discord Python Bots · Interactive Tier Lists</span>
+                </div>
+                <span class="interest-chevron" aria-hidden="true"></span>
+            </summary>
 
-            <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.75; max-width: 72ch; margin: 0 0 1.25rem 0;">
-                I dislike bloated web stacks that need 400 megabytes of JavaScript dependencies to render a paragraph of text. Project Atlas compiles Markdown and YAML frontmatter through a zero-dependency Node.js pipeline into fast, static HTML while still supporting interactive canvas simulators, <code style="font-family: var(--font-mono);">localStorage</code> trackers, and a live <a href="/graph/" class="inline-tool-link">3D Force-Directed Knowledge Graph</a>.
-            </p>
+            <div class="interest-body">
+                <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.75; max-width: 72ch; margin: 0 0 1.25rem 0;">
+                    I dislike bloated web stacks that need 400 megabytes of JavaScript dependencies to render a paragraph of text. Project Atlas compiles Markdown and YAML frontmatter through a zero-dependency Node.js pipeline into fast, static HTML while still supporting interactive canvas simulators, <code style="font-family: var(--font-mono);">localStorage</code> trackers, and a live <a href="/graph/" class="inline-tool-link">3D Force-Directed Knowledge Graph</a>.
+                </p>
 
-            <ul class="notes-list" style="max-width: 72ch;">
-                <li>
-                    <strong>Discord as an Operating System.</strong> Replacing fragmented chat apps with modular Python cogs, voice channel automation, and live sportsbook feeds. &rarr; <a href="/articles/building-a-comprehensive-discord-ecosystem.html">Read: Building a Discord Ecosystem</a>
-                </li>
-                <li>
-                    <strong>Interactive Tier Lists.</strong> Fast client-side drag-and-drop ranking boards with instant image export. &rarr; <a href="/tools/tier-list/">Tier List Creator</a>
-                </li>
-            </ul>
+                <ul class="notes-list" style="max-width: 72ch;">
+                    <li>
+                        <strong>Discord as an Operating System.</strong> Replacing fragmented chat apps with modular Python cogs, voice channel automation, and live sportsbook feeds. &rarr; <a href="/articles/building-a-comprehensive-discord-ecosystem.html">Read: Building a Discord Ecosystem</a>
+                    </li>
+                    <li>
+                        <strong>Interactive Tier Lists.</strong> Fast client-side drag-and-drop ranking boards with instant image export. &rarr; <a href="/tools/tier-list/">Tier List Creator</a>
+                    </li>
+                </ul>
+            </div>
         </details>
 
-        <!-- 06. ENTERTAINMENT (Indented Pure Compact Notes List — No Feature Box) -->
-        <details id="entertainment" class="interest-section" open>
+        <!-- 06. ENTERTAINMENT (Pure Compact Notes List — No Feature Box) -->
+        <details id="entertainment" class="interest-section">
             <summary class="interest-head">
                 <span class="interest-num">06</span>
-                <h2>Entertainment &amp; Community Gamification</h2>
-            <span class="interest-chevron" aria-hidden="true"></span></summary>
+                <div class="interest-head-text">
+                    <h2>Entertainment &amp; Community Gamification</h2>
+                    <span class="interest-preview">Daily Chess Tactics · Deflationary Virtual Economies · Community Streams</span>
+                </div>
+                <span class="interest-chevron" aria-hidden="true"></span>
+            </summary>
 
-            <ul class="notes-list" style="max-width: 72ch;">
-                <li>
-                    <strong>Daily Chess Tactics.</strong> Middle-game sacrifice puzzles, FEN string parsing, and pattern recognition over coffee.
-                </li>
-                <li>
-                    <strong>Deflationary Virtual Economies.</strong> Designing closed-loop community currencies with parimutuel betting pools, house-vig burns, and vanity sinks that prevent runaway inflation.
-                </li>
-                <li>
-                    <strong>Live Stream &amp; Event Schedule.</strong> Local-timezone schedule conversions and community game nights.
-                </li>
-            </ul>
+            <div class="interest-body">
+                <ul class="notes-list" style="max-width: 72ch;">
+                    <li>
+                        <strong>Daily Chess Tactics.</strong> Middle-game sacrifice puzzles, FEN string parsing, and pattern recognition over coffee.
+                    </li>
+                    <li>
+                        <strong>Deflationary Virtual Economies.</strong> Designing closed-loop community currencies with parimutuel betting pools, house-vig burns, and vanity sinks that prevent runaway inflation.
+                    </li>
+                    <li>
+                        <strong>Live Stream &amp; Event Schedule.</strong> Local-timezone schedule conversions and community game nights.
+                    </li>
+                </ul>
+            </div>
         </details>
 
         <!-- Quiet Editorial Footer -->
-        <footer style="margin: 4rem 0 3rem 0; padding-top: 1.75rem; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.95rem;">
+        <footer style="margin: 3.5rem 0 3rem 0; padding-top: 1.75rem; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.95rem;">
             <p style="margin: 0;">
                 Want to see how these pieces connect? Browse the <a href="/tools/" class="inline-tool-link">interactive tools directory</a>, spin the <a href="/graph/" class="inline-tool-link">knowledge graph</a>, read the <a href="/articles/" class="inline-tool-link">essays</a>, or check <a href="/now/" class="inline-tool-link">what I am working on right now (/now)</a>.
             </p>
@@ -234,11 +273,38 @@
 </div>
 <script>
 (function () {
+  var panels = Array.prototype.slice.call(document.querySelectorAll('details.interest-section'));
+  var toggleBtn = document.getElementById('interests-toggle-all');
+
+  function syncToggleLabel() {
+    if (!toggleBtn || !panels.length) return;
+    var allOpen = panels.every(function (d) { return d.open; });
+    toggleBtn.textContent = allOpen ? 'Collapse all' : 'Expand all';
+    toggleBtn.setAttribute('aria-expanded', allOpen ? 'true' : 'false');
+  }
+
   function openFromHash() {
     var el = location.hash && document.querySelector(location.hash);
-    if (el && el.tagName === 'DETAILS') { el.open = true; }
+    if (el && el.tagName === 'DETAILS') {
+      el.open = true;
+      syncToggleLabel();
+    }
   }
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function () {
+      var shouldOpen = !panels.every(function (d) { return d.open; });
+      panels.forEach(function (d) { d.open = shouldOpen; });
+      syncToggleLabel();
+    });
+  }
+
+  panels.forEach(function (d) {
+    d.addEventListener('toggle', syncToggleLabel);
+  });
+
   window.addEventListener('hashchange', openFromHash);
   openFromHash();
+  syncToggleLabel();
 })();
 </script>

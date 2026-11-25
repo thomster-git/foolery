@@ -17,6 +17,8 @@
  * }
  */
 
+import { slugifyTag } from "./seo-helpers.js";
+
 export default class GraphBuilder {
 
     build(content) {
@@ -361,18 +363,54 @@ export default class GraphBuilder {
                     });
                 });
 
-            // Synthesize tag edges
+            // Synthesize tag edges (using canonical tag slugs)
             if (object.metadata.tags && Array.isArray(object.metadata.tags)) {
-                object.metadata.tags.forEach(tag => {
-                    tags.add(tag);
+                object.metadata.tags.forEach(rawTag => {
+                    const slug = slugifyTag(rawTag);
+                    if (!slug) return;
+                    tags.add(slug);
                     graph.edges.push({
                         source: object.metadata.id,
-                        target: `tag-${tag}`,
+                        target: `tag-${slug}`,
                         relation: "tags"
                     });
                 });
             }
         });
+
+        // Synthesize semantic article-to-article edges when two published articles share >= 2 tags
+        // (deduplicated against existing explicit related edges)
+        const publishedArticles = publishedContent.filter(obj => obj.metadata.type === "article");
+        const existingArticlePairs = new Set();
+        graph.edges.forEach(e => {
+            if (e.relation === "related") {
+                const pair = [e.source, e.target].sort().join("::");
+                existingArticlePairs.add(pair);
+            }
+        });
+
+        for (let i = 0; i < publishedArticles.length; i++) {
+            for (let j = i + 1; j < publishedArticles.length; j++) {
+                const a = publishedArticles[i];
+                const b = publishedArticles[j];
+                const pairKey = [a.metadata.id, b.metadata.id].sort().join("::");
+                if (existingArticlePairs.has(pairKey)) continue;
+
+                const aTags = new Set((a.metadata.tags || []).map(slugifyTag).filter(Boolean));
+                const sharedTags = (b.metadata.tags || [])
+                    .map(slugifyTag)
+                    .filter(t => t && aTags.has(t));
+
+                if (sharedTags.length >= 2) {
+                    graph.edges.push({
+                        source: a.metadata.id,
+                        target: b.metadata.id,
+                        relation: "shared-tag"
+                    });
+                    existingArticlePairs.add(pairKey);
+                }
+            }
+        }
 
         // Cross-Pillar Connections ("Everything Is Connected")
         // Links between Articles, Tools, Interests, and Professional Resume items
@@ -403,6 +441,7 @@ export default class GraphBuilder {
             ["interest-digital-tools", "building-a-comprehensive-discord-ecosystem"],
             ["interest-digital-tools", "discord-vs-corporate-comms"],
             ["interest-digital-tools", "manifesto"],
+            ["interest-digital-tools", "my-story-with-medical-stigma-and-advocacy"],
             ["interest-sports", "building-a-comprehensive-discord-ecosystem"],
 
             // Resume <-> Articles & Interests
@@ -415,11 +454,13 @@ export default class GraphBuilder {
             ["resume-it-coordinator", "interest-electronics"],
             ["resume-mining-engineering", "my-story-with-the-akira-ransomware-attack"],
             ["resume-mining-engineering", "sensible-infrastructure-and-white-box-servers"],
+            ["resume-mining-engineering", "my-story-with-medical-stigma-and-advocacy"],
             ["resume-etchcentric", "interest-electronics"],
             ["resume-etchcentric", "diy-product-photography-sony-a6400-darktable"],
             ["resume-beng", "manifesto"],
             ["resume-beng", "the-case-for-permanent-standard-time"],
             ["resume-beng", "my-story-with-the-grade-9-french-test"],
+            ["resume-beng", "my-story-with-medical-stigma-and-advocacy"],
             ["resume-aviation", "interest-music"]
         ];
 
@@ -435,13 +476,13 @@ export default class GraphBuilder {
         });
 
         // Add tag nodes for tag pages
-        tags.forEach(tag => {
+        tags.forEach(slug => {
             graph.nodes.push({
-                id: `tag-${tag}`,
-                label: `#${tag}`,
+                id: `tag-${slug}`,
+                label: `#${slug}`,
                 type: "tag",
-                url: `/tags/${tag}.html`,
-                summary: `Content tagged with ${tag}`
+                url: `/tags/${slug}.html`,
+                summary: `Content tagged with ${slug}`
             });
         });
 

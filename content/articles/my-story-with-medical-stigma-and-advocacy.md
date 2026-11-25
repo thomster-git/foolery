@@ -16,16 +16,21 @@ themes:
   - resilience
   - systems-thinking
 tags:
+  - sleep
   - healthcare
-  - newfoundland
   - sleep-apnea
   - cpap
-  - advocacy
   - macular-edema
+  - advocacy
+  - systems-thinking
+  - public-policy
+  - newfoundland
+  - canada
 related:
-  - project-atlas
-  - health-and-fitness
+  - the-case-for-permanent-standard-time
   - my-story-with-the-grade-9-french-test
+  - manifesto
+  - project-atlas
 ---
 
 I spent the first three decades of my life suffocating in the dark, and I didn't even know it.

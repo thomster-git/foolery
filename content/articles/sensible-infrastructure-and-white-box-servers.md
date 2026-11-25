@@ -23,6 +23,8 @@ tags:
   - hardware
   - enterprise-it
   - sysadmin
+  - newfoundland
+  - systems-thinking
 related:
   - my-story-with-the-akira-ransomware-attack
   - discord-vs-corporate-comms

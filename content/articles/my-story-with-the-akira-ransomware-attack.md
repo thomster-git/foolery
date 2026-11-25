@@ -21,6 +21,8 @@ tags:
   - datto
   - mining
   - disaster-recovery
+  - newfoundland
+  - systems-thinking
 related:
   - building-a-comprehensive-discord-ecosystem
   - project-atlas

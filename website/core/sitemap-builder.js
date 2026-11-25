@@ -54,7 +54,6 @@ export default class SitemapBuilder {
             "/now/",
             "/sponsors/",
             "/live/",
-            "/fitness/",
             "/labyrinth/",
             "/labyrinth3d/",
             "/graph/",
@@ -73,10 +72,7 @@ export default class SitemapBuilder {
             "/tools/nhl-trend-analyzer/",
             "/tools/nfl-trend-analyzer/",
             "/tools/stream-schedule/",
-            "/tools/osrs-bank-skilling/",
-            "/tools/runescape-bond-tracker/",
-            "/tools/fitness/",
-            "/tools/skill-building/"
+            "/tools/osrs-bank-skilling/"
         ];
         for (const route of staticRoutes) {
             addEntry(route, now);

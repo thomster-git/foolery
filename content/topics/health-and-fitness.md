@@ -12,7 +12,9 @@ themes:
   - systems-thinking
 related:
   - my-story-with-medical-stigma-and-advocacy
+  - the-case-for-permanent-standard-time
 tags:
+  - sleep
   - healthcare
   - sleep-apnea
   - cpap

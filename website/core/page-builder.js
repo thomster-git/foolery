@@ -1173,7 +1173,8 @@ export default class PageBuilder {
             {
                 description: "Jonathan Thoms' personal fitness lock-in dashboard tracking strength training, body recomposition metrics, daily habits, and health milestones.",
                 path: "/fitness/",
-                ogType: "website"
+                ogType: "website",
+                noindex: true
             }
         );
 

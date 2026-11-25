@@ -20,8 +20,10 @@ tags:
   - daylight-saving-time
   - standard-time
   - sleep
+  - healthcare
   - chronobiology
   - canada
+  - newfoundland
   - public-policy
   - systems-thinking
 related:
