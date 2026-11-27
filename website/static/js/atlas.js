@@ -176,7 +176,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     //   3. Interests (/interests/)
     //   4. Professional Resume (/resume/)
     // Ring 2 (Expandable Children): Articles, Site Tools, Interests, and Professional Resume items
-    const validGlobalTypes = new Set(['hub', 'pillar', 'article', 'site-tool', 'interest', 'resume-item']);
+    const validGlobalTypes = new Set(['hub', 'pillar', 'article', 'site-tool', 'interest', 'resume-item', 'workbench-item']);
     filteredNodes = data.nodes.filter(n => validGlobalTypes.has(n.type));
 
     // Ensure central hub exists even if loading an older cached graph.json
@@ -228,7 +228,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     }));
     focusId = hubNodeId;
   } else {
-    const validGlobalTypes = new Set(['hub', 'pillar', 'article', 'site-tool', 'interest', 'resume-item']);
+    const validGlobalTypes = new Set(['hub', 'pillar', 'article', 'site-tool', 'interest', 'resume-item', 'workbench-item']);
     filteredNodes = data.nodes.filter(n => validGlobalTypes.has(n.type));
     const cIds = new Set(filteredNodes.map(n => n.id));
     filteredEdges = (data.edges || []).filter(e => {
@@ -540,7 +540,8 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
     article: "Published Article",
     "site-tool": "Interactive Tool",
     interest: "Curiosity & Interest",
-    "resume-item": "Professional Resume"
+    "resume-item": "Professional Resume",
+    "workbench-item": "Workbench"
   };
 
   canvas.addEventListener("mousemove", (e) => {
@@ -603,6 +604,8 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
         actionText = 'Click to explore interest →';
       } else if (hoveredNode.type === 'resume-item') {
         actionText = 'Click to view on Resume →';
+      } else if (hoveredNode.type === 'workbench-item') {
+        actionText = 'Click to open Workbench page →';
       } else if (isDrawerType) {
         actionText = 'Click to preview in panel ↗';
       } else {
@@ -648,7 +651,7 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
         } else {
           openNodeDrawer(hoveredNode);
         }
-      } else if (hoveredNode.url && ['article', 'site-tool', 'interest', 'resume-item'].includes(hoveredNode.type)) {
+      } else if (hoveredNode.url && ['article', 'site-tool', 'interest', 'resume-item', 'workbench-item'].includes(hoveredNode.type)) {
         window.location.href = hoveredNode.url;
       } else if (drawerTypes.has(hoveredNode.type)) {
         openNodeDrawer(hoveredNode);
@@ -763,13 +766,14 @@ function renderCanvasGraph(container, data, focusId = null, focusType = null, fo
       return getLayer(a) - getLayer(b);
     });
 
-    // Color resolver matching each of the 4 main pillars and their children
+    // Color resolver matching each of the 5 main pillars and their children
     function getNodeColor(n) {
       if (n.id === 'hub-global' || n.type === 'hub') return "#38bdf8"; // Bright Sky Blue
       if (n.id === 'pillar-articles' || n.type === 'article') return "#60a5fa"; // Electric Blue
       if (n.id === 'pillar-tools' || n.type === 'site-tool' || n.type === 'project') return "#a855f7"; // Vivid Purple
       if (n.id === 'pillar-interests' || n.type === 'interest' || n.type === 'topic') return "#34d399"; // Mint Emerald
       if (n.id === 'pillar-resume' || n.type === 'resume-item' || n.type === 'theme') return "#f59e0b"; // Warm Amber
+      if (n.id === 'pillar-workbench' || n.type === 'workbench-item') return "#fb7185"; // Warm Coral
       return "#818cf8";
     }
 

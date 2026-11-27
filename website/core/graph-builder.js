@@ -36,10 +36,10 @@ export default class GraphBuilder {
             label: "Thoms Foolery",
             type: "hub",
             url: "/graph/",
-            summary: "The Digital Garden & Interconnected Systems Lab of Jonathan Thoms — Articles, Interactive Tools, Interests, and Professional Resume."
+            summary: "The Digital Garden & Interconnected Systems Lab of Jonathan Thoms — Articles, Interactive Tools, Interests, Professional Resume, and Workbench."
         });
 
-        // Tier 1: The 4 Main Site Pillars directly connected to Thoms Foolery
+        // Tier 1: The 5 Main Site Pillars directly connected to Thoms Foolery
         const mainPillars = [
             {
                 id: "pillar-articles",
@@ -72,6 +72,14 @@ export default class GraphBuilder {
                 pillarKey: "resume",
                 url: "/resume/",
                 summary: "Mechanical Engineering (B.Eng.) background, mining operations, enterprise IT coordination, EtchCentric studio, and systems consulting."
+            },
+            {
+                id: "pillar-workbench",
+                label: "Workbench",
+                type: "pillar",
+                pillarKey: "workbench",
+                url: "/now/",
+                summary: "Living desk & gear pages — what I'm doing right now (/now), my permanent setup (/uses), and hardware/gear on my radar (/wishlist)."
             }
         ];
 
@@ -323,6 +331,43 @@ export default class GraphBuilder {
             });
         });
 
+        // Tier 2D: Workbench Living Pages (/now/, /uses/, /wishlist/) under pillar-workbench
+        const workbenchItems = [
+            {
+                id: "workbench-now",
+                label: "Now",
+                type: "workbench-item",
+                parentPillar: "pillar-workbench",
+                url: "/now/",
+                summary: "Dated living snapshot from Carbonear — what I'm building, playing, practicing, and sketching on the whiteboard right now."
+            },
+            {
+                id: "workbench-uses",
+                label: "What I Use",
+                type: "workbench-item",
+                parentPillar: "pillar-workbench",
+                url: "/uses/",
+                summary: "Permanent desk hardware, homelab stack, audio/camera kit, and the three services I deliberately don't self-host."
+            },
+            {
+                id: "workbench-wishlist",
+                label: "The Wishlist",
+                type: "workbench-item",
+                parentPillar: "pillar-workbench",
+                url: "/wishlist/",
+                summary: "Active server rebuild parts (i9-13900K + MSI Z690), Hercules Inpulse 500 DJ controller, and longer-term hardware ideas."
+            }
+        ];
+
+        workbenchItems.forEach(item => {
+            graph.nodes.push(item);
+            graph.edges.push({
+                source: "pillar-workbench",
+                target: item.id,
+                relation: "pillar-member"
+            });
+        });
+
         // Exclude library items, wishlist entries, and legacy topic/theme stubs from the knowledge graph
         const excludedTypes = new Set(["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "tv-show", "topic", "theme", "wishlist"]);
         const publishedContent = content.filter(obj => obj.metadata?.status !== "draft" && !excludedTypes.has(obj.metadata?.type));
@@ -461,7 +506,23 @@ export default class GraphBuilder {
             ["resume-beng", "the-case-for-permanent-standard-time"],
             ["resume-beng", "my-story-with-the-grade-9-french-test"],
             ["resume-beng", "my-story-with-medical-stigma-and-advocacy"],
-            ["resume-aviation", "interest-music"]
+            ["resume-aviation", "interest-music"],
+
+            // Workbench <-> Articles, Tools, Interests & Resume
+            ["workbench-now", "workbench-uses"],
+            ["workbench-now", "workbench-wishlist"],
+            ["workbench-now", "tool-gta-v-tracker"],
+            ["workbench-now", "tool-dragonwilds"],
+            ["workbench-now", "tool-ocarina"],
+            ["workbench-now", "the-case-for-permanent-standard-time"],
+            ["workbench-now", "resume-etchcentric"],
+            ["workbench-uses", "workbench-wishlist"],
+            ["workbench-uses", "interest-electronics"],
+            ["workbench-uses", "diy-product-photography-sony-a6400-darktable"],
+            ["workbench-uses", "sensible-infrastructure-and-white-box-servers"],
+            ["workbench-wishlist", "interest-electronics"],
+            ["workbench-wishlist", "interest-music"],
+            ["workbench-wishlist", "sensible-infrastructure-and-white-box-servers"]
         ];
 
         const allNodeIds = new Set(graph.nodes.map(n => n.id));
