@@ -1,126 +1,248 @@
 <div class="page-container">
-    <div class="content-wrapper" style="max-width: 1000px; margin: 2rem auto;">
-        
-        <div class="breadcrumbs" style="margin-bottom: 2rem;">
+    <div class="content-wrapper" style="max-width: 960px; margin: 2rem auto; padding: 0 1rem;">
+
+        <div class="breadcrumbs" style="margin-bottom: 1.75rem;">
             <a href="/">Home</a> &gt;
+            <a href="/uses/">What I Use</a> &gt;
             <span>The Wishlist</span>
         </div>
 
-        <div style="text-align: center; margin-bottom: 4rem;">
-            <h1 style="font-size: 3rem; color: var(--accent-color); margin-bottom: 1rem;">The Wishlist</h1>
-            <p style="font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin: 0 auto;">
-                A living document of gear, projects, and tools I'm planning to acquire or build.
+        <header class="hero">
+            <h1>The Wishlist</h1>
+            <p>
+                A living list of hardware, music gear, and workshop tools currently on my radar—along with the actual context behind why each one made the list. Active items are specific picks I plan to buy next; everything below is longer-term research.
             </p>
-        </div>
+        </header>
 
-        <h2 style="font-size: 1.75rem; color: var(--text-main); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Active Wishlist</h2>
-        <div class="wishlist-grid" style="margin-bottom: 4rem;">
-            {{active_items}}
-        </div>
+        <!-- Active Wishlist (Featured Narrative Cards) -->
+        <section style="margin-bottom: 3.5rem;">
+            <div class="wishlist-section-head">
+                <h2>Active Wishlist</h2>
+                <span class="wishlist-section-count">{{active_count}} items</span>
+            </div>
+            <div class="wishlist-active-grid">
+                {{active_items}}
+            </div>
+        </section>
 
-        <h2 style="font-size: 1.75rem; color: var(--text-main); margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Ideas & Research (Drafts)</h2>
-        <div class="wishlist-grid wishlist-drafts-grid">
-            {{draft_items}}
-        </div>
+        <!-- Ideas & Research (Compact Directory Panel) -->
+        <section style="margin-bottom: 3.5rem;">
+            <div class="wishlist-section-head">
+                <h2>Ideas &amp; Research</h2>
+                <span class="wishlist-section-count">{{draft_count}} items</span>
+            </div>
+            <ul class="notes-list wishlist-draft-list">
+                {{draft_items}}
+            </ul>
+        </section>
+
+        <footer style="padding-top: 1.5rem; border-top: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.92rem; line-height: 1.65;">
+            <p style="margin: 0;">
+                Want to see what is already on the desk and in the rack? Check <a href="/uses/" class="inline-tool-link">/uses</a>. For what I am building and playing right now, see <a href="/now/" class="inline-tool-link">/now</a>. All product links above are direct reference links (no affiliate tracking).
+            </p>
+        </footer>
 
     </div>
 </div>
 
 <style>
-    .wishlist-grid {
+    .wishlist-section-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .wishlist-section-head h2 {
+        font-size: 1.3rem;
+        color: var(--text-bright);
+        margin: 0;
+    }
+
+    .wishlist-section-count {
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: var(--text-dim);
+    }
+
+    .wishlist-active-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
-        gap: 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+        gap: 1.5rem;
     }
 
     .wishlist-card {
         background: var(--bg-card);
         border: 1px solid var(--border-color);
-        border-radius: var(--radius-lg);
-        padding: 2rem;
+        border-left: 3px solid var(--accent-cyan);
+        border-radius: 8px;
+        padding: 1.65rem 1.75rem;
         display: flex;
         flex-direction: column;
-        transition: transform 0.2s ease, border-color 0.2s ease;
+        transition: border-color 0.2s ease, background-color 0.2s ease;
     }
 
     .wishlist-card:hover {
-        transform: translateY(-5px);
         border-color: var(--accent-cyan);
-        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    }
-
-    .wishlist-card-draft {
-        opacity: 0.75;
-        border-style: dashed;
-    }
-    
-    .wishlist-card-draft:hover {
-        opacity: 1;
-        border-style: solid;
+        background: var(--bg-card-hover);
     }
 
     .wishlist-header {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        margin-bottom: 1rem;
         gap: 1rem;
+        margin-bottom: 0.9rem;
+    }
+
+    .wishlist-meta-line {
+        font-family: var(--font-mono);
+        font-size: 0.76rem;
+        color: var(--accent-cyan);
+        margin-bottom: 0.3rem;
+        line-height: 1.45;
+    }
+
+    .wishlist-paired-note {
+        color: var(--text-dim);
     }
 
     .wishlist-title {
-        font-size: 1.35rem;
-        color: var(--text-main);
+        font-size: 1.22rem;
+        color: var(--text-bright);
         margin: 0;
         line-height: 1.3;
     }
 
     .wishlist-price {
         font-family: var(--font-mono);
-        font-size: 1.1rem;
-        color: var(--green);
-        background: rgba(46, 204, 113, 0.1);
-        padding: 0.25rem 0.75rem;
-        border-radius: 4px;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: var(--text-bright);
+        background: var(--bg-main);
+        border: 1px solid var(--border-color);
+        padding: 0.25rem 0.65rem;
+        border-radius: 6px;
         white-space: nowrap;
-    }
-
-    .wishlist-category {
-        margin-bottom: 1.5rem;
+        flex-shrink: 0;
     }
 
     .wishlist-body {
         color: var(--text-muted);
-        line-height: 1.6;
+        font-size: 0.94rem;
+        line-height: 1.65;
         flex-grow: 1;
-        margin-bottom: 2rem;
+        margin-bottom: 1.35rem;
     }
 
     .wishlist-body p {
-        margin-bottom: 0.75rem;
+        margin: 0 0 0.75rem 0;
+    }
+
+    .wishlist-body p:last-child {
+        margin-bottom: 0;
+    }
+
+    .wishlist-body a {
+        color: var(--accent-cyan);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
+
+    .wishlist-footer {
+        margin-top: auto;
     }
 
     .wishlist-btn {
         display: inline-block;
-        width: 100%;
-        text-align: center;
-        padding: 0.75rem 1.5rem;
+        padding: 0.6rem 1.15rem;
         background: var(--accent-cyan);
-        color: var(--bg-dark);
+        color: #ffffff;
         text-decoration: none;
-        font-weight: bold;
-        border-radius: var(--radius-md);
-        transition: background 0.2s ease, transform 0.1s ease;
+        font-size: 0.88rem;
+        font-weight: 600;
+        border-radius: 6px;
+        transition: opacity 0.2s ease;
     }
 
     .wishlist-btn:hover:not(.disabled) {
-        background: var(--text-main);
-        transform: scale(1.02);
+        opacity: 0.9;
+        color: #ffffff;
     }
 
     .wishlist-btn.disabled {
-        background: var(--bg-light);
-        color: var(--text-muted);
-        cursor: not-allowed;
+        background: var(--bg-main);
+        color: var(--text-dim);
+        cursor: default;
         border: 1px solid var(--border-color);
+    }
+
+    /* Ideas & Research — compact surface panel rows */
+    .wishlist-draft-list {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .wishlist-draft-row {
+        padding: 1.15rem 1.45rem !important;
+        border-bottom: 1px solid var(--border-color);
+        background: transparent;
+    }
+
+    .wishlist-draft-row:last-child {
+        border-bottom: 0;
+    }
+
+    .wishlist-draft-head {
+        display: flex;
+        align-items: baseline;
+        gap: 0.85rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.4rem;
+    }
+
+    .wishlist-draft-cat {
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        color: var(--accent-cyan);
+        min-width: 96px;
+    }
+
+    .wishlist-draft-title {
+        font-size: 1rem;
+        color: var(--text-bright);
+    }
+
+    .wishlist-draft-status {
+        margin-left: auto;
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        color: var(--text-dim);
+    }
+
+    .wishlist-draft-body {
+        color: var(--text-muted);
+        font-size: 0.92rem;
+        line-height: 1.6;
+        padding-left: calc(96px + 0.85rem);
+    }
+
+    .wishlist-draft-body p {
+        margin: 0;
+    }
+
+    @media (max-width: 720px) {
+        .wishlist-card {
+            padding: 1.25rem 1.25rem;
+        }
+        .wishlist-draft-row {
+            padding: 1rem 1.15rem !important;
+        }
+        .wishlist-draft-body {
+            padding-left: 0;
+        }
     }
 </style>

@@ -323,8 +323,8 @@ export default class GraphBuilder {
             });
         });
 
-        // Exclude library items and legacy topic/theme stubs from the knowledge graph
-        const excludedTypes = new Set(["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "tv-show", "topic", "theme"]);
+        // Exclude library items, wishlist entries, and legacy topic/theme stubs from the knowledge graph
+        const excludedTypes = new Set(["book", "company", "course", "creator", "game", "hardware", "service", "software", "tool", "website", "documentation", "tv-show", "topic", "theme", "wishlist"]);
         const publishedContent = content.filter(obj => obj.metadata?.status !== "draft" && !excludedTypes.has(obj.metadata?.type));
         const publishedIds = new Set(publishedContent.map(obj => obj.metadata.id));
 

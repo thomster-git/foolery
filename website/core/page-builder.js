@@ -1193,47 +1193,63 @@ export default class PageBuilder {
         await fs.mkdir(folder, { recursive: true });
 
         const template = await this.loadLayout("wishlist.html");
-        
-        // Sort items: Active first, then by Date (descending)
+
+        // Sort items: Active first, then priority (ascending), then created date (descending)
         items.sort((a, b) => {
             if (a.metadata.status !== b.metadata.status) {
                 return a.metadata.status === "active" ? -1 : 1;
             }
+            const prioA = a.metadata.priority != null ? Number(a.metadata.priority) : 99;
+            const prioB = b.metadata.priority != null ? Number(b.metadata.priority) : 99;
+            if (prioA !== prioB) return prioA - prioB;
             return new Date(b.metadata.created || 0) - new Date(a.metadata.created || 0);
         });
 
         const activeItems = items.filter(i => i.metadata.status === "active");
         const draftItems = items.filter(i => i.metadata.status === "draft");
 
-        let generateCards = (list) => {
-            return list.map(item => `
-                <div id="${item.metadata.id}" class="wishlist-card ${item.metadata.status === 'draft' ? 'wishlist-card-draft' : ''}">
-                    <div class="wishlist-header">
+        const activeHtml = activeItems.map(item => `
+            <div id="${item.metadata.id}" class="wishlist-card">
+                <div class="wishlist-header">
+                    <div>
+                        <div class="wishlist-meta-line">${item.metadata.category || 'Gear'}${item.metadata.paired_with ? ` · <span class="wishlist-paired-note">Paired: ${item.metadata.paired_with}</span>` : ''}</div>
                         <h2 class="wishlist-title">${item.metadata.title}</h2>
-                        <span class="wishlist-price">${item.metadata.price || 'TBD'}</span>
                     </div>
-                    <div class="wishlist-category">
-                        <span class="tag-pill">${item.metadata.category || 'Misc'}</span>
-                    </div>
-                    <div class="wishlist-body">
-                        ${this.markdown(item.body || "")}
-                    </div>
-                    <div class="wishlist-footer">
-                        ${item.metadata.url && item.metadata.url !== '#' ? 
-                            `<a href="${item.metadata.url}" target="_blank" class="wishlist-btn">View / Purchase ↗</a>` : 
-                            `<span class="wishlist-btn disabled">Researching</span>`}
-                    </div>
+                    <span class="wishlist-price">${item.metadata.price || 'TBD'}</span>
                 </div>
-            `).join('\n');
-        };
+                <div class="wishlist-body">
+                    ${this.markdown(item.body || "")}
+                </div>
+                <div class="wishlist-footer">
+                    ${item.metadata.url && item.metadata.url !== '#' ?
+                        `<a href="${item.metadata.url}" target="_blank" rel="noopener noreferrer" class="wishlist-btn">View Listing &nearr;</a>` :
+                        `<span class="wishlist-btn disabled">Researching</span>`}
+                </div>
+            </div>
+        `).join('\n');
+
+        const draftHtml = draftItems.map(item => `
+            <li id="${item.metadata.id}" class="wishlist-draft-row">
+                <div class="wishlist-draft-head">
+                    <span class="wishlist-draft-cat">${item.metadata.category || 'Idea'}</span>
+                    <strong class="wishlist-draft-title">${item.metadata.title}</strong>
+                    <span class="wishlist-draft-status">${item.metadata.price && item.metadata.price !== 'TBD' ? item.metadata.price : 'Researching'}</span>
+                </div>
+                <div class="wishlist-draft-body">
+                    ${this.markdown(item.body || "")}
+                </div>
+            </li>
+        `).join('\n');
 
         const html = await this.wrapPage(
             this.renderer.render(template, {
-                active_items: generateCards(activeItems),
-                draft_items: generateCards(draftItems)
+                active_items: activeHtml,
+                draft_items: draftHtml,
+                active_count: String(activeItems.length),
+                draft_count: String(draftItems.length)
             }),
             "The Wishlist",
-            { description: "Jonathan's project and gear wishlist.", path: "/wishlist/", ogType: "website" }
+            { description: "Hardware, music gear, and workshop tools currently on Jonathan Thoms' radar—plus the context behind why each item is on the list.", path: "/wishlist/", ogType: "website" }
         );
 
         await fs.writeFile(path.join(folder, "index.html"), html);
